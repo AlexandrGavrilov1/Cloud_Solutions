@@ -4825,7 +4825,7 @@ export const providers: Provider[] = [
     popularity: 12000,
     promoText: "14 дней тест + корпоративная техподдержка",
     caseStudies: ["Банки", "Корпоративные системы", "SAP", "1C на облаке"],
-    uptime30days: 99.96,
+    uptime30days: 99.9,
     reviews: [],
   },
   {
@@ -4875,7 +4875,7 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
+      uptimeSLA: "99.98%",
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
