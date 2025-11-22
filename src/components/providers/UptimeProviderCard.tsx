@@ -304,16 +304,20 @@ export const UptimeProviderCard = ({
       {index < 3 && (
         <div className="absolute -top-3 -left-3 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
           <div className="relative flex items-center justify-center">
-            <img 
-              src="https://cdn.poehali.dev/files/36979da1-183f-4e2d-8474-77388483586d.png"
-              alt="Cloud"
-              className="w-9 h-9"
+            <Icon 
+              name="Cloud" 
+              size={37} 
+              className={
+                index === 0 ? 'text-yellow-500' : 
+                index === 1 ? 'text-gray-400' : 
+                'text-amber-700'
+              }
               style={{
                 filter: index === 0 
-                  ? 'brightness(0) saturate(100%) invert(77%) sepia(72%) saturate(537%) hue-rotate(359deg) brightness(98%) contrast(101%) drop-shadow(0 0 10px rgba(234, 179, 8, 0.7))' 
+                  ? 'drop-shadow(0 0 10px rgba(234, 179, 8, 0.7))' 
                   : index === 1 
-                  ? 'brightness(0) saturate(100%) invert(75%) sepia(0%) saturate(0%) hue-rotate(158deg) brightness(92%) contrast(88%) drop-shadow(0 0 10px rgba(156, 163, 175, 0.7))' 
-                  : 'brightness(0) saturate(100%) invert(28%) sepia(84%) saturate(1453%) hue-rotate(15deg) brightness(92%) contrast(101%) drop-shadow(0 0 10px rgba(180, 83, 9, 0.7))'
+                  ? 'drop-shadow(0 0 10px rgba(156, 163, 175, 0.7))' 
+                  : 'drop-shadow(0 0 10px rgba(180, 83, 9, 0.7))'
               }}
             />
             <span 
