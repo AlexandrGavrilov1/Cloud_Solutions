@@ -310,7 +310,7 @@ export const UptimeProviderCard = ({
       )}
       
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-1 min-w-0" style={{ marginLeft: index < 3 ? '36px' : '0' }}>
+        <div className="flex items-center gap-3 flex-1 min-w-0" style={{ marginLeft: '36px' }}>
           <div className="flex-shrink-0 w-10 h-10 rounded-lg overflow-hidden bg-white border border-primary/10 flex items-center justify-center">
             <img
               src={provider.logo}
