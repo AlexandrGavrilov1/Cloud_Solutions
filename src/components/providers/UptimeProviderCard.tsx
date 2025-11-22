@@ -302,10 +302,23 @@ export const UptimeProviderCard = ({
       }`}
     >
       {index < 3 && (
-        <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center shadow-lg border-2 border-background">
-          <span className="text-xs font-bold text-primary">
-            #{index + 1}
-          </span>
+        <div className="absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+          <Icon 
+            name="Trophy" 
+            size={20} 
+            className={
+              index === 0 ? 'text-yellow-500' : 
+              index === 1 ? 'text-gray-400' : 
+              'text-amber-700'
+            }
+            style={{
+              filter: index === 0 
+                ? 'drop-shadow(0 0 8px rgba(234, 179, 8, 0.6))' 
+                : index === 1 
+                ? 'drop-shadow(0 0 8px rgba(156, 163, 175, 0.6))' 
+                : 'drop-shadow(0 0 8px rgba(180, 83, 9, 0.6))'
+            }}
+          />
         </div>
       )}
       
