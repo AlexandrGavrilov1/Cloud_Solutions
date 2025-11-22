@@ -297,12 +297,20 @@ export const UptimeProviderCard = ({
   return (
     <div
       key={provider.id}
-      className={`group bg-background border border-border rounded-xl p-4 hover:border-primary/50 transition-all ${
+      className={`group bg-background border border-border rounded-xl p-4 hover:border-primary/50 transition-all relative ${
         isExpanded ? "md:col-span-2" : ""
       }`}
     >
+      {index < 3 && (
+        <div className="absolute top-3 left-3 w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center">
+          <span className="text-xs font-bold text-primary">
+            #{index + 1}
+          </span>
+        </div>
+      )}
+      
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-1 min-w-0">
+        <div className="flex items-center gap-3 flex-1 min-w-0" style={{ marginLeft: index < 3 ? '36px' : '0' }}>
           <div className="flex-shrink-0 w-10 h-10 rounded-lg overflow-hidden bg-white border border-primary/10 flex items-center justify-center">
             <img
               src={provider.logo}
@@ -332,13 +340,6 @@ export const UptimeProviderCard = ({
           <div className="text-xl font-black text-foreground">
             {uptime.toFixed(2)}%
           </div>
-          {index < 3 && (
-            <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-              <span className="text-xs font-bold text-primary">
-                #{index + 1}
-              </span>
-            </div>
-          )}
           <button
             onClick={onToggleExpand}
             className="p-1.5 hover:bg-accent rounded-lg transition-colors"
