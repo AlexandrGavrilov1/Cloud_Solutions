@@ -13,11 +13,11 @@ export const Header = () => {
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-card/60 border-b border-border">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="/" className="flex items-center hover:opacity-90 transition-opacity">
+          <a href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
             <img 
-              src="https://cdn.poehali.dev/files/74296ed9-482c-4b22-b742-11766420b6bd.png" 
-              alt="TopCloudHub Logo" 
-              className="h-[56px] w-auto"
+              src="https://cdn.poehali.dev/files/4dcf6894-601e-46cf-baf9-df36ca0cc515.jpg" 
+              alt="TopCloudHub"
+              className="h-10 w-auto"
             />
           </a>
           <div className="hidden md:flex items-center gap-8">

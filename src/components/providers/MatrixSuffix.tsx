@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const CYRILLIC_CHARS = 'абвгдежзийклмнопрстуфхцчшщъыьэюя';
+const LATIN_CHARS = 'abcdefghijklmnopqrstuvwxyz';
+
 export const MatrixSuffix = () => {
   const { t, language } = useLanguage();
   const SUFFIXES = [t('hero.suffix1'), t('hero.suffix2')];
+  const CHARS = language === 'ru' ? CYRILLIC_CHARS : LATIN_CHARS;
   
   const [currentSuffixIndex, setCurrentSuffixIndex] = useState(0);
   const [displayText, setDisplayText] = useState(SUFFIXES[0]);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     setDisplayText(SUFFIXES[currentSuffixIndex]);
@@ -15,38 +19,49 @@ export const MatrixSuffix = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      setIsTransitioning(true);
+      
       const nextIndex = (currentSuffixIndex + 1) % SUFFIXES.length;
       const nextSuffix = SUFFIXES[nextIndex];
+      const currentSuffix = SUFFIXES[currentSuffixIndex];
+      const maxLength = Math.max(currentSuffix.length, nextSuffix.length);
       
-      setIsAnimating(true);
+      let frame = 0;
+      const transitionFrames = 40;
       
-      setTimeout(() => {
-        setDisplayText(nextSuffix);
-        setCurrentSuffixIndex(nextIndex);
+      const animate = setInterval(() => {
+        frame++;
         
-        setTimeout(() => {
-          setIsAnimating(false);
-        }, 600);
-      }, 300);
+        if (frame <= transitionFrames) {
+          let newText = '';
+          for (let i = 0; i < maxLength; i++) {
+            const progress = frame / transitionFrames;
+            const charProgress = Math.min(1, Math.max(0, progress * maxLength - i));
+            
+            if (charProgress < 0.5) {
+              newText += currentSuffix[i] || '';
+            } else if (charProgress < 0.85) {
+              newText += CHARS[Math.floor(Math.random() * CHARS.length)];
+            } else {
+              newText += nextSuffix[i] || '';
+            }
+          }
+          setDisplayText(newText);
+        } else {
+          setDisplayText(nextSuffix);
+          setIsTransitioning(false);
+          setCurrentSuffixIndex(nextIndex);
+          clearInterval(animate);
+        }
+      }, 35);
       
-    }, 3500);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [currentSuffixIndex, language]);
 
   return (
-    <span 
-      className={`text-primary font-extrabold transition-all duration-500 ${
-        isAnimating 
-          ? 'scale-110 opacity-0 blur-sm' 
-          : 'scale-100 opacity-100 blur-0'
-      }`}
-      style={{
-        textShadow: isAnimating 
-          ? '0 0 30px currentColor, 0 0 60px currentColor' 
-          : '0 0 20px rgba(var(--primary-rgb), 0.5)'
-      }}
-    >
+    <span className={`text-foreground ${isTransitioning ? 'matrix-glitch' : ''}`}>
       {displayText}
     </span>
   );
