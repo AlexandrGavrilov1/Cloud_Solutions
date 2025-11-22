@@ -78,8 +78,8 @@ export const ProviderCard = ({
           <button 
             onClick={onToggleCompare}
             className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all ${
-              isSelected ? 'bg-card hover:bg-accent' : 'bg-card hover:bg-accent'
-            }`}
+              isSelected ? 'bg-card/80 hover:bg-accent/80' : 'bg-card/80 hover:bg-accent/80'
+            } backdrop-blur-sm`}
           >
             <Icon name={isSelected ? "Check" : "GitCompare"} size={17} className="text-foreground" />
           </button>
