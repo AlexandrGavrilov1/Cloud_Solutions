@@ -2092,7 +2092,7 @@ export const providers: Provider[] = [
   {
     id: 12,
     name: "Fornex",
-    logo: "https://cdn.poehali.dev/files/20b93f61-55a3-4229-a553-3af037e4622c.png",
+    logo: "https://cdn.poehali.dev/fiiles/20b93f61-55a3-4229-a553-3af037e4622c.png",
     rating: 9.1,
     basePrice: 250,
     cpuPrice: 155,
@@ -5210,7 +5210,7 @@ export const providers: Provider[] = [
   },
   {
     id: 42,
-    name: "DataRU",
+    name: "DатаРу",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/898888df-2c2f-42fe-962b-78855a45a603.jpg",
     rating: 8.1,
     basePrice: 0,
@@ -5296,7 +5296,7 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 5,
     },
@@ -5318,7 +5318,7 @@ export const providers: Provider[] = [
     popularity: 6500,
     promoText: "Почасовая оплата + NVMe диски от 190₽/мес",
     caseStudies: ["Веб-разработка", "Игровые серверы", "Боты"],
-    uptime30days: 99.53,
+    uptime30days: 99.9,
     reviews: [],
   },
 ];
