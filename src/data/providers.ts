@@ -1283,18 +1283,6 @@ export const providers: Provider[] = [
       "Базы данных",
     ],
     uptime30days: 99.8,
-    monthlyUptimeData: [
-      { month: "Январь", uptime: 99.7, downtime_minutes: 135 },
-      { month: "Февраль", uptime: 99.51, downtime_minutes: 195 },
-      { month: "Март", uptime: 99.84, downtime_minutes: 69 },
-      { month: "Апрель", uptime: 99.9, downtime_minutes: 45 },
-      { month: "Май", uptime: 99.8, downtime_minutes: 90 },
-      { month: "Июнь", uptime: 99.84, downtime_minutes: 69 },
-      { month: "Июль", uptime: 99.78, downtime_minutes: 96 },
-      { month: "Август", uptime: 99.91, downtime_minutes: 39 },
-      { month: "Сентябрь", uptime: 99.95, downtime_minutes: 21 },
-      { month: "Октябрь", uptime: 99.81, downtime_minutes: 84 },
-    ],
     reviews: [
       {
         author: "Александр В.",
