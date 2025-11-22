@@ -13,16 +13,12 @@ export const Header = () => {
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-card/60 border-b border-border">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+          <a href="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img 
               src="https://cdn.poehali.dev/files/f753db81-e731-4eda-a7da-b5cbead316da.png" 
               alt="TopCloudHub Logo" 
               className="h-10 w-auto"
             />
-            <div>
-              <h1 className="text-xl font-bold text-primary">{t('header.title')}</h1>
-              <p className="text-xs text-muted-foreground font-medium">{t('header.subtitle')}</p>
-            </div>
           </a>
           <div className="hidden md:flex items-center gap-8">
             <a href="/blog" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
