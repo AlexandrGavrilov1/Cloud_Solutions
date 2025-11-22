@@ -306,7 +306,7 @@ export const UptimeProviderCard = ({
           <div className="relative flex items-center justify-center">
             <Icon 
               name="Cloud" 
-              size={32} 
+              size={37} 
               className={
                 index === 0 ? 'text-yellow-500' : 
                 index === 1 ? 'text-gray-400' : 
@@ -326,7 +326,7 @@ export const UptimeProviderCard = ({
                 index === 1 ? 'text-gray-500' : 
                 'text-amber-800'
               }`}
-              style={{ marginTop: '2px' }}
+              style={{ marginTop: '2px', marginLeft: '-10%' }}
             >
               {index + 1}
             </span>
