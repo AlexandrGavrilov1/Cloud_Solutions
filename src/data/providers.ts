@@ -1247,7 +1247,7 @@ export const providers: Provider[] = [
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
-      supportResponseTime: "< 120 мин",
+      supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 3,
     },
     additionalServices: {
@@ -1283,6 +1283,18 @@ export const providers: Provider[] = [
       "Базы данных",
     ],
     uptime30days: 99.8,
+    monthlyUptimeData: [
+      { month: "Январь", uptime: 99.7, downtime_minutes: 135 },
+      { month: "Февраль", uptime: 99.51, downtime_minutes: 195 },
+      { month: "Март", uptime: 99.84, downtime_minutes: 69 },
+      { month: "Апрель", uptime: 99.9, downtime_minutes: 45 },
+      { month: "Май", uptime: 99.8, downtime_minutes: 90 },
+      { month: "Июнь", uptime: 99.84, downtime_minutes: 69 },
+      { month: "Июль", uptime: 99.78, downtime_minutes: 96 },
+      { month: "Август", uptime: 99.91, downtime_minutes: 39 },
+      { month: "Сентябрь", uptime: 99.95, downtime_minutes: 21 },
+      { month: "Октябрь", uptime: 99.81, downtime_minutes: 84 },
+    ],
     reviews: [
       {
         author: "Александр В.",
@@ -1397,8 +1409,8 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 30 мин",
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 7,
     },
     additionalServices: {
@@ -1432,6 +1444,18 @@ export const providers: Provider[] = [
       "Базы данных",
     ],
     uptime30days: 99.98,
+    monthlyUptimeData: [
+      { month: "Январь", uptime: 100, downtime_minutes: 0 },
+      { month: "Февраль", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Март", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Апрель", uptime: 99.99, downtime_minutes: 3 },
+      { month: "Май", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Июнь", uptime: 99.98, downtime_minutes: 9 },
+      { month: "Июль", uptime: 99.99, downtime_minutes: 6 },
+      { month: "Август", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Сентябрь", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Октябрь", uptime: 100, downtime_minutes: 0 },
+    ],
     reviews: [
       {
         author: "Игорь М.",
