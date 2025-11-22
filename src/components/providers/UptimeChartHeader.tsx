@@ -21,7 +21,7 @@ export const UptimeChartHeader = ({
           </span>
         </div>
         <h2 className="text-4xl md:text-5xl font-extrabold text-foreground">
-          Uptime провайдеров за 30 дней
+          Uptime провайдеров за 2025 год
         </h2>
         <p className="text-xl text-muted-foreground">
           Реальная статистика доступности серверов
@@ -59,11 +59,7 @@ export const UptimeChartHeader = ({
                 onClick={() => onSearchChange("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-accent rounded-lg transition-colors"
               >
-                <Icon
-                  name="X"
-                  size={18}
-                  className="text-muted-foreground"
-                />
+                <Icon name="X" size={18} className="text-muted-foreground" />
               </button>
             )}
           </div>
