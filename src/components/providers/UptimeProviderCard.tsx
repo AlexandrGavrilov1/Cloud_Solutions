@@ -262,6 +262,7 @@ export const UptimeProviderCard = ({
 
   const shouldShowGraph =
     provider.id === 1 ||
+    provider.id === 2 ||
     provider.id === 5 ||
     provider.id === 6 ||
     provider.id === 7 ||
