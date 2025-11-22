@@ -15,9 +15,10 @@ export const Header = () => {
         <div className="flex items-center justify-between h-20">
           <a href="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img 
-              src="https://cdn.poehali.dev/files/1920db1c-4240-4ddc-a559-40b3e7766cd1.jpg" 
+              src="https://cdn.poehali.dev/files/4ed5239a-7456-4346-a173-f604db07162d.jpg" 
               alt="TopCloudHub Logo" 
-              className="h-[56px] w-auto"
+              className="h-[56px] w-auto mix-blend-multiply dark:mix-blend-screen"
+              style={{ background: 'transparent' }}
             />
           </a>
           <div className="hidden md:flex items-center gap-8">
