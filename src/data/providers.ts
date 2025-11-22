@@ -4972,7 +4972,7 @@ export const providers: Provider[] = [
     features: ["NVMe диски", "152-ФЗ", "DDoS защита", "Почасовая оплата"],
     locations: ["Москва", "Санкт-Петербург", "Нижний Новгород", "Екатеринбург"],
     trialDays: 3,
-    url: "https://linx-host.ru/",
+    url: "https://linx.ru/",
     pros: ["Почасовая оплата", "NVMe диски", "4 локации", "Доступные цены"],
     cons: [
       "Короткий тестовый период",
