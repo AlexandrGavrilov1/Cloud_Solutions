@@ -25,7 +25,7 @@ export const UptimeProviderCard = ({
   const getStaticMonthlyData = (providerId: number) => {
     if (providerId === 1) {
       return [
-        { month: "Январь", uptime: 99.9, downtime: 3 },
+        { month: "Январь", uptime: 99.99, downtime: 3 },
         { month: "Февраль", uptime: 99.98, downtime: 9 },
         { month: "Март", uptime: 100, downtime: 0 },
         { month: "Апрель", uptime: 100, downtime: 0 },
@@ -34,7 +34,7 @@ export const UptimeProviderCard = ({
         { month: "Июль", uptime: 100, downtime: 0 },
         { month: "Август", uptime: 99.99, downtime: 3 },
         { month: "Сентябрь", uptime: 99.99, downtime: 6 },
-        { month: "Октябрь", uptime: 99.89, downtime: 6 },
+        { month: "Октябрь", uptime: 99.98, downtime: 6 },
       ];
     } else if (providerId === 2) {
       return [
