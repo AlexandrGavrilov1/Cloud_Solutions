@@ -4701,7 +4701,7 @@ export const providers: Provider[] = [
   },
   {
     id: 34,
-    name: "Rosukrep",
+    name: "РОСУКРЕП",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/3cd382b7-b835-4fdf-b680-f4c97992ba6e.jpg",
     rating: 8.3,
     basePrice: 0,
