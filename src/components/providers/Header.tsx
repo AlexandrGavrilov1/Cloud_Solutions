@@ -20,7 +20,7 @@ export const Header = () => {
             <img
               src="https://cdn.poehali.dev/files/4dcf6894-601e-46cf-baf9-df36ca0cc515.jpg"
               alt="TopCloudHub"
-              className="h-10 w-auto"
+              className="h-20 w-auto"
               loading="eager"
               fetchPriority="high"
               decoding="async"
