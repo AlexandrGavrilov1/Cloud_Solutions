@@ -5064,7 +5064,7 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
+      uptimeSLA: "99.98%",
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
@@ -5122,7 +5122,7 @@ export const providers: Provider[] = [
       ddosProtection: "Базовая защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.98%",
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 5,
     },
@@ -5141,7 +5141,7 @@ export const providers: Provider[] = [
     popularity: 4500,
     promoText: "5 дней тест + ISPmanager в подарок",
     caseStudies: ["Корпоративные сайты", "CMS-проекты", "E-commerce"],
-    uptime30days: 99.47,
+    uptime30days: 99.89,
     reviews: [],
   },
   {
