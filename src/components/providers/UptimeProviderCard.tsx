@@ -304,7 +304,7 @@ export const UptimeProviderCard = ({
       {index < 3 && (
         <div className="absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
           <Icon 
-            name="Trophy" 
+            name="Cloud" 
             size={20} 
             className={
               index === 0 ? 'text-yellow-500' : 
