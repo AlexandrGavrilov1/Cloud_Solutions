@@ -1,84 +1,59 @@
-import { Button } from "@/components/ui/button";
-import Icon from "@/components/ui/icon";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useTheme } from "@/contexts/ThemeContext";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useState } from 'react';
 
 export const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-card/60 border-b border-border">
-      <div className="container mx-auto px-8 lg:px-16">
+      <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a
-            href="/"
-            className="flex items-center gap-3 hover:opacity-90 transition-opacity"
-          >
-            <img
-              src="https://cdn.poehali.dev/files/4dcf6894-601e-46cf-baf9-df36ca0cc515.jpg"
+          <a href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+            <img 
+              src="https://cdn.poehali.dev/files/4dcf6894-601e-46cf-baf9-df36ca0cc515.jpg" 
               alt="TopCloudHub"
-              className="h-20 w-auto"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
+              className="h-10 w-auto"
             />
           </a>
           <div className="hidden md:flex items-center gap-8">
-            <a
-              href="/blog"
-              className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1"
-            >
+            <a href="/blog" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
               <Icon name="BookOpen" size={14} />
               Блог
             </a>
-            <a
-              href="/uptime"
-              className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1"
-            >
+            <a href="/uptime" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
               <Icon name="Activity" size={14} />
-              {t("header.uptime")}
+              {t('header.uptime')}
             </a>
-            <a
-              href="#compare"
+            <a 
+              href="#compare" 
               className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors"
               onClick={(e) => {
                 e.preventDefault();
-                const providersSection =
-                  document.querySelector('[id="providers"]');
+                const providersSection = document.querySelector('[id="providers"]');
                 if (providersSection) {
-                  providersSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
+                  providersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   setTimeout(() => {
-                    const compareButton = document.querySelector(
-                      '[class*="Сравнить"]',
-                    ) as HTMLElement;
+                    const compareButton = document.querySelector('[class*="Сравнить"]') as HTMLElement;
                     if (compareButton) {
-                      compareButton.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                      });
+                      compareButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                   }, 500);
                 }
               }}
             >
-              {t("header.compare")}
+              {t('header.compare')}
             </a>
             <button
               onClick={toggleTheme}
               className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-primary/50 hover:bg-accent transition-all"
               aria-label="Toggle theme"
             >
-              <Icon
-                name={theme === "light" ? "Moon" : "Sun"}
-                size={18}
-                className="text-foreground/70"
-              />
+              <Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={18} className="text-foreground/70" />
             </button>
           </div>
 
@@ -88,22 +63,14 @@ export const Header = () => {
               className="p-2 hover:bg-accent rounded-lg transition-colors"
               aria-label="Toggle theme"
             >
-              <Icon
-                name={theme === "light" ? "Moon" : "Sun"}
-                size={20}
-                className="text-foreground/70"
-              />
+              <Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={20} className="text-foreground/70" />
             </button>
-            <button
+            <button 
               className="p-2 hover:bg-accent rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
-              <Icon
-                name={mobileMenuOpen ? "X" : "Menu"}
-                size={24}
-                className="text-foreground"
-              />
+              <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} className="text-foreground" />
             </button>
           </div>
         </div>
@@ -111,58 +78,54 @@ export const Header = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
-              <a
-                href="/blog"
+              <a 
+                href="/blog" 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="BookOpen" size={16} />
                 Блог
               </a>
-              <a
-                href="/uptime"
+              <a 
+                href="/uptime" 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Activity" size={16} />
-                {t("header.uptime")}
+                {t('header.uptime')}
               </a>
-              <a
-                href="#compare"
+              <a 
+                href="#compare" 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
                 onClick={(e) => {
                   e.preventDefault();
                   setMobileMenuOpen(false);
-                  const providersSection =
-                    document.querySelector('[id="providers"]');
+                  const providersSection = document.querySelector('[id="providers"]');
                   if (providersSection) {
-                    providersSection.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
+                    providersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 }}
               >
                 <Icon name="GitCompare" size={16} />
-                {t("header.compare")}
+                {t('header.compare')}
               </a>
-              <button
+              <button 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all text-left"
                 onClick={() => {
                   toggleTheme();
                 }}
               >
-                <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
-                {theme === "light" ? "Тёмная тема" : "Светлая тема"}
+                <Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={16} />
+                {theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}
               </button>
-              <Button
+              <Button 
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  window.location.href = "/";
+                  window.location.href = '/';
                 }}
                 className="bg-primary text-background font-bold shadow-lg shadow-primary/30 w-full"
               >
-                {t("header.start")}
+                {t('header.start')}
                 <Icon name="ArrowRight" size={16} className="ml-2" />
               </Button>
             </div>
