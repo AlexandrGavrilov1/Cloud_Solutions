@@ -302,7 +302,7 @@ export const UptimeProviderCard = ({
       }`}
     >
       {index < 3 && (
-        <div className="absolute top-3 left-3 w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center">
+        <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center shadow-lg border-2 border-background">
           <span className="text-xs font-bold text-primary">
             #{index + 1}
           </span>
