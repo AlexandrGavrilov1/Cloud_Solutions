@@ -1432,7 +1432,6 @@ export const providers: Provider[] = [
       "Базы данных",
     ],
     uptime30days: 99.98,
-        ],
     reviews: [
       {
         author: "Игорь М.",
