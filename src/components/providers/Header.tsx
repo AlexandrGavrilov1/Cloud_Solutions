@@ -20,7 +20,7 @@ export const Header = () => {
                 : "https://cdn.poehali.dev/files/8f328ff2-4310-4457-a129-5e42f69ef566.png"
               }
               alt="TopCloudHub Logo" 
-              className="h-[56px] w-auto"
+              className="h-[56px] w-auto transition-opacity duration-300"
             />
           </a>
           <div className="hidden md:flex items-center gap-8">
