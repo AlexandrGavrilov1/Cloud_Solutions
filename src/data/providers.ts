@@ -745,7 +745,7 @@ export const providers: Provider[] = [
   },
   {
     id: 3,
-    name: "REG.RU",
+    name: "рег.ру",
     logo: "https://cdn.poehali.dev/files/6b4d2ef8-b463-49ad-ac69-177248e8dfb8.png",
     rating: 9.4,
     basePrice: 199,
