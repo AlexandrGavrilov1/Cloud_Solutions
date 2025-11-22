@@ -302,23 +302,35 @@ export const UptimeProviderCard = ({
       }`}
     >
       {index < 3 && (
-        <div className="absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
-          <Icon 
-            name="Cloud" 
-            size={20} 
-            className={
-              index === 0 ? 'text-yellow-500' : 
-              index === 1 ? 'text-gray-400' : 
-              'text-amber-700'
-            }
-            style={{
-              filter: index === 0 
-                ? 'drop-shadow(0 0 8px rgba(234, 179, 8, 0.6))' 
-                : index === 1 
-                ? 'drop-shadow(0 0 8px rgba(156, 163, 175, 0.6))' 
-                : 'drop-shadow(0 0 8px rgba(180, 83, 9, 0.6))'
-            }}
-          />
+        <div className="absolute -top-3 -left-3 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+          <div className="relative flex items-center justify-center">
+            <Icon 
+              name="Cloud" 
+              size={32} 
+              className={
+                index === 0 ? 'text-yellow-500' : 
+                index === 1 ? 'text-gray-400' : 
+                'text-amber-700'
+              }
+              style={{
+                filter: index === 0 
+                  ? 'drop-shadow(0 0 10px rgba(234, 179, 8, 0.7))' 
+                  : index === 1 
+                  ? 'drop-shadow(0 0 10px rgba(156, 163, 175, 0.7))' 
+                  : 'drop-shadow(0 0 10px rgba(180, 83, 9, 0.7))'
+              }}
+            />
+            <span 
+              className={`absolute text-xs font-bold ${
+                index === 0 ? 'text-yellow-600' : 
+                index === 1 ? 'text-gray-500' : 
+                'text-amber-800'
+              }`}
+              style={{ marginTop: '2px' }}
+            >
+              {index + 1}
+            </span>
+          </div>
         </div>
       )}
       
