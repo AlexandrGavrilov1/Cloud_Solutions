@@ -1,0 +1,21 @@
+{
+  "name": "TopCloud Hub",
+  "short_name": "TopCloud",
+  "description": "Рейтинг VPS хостинга 2025 — Сравнение провайдеров",
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/files/36979da1-183f-4e2d-8474-77388483586d.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn.poehali.dev/files/36979da1-183f-4e2d-8474-77388483586d.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FF9933",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}
