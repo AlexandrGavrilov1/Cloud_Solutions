@@ -2795,7 +2795,7 @@ export const providers: Provider[] = [
       "Резервные площадки",
       "Облачная инфраструктура",
     ],
-    uptime30days: 99.88,
+    uptime30days: 99.98,
     reviews: [
       {
         author: "Владимир Р.",
