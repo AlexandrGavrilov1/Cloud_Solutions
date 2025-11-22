@@ -14,12 +14,11 @@ export const Header = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <a href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary rounded-2xl blur-xl opacity-50 shadow-neon"></div>
-              <div className="relative w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
-                <Icon name="Zap" className="text-background" size={22} />
-              </div>
-            </div>
+            <img 
+              src="https://cdn.poehali.dev/files/ef5edad6-4886-4f28-aa0c-5f5cbad1f27a.png" 
+              alt="TopCloudHub Logo" 
+              className="h-10 w-auto"
+            />
             <div>
               <h1 className="text-xl font-bold text-primary">{t('header.title')}</h1>
               <p className="text-xs text-muted-foreground font-medium">{t('header.subtitle')}</p>
