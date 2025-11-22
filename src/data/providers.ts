@@ -4938,7 +4938,7 @@ export const providers: Provider[] = [
       ddosProtection: "Базовая защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 7,
     },
@@ -4957,7 +4957,7 @@ export const providers: Provider[] = [
     popularity: 7000,
     promoText: "7 дней тест + managed услуги",
     caseStudies: ["Корпоративные проекты", "1C на облаке", "CMS-системы"],
-    uptime30days: 99.51,
+    uptime30days: 99.9,
     reviews: [],
   },
   {
