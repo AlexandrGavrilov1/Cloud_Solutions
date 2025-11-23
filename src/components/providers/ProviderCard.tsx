@@ -75,7 +75,7 @@ export const ProviderCard = ({
     <div 
       className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
     >
-      <div className="fixed top-[5%] right-[2%] z-50 flex gap-2" style={{ position: 'absolute' }}>
+      <div className="absolute z-50 flex gap-2" style={{ top: '5%', right: '2%' }}>
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
