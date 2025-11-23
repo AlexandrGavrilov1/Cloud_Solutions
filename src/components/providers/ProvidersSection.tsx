@@ -20,6 +20,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     const saved = localStorage.getItem('filterFZ152');
     return saved ? JSON.parse(saved) : false;
   });
+  const [filterFSTEK, setFilterFSTEK] = useState(() => {
+    const saved = localStorage.getItem('filterFSTEK');
+    return saved ? JSON.parse(saved) : false;
+  });
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
     const saved = localStorage.getItem('filterTrialPeriod');
     return saved ? JSON.parse(saved) : false;
@@ -104,6 +108,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   useEffect(() => {
     localStorage.setItem('filterFZ152', JSON.stringify(filterFZ152));
   }, [filterFZ152]);
+
+  useEffect(() => {
+    localStorage.setItem('filterFSTEK', JSON.stringify(filterFSTEK));
+  }, [filterFSTEK]);
 
   useEffect(() => {
     localStorage.setItem('filterTrialPeriod', JSON.stringify(filterTrialPeriod));
@@ -253,6 +261,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       .filter(p => {
         if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
         if (filterFZ152 && !p.fz152Compliant) return false;
+        if (filterFSTEK && !p.fstekCompliant) return false;
         if (filterTrialPeriod && p.trialDays === 0) return false;
         if (filterLocation && !p.locations.includes(filterLocation)) return false;
         if (filterVirtualization && !p.technicalSpecs.virtualization.includes(filterVirtualization)) return false;
@@ -274,7 +283,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           return priceA - priceB;
         }
       }),
-    [providersWithReviews, searchQuery, filterFZ152, filterTrialPeriod, filterLocation, 
+    [providersWithReviews, searchQuery, filterFZ152, filterFSTEK, filterTrialPeriod, filterLocation, 
      filterVirtualization, filterMinDatacenters, filterDiskType, filterPaymentMethod, 
      filterOS, filterCPU, sortBy, configs]
   );
@@ -300,6 +309,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         <FilterPanel
           filterFZ152={filterFZ152}
           setFilterFZ152={setFilterFZ152}
+          filterFSTEK={filterFSTEK}
+          setFilterFSTEK={setFilterFSTEK}
           filterTrialPeriod={filterTrialPeriod}
           setFilterTrialPeriod={setFilterTrialPeriod}
           filterLocation={filterLocation}

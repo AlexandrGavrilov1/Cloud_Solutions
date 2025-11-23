@@ -3593,7 +3593,7 @@ export const providers: Provider[] = [
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
-    fstekLevel: "K2",
+    fstekLevel: "K1",
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -3967,7 +3967,7 @@ export const providers: Provider[] = [
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
-    fstekLevel: "K1",
+    fstekLevel: "K2",
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",

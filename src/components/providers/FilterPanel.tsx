@@ -6,6 +6,8 @@ import { useState } from 'react';
 interface FilterPanelProps {
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
+  filterFSTEK: boolean;
+  setFilterFSTEK: (value: boolean) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
   filterLocation: string | null;
@@ -38,6 +40,8 @@ interface FilterPanelProps {
 export const FilterPanel = ({
   filterFZ152,
   setFilterFZ152,
+  filterFSTEK,
+  setFilterFSTEK,
   filterTrialPeriod,
   setFilterTrialPeriod,
   filterLocation,
@@ -69,12 +73,13 @@ export const FilterPanel = ({
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
   
-  const hasActiveFilters = filterFZ152 || filterTrialPeriod || filterLocation || 
+  const hasActiveFilters = filterFZ152 || filterFSTEK || filterTrialPeriod || filterLocation || 
                           filterVirtualization || filterMinDatacenters !== null || 
                           filterDiskType || filterPaymentMethod || filterOS || filterCPU || searchQuery;
 
   const clearFilters = () => {
     setFilterFZ152(false);
+    setFilterFSTEK(false);
     setFilterTrialPeriod(false);
     setFilterLocation(null);
     setFilterVirtualization(null);
@@ -145,6 +150,29 @@ export const FilterPanel = ({
               <Icon name="ShieldCheck" size={16} className={filterFZ152 ? 'text-background' : 'text-primary'} />
             </div>
             <span className="truncate">{filterFZ152 ? t('filters.onlyWithFz152') : t('filters.allProviders')}</span>
+          </Button>
+        </div>
+
+        <div className="group">
+          <label className="text-xs sm:text-sm font-bold text-foreground mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
+            <Icon name="ShieldAlert" size={14} className="text-primary sm:w-4 sm:h-4" />
+            ФСТЕК
+          </label>
+          <Button
+            variant={filterFSTEK ? "default" : "outline"}
+            className={`w-full justify-start h-10 sm:h-11 md:h-12 rounded-xl font-semibold transition-all text-xs sm:text-sm ${
+              filterFSTEK 
+                ? 'shadow-lg shadow-primary/30 scale-[1.02]' 
+                : 'hover:scale-[1.02] hover:shadow-md hover:border-primary/50'
+            }`}
+            onClick={() => setFilterFSTEK(!filterFSTEK)}
+          >
+            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mr-1.5 sm:mr-2 flex-shrink-0 ${
+              filterFSTEK ? 'bg-background/20' : 'bg-primary/10'
+            }`}>
+              <Icon name="ShieldAlert" size={16} className={filterFSTEK ? 'text-background' : 'text-primary'} />
+            </div>
+            <span className="truncate">{filterFSTEK ? 'С ФСТЕК' : 'Все провайдеры'}</span>
           </Button>
         </div>
 

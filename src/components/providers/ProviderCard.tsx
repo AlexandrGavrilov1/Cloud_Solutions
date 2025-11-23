@@ -130,22 +130,41 @@ export const ProviderCard = ({
           }`}
         >
           <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
-              {provider.fz152Compliant && (
-                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-                      <Icon name="ShieldCheck" size={18} className="text-primary" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {provider.fz152Compliant && (
+                  <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Icon name="ShieldCheck" size={18} className="text-primary" />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">{t('card.fz152')}</h4>
+                      {provider.fz152Level && (
+                        <Badge className="bg-primary/20 text-primary border-0 ml-auto">{provider.fz152Level}</Badge>
+                      )}
                     </div>
-                    <h4 className="text-base font-bold text-foreground">{t('card.fz152')}</h4>
-                    {provider.fz152Level && (
-                      <Badge className="bg-primary/20 text-primary border-0 ml-auto">{provider.fz152Level}</Badge>
-                    )}
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {t('card.fz152Description')}
+                    </p>
                   </div>
-                  <p className="text-sm text-foreground leading-relaxed">
-                    {t('card.fz152Description')}
-                  </p>
-                </div>
-              )}
+                )}
+                
+                {provider.fstekCompliant && (
+                  <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-9 h-9 bg-secondary/20 rounded-xl flex items-center justify-center">
+                        <Icon name="ShieldAlert" size={18} className="text-secondary" />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">ФСТЕК</h4>
+                      {provider.fstekLevel && (
+                        <Badge className="bg-secondary/20 text-secondary border-0 ml-auto">{provider.fstekLevel}</Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      Сертификация ФСТЕК России для защиты критической информационной инфраструктуры
+                    </p>
+                  </div>
+                )}
+              </div>
 
               <TechnicalSpecsSection provider={provider} />
               <ServiceGuaranteesSection provider={provider} />
