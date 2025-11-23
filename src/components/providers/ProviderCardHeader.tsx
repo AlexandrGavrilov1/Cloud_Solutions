@@ -108,7 +108,7 @@ export const ProviderCardHeader = ({
           )}
         </div>
 
-        <div className="flex flex-col items-end gap-2 pr-20">
+        <div className="flex flex-col items-end gap-2 pr-24">
           <div className="flex flex-col items-end">
             <div className="flex items-baseline gap-1.5">
               <span className="text-sm text-muted-foreground">{t('common.from')}</span>
