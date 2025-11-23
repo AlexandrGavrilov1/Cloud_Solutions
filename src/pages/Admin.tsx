@@ -5,6 +5,7 @@ import { AdminLogin } from '@/components/admin/AdminLogin';
 import { VisitorStatsSection } from '@/components/admin/VisitorStatsSection';
 import { ClickStatsSection } from '@/components/admin/ClickStatsSection';
 import { ReviewModerationSection } from '@/components/admin/ReviewModerationSection';
+import { generateSitemap, downloadSitemap } from '@/utils/sitemap-generator';
 
 interface Review {
   id: number;
@@ -250,6 +251,14 @@ const Admin = () => {
             <p className="text-muted-foreground">Управление отзывами и статистика</p>
           </div>
           <div className="flex gap-3">
+            <Button
+              variant="default"
+              onClick={downloadSitemap}
+              className="flex items-center gap-2"
+            >
+              <Icon name="Download" size={18} />
+              Скачать Sitemap
+            </Button>
             <Button
               variant="outline"
               onClick={handleLogout}
