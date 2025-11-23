@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { Header } from '@/components/providers/Header';
 import { Footer } from '@/components/providers/Footer';
 import { StructuredData } from '@/components/SEO/StructuredData';
+import { OpenGraph } from '@/components/SEO/OpenGraph';
 import { blogPosts } from '@/data/blog-posts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +23,20 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <OpenGraph 
+        title={post.title}
+        description={post.excerpt}
+        url={`https://topcloudhub.ru/blog/${post.slug}`}
+        image={post.image}
+        type="article"
+        article={{
+          publishedTime: post.datePublished || post.date,
+          modifiedTime: post.dateModified || post.date,
+          author: post.author,
+          section: post.category,
+          tags: post.tags
+        }}
+      />
       <StructuredData 
         type="article" 
         article={{

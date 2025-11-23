@@ -2,6 +2,7 @@ import { Header } from '@/components/providers/Header';
 import { FAQSection } from '@/components/providers/FAQSection';
 import { Footer } from '@/components/providers/Footer';
 import { StructuredData } from '@/components/SEO/StructuredData';
+import { OpenGraph } from '@/components/SEO/OpenGraph';
 
 const faqItems = [
   {
@@ -49,6 +50,11 @@ const faqItems = [
 const FAQ = () => {
   return (
     <div className="min-h-screen bg-background">
+      <OpenGraph 
+        title="FAQ по VPS хостингу — Ответы на популярные вопросы"
+        description="Ответы на часто задаваемые вопросы о VPS хостинге: выбор конфигурации, миграция, DDoS защита, бэкапы и масштабирование."
+        url="https://topcloudhub.ru/faq"
+      />
       <StructuredData type="faq" faqItems={faqItems} />
       <StructuredData 
         type="breadcrumb" 

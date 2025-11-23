@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Header } from '@/components/providers/Header';
 import { Footer } from '@/components/providers/Footer';
+import { OpenGraph } from '@/components/SEO/OpenGraph';
+import { StructuredData } from '@/components/SEO/StructuredData';
 import { blogPosts, blogCategories } from '@/data/blog-posts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +23,18 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <OpenGraph 
+        title="Блог о VPS хостинге — Гайды, сравнения и советы"
+        description="Полезные статьи о VPS хостинге: как выбрать провайдера, настроить сервер, оптимизировать производительность и защитить от DDoS атак."
+        url="https://topcloudhub.ru/blog"
+      />
+      <StructuredData 
+        type="breadcrumb" 
+        breadcrumbs={[
+          { name: 'Главная', url: 'https://topcloudhub.ru' },
+          { name: 'Блог', url: 'https://topcloudhub.ru/blog' }
+        ]} 
+      />
       <Header />
       
       <main>
