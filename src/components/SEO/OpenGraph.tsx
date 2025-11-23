@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 interface OpenGraphProps {
   title?: string;
@@ -65,8 +65,14 @@ export const OpenGraph = ({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content={title} />
+      <meta name="twitter:site" content="@topcloudhub" />
+
+      <meta property="vk:image" content={image} />
+      
+      <meta name="telegram:channel" content="@top_vds_com" />
 
       <link rel="canonical" href={url} />
+      <link rel="alternate" hrefLang="ru" href={url} />
     </Helmet>
   );
 };
