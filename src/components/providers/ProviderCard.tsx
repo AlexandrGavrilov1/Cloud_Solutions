@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,18 @@ export const ProviderCard = ({
   onToggleCompare
 }: ProviderCardProps) => {
   const { t } = useLanguage();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [buttonPosition, setButtonPosition] = useState({ top: 0, right: 0 });
+
+  useEffect(() => {
+    if (cardRef.current && !showDetails) {
+      const rect = cardRef.current.getBoundingClientRect();
+      setButtonPosition({
+        top: rect.top + window.scrollY + rect.height * 0.05,
+        right: window.innerWidth - rect.right + rect.width * 0.02
+      });
+    }
+  }, [showDetails]);
   
   const trackClick = async () => {
     try {
@@ -73,10 +86,18 @@ export const ProviderCard = ({
 
   return (
     <div 
+      ref={cardRef}
       className={`flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
     >
       <div className="relative flex flex-col">
-        <div className="absolute z-50 flex gap-2" style={{ top: '5%', right: '2%' }}>
+        <div 
+          className="z-50 flex gap-2" 
+          style={{
+            position: showDetails ? 'fixed' : 'absolute',
+            top: showDetails ? `${buttonPosition.top}px` : '5%',
+            right: showDetails ? `${buttonPosition.right}px` : '2%'
+          }}
+        >
           {onToggleCompare && (
             <button 
               onClick={onToggleCompare}
