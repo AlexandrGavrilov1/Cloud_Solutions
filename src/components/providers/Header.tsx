@@ -33,19 +33,13 @@ export const Header = () => {
               {t('header.uptime')}
             </a>
             <a 
-              href="#compare" 
+              href="#providers" 
               className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 const providersSection = document.querySelector('[id="providers"]');
                 if (providersSection) {
                   providersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  setTimeout(() => {
-                    const compareButton = document.querySelector('[class*="Сравнить"]') as HTMLElement;
-                    if (compareButton) {
-                      compareButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                  }, 500);
                 }
               }}
             >
@@ -98,7 +92,7 @@ export const Header = () => {
                 {t('header.uptime')}
               </a>
               <a 
-                href="#compare" 
+                href="#providers" 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
                 onClick={(e) => {
                   e.preventDefault();
