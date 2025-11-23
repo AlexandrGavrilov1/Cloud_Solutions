@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Header } from '@/components/providers/Header';
 import { Footer } from '@/components/providers/Footer';
+import { StructuredData } from '@/components/SEO/StructuredData';
 import { blogPosts } from '@/data/blog-posts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +22,26 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <StructuredData 
+        type="article" 
+        article={{
+          headline: post.title,
+          description: post.excerpt,
+          author: post.author,
+          datePublished: post.datePublished || post.date,
+          dateModified: post.dateModified || post.date,
+          image: post.image || 'https://topcloudhub.ru/og-image.png',
+          url: `https://topcloudhub.ru/blog/${post.slug}`
+        }}
+      />
+      <StructuredData 
+        type="breadcrumb" 
+        breadcrumbs={[
+          { name: 'Главная', url: 'https://topcloudhub.ru' },
+          { name: 'Блог', url: 'https://topcloudhub.ru/blog' },
+          { name: post.title, url: `https://topcloudhub.ru/blog/${post.slug}` }
+        ]} 
+      />
       <Header />
       
       <main>

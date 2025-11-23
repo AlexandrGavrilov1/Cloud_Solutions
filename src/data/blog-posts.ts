@@ -6,6 +6,8 @@ export interface BlogPost {
   content: string;
   author: string;
   date: string;
+  datePublished?: string;
+  dateModified?: string;
   readTime: string;
   category: string;
   tags: string[];
@@ -21,6 +23,8 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Подробное руководство по выбору VPS хостинга: от анализа требований проекта до сравнения провайдеров. Узнайте, на что обратить внимание при выборе виртуального сервера.',
     author: 'Команда VPS Rating',
     date: '09.11.2025',
+    datePublished: '2025-11-09T10:00:00+03:00',
+    dateModified: '2025-11-23T10:00:00+03:00',
     readTime: '8 мин',
     category: 'Руководства',
     tags: ['VPS', 'Хостинг', 'Выбор провайдера'],
