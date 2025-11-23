@@ -1,0 +1,759 @@
+{
+  "lastUpdate": "2025-11-24",
+  "version": "1.0",
+  "description": "VPS провайдеры России - данные для AI анализа",
+  "providers": [
+    {
+      "id": 1,
+      "name": "Timeweb Cloud",
+      "rating": 9.8,
+      "pricing": {
+        "basePrice": 150,
+        "cpuPrice": 220,
+        "ramPrice": 130,
+        "storagePrice": 15,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "DDoS защита",
+        "NVMe диски",
+        "99.98% SLA",
+        "Поддержка 24/7"
+      ],
+      "locations": [
+        "Москва",
+        "Санкт-Петербург",
+        "Амстердам",
+        "Казахстан"
+      ],
+      "trialDays": 7,
+      "url": "https://timeweb.cloud/?i=123689",
+      "pros": [
+        "Самая быстрая техподдержка на рынке",
+        "NVMe диски в базе",
+        "Гибкое масштабирование ресурсов",
+        "Бесплатный тестовый период"
+      ],
+      "cons": [
+        "Повышение цен в 2025 году",
+        "IPv4 адрес +150₽/мес дополнительно",
+        "Сложная панель для новичков"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "NVMe",
+        "networkSpeed": "10 Гбит/с",
+        "virtualization": ["KVM", "VMware"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Alma Linux",
+          "Rocky Linux",
+          "Astra Linux",
+          "Windows Server"
+        ],
+        "controlPanel": "Собственная панель",
+        "apiAccess": true,
+        "ddosProtection": "До 500 Гбит/с",
+        "kubernetes": {
+          "available": true,
+          "managed": false
+        }
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.98%",
+        "supportResponseTime": "< 5 мин",
+        "moneyBackGuarantee": 7
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 150,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 50000,
+      "uptime30days": 99.99,
+      "reviewsCount": 40,
+      "averageRating": 4.7
+    },
+    {
+      "id": 2,
+      "name": "Beget",
+      "rating": 9.6,
+      "pricing": {
+        "basePrice": 150,
+        "cpuPrice": 90,
+        "ramPrice": 45,
+        "storagePrice": 1.5,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "Защита от DDoS",
+        "Автобэкапы",
+        "SSL бесплатно",
+        "24/7 поддержка"
+      ],
+      "locations": ["Москва", "Санкт-Петербург"],
+      "trialDays": 14,
+      "url": "https://beget.com/ru",
+      "pros": [
+        "Самые низкие цены на рынке",
+        "Идеален для новичков",
+        "Бесплатные автобэкапы",
+        "Более 100 готовых CMS"
+      ],
+      "cons": [
+        "Ограниченная производительность",
+        "Медленная работа техподдержки",
+        "Нет выделенных IP в базе"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "SSD",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM", "LXC"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "FreeBSD",
+          "Windows Server"
+        ],
+        "controlPanel": "ISPmanager",
+        "apiAccess": true,
+        "ddosProtection": "Базовая защита"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.98%",
+        "supportResponseTime": "< 10 мин",
+        "moneyBackGuarantee": 14
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 0,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 200000,
+      "uptime30days": 99.99,
+      "reviewsCount": 40,
+      "averageRating": 4.5
+    },
+    {
+      "id": 3,
+      "name": "рег.ру",
+      "rating": 9.4,
+      "pricing": {
+        "basePrice": 199,
+        "cpuPrice": 150,
+        "ramPrice": 75,
+        "storagePrice": 3,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "Бесплатный SSL",
+        "Автобэкапы",
+        "Защита от DDoS",
+        "Поддержка 24/7"
+      ],
+      "locations": ["Москва", "Санкт-Петербург", "Казань"],
+      "trialDays": 30,
+      "url": "https://www.reg.ru/?rlink=reflink-30906203",
+      "pros": [
+        "Крупнейший регистратор доменов",
+        "Долгая репутация на рынке",
+        "Простая панель управления",
+        "Большой тестовый период"
+      ],
+      "cons": [
+        "Средняя скорость поддержки",
+        "Интерфейс устарел визуально",
+        "Меньше дата-центров"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "SSD",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM", "OpenVZ"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Fedora",
+          "Arch Linux",
+          "Windows Server"
+        ],
+        "controlPanel": "Собственная панель",
+        "apiAccess": true,
+        "ddosProtection": "До 100 Гбит/с"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.98%",
+        "supportResponseTime": "< 1 час",
+        "moneyBackGuarantee": 30
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 100,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 750000,
+      "uptime30days": 99.92,
+      "reviewsCount": 40,
+      "averageRating": 4.6
+    },
+    {
+      "id": 4,
+      "name": "Nubes",
+      "rating": 8.6,
+      "pricing": {
+        "basePrice": 0,
+        "cpuPrice": 200,
+        "ramPrice": 98,
+        "storagePrice": 10,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": ["NVMe диски", "152-ФЗ", "Managed услуги", "ISPmanager"],
+      "locations": ["Москва", "Санкт-Петербург", "Нижний Новгород"],
+      "trialDays": 7,
+      "url": "https://nubes.ru/",
+      "pros": ["Тест 7 дней", "NVMe диски", "Managed услуги", "ISPmanager"],
+      "cons": ["Мало локаций", "Средняя известность", "Нет IPv6"],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "NVMe",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": false,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Windows Server",
+          "Astra Linux"
+        ],
+        "controlPanel": "ISPmanager",
+        "apiAccess": true,
+        "ddosProtection": "Базовая защита",
+        "kubernetes": {
+          "available": true,
+          "managed": false
+        }
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.7%",
+        "supportResponseTime": "< 20 мин",
+        "moneyBackGuarantee": 7
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 105,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 7500,
+      "uptime30days": 99.68,
+      "reviewsCount": 0,
+      "averageRating": 0
+    },
+    {
+      "id": 5,
+      "name": "RUVDS",
+      "rating": 9.5,
+      "pricing": {
+        "basePrice": 0,
+        "cpuPrice": 180,
+        "ramPrice": 100,
+        "storagePrice": 10,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "Собственная сеть",
+        "SSD диски",
+        "Гибкие тарифы",
+        "API управление"
+      ],
+      "locations": ["Москва", "Санкт-Петербург", "Новосибирск", "Нидерланды"],
+      "trialDays": 3,
+      "url": "https://ruvds.com/pr37151",
+      "pros": [
+        "Гибкая тарификация",
+        "Быстрое развертывание",
+        "Собственная сеть дата-центров",
+        "Множество готовых образов"
+      ],
+      "cons": [
+        "Короткий тестовый период",
+        "Поддержка медленнее конкурентов",
+        "Цены выше среднего"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "SSD",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM", "OpenVZ"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Fedora",
+          "Arch Linux",
+          "FreeBSD",
+          "Windows Server"
+        ],
+        "controlPanel": "Собственная панель",
+        "apiAccess": true,
+        "ddosProtection": "До 200 Гбит/с"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.98%",
+        "supportResponseTime": "< 15 мин",
+        "moneyBackGuarantee": 3
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 80,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 35000,
+      "uptime30days": 99.8,
+      "reviewsCount": 10,
+      "averageRating": 4.5
+    },
+    {
+      "id": 6,
+      "name": "FirstVDS",
+      "rating": 9.3,
+      "pricing": {
+        "basePrice": 0,
+        "cpuPrice": 165,
+        "ramPrice": 90,
+        "storagePrice": 8,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": ["SSD диски", "Панель ISPmanager", "DDoS защита", "IPv6"],
+      "locations": ["Москва", "Санкт-Петербург", "Казань", "Франкфурт"],
+      "trialDays": 7,
+      "url": "https://firstvds.ru/?from=1197983",
+      "pros": [
+        "Стабильная работа",
+        "Удобная панель управления",
+        "Адекватные цены",
+        "Хорошая техподдержка"
+      ],
+      "cons": [
+        "Нет NVMe дисков",
+        "Мало дата-центров за границей",
+        "Нет криптовалютных платежей"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "SSD",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Fedora",
+          "Arch Linux",
+          "Windows Server"
+        ],
+        "controlPanel": "ISPmanager",
+        "apiAccess": true,
+        "ddosProtection": "До 150 Гбит/с",
+        "kubernetes": {
+          "available": true,
+          "managed": false
+        }
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.98%",
+        "supportResponseTime": "< 20 мин",
+        "moneyBackGuarantee": 7
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 100,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 28000,
+      "uptime30days": 99.98,
+      "reviewsCount": 10,
+      "averageRating": 4.7
+    },
+    {
+      "id": 7,
+      "name": "SprintHost",
+      "rating": 9.3,
+      "pricing": {
+        "basePrice": 190,
+        "cpuPrice": 150,
+        "ramPrice": 100,
+        "storagePrice": 8,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "NVMe диски",
+        "Безлимитный трафик",
+        "Бесплатные бэкапы",
+        "SprintBot управление"
+      ],
+      "locations": ["Москва", "Санкт-Петербург"],
+      "trialDays": 0,
+      "url": "https://sprinthost.ru/s43965",
+      "pros": [
+        "Доступная цена",
+        "NVMe диски в базе",
+        "Безлимитный трафик",
+        "Бесплатные бэкапы"
+      ],
+      "cons": [
+        "Нет тестового периода",
+        "Ограниченный выбор локаций",
+        "Молодая компания"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "NVMe",
+        "networkSpeed": "10 Гбит/с",
+        "virtualization": ["KVM"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Alma Linux",
+          "Rocky Linux",
+          "Astra Linux"
+        ],
+        "controlPanel": "Собственная панель + SprintBot",
+        "apiAccess": true,
+        "ddosProtection": "До 100 Гбит/с"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.99%",
+        "supportResponseTime": "< 10 мин",
+        "moneyBackGuarantee": 0
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 0,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 15000,
+      "uptime30days": 99.74,
+      "reviewsCount": 5,
+      "averageRating": 4.6
+    },
+    {
+      "id": 8,
+      "name": "FastVPS",
+      "rating": 9.1,
+      "pricing": {
+        "basePrice": 299,
+        "cpuPrice": 180,
+        "ramPrice": 110,
+        "storagePrice": 10,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "SSD диски",
+        "Бесплатная панель FASTPANEL",
+        "24/7 поддержка",
+        "Бесплатные бэкапы"
+      ],
+      "locations": ["Москва", "Санкт-Петербург", "Германия", "США"],
+      "trialDays": 0,
+      "url": "https://fastvps.ru/c_611bab9849d09f9f63c0d41f9d82cc22",
+      "pros": [
+        "Широкий выбор локаций",
+        "Бесплатная панель управления",
+        "Поддержка разных виртуализаций",
+        "Стабильная работа"
+      ],
+      "cons": [
+        "Средние цены",
+        "Нет тестового периода",
+        "Интерфейс сайта устарел"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "SSD",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM", "OpenVZ", "Hyper-V"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Alma Linux",
+          "Rocky Linux",
+          "Windows Server"
+        ],
+        "controlPanel": "FASTPANEL (бесплатно)",
+        "apiAccess": true,
+        "ddosProtection": "Базовая защита"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.99%",
+        "supportResponseTime": "< 15 мин",
+        "moneyBackGuarantee": 0
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 0,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 35000,
+      "uptime30days": 99.88,
+      "reviewsCount": 5,
+      "averageRating": 4.6
+    },
+    {
+      "id": 9,
+      "name": "Rusonyx",
+      "rating": 9.4,
+      "pricing": {
+        "basePrice": 200,
+        "cpuPrice": 160,
+        "ramPrice": 95,
+        "storagePrice": 9,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "NVMe диски",
+        "Тестовый период 14 дней",
+        "24/7 поддержка",
+        "DDoS защита"
+      ],
+      "locations": ["Москва"],
+      "trialDays": 14,
+      "url": "https://my.rusonyx.ru/#/login/reg?partner=34042924",
+      "pros": [
+        "Длительный тестовый период",
+        "Отличная техподдержка",
+        "Стабильная работа",
+        "Низкие цены"
+      ],
+      "cons": [
+        "Только одна локация",
+        "Интерфейс может показаться сложным"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "NVMe",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM", "Virtuozzo"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Rocky Linux",
+          "Alma Linux",
+          "Astra Linux"
+        ],
+        "controlPanel": "ISPmanager / Plesk",
+        "apiAccess": true,
+        "ddosProtection": "До 4 уровня (7 - по запросу)"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.9%",
+        "supportResponseTime": "< 10 мин",
+        "moneyBackGuarantee": 14
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 0,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 45000,
+      "uptime30days": 99.98,
+      "reviewsCount": 7,
+      "averageRating": 4.4
+    },
+    {
+      "id": 10,
+      "name": "NetAngels",
+      "rating": 9.2,
+      "pricing": {
+        "basePrice": 284,
+        "cpuPrice": 170,
+        "ramPrice": 105,
+        "storagePrice": 11,
+        "currency": "RUB",
+        "billingPeriod": "monthly"
+      },
+      "features": [
+        "NVMe диски",
+        "24/7 поддержка",
+        "DDoS защита",
+        "99.99% SLA"
+      ],
+      "locations": ["Москва", "Санкт-Петербург"],
+      "trialDays": 0,
+      "url": "https://netangels.ru/?p_ref=u128310",
+      "pros": [
+        "21 год на рынке",
+        "Высокая стабильность",
+        "Гибкая конфигурация",
+        "Поддержка GPU"
+      ],
+      "cons": [
+        "Нет тестового периода",
+        "Цены выше среднего",
+        "Интерфейс панели устарел"
+      ],
+      "compliance": {
+        "fz152": true,
+        "fz152Level": "УЗ-1",
+        "fstek": false,
+        "fstekLevel": null
+      },
+      "technicalSpecs": {
+        "diskType": "NVMe",
+        "networkSpeed": "1 Гбит/с",
+        "virtualization": ["KVM"],
+        "guaranteedResources": true,
+        "ipv4": true,
+        "ipv6": true,
+        "availableOS": [
+          "Ubuntu",
+          "Debian",
+          "CentOS",
+          "Rocky Linux",
+          "Alma Linux",
+          "Windows Server"
+        ],
+        "controlPanel": "Собственная панель",
+        "apiAccess": true,
+        "ddosProtection": "Базовая защита включена"
+      },
+      "serviceGuarantees": {
+        "uptimeSLA": "99.99%",
+        "supportResponseTime": "< 120 мин",
+        "moneyBackGuarantee": 0
+      },
+      "additionalServices": {
+        "autoBackups": true,
+        "backupPrice": 100,
+        "monitoring": true,
+        "snapshots": true,
+        "customOS": true
+      },
+      "popularity": 35000,
+      "uptime30days": 99.98,
+      "reviewsCount": 4,
+      "averageRating": 4.25
+    }
+  ],
+  "metadata": {
+    "totalProviders": 10,
+    "dataCategories": [
+      "pricing",
+      "features",
+      "locations",
+      "compliance",
+      "technicalSpecs",
+      "serviceGuarantees",
+      "additionalServices",
+      "reviews"
+    ],
+    "usageNotes": "Этот файл содержит структурированные данные о VPS провайдерах России для AI-анализа и сравнения. Цены указаны в рублях за месяц.",
+    "apiEndpoint": null
+  }
+}
