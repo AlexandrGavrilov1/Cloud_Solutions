@@ -32,18 +32,9 @@ export const Header = () => {
               <Icon name="Activity" size={14} />
               {t('header.uptime')}
             </a>
-            <a 
-              href="#providers" 
-              className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors"
-              onClick={(e) => {
-                e.preventDefault();
-                const providersSection = document.querySelector('[id="providers"]');
-                if (providersSection) {
-                  providersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-            >
-              {t('header.compare')}
+            <a href="/promo" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
+              <Icon name="Tag" size={14} />
+              Акции
             </a>
             <button
               onClick={toggleTheme}
@@ -92,19 +83,12 @@ export const Header = () => {
                 {t('header.uptime')}
               </a>
               <a 
-                href="#providers" 
+                href="/promo" 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMobileMenuOpen(false);
-                  const providersSection = document.querySelector('[id="providers"]');
-                  if (providersSection) {
-                    providersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
+                onClick={() => setMobileMenuOpen(false)}
               >
-                <Icon name="GitCompare" size={16} />
-                {t('header.compare')}
+                <Icon name="Tag" size={16} />
+                Акции
               </a>
               <button 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all text-left"
