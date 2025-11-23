@@ -98,8 +98,8 @@ export const ProviderCard = ({
           ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
         style={{
           clipPath: onToggleCompare 
-            ? 'polygon(0 0, calc(100% - 140px) 0, calc(100% - 140px) 60px, 100% 60px, 100% 100%, 0 100%)'
-            : 'polygon(0 0, calc(100% - 68px) 0, calc(100% - 68px) 60px, 100% 60px, 100% 100%, 0 100%)'
+            ? 'path("M 0 24 Q 0 0 24 0 L calc(100% - 164px) 0 Q calc(100% - 152px) 0 calc(100% - 152px) 12 L calc(100% - 152px) 48 Q calc(100% - 152px) 60 calc(100% - 140px) 60 L calc(100% - 24px) 60 Q calc(100% - 0px) 60 calc(100% - 0px) 84 L calc(100% - 0px) calc(100% - 24px) Q calc(100% - 0px) 100% calc(100% - 24px) 100% L 24 100% Q 0 100% 0 calc(100% - 24px) Z")'
+            : 'path("M 0 24 Q 0 0 24 0 L calc(100% - 92px) 0 Q calc(100% - 80px) 0 calc(100% - 80px) 12 L calc(100% - 80px) 48 Q calc(100% - 80px) 60 calc(100% - 68px) 60 L calc(100% - 24px) 60 Q calc(100% - 0px) 60 calc(100% - 0px) 84 L calc(100% - 0px) calc(100% - 24px) Q calc(100% - 0px) 100% calc(100% - 24px) 100% L 24 100% Q 0 100% 0 calc(100% - 24px) Z")'
         }}
       >
 
