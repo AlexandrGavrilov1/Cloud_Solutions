@@ -93,7 +93,7 @@ export const ProviderCard = ({
       </div>
       
       <Card 
-        className={`border-0 transition-all duration-300 overflow-visible relative flex flex-col hover:shadow-2xl hover:scale-[1.02] ${
+        className={`border-0 transition-all duration-300 overflow-visible relative flex flex-col hover:shadow-2xl hover:shadow-primary/40 hover:scale-[1.02] ${
           isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'
         }`}
         style={{
