@@ -96,6 +96,11 @@ export const ProviderCard = ({
       <Card 
         className={`border-2 border-border overflow-visible relative flex flex-col bg-card rounded-3xl
           ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
+        style={{
+          clipPath: onToggleCompare 
+            ? 'polygon(0 0, calc(100% - 140px) 0, calc(100% - 140px) 60px, 100% 60px, 100% 100%, 0 100%)'
+            : 'polygon(0 0, calc(100% - 68px) 0, calc(100% - 68px) 60px, 100% 60px, 100% 100%, 0 100%)'
+        }}
       >
 
 
