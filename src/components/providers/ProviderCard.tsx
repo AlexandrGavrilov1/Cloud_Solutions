@@ -73,29 +73,28 @@ export const ProviderCard = ({
 
   return (
     <div 
-      className={`flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
+      className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
     >
-      <div className="relative flex flex-col">
-        <div 
-          className="absolute z-50 flex gap-2 pointer-events-auto" 
-          style={{ top: '5%', right: '2%' }}
-        >
-          {onToggleCompare && (
-            <button 
-              onClick={onToggleCompare}
-              className={`w-14 h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
-                ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'border-border hover:border-primary/50'}`}
-            >
-              <Icon name={isSelected ? "Check" : "GitCompare"} size={17} className="text-foreground" />
-            </button>
-          )}
+      <div 
+        className="absolute z-50 flex gap-2 pointer-events-auto" 
+        style={{ top: '5%', right: '2%' }}
+      >
+        {onToggleCompare && (
           <button 
-            onClick={handleProviderClick}
-            className="w-14 h-14 rounded-full bg-card flex items-center justify-center border-2 border-border hover:border-primary/50 transition-all"
+            onClick={onToggleCompare}
+            className={`w-14 h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
+              ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'border-border hover:border-primary/50'}`}
           >
-            <Icon name="ArrowUpRight" size={17} className="text-primary" />
+            <Icon name={isSelected ? "Check" : "GitCompare"} size={17} className="text-foreground" />
           </button>
-        </div>
+        )}
+        <button 
+          onClick={handleProviderClick}
+          className="w-14 h-14 rounded-full bg-card flex items-center justify-center border-2 border-border hover:border-primary/50 transition-all"
+        >
+          <Icon name="ArrowUpRight" size={17} className="text-primary" />
+        </button>
+      </div>
       
       <Card 
         className={`border-2 border-border overflow-visible relative flex flex-col bg-card rounded-3xl
@@ -230,7 +229,6 @@ export const ProviderCard = ({
         </div>
       </CardContent>
     </Card>
-      </div>
     </div>
   );
 };
