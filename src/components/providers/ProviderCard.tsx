@@ -94,7 +94,7 @@ export const ProviderCard = ({
       </div>
       
       <Card 
-        className={`border-2 border-border overflow-visible relative flex flex-col bg-card
+        className={`border-2 border-border overflow-visible relative flex flex-col bg-card rounded-3xl
           ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
       >
 
