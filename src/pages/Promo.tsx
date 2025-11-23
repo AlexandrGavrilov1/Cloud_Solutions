@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/providers/Header';
 import { Footer } from '@/components/providers/Footer';
 import { providers } from '@/data/providers';
@@ -5,10 +6,42 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import { Provider, Review } from '@/components/providers/types';
 
 const Promo = () => {
+  const [providersWithReviews, setProvidersWithReviews] = useState<Provider[]>(providers);
+
+  useEffect(() => {
+    const fetchApprovedReviews = async () => {
+      try {
+        const response = await fetch('https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8?status=approved');
+        if (response.ok) {
+          const data = await response.json();
+          const reviewsByProvider: Record<number, Review[]> = {};
+          
+          data.reviews.forEach((review: Review) => {
+            if (!reviewsByProvider[review.provider_id]) {
+              reviewsByProvider[review.provider_id] = [];
+            }
+            reviewsByProvider[review.provider_id].push(review);
+          });
+          
+          const updatedProviders = providers.map(provider => ({
+            ...provider,
+            reviews: reviewsByProvider[provider.id] || provider.reviews
+          }));
+          setProvidersWithReviews(updatedProviders);
+        }
+      } catch (error) {
+        console.error('Error fetching approved reviews:', error);
+      }
+    };
+
+    fetchApprovedReviews();
+  }, []);
+
   const allowedProviders = ['Timeweb Cloud', 'Serverspace', 'SprintHost'];
-  const providersWithPromo = providers
+  const providersWithPromo = providersWithReviews
     .filter(p => allowedProviders.includes(p.name))
     .sort((a, b) => {
       if (a.name === 'Timeweb Cloud') return -1;
