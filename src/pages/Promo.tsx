@@ -95,18 +95,19 @@ const Promo = () => {
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => {
+                              const avgRating = provider.reviews.reduce((sum, r) => sum + r.rating, 0) / provider.reviews.length;
                               return (
                                 <Icon 
                                   key={i}
                                   name="Star" 
                                   size={14} 
-                                  className={i < Math.round(provider.rating / 2) ? "fill-primary text-primary" : "text-muted"}
+                                  className={i < Math.round(avgRating) ? "fill-primary text-primary" : "text-muted"}
                                 />
                               );
                             })}
                           </div>
                           <span className="text-sm font-bold text-foreground">
-                            {provider.rating.toFixed(1)}
+                            {(provider.reviews.reduce((sum, r) => sum + r.rating, 0) / provider.reviews.length).toFixed(1)}
                           </span>
                         </div>
                       </div>
