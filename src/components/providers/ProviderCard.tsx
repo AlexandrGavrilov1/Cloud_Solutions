@@ -49,6 +49,7 @@ export const ProviderCard = ({
 }: ProviderCardProps) => {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<'overview' | 'specs' | 'reviews' | 'pricing' | 'support'>('overview');
   
   const trackClick = async () => {
     try {
@@ -144,94 +145,174 @@ export const ProviderCard = ({
             showDetails ? 'max-h-[10000px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {provider.fz152Compliant && (
-                  <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-                        <Icon name="ShieldCheck" size={18} className="text-primary" />
-                      </div>
-                      <h4 className="text-base font-bold text-foreground">{t('card.fz152')}</h4>
-                      {provider.fz152Level && (
-                        <Badge className="bg-primary/20 text-primary border-0 ml-auto">{provider.fz152Level}</Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-foreground leading-relaxed">
-                      {t('card.fz152Description')}
-                    </p>
-                  </div>
-                )}
-                
-                {provider.fstekCompliant && (
-                  <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-secondary/20 rounded-xl flex items-center justify-center">
-                        <Icon name="ShieldAlert" size={18} className="text-secondary" />
-                      </div>
-                      <h4 className="text-base font-bold text-foreground">ФСТЕК</h4>
-                      {provider.fstekLevel && (
-                        <Badge className="bg-secondary/20 text-secondary border-0 ml-auto">{provider.fstekLevel}</Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-foreground leading-relaxed">
-                      Сертификация ФСТЕК России для защиты критической информационной инфраструктуры
-                    </p>
-                  </div>
-                )}
-              </div>
+          <div className="pt-5 px-5 border-t border-border">
+            <div className="flex gap-2 mb-5 overflow-x-auto scrollbar-hide">
+              <button
+                onClick={() => setActiveTab('overview')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                  activeTab === 'overview'
+                    ? 'bg-primary text-primary-foreground shadow-lg'
+                    : 'bg-accent text-foreground hover:bg-accent/80'
+                }`}
+              >
+                <Icon name="LayoutDashboard" size={16} />
+                Обзор
+              </button>
+              <button
+                onClick={() => setActiveTab('specs')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                  activeTab === 'specs'
+                    ? 'bg-primary text-primary-foreground shadow-lg'
+                    : 'bg-accent text-foreground hover:bg-accent/80'
+                }`}
+              >
+                <Icon name="Settings" size={16} />
+                Характеристики
+              </button>
+              <button
+                onClick={() => setActiveTab('reviews')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                  activeTab === 'reviews'
+                    ? 'bg-primary text-primary-foreground shadow-lg'
+                    : 'bg-accent text-foreground hover:bg-accent/80'
+                }`}
+              >
+                <Icon name="MessageSquare" size={16} />
+                Отзывы
+              </button>
+              <button
+                onClick={() => setActiveTab('pricing')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                  activeTab === 'pricing'
+                    ? 'bg-primary text-primary-foreground shadow-lg'
+                    : 'bg-accent text-foreground hover:bg-accent/80'
+                }`}
+              >
+                <Icon name="DollarSign" size={16} />
+                Цены
+              </button>
+              <button
+                onClick={() => setActiveTab('support')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                  activeTab === 'support'
+                    ? 'bg-primary text-primary-foreground shadow-lg'
+                    : 'bg-accent text-foreground hover:bg-accent/80'
+                }`}
+              >
+                <Icon name="Headphones" size={16} />
+                Поддержка
+              </button>
+            </div>
 
-              <TechnicalSpecsSection provider={provider} />
-              <ServiceGuaranteesSection provider={provider} />
-              <AdditionalServicesSection provider={provider} />
-              <PaymentMethodsSection provider={provider} />
-              <CaseStudiesSection provider={provider} />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-accent border border-secondary/30 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-secondary rounded-xl flex items-center justify-center shadow-lg">
-                      <Icon name="Check" size={18} className="text-background" />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">{t('card.pros')}</h4>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {provider.pros.map((pro, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon name="Plus" size={12} className="text-background" />
+            <div className="flex flex-col gap-3">
+              {activeTab === 'overview' && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {provider.fz152Compliant && (
+                      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                            <Icon name="ShieldCheck" size={18} className="text-primary" />
+                          </div>
+                          <h4 className="text-base font-bold text-foreground">{t('card.fz152')}</h4>
+                          {provider.fz152Level && (
+                            <Badge className="bg-primary/20 text-primary border-0 ml-auto">{provider.fz152Level}</Badge>
+                          )}
                         </div>
-                        <span className="text-sm text-foreground font-medium">{pro}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="bg-accent border border-destructive/30 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-destructive rounded-xl flex items-center justify-center shadow-lg">
-                      <Icon name="AlertCircle" size={18} className="text-destructive-foreground" />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">{t('card.cons')}</h4>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {provider.cons.map((con, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-destructive rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon name="Minus" size={12} className="text-destructive-foreground" />
+                        <p className="text-sm text-foreground leading-relaxed">
+                          {t('card.fz152Description')}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {provider.fstekCompliant && (
+                      <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-9 h-9 bg-secondary/20 rounded-xl flex items-center justify-center">
+                            <Icon name="ShieldAlert" size={18} className="text-secondary" />
+                          </div>
+                          <h4 className="text-base font-bold text-foreground">ФСТЕК</h4>
+                          {provider.fstekLevel && (
+                            <Badge className="bg-secondary/20 text-secondary border-0 ml-auto">{provider.fstekLevel}</Badge>
+                          )}
                         </div>
-                        <span className="text-sm text-foreground font-medium">{con}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                        <p className="text-sm text-foreground leading-relaxed">
+                          Сертификация ФСТЕК России для защиты критической информационной инфраструктуры
+                        </p>
+                      </div>
+                    )}
+                  </div>
 
-            <ProviderReviews
-              provider={provider}
-              reviewsToShow={reviewsToShow}
-              onLoadMoreReviews={onLoadMoreReviews}
-            />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="bg-accent border border-secondary/30 rounded-2xl p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-9 h-9 bg-secondary rounded-xl flex items-center justify-center shadow-lg">
+                          <Icon name="Check" size={18} className="text-background" />
+                        </div>
+                        <h4 className="text-base font-bold text-foreground">{t('card.pros')}</h4>
+                      </div>
+                      <ul className="space-y-2.5">
+                        {provider.pros.map((pro, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <div className="w-5 h-5 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Icon name="Plus" size={12} className="text-background" />
+                            </div>
+                            <span className="text-sm text-foreground font-medium">{pro}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-accent border border-destructive/30 rounded-2xl p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-9 h-9 bg-destructive rounded-xl flex items-center justify-center shadow-lg">
+                          <Icon name="AlertCircle" size={18} className="text-destructive-foreground" />
+                        </div>
+                        <h4 className="text-base font-bold text-foreground">{t('card.cons')}</h4>
+                      </div>
+                      <ul className="space-y-2.5">
+                        {provider.cons.map((con, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <div className="w-5 h-5 bg-destructive rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Icon name="Minus" size={12} className="text-destructive-foreground" />
+                            </div>
+                            <span className="text-sm text-foreground font-medium">{con}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <CaseStudiesSection provider={provider} />
+                </>
+              )}
+
+              {activeTab === 'specs' && (
+                <>
+                  <TechnicalSpecsSection provider={provider} />
+                  <AdditionalServicesSection provider={provider} />
+                </>
+              )}
+
+              {activeTab === 'reviews' && (
+                <ProviderReviews
+                  provider={provider}
+                  reviewsToShow={reviewsToShow}
+                  onLoadMoreReviews={onLoadMoreReviews}
+                />
+              )}
+
+              {activeTab === 'pricing' && (
+                <>
+                  <PaymentMethodsSection provider={provider} />
+                  <ServiceGuaranteesSection provider={provider} />
+                </>
+              )}
+
+              {activeTab === 'support' && (
+                <ServiceGuaranteesSection provider={provider} />
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
