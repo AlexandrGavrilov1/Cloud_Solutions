@@ -4599,7 +4599,7 @@ export const providers: Provider[] = [
   {
     id: 32,
     name: "SpaceWeb",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/d02a4b99-42c9-4ded-819e-d1c6ca8b0ca9.jpg",
+    logo: "https://cdn.poehali.dev/files/b71eed85-81c5-47a5-8cd7-fb21749a46c4.png",
     rating: 9.0,
     basePrice: 199,
     cpuPrice: 150,
