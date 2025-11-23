@@ -22,6 +22,40 @@ export const ProviderCardHeader = ({
   const avgRating = provider.reviews.reduce((sum, r) => sum + r.rating, 0) / provider.reviews.length;
   const [showAllLocations, setShowAllLocations] = useState(false);
 
+  const getSupportSpeedColor = (responseTime: string) => {
+    const time = responseTime.toLowerCase();
+    if (time.includes('5 мин') || time.includes('< 5') || time.includes('мгновенно')) {
+      return {
+        bg: 'bg-green-500/10',
+        border: 'border-green-500/30',
+        text: 'text-green-700 dark:text-green-400',
+        icon: 'Zap'
+      };
+    }
+    if (time.includes('15 мин') || time.includes('< 15') || time.includes('10 мин')) {
+      return {
+        bg: 'bg-yellow-500/10',
+        border: 'border-yellow-500/30',
+        text: 'text-yellow-700 dark:text-yellow-400',
+        icon: 'Clock'
+      };
+    }
+    if (time.includes('30 мин') || time.includes('1 час') || time.includes('час')) {
+      return {
+        bg: 'bg-orange-500/10',
+        border: 'border-orange-500/30',
+        text: 'text-orange-700 dark:text-orange-400',
+        icon: 'Clock'
+      };
+    }
+    return {
+      bg: 'bg-gray-500/10',
+      border: 'border-gray-500/30',
+      text: 'text-gray-700 dark:text-gray-400',
+      icon: 'MessageCircle'
+    };
+  };
+
   return (
     <div className="flex flex-col gap-3 flex-1">
       <div className="flex items-start justify-between gap-3">
@@ -125,7 +159,16 @@ export const ProviderCardHeader = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap">
+        {provider.serviceGuarantees.supportResponseTime && (() => {
+          const speedColor = getSupportSpeedColor(provider.serviceGuarantees.supportResponseTime);
+          return (
+            <Badge className={`${speedColor.bg} ${speedColor.border} ${speedColor.text} border font-semibold text-xs px-2 py-1 transition-all duration-300 hover:scale-105 hover:shadow-md`}>
+              <Icon name={speedColor.icon as any} size={12} className="mr-1" />
+              Поддержка: {provider.serviceGuarantees.supportResponseTime}
+            </Badge>
+          );
+        })()}
         {provider.fz152Compliant && (
           <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
             <Icon name="ShieldCheck" size={12} className="mr-1" />
