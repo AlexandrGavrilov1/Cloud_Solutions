@@ -3,7 +3,8 @@ import { HeroSection } from '@/components/providers/HeroSection';
 import { ProvidersSection } from '@/components/providers/ProvidersSection';
 import { GuideSection } from '@/components/providers/GuideSection';
 import { Footer } from '@/components/providers/Footer';
-import { StructuredData } from '@/components/SEO/StructuredData';
+import { StructuredData as SEOStructuredData } from '@/components/SEO/StructuredData';
+import { StructuredData } from '@/components/StructuredData';
 import { OpenGraph } from '@/components/SEO/OpenGraph';
 import { providers } from '@/data/providers';
 
@@ -11,7 +12,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <OpenGraph />
-      <StructuredData type="organization" />
+      <SEOStructuredData type="organization" />
+      <SEOStructuredData type="website" />
       <StructuredData type="website" />
       <Header />
       <main>

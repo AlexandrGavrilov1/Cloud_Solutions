@@ -1,7 +1,8 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Header } from '@/components/providers/Header';
 import { Footer } from '@/components/providers/Footer';
-import { StructuredData } from '@/components/SEO/StructuredData';
+import { StructuredData as SEOStructuredData } from '@/components/SEO/StructuredData';
+import { StructuredData } from '@/components/StructuredData';
 import { OpenGraph } from '@/components/SEO/OpenGraph';
 import { blogPosts } from '@/data/blog-posts';
 import { Button } from '@/components/ui/button';
@@ -37,7 +38,7 @@ const BlogPost = () => {
           tags: post.tags
         }}
       />
-      <StructuredData 
+      <SEOStructuredData 
         type="article" 
         article={{
           headline: post.title,
@@ -49,7 +50,7 @@ const BlogPost = () => {
           url: `https://topcloudhub.ru/blog/${post.slug}`
         }}
       />
-      <StructuredData 
+      <SEOStructuredData 
         type="breadcrumb" 
         breadcrumbs={[
           { name: 'Главная', url: 'https://topcloudhub.ru' },
@@ -57,6 +58,7 @@ const BlogPost = () => {
           { name: post.title, url: `https://topcloudhub.ru/blog/${post.slug}` }
         ]} 
       />
+      <StructuredData type="article" data={post} />
       <Header />
       
       <main>
