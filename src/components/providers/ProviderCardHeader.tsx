@@ -115,11 +115,10 @@ export const ProviderCardHeader = ({
               </div>
             )}
 
-            <div className="flex items-center gap-1.5 text-sm mt-2">
-              <Icon name="Wallet" size={14} className="text-primary flex-shrink-0" />
-              <span className={provider.id === 16 ? "text-sm text-foreground" : "font-semibold text-foreground"}>{t('common.from')} </span>
-              <span className="text-base font-black text-primary">{calculatedPrice}</span>
-              <span className={provider.id === 16 ? "text-sm text-foreground" : "text-xs text-muted-foreground"}>{t('common.perMonth')}</span>
+            <div className="flex items-center justify-end gap-2 text-sm mt-2">
+              <span className={provider.id === 16 ? "text-[1.17rem] text-foreground" : "text-[1.17rem] font-semibold text-foreground"}>{t('common.from')} </span>
+              <span className="text-[1.56rem] font-black text-primary">{calculatedPrice}</span>
+              <span className={provider.id === 16 ? "text-[1.17rem] text-foreground" : "text-[0.936rem] text-muted-foreground"}>{t('common.perMonth')}</span>
             </div>
           {provider.uptime30days && (
             <div className="flex items-center gap-1.5 text-sm mt-1">
