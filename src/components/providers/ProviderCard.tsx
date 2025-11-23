@@ -77,8 +77,8 @@ export const ProviderCard = ({
     >
       <div className="relative flex flex-col">
         <div 
-          className="absolute z-50 flex gap-2 pointer-events-auto" 
-          style={{ top: '5%', right: '2%' }}
+          className="absolute z-50 flex gap-2 pointer-events-auto transition-all" 
+          style={{ top: '5%', right: showDetails ? 'calc(50% - 600px + 2%)' : '2%' }}
         >
           {onToggleCompare && (
             <button 
