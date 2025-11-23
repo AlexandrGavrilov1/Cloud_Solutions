@@ -1,36 +1,104 @@
+# Основные поисковые системы
 User-agent: Googlebot
 Allow: /
 Disallow: /admin
+Crawl-delay: 0
+
+User-agent: Yandex
+Allow: /
+Disallow: /admin
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
 Disallow: /admin
+Crawl-delay: 0
 
+# AI краулеры - OpenAI
 User-agent: GPTBot
 Allow: /
+Allow: /providers-data.json
 Disallow: /admin
+Crawl-delay: 1
 
 User-agent: ChatGPT-User
 Allow: /
+Allow: /providers-data.json
 
+# AI краулеры - Anthropic Claude
 User-agent: ClaudeBot
 Allow: /
+Allow: /providers-data.json
+Crawl-delay: 1
 
-User-agent: PerplexityBot
+User-agent: Claude-Web
 Allow: /
+Allow: /providers-data.json
 
 User-agent: anthropic-ai
 Allow: /
+Allow: /providers-data.json
 
-User-agent: Twitterbot
+# AI краулеры - Google AI
+User-agent: Google-Extended
 Allow: /
+Allow: /providers-data.json
+Crawl-delay: 1
+
+# AI краулеры - Perplexity
+User-agent: PerplexityBot
+Allow: /
+Allow: /providers-data.json
+Crawl-delay: 1
+
+# AI краулеры - Common Crawl
+User-agent: CCBot
+Allow: /
+Allow: /providers-data.json
+Crawl-delay: 2
+
+# AI краулеры - Meta
+User-agent: FacebookBot
+Allow: /
+Allow: /providers-data.json
 
 User-agent: facebookexternalhit
 Allow: /
+Allow: /providers-data.json
 
+User-agent: meta-externalagent
+Allow: /
+Allow: /providers-data.json
+
+# AI краулеры - Bytedance (TikTok)
+User-agent: Bytespider
+Allow: /
+Allow: /providers-data.json
+Crawl-delay: 2
+
+# AI краулеры - Cohere
+User-agent: cohere-ai
+Allow: /
+Allow: /providers-data.json
+
+# AI краулеры - Applebot
+User-agent: Applebot
+Allow: /
+Allow: /providers-data.json
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /providers-data.json
+
+# Социальные сети
+User-agent: Twitterbot
+Allow: /
+
+# Все остальные
 User-agent: *
 Allow: /
 Disallow: /admin
+Crawl-delay: 1
 
 Sitemap: https://topcloudhub.ru/sitemap.xml
 IndexNow-Key: 7f8a9b2c3d4e5f6a1b2c3d4e5f6a7b8c
