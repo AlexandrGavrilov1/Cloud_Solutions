@@ -94,8 +94,15 @@ export const ProviderCard = ({
       </div>
       
       <Card 
-        className={`border-2 border-border overflow-visible relative flex flex-col bg-card
-          ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
+        className={`border-0 overflow-visible relative flex flex-col bg-card transition-all`}
+        style={{
+          clipPath: 'polygon(0% 0%, calc(100% - 140px) 0%, calc(100% - 140px) 8px, calc(100% - 132px) 16px, calc(100% - 124px) 22px, calc(100% - 116px) 28px, calc(100% - 64px) 28px, calc(100% - 56px) 22px, calc(100% - 48px) 16px, calc(100% - 40px) 8px, calc(100% - 40px) 0%, 100% 0%, 100% 100%, 0% 100%)',
+          background: isSelected 
+            ? 'linear-gradient(var(--card), var(--card)) padding-box, linear-gradient(90deg, hsl(var(--primary) / 0.5), hsl(var(--primary) / 0.5)) border-box'
+            : 'linear-gradient(var(--card), var(--card)) padding-box, linear-gradient(90deg, hsl(var(--border)), hsl(var(--border))) border-box',
+          border: '2px solid transparent',
+          boxShadow: isSelected ? '0 0 30px hsl(var(--primary) / 0.3)' : 'none'
+        }}
       >
 
 
