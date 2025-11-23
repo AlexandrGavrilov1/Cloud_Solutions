@@ -6,6 +6,22 @@ User-agent: Bingbot
 Allow: /
 Disallow: /admin
 
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
 User-agent: Twitterbot
 Allow: /
 
