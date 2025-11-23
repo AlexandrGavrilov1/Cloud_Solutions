@@ -71,41 +71,51 @@ export const ProviderCard = ({
     }
   };
 
+  const applyGlow = (element: HTMLElement) => {
+    element.style.boxShadow = '0 0 0 1px hsl(27 100% 60% / 0.2), 0 0 30px hsl(27 100% 60% / 0.4), 0 0 60px hsl(27 100% 60% / 0.2)';
+  };
+
+  const removeGlow = (element: HTMLElement) => {
+    element.style.boxShadow = 'none';
+  };
+
   return (
-    <div className={`relative flex flex-col group transition-all duration-500 ${showDetails ? 'col-span-full z-10' : ''}`}>
+    <div 
+      className={`relative flex flex-col group transition-all duration-500 ${showDetails ? 'col-span-full z-10' : ''}`}
+      onMouseEnter={(e) => {
+        const buttons = e.currentTarget.querySelectorAll<HTMLElement>('.glow-button');
+        const card = e.currentTarget.querySelector<HTMLElement>('.provider-card');
+        buttons.forEach(btn => applyGlow(btn));
+        if (card) applyGlow(card);
+      }}
+      onMouseLeave={(e) => {
+        const buttons = e.currentTarget.querySelectorAll<HTMLElement>('.glow-button');
+        const card = e.currentTarget.querySelector<HTMLElement>('.provider-card');
+        buttons.forEach(btn => removeGlow(btn));
+        if (card && !isSelected) removeGlow(card);
+      }}
+    >
       <div className="absolute top-0.5 right-0 z-50 flex gap-2">
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+            className={`glow-button w-14 h-14 rounded-full flex items-center justify-center transition-all ${
               isSelected ? 'bg-card' : 'bg-card'
             }`}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 0 0 1px hsl(27 100% 60% / 0.2), 0 0 30px hsl(27 100% 60% / 0.4), 0 0 60px hsl(27 100% 60% / 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = 'none';
-            }}
           >
             <Icon name={isSelected ? "Check" : "GitCompare"} size={17} className="text-foreground" />
           </button>
         )}
         <button 
           onClick={handleProviderClick}
-          className="w-14 h-14 rounded-full bg-card flex items-center justify-center transition-all"
-          onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 0 0 1px hsl(27 100% 60% / 0.2), 0 0 30px hsl(27 100% 60% / 0.4), 0 0 60px hsl(27 100% 60% / 0.2)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = 'none';
-          }}
+          className="glow-button w-14 h-14 rounded-full bg-card flex items-center justify-center transition-all"
         >
           <Icon name="ArrowUpRight" size={17} className="text-primary" />
         </button>
       </div>
       
       <Card 
-        className={`border-0 transition-all duration-300 overflow-visible relative flex flex-col hover:scale-[1.02] ${
+        className={`provider-card border-0 transition-all duration-300 overflow-visible relative flex flex-col group-hover:scale-[1.02] ${
           isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'
         }`}
         style={{
@@ -113,14 +123,6 @@ export const ProviderCard = ({
           ...(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover)').matches && {
             transition: 'all 0.3s ease, box-shadow 0.3s ease'
           })
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = '0 0 0 1px hsl(27 100% 60% / 0.2), 0 0 30px hsl(27 100% 60% / 0.4), 0 0 60px hsl(27 100% 60% / 0.2)';
-        }}
-        onMouseLeave={(e) => {
-          if (!isSelected) {
-            e.currentTarget.style.boxShadow = 'none';
-          }
         }}
         style={{
           borderRadius: '2rem',
