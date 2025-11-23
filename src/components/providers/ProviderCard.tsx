@@ -73,7 +73,7 @@ export const ProviderCard = ({
 
   return (
     <div className={`relative flex flex-col group transition-all duration-500 ${showDetails ? 'col-span-full z-10' : ''}`}>
-      <div className="absolute top-0.5 right-0 z-50 flex gap-2 hover-lift">
+      <div className="absolute top-0.5 right-0 z-50 flex gap-2">
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
