@@ -79,8 +79,7 @@ export const ProviderCard = ({
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 bg-card
-              hover:shadow-[0_0_0_1px_hsl(27_100%_60%_/_0.2),0_0_30px_hsl(27_100%_60%_/_0.4),0_0_60px_hsl(27_100%_60%_/_0.2)]
+            className={`w-14 h-14 rounded-full flex items-center justify-center bg-card
               ${isSelected ? 'bg-card' : 'bg-card'}`}
           >
             <Icon name={isSelected ? "Check" : "GitCompare"} size={17} className="text-foreground" />
@@ -88,16 +87,14 @@ export const ProviderCard = ({
         )}
         <button 
           onClick={handleProviderClick}
-          className="w-14 h-14 rounded-full bg-card flex items-center justify-center transition-all duration-200
-            hover:shadow-[0_0_0_1px_hsl(27_100%_60%_/_0.2),0_0_30px_hsl(27_100%_60%_/_0.4),0_0_60px_hsl(27_100%_60%_/_0.2)]"
+          className="w-14 h-14 rounded-full bg-card flex items-center justify-center"
         >
           <Icon name="ArrowUpRight" size={17} className="text-primary" />
         </button>
       </div>
       
       <Card 
-        className={`border-0 overflow-visible relative flex flex-col group-hover:scale-[1.02] transition-all duration-200
-          hover:shadow-[0_0_0_1px_hsl(27_100%_60%_/_0.2),0_0_30px_hsl(27_100%_60%_/_0.4),0_0_60px_hsl(27_100%_60%_/_0.2)]
+        className={`border-0 overflow-visible relative flex flex-col
           ${isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'}`}
         style={{
           borderRadius: '2rem',
