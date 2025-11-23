@@ -53,25 +53,57 @@ export const ComparisonTable = ({ providers, configs, onClose, calculatePrice }:
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto">
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-2xl flex items-center justify-center">
-                <Icon name="GitCompare" size={20} className="text-primary sm:w-6 sm:h-6" />
+          <div className="flex flex-col gap-4 mb-4 sm:mb-6">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-2xl flex items-center justify-center">
+                  <Icon name="GitCompare" size={20} className="text-primary sm:w-6 sm:h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Сравнение провайдеров</h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Выбрано: {providers.length}</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Сравнение провайдеров</h2>
-                <p className="text-xs sm:text-sm text-muted-foreground">Выбрано: {providers.length}</p>
-              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onClose}
+                className="h-9 sm:h-12 px-3 sm:px-6 rounded-xl border-2 flex-shrink-0"
+              >
+                <Icon name="X" size={16} className="sm:mr-2" />
+                <span className="hidden sm:inline">Закрыть</span>
+              </Button>
             </div>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={onClose}
-              className="h-9 sm:h-12 px-3 sm:px-6 rounded-xl border-2 flex-shrink-0"
-            >
-              <Icon name="X" size={16} className="sm:mr-2" />
-              <span className="hidden sm:inline">Закрыть</span>
-            </Button>
+
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              {providers.map((provider) => {
+                const hasFZ152 = provider.fz152Compliant;
+                const hasFSTEK = provider.fstekCompliant;
+                
+                if (!hasFZ152 && !hasFSTEK) return null;
+                
+                return (
+                  <div key={provider.id} className="flex items-center gap-2 bg-accent/50 border border-border rounded-xl px-3 py-2">
+                    <div className="w-6 h-6 rounded-lg bg-card border border-primary/10 flex items-center justify-center">
+                      <img src={provider.logo} alt={provider.name} className="w-4 h-4 object-contain" />
+                    </div>
+                    <span className="text-xs font-semibold text-foreground">{provider.name}</span>
+                    <div className="flex items-center gap-1 ml-1">
+                      {hasFZ152 && (
+                        <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
+                          {provider.fz152Level || '152-ФЗ'}
+                        </Badge>
+                      )}
+                      {hasFSTEK && (
+                        <Badge className="bg-secondary/20 text-secondary border-0 text-[10px] px-1.5 py-0.5">
+                          {provider.fstekLevel || 'ФСТЕК'}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="bg-card border-2 border-border rounded-2xl overflow-hidden shadow-xl">
