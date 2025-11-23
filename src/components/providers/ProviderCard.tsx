@@ -49,6 +49,81 @@ export const ProviderCard = ({
 }: ProviderCardProps) => {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
+  const avgRating = provider.reviews.reduce((sum, r) => sum + r.rating, 0) / provider.reviews.length;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": `${provider.name} VPS`,
+    "description": provider.pros.join('. ') + '. ' + provider.features.join(', '),
+    "brand": {
+      "@type": "Brand",
+      "name": provider.name
+    },
+    "image": provider.logo,
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": avgRating.toFixed(1),
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": provider.reviews.length,
+      "reviewCount": provider.reviews.length
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": calculatedPrice,
+      "priceCurrency": "RUB",
+      "availability": "https://schema.org/InStock",
+      "url": provider.url,
+      "priceValidUntil": "2025-12-31",
+      "seller": {
+        "@type": "Organization",
+        "name": provider.name
+      }
+    },
+    "review": provider.reviews.slice(0, 5).map(review => ({
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": review.rating,
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "author": {
+        "@type": "Person",
+        "name": review.author
+      },
+      "datePublished": review.date,
+      "reviewBody": review.text
+    })),
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "Disk Type",
+        "value": provider.technicalSpecs.diskType
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Network Speed",
+        "value": provider.technicalSpecs.networkSpeed
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Virtualization",
+        "value": provider.technicalSpecs.virtualization.join(', ')
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "SLA Uptime",
+        "value": provider.serviceGuarantees.uptimeSLA
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "152-ФЗ Compliant",
+        "value": provider.fz152Compliant ? 'Yes' : 'No'
+      }
+    ]
+  };
   
   const trackClick = async () => {
     try {
@@ -74,10 +149,14 @@ export const ProviderCard = ({
   };
 
   return (
-    <div 
-      ref={containerRef}
-      className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
-    >
+    <>
+      <script type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </script>
+      <div 
+        ref={containerRef}
+        className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
+      >
       <div 
         className="z-50 flex gap-2 pointer-events-auto" 
         style={{
@@ -236,6 +315,7 @@ export const ProviderCard = ({
         </div>
       </CardContent>
     </Card>
-    </div>
+      </div>
+    </>
   );
 };
