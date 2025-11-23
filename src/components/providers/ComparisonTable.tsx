@@ -45,6 +45,7 @@ export const ComparisonTable = ({ providers, configs, onClose, calculatePrice }:
     { label: 'Тестовый период', key: 'trialDays', icon: 'Gift' },
     { label: 'Локации серверов', key: 'locations', icon: 'MapPin' },
     { label: '152-ФЗ', key: 'fz152', icon: 'ShieldCheck' },
+    { label: 'ФСТЕК', key: 'fstek', icon: 'ShieldAlert' },
     { label: 'Техподдержка', key: 'support', icon: 'Headphones' },
   ];
 
@@ -170,6 +171,20 @@ export const ComparisonTable = ({ providers, configs, onClose, calculatePrice }:
                                 {provider.fz152Level && (
                                   <Badge className="bg-primary/20 text-primary border-0 text-xs">
                                     {provider.fz152Level}
+                                  </Badge>
+                                )}
+                              </div>
+                            ) : (
+                              <Icon name="X" size={20} className="text-muted" />
+                            );
+                            break;
+                          case 'fstek':
+                            content = provider.fstekCompliant ? (
+                              <div className="flex flex-col items-center gap-1">
+                                <Icon name="Check" size={20} className="text-secondary" />
+                                {provider.fstekLevel && (
+                                  <Badge className="bg-secondary/20 text-secondary border-0 text-xs">
+                                    {provider.fstekLevel}
                                   </Badge>
                                 )}
                               </div>
