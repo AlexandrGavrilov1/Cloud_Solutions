@@ -71,56 +71,34 @@ export const ProviderCard = ({
     }
   };
 
-  const applyGlow = (element: HTMLElement) => {
-    element.style.boxShadow = '0 0 0 1px hsl(27 100% 60% / 0.2), 0 0 30px hsl(27 100% 60% / 0.4), 0 0 60px hsl(27 100% 60% / 0.2)';
-  };
-
-  const removeGlow = (element: HTMLElement) => {
-    element.style.boxShadow = 'none';
-  };
-
   return (
     <div 
       className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
-      onMouseEnter={(e) => {
-        const buttons = e.currentTarget.querySelectorAll<HTMLElement>('.glow-button');
-        const card = e.currentTarget.querySelector<HTMLElement>('.provider-card');
-        buttons.forEach(btn => applyGlow(btn));
-        if (card) applyGlow(card);
-      }}
-      onMouseLeave={(e) => {
-        const buttons = e.currentTarget.querySelectorAll<HTMLElement>('.glow-button');
-        const card = e.currentTarget.querySelector<HTMLElement>('.provider-card');
-        buttons.forEach(btn => removeGlow(btn));
-        if (card && !isSelected) removeGlow(card);
-      }}
     >
       <div className="absolute top-0.5 right-0 z-50 flex gap-2">
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
-            className={`glow-button w-14 h-14 rounded-full flex items-center justify-center transition-shadow duration-200 ${
-              isSelected ? 'bg-card' : 'bg-card'
-            }`}
+            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 bg-card
+              hover:shadow-[0_0_0_1px_hsl(27_100%_60%_/_0.2),0_0_30px_hsl(27_100%_60%_/_0.4),0_0_60px_hsl(27_100%_60%_/_0.2)]
+              ${isSelected ? 'bg-card' : 'bg-card'}`}
           >
             <Icon name={isSelected ? "Check" : "GitCompare"} size={17} className="text-foreground" />
           </button>
         )}
         <button 
           onClick={handleProviderClick}
-          className="glow-button w-14 h-14 rounded-full bg-card flex items-center justify-center transition-shadow duration-200"
+          className="w-14 h-14 rounded-full bg-card flex items-center justify-center transition-all duration-200
+            hover:shadow-[0_0_0_1px_hsl(27_100%_60%_/_0.2),0_0_30px_hsl(27_100%_60%_/_0.4),0_0_60px_hsl(27_100%_60%_/_0.2)]"
         >
           <Icon name="ArrowUpRight" size={17} className="text-primary" />
         </button>
       </div>
       
       <Card 
-        className={`provider-card border-0 overflow-visible relative flex flex-col group-hover:scale-[1.02] transition-all duration-200 ${
-          isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'
-        }`}
-        style={{
-          boxShadow: 'none'
-        }}
+        className={`border-0 overflow-visible relative flex flex-col group-hover:scale-[1.02] transition-all duration-200
+          hover:shadow-[0_0_0_1px_hsl(27_100%_60%_/_0.2),0_0_30px_hsl(27_100%_60%_/_0.4),0_0_60px_hsl(27_100%_60%_/_0.2)]
+          ${isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'}`}
         style={{
           borderRadius: '2rem',
           clipPath: 'polygon(0% 2rem, 0% 0.5rem, 0.1rem 0.3rem, 0.3rem 0.1rem, 0.5rem 0%, 2rem 0%, calc(100% - 8rem - 2rem) 0%, calc(100% - 8rem - 1.5rem) 0.15rem, calc(100% - 8rem - 1rem) 0.4rem, calc(100% - 8rem - 0.6rem) 0.6rem, calc(100% - 8rem - 0.4rem) 1rem, calc(100% - 8rem - 0.15rem) 1.5rem, calc(100% - 8rem) 2rem, calc(100% - 8rem) calc(4rem - 2rem), calc(100% - 8rem + 0.15rem) calc(4rem - 1.5rem), calc(100% - 8rem + 0.4rem) calc(4rem - 1rem), calc(100% - 8rem + 0.6rem) calc(4rem - 0.6rem), calc(100% - 8rem + 1rem) calc(4rem - 0.4rem), calc(100% - 8rem + 1.5rem) calc(4rem - 0.15rem), calc(100% - 8rem + 2rem) 4rem, calc(100% - 2rem) 4rem, calc(100% - 1.5rem) calc(4rem + 0.15rem), calc(100% - 1rem) calc(4rem + 0.4rem), calc(100% - 0.6rem) calc(4rem + 0.6rem), calc(100% - 0.4rem) calc(4rem + 1rem), calc(100% - 0.15rem) calc(4rem + 1.5rem), 100% calc(4rem + 2rem), 100% calc(100% - 2rem), 100% calc(100% - 0.5rem), calc(100% - 0.1rem) calc(100% - 0.3rem), calc(100% - 0.3rem) calc(100% - 0.1rem), calc(100% - 0.5rem) 100%, calc(100% - 2rem) 100%, 2rem 100%, 0.5rem 100%, 0.3rem calc(100% - 0.1rem), 0.1rem calc(100% - 0.3rem), 0% calc(100% - 0.5rem), 0% calc(100% - 2rem))'
