@@ -115,7 +115,7 @@ export const ProviderCardHeader = ({
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-2 text-sm mt-2">
+            <div className="flex items-center justify-end gap-2 text-sm mt-2 w-fit ml-auto">
               <span className={provider.id === 16 ? "text-[1.17rem] text-foreground" : "text-[1.17rem] font-semibold text-foreground"}>{t('common.from')} </span>
               <span className="text-[1.56rem] font-black text-primary">{calculatedPrice}</span>
               <span className={provider.id === 16 ? "text-[1.17rem] text-foreground" : "text-[0.936rem] text-muted-foreground"}>{t('common.perMonth')}</span>
