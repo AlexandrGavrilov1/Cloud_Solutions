@@ -25,13 +25,32 @@ export const submitToIndexNow = async (urls: string[]) => {
     )
   );
 
+  const successCount = results.filter(r => r.status === 'fulfilled').length;
+  console.debug(`IndexNow: отправлено в ${successCount}/${endpoints.length} поисковиков`, urls);
+
   return results;
 };
 
 export const notifyPageUpdate = (path: string) => {
   if (typeof window !== 'undefined') {
     submitToIndexNow([path]).catch(err => 
-      console.debug('IndexNow notification:', err)
+      console.debug('IndexNow notification error:', err)
+    );
+  }
+};
+
+export const notifyMultiplePages = (paths: string[]) => {
+  if (typeof window !== 'undefined' && paths.length > 0) {
+    submitToIndexNow(paths).catch(err => 
+      console.debug('IndexNow batch notification error:', err)
+    );
+  }
+};
+
+export const notifySitemapUpdate = () => {
+  if (typeof window !== 'undefined') {
+    submitToIndexNow(['/sitemap.xml']).catch(err => 
+      console.debug('IndexNow sitemap notification error:', err)
     );
   }
 };

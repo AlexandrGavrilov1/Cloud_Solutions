@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { notifyPageUpdate } from "@/utils/indexnow";
+import { notifyPageUpdate, notifySitemapUpdate } from "@/utils/indexnow";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import FAQ from "./pages/FAQ";
@@ -40,6 +40,7 @@ const VisitorTracker = () => {
     };
     
     trackVisitor();
+    notifySitemapUpdate();
   }, []);
 
   useEffect(() => {
