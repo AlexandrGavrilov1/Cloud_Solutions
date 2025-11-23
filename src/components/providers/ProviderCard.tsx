@@ -93,9 +93,23 @@ export const ProviderCard = ({
       </div>
       
       <Card 
-        className={`border-0 transition-all duration-300 overflow-visible relative flex flex-col hover:shadow-2xl hover:shadow-primary/40 hover:scale-[1.02] ${
+        className={`border-0 transition-all duration-300 overflow-visible relative flex flex-col hover:scale-[1.02] ${
           isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'
         }`}
+        style={{
+          boxShadow: 'none',
+          ...(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover)').matches && {
+            transition: 'all 0.3s ease, box-shadow 0.3s ease'
+          })
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 0 1px hsl(27 100% 60% / 0.2), 0 0 30px hsl(27 100% 60% / 0.4), 0 0 60px hsl(27 100% 60% / 0.2)';
+        }}
+        onMouseLeave={(e) => {
+          if (!isSelected) {
+            e.currentTarget.style.boxShadow = 'none';
+          }
+        }}
         style={{
           borderRadius: '2rem',
           clipPath: 'polygon(0% 2rem, 0% 0.5rem, 0.1rem 0.3rem, 0.3rem 0.1rem, 0.5rem 0%, 2rem 0%, calc(100% - 8rem - 2rem) 0%, calc(100% - 8rem - 1.5rem) 0.15rem, calc(100% - 8rem - 1rem) 0.4rem, calc(100% - 8rem - 0.6rem) 0.6rem, calc(100% - 8rem - 0.4rem) 1rem, calc(100% - 8rem - 0.15rem) 1.5rem, calc(100% - 8rem) 2rem, calc(100% - 8rem) calc(4rem - 2rem), calc(100% - 8rem + 0.15rem) calc(4rem - 1.5rem), calc(100% - 8rem + 0.4rem) calc(4rem - 1rem), calc(100% - 8rem + 0.6rem) calc(4rem - 0.6rem), calc(100% - 8rem + 1rem) calc(4rem - 0.4rem), calc(100% - 8rem + 1.5rem) calc(4rem - 0.15rem), calc(100% - 8rem + 2rem) 4rem, calc(100% - 2rem) 4rem, calc(100% - 1.5rem) calc(4rem + 0.15rem), calc(100% - 1rem) calc(4rem + 0.4rem), calc(100% - 0.6rem) calc(4rem + 0.6rem), calc(100% - 0.4rem) calc(4rem + 1rem), calc(100% - 0.15rem) calc(4rem + 1.5rem), 100% calc(4rem + 2rem), 100% calc(100% - 2rem), 100% calc(100% - 0.5rem), calc(100% - 0.1rem) calc(100% - 0.3rem), calc(100% - 0.3rem) calc(100% - 0.1rem), calc(100% - 0.5rem) 100%, calc(100% - 2rem) 100%, 2rem 100%, 0.5rem 100%, 0.3rem calc(100% - 0.1rem), 0.1rem calc(100% - 0.3rem), 0% calc(100% - 0.5rem), 0% calc(100% - 2rem))'
