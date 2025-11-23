@@ -96,11 +96,6 @@ export const ProviderCard = ({
       <Card 
         className={`border-2 border-border overflow-visible relative flex flex-col bg-card rounded-3xl
           ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
-        style={{
-          clipPath: onToggleCompare 
-            ? 'polygon(0 0, calc(100% - 140px) 0, calc(100% - 140px) 8px, calc(100% - 132px) 8px, calc(100% - 132px) 0, calc(100% - 132px) 8px, calc(100% - 124px) 16px, calc(100% - 116px) 24px, calc(100% - 108px) 32px, calc(100% - 100px) 40px, calc(100% - 92px) 46px, calc(100% - 84px) 50px, calc(100% - 76px) 53px, calc(100% - 68px) 54px, calc(100% - 60px) 54px, calc(100% - 52px) 53px, calc(100% - 44px) 50px, calc(100% - 36px) 46px, calc(100% - 28px) 40px, calc(100% - 20px) 32px, calc(100% - 12px) 24px, calc(100% - 6px) 16px, calc(100% - 2px) 8px, 100% 8px, 100% 0, 100% 100%, 0 100%)'
-            : 'polygon(0 0, calc(100% - 68px) 0, calc(100% - 68px) 8px, calc(100% - 60px) 8px, calc(100% - 60px) 0, calc(100% - 60px) 8px, calc(100% - 52px) 16px, calc(100% - 44px) 24px, calc(100% - 36px) 32px, calc(100% - 28px) 40px, calc(100% - 20px) 46px, calc(100% - 12px) 50px, calc(100% - 6px) 53px, calc(100% - 2px) 54px, 100% 54px, 100% 100%, 0 100%)'
-        }}
       >
 
 
