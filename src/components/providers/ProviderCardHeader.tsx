@@ -54,32 +54,32 @@ export const ProviderCardHeader = ({
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="flex items-start gap-1.5 text-sm flex-shrink-0">
-          <Icon name="MapPin" size={14} className="text-primary mt-0.5 flex-shrink-0" />
-          <div className="flex items-center gap-1">
-            <span className="text-foreground text-xs">
-              {showAllLocations 
-                ? provider.locations.join(', ')
-                : provider.locations.slice(0, 2).join(', ')}
-              {provider.locations.length > 2 && !showAllLocations && (
-                <button 
-                  onClick={() => setShowAllLocations(true)}
-                  className="text-primary hover:underline ml-1"
-                >
-                  +{provider.locations.length - 2}
-                </button>
-              )}
-              {showAllLocations && provider.locations.length > 2 && (
-                <button 
-                  onClick={() => setShowAllLocations(false)}
-                  className="text-primary hover:underline ml-1"
-                >
-                  скрыть
-                </button>
-              )}
-            </span>
-          </div>
+      <div className="flex items-start gap-1.5 text-sm">
+        <Icon name="MapPin" size={14} className="text-primary mt-0.5 flex-shrink-0" />
+        <div className="flex items-center gap-1">
+          <span className="text-foreground text-xs">
+            {showAllLocations 
+              ? provider.locations.join(', ')
+              : provider.locations.slice(0, 2).join(', ')}
+            {provider.locations.length > 2 && !showAllLocations && (
+              <button 
+                onClick={() => setShowAllLocations(true)}
+                className="text-primary hover:underline ml-1"
+              >
+                +{provider.locations.length - 2}
+              </button>
+            )}
+            {showAllLocations && provider.locations.length > 2 && (
+              <button 
+                onClick={() => setShowAllLocations(false)}
+                className="text-primary hover:underline ml-1"
+              >
+                скрыть
+              </button>
+            )}
+          </span>
         </div>
       </div>
         
