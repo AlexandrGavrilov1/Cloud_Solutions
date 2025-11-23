@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Provider, ResourceConfig, Review } from './types';
 import { ComparisonTable } from './ComparisonTable';
 import { FilterPanel } from './FilterPanel';
@@ -218,55 +218,66 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     setConfigs(updatedConfigs);
   };
 
-  const allLocations = Array.from(
-    new Set(providersWithReviews.flatMap(p => p.locations))
-  ).sort();
+  const allLocations = useMemo(() => 
+    Array.from(new Set(providersWithReviews.flatMap(p => p.locations))).sort(),
+    [providersWithReviews]
+  );
 
-  const allVirtualizations = Array.from(
-    new Set(providersWithReviews.flatMap(p => p.technicalSpecs.virtualization))
-  ).sort();
+  const allVirtualizations = useMemo(() => 
+    Array.from(new Set(providersWithReviews.flatMap(p => p.technicalSpecs.virtualization))).sort(),
+    [providersWithReviews]
+  );
 
-  const allDiskTypes = Array.from(
-    new Set(providersWithReviews.map(p => p.technicalSpecs.diskType))
-  ).sort();
+  const allDiskTypes = useMemo(() => 
+    Array.from(new Set(providersWithReviews.map(p => p.technicalSpecs.diskType))).sort(),
+    [providersWithReviews]
+  );
 
-  const allPaymentMethods = Array.from(
-    new Set(providersWithReviews.flatMap(p => p.pricingDetails.paymentMethods))
-  ).sort();
+  const allPaymentMethods = useMemo(() => 
+    Array.from(new Set(providersWithReviews.flatMap(p => p.pricingDetails.paymentMethods))).sort(),
+    [providersWithReviews]
+  );
 
-  const allOS = Array.from(
-    new Set(providersWithReviews.flatMap(p => p.technicalSpecs.availableOS))
-  ).sort();
+  const allOS = useMemo(() => 
+    Array.from(new Set(providersWithReviews.flatMap(p => p.technicalSpecs.availableOS))).sort(),
+    [providersWithReviews]
+  );
 
-  const allCPUs = Array.from(
-    new Set(providersWithReviews.flatMap(p => p.technicalSpecs.cpuModels || []))
-  ).sort();
+  const allCPUs = useMemo(() => 
+    Array.from(new Set(providersWithReviews.flatMap(p => p.technicalSpecs.cpuModels || []))).sort(),
+    [providersWithReviews]
+  );
 
-  const filteredProviders = providersWithReviews
-    .filter(p => {
-      if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-      if (filterFZ152 && !p.fz152Compliant) return false;
-      if (filterTrialPeriod && p.trialDays === 0) return false;
-      if (filterLocation && !p.locations.includes(filterLocation)) return false;
-      if (filterVirtualization && !p.technicalSpecs.virtualization.includes(filterVirtualization)) return false;
-      if (filterMinDatacenters !== null && p.locations.length < filterMinDatacenters) return false;
-      if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType) return false;
-      if (filterPaymentMethod && !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)) return false;
-      if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS)) return false;
-      if (filterCPU && (!p.technicalSpecs.cpuModels || !p.technicalSpecs.cpuModels.includes(filterCPU))) return false;
-      return true;
-    })
-    .sort((a, b) => {
-      if (sortBy === 'rating') {
-        const avgRatingA = a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length;
-        const avgRatingB = b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length;
-        return avgRatingB - avgRatingA;
-      } else {
-        const priceA = calculatePrice(a, configs[a.id]);
-        const priceB = calculatePrice(b, configs[b.id]);
-        return priceA - priceB;
-      }
-    });
+  const filteredProviders = useMemo(() => 
+    providersWithReviews
+      .filter(p => {
+        if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+        if (filterFZ152 && !p.fz152Compliant) return false;
+        if (filterTrialPeriod && p.trialDays === 0) return false;
+        if (filterLocation && !p.locations.includes(filterLocation)) return false;
+        if (filterVirtualization && !p.technicalSpecs.virtualization.includes(filterVirtualization)) return false;
+        if (filterMinDatacenters !== null && p.locations.length < filterMinDatacenters) return false;
+        if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType) return false;
+        if (filterPaymentMethod && !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)) return false;
+        if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS)) return false;
+        if (filterCPU && (!p.technicalSpecs.cpuModels || !p.technicalSpecs.cpuModels.includes(filterCPU))) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'rating') {
+          const avgRatingA = a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length;
+          const avgRatingB = b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length;
+          return avgRatingB - avgRatingA;
+        } else {
+          const priceA = calculatePrice(a, configs[a.id]);
+          const priceB = calculatePrice(b, configs[b.id]);
+          return priceA - priceB;
+        }
+      }),
+    [providersWithReviews, searchQuery, filterFZ152, filterTrialPeriod, filterLocation, 
+     filterVirtualization, filterMinDatacenters, filterDiskType, filterPaymentMethod, 
+     filterOS, filterCPU, sortBy, configs]
+  );
 
   if (showComparison) {
     const selectedProviders = providersWithReviews.filter(p => 
