@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,20 @@ export const ProviderCard = ({
   onToggleCompare
 }: ProviderCardProps) => {
   const { t } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [fixedPosition, setFixedPosition] = useState<{ top: number; right: number } | null>(null);
+
+  useEffect(() => {
+    if (showDetails && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setFixedPosition({
+        top: rect.top + window.scrollY,
+        right: window.innerWidth - rect.right
+      });
+    } else {
+      setFixedPosition(null);
+    }
+  }, [showDetails]);
   
   const trackClick = async () => {
     try {
@@ -73,11 +88,16 @@ export const ProviderCard = ({
 
   return (
     <div 
+      ref={containerRef}
       className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
     >
       <div 
-        className="absolute z-50 flex gap-2 pointer-events-auto" 
-        style={{ top: '5%', right: '2%' }}
+        className="z-50 flex gap-2 pointer-events-auto" 
+        style={{
+          position: fixedPosition ? 'fixed' : 'absolute',
+          top: fixedPosition ? `${fixedPosition.top + (containerRef.current?.offsetHeight || 0) * 0.05}px` : '5%',
+          right: fixedPosition ? `${fixedPosition.right + (containerRef.current?.offsetWidth || 0) * 0.02}px` : '2%'
+        }}
       >
         {onToggleCompare && (
           <button 
