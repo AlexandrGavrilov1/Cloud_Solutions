@@ -47,11 +47,7 @@ export const Footer = () => {
                     Рейтинг
                   </a>
                 </li>
-                <li>
-                  <a href="#providers" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
-                    Сравнение
-                  </a>
-                </li>
+
                 <li>
                   <a href="#providers" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
                     Отзывы
