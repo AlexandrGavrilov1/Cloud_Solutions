@@ -81,7 +81,7 @@ export const ProviderCard = ({
 
   return (
     <div 
-      className={`relative flex flex-col group transition-all duration-500 ${showDetails ? 'col-span-full z-10' : ''}`}
+      className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
       onMouseEnter={(e) => {
         const buttons = e.currentTarget.querySelectorAll<HTMLElement>('.glow-button');
         const card = e.currentTarget.querySelector<HTMLElement>('.provider-card');
@@ -99,7 +99,7 @@ export const ProviderCard = ({
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
-            className={`glow-button w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+            className={`glow-button w-14 h-14 rounded-full flex items-center justify-center transition-shadow duration-200 ${
               isSelected ? 'bg-card' : 'bg-card'
             }`}
           >
@@ -108,21 +108,18 @@ export const ProviderCard = ({
         )}
         <button 
           onClick={handleProviderClick}
-          className="glow-button w-14 h-14 rounded-full bg-card flex items-center justify-center transition-all"
+          className="glow-button w-14 h-14 rounded-full bg-card flex items-center justify-center transition-shadow duration-200"
         >
           <Icon name="ArrowUpRight" size={17} className="text-primary" />
         </button>
       </div>
       
       <Card 
-        className={`provider-card border-0 transition-all duration-300 overflow-visible relative flex flex-col group-hover:scale-[1.02] ${
+        className={`provider-card border-0 overflow-visible relative flex flex-col group-hover:scale-[1.02] transition-all duration-200 ${
           isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'
         }`}
         style={{
-          boxShadow: 'none',
-          ...(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover)').matches && {
-            transition: 'all 0.3s ease, box-shadow 0.3s ease'
-          })
+          boxShadow: 'none'
         }}
         style={{
           borderRadius: '2rem',
