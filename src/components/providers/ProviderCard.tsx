@@ -113,7 +113,8 @@ export const ProviderCard = ({
           >
             <Icon name="ArrowUpRight" size={17} className="text-primary" />
           </button>
-        </div>
+          </div>
+        )}
       
       <Card 
         className={`border-2 border-border overflow-visible relative flex flex-col bg-card rounded-3xl
