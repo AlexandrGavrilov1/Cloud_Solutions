@@ -94,12 +94,8 @@ export const ProviderCard = ({
       </div>
       
       <Card 
-        className={`border-0 overflow-visible relative flex flex-col
-          ${isSelected ? 'shadow-lg shadow-primary/30 bg-card' : 'bg-card'}`}
-        style={{
-          borderRadius: '2rem',
-          clipPath: 'polygon(0% 2rem, 0% 0.5rem, 0.1rem 0.3rem, 0.3rem 0.1rem, 0.5rem 0%, 2rem 0%, calc(100% - 8rem - 2rem) 0%, calc(100% - 8rem - 1.5rem) 0.15rem, calc(100% - 8rem - 1rem) 0.4rem, calc(100% - 8rem - 0.6rem) 0.6rem, calc(100% - 8rem - 0.4rem) 1rem, calc(100% - 8rem - 0.15rem) 1.5rem, calc(100% - 8rem) 2rem, calc(100% - 8rem) calc(4rem - 2rem), calc(100% - 8rem + 0.15rem) calc(4rem - 1.5rem), calc(100% - 8rem + 0.4rem) calc(4rem - 1rem), calc(100% - 8rem + 0.6rem) calc(4rem - 0.6rem), calc(100% - 8rem + 1rem) calc(4rem - 0.4rem), calc(100% - 8rem + 1.5rem) calc(4rem - 0.15rem), calc(100% - 8rem + 2rem) 4rem, calc(100% - 2rem) 4rem, calc(100% - 1.5rem) calc(4rem + 0.15rem), calc(100% - 1rem) calc(4rem + 0.4rem), calc(100% - 0.6rem) calc(4rem + 0.6rem), calc(100% - 0.4rem) calc(4rem + 1rem), calc(100% - 0.15rem) calc(4rem + 1.5rem), 100% calc(4rem + 2rem), 100% calc(100% - 2rem), 100% calc(100% - 0.5rem), calc(100% - 0.1rem) calc(100% - 0.3rem), calc(100% - 0.3rem) calc(100% - 0.1rem), calc(100% - 0.5rem) 100%, calc(100% - 2rem) 100%, 2rem 100%, 0.5rem 100%, 0.3rem calc(100% - 0.1rem), 0.1rem calc(100% - 0.3rem), 0% calc(100% - 0.5rem), 0% calc(100% - 2rem))'
-        }}
+        className={`border-2 border-border overflow-visible relative flex flex-col bg-card
+          ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
       >
 
 
