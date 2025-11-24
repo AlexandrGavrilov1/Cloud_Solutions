@@ -801,6 +801,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 1 час",
       moneyBackGuarantee: 30,
     },
+    uptime30days: 99.92,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -831,7 +832,7 @@ export const providers: Provider[] = [
       "Доменные порталы",
       "Бизнес-приложения",
     ],
-    uptime30days: 99.92,
+
     reviews: [
       {
         author: "Игорь Р.",
@@ -1168,6 +1169,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.68,
     additionalServices: {
       autoBackups: true,
       backupPrice: 105,
@@ -1191,7 +1193,7 @@ export const providers: Provider[] = [
       "CMS-проекты",
       "1C на облаке",
     ],
-    uptime30days: 99.68,
+
     reviews: [],
   },
   {
@@ -1251,6 +1253,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 3,
     },
+    uptime30days: 99.8,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -1283,19 +1286,7 @@ export const providers: Provider[] = [
       "Telegram боты",
       "Базы данных",
     ],
-    uptime30days: 99.8,
-    monthlyUptimeData: [
-      { month: "Январь", uptime: 99.7, downtime_minutes: 135 },
-      { month: "Февраль", uptime: 99.51, downtime_minutes: 195 },
-      { month: "Март", uptime: 99.84, downtime_minutes: 69 },
-      { month: "Апрель", uptime: 99.9, downtime_minutes: 45 },
-      { month: "Май", uptime: 99.8, downtime_minutes: 90 },
-      { month: "Июнь", uptime: 99.84, downtime_minutes: 69 },
-      { month: "Июль", uptime: 99.78, downtime_minutes: 96 },
-      { month: "Август", uptime: 99.91, downtime_minutes: 39 },
-      { month: "Сентябрь", uptime: 99.95, downtime_minutes: 21 },
-      { month: "Октябрь", uptime: 99.81, downtime_minutes: 84 },
-    ],
+
     reviews: [
       {
         author: "Александр В.",
