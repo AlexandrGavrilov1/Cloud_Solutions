@@ -21,7 +21,6 @@ export const UptimeProviderCard = ({
 }: UptimeProviderCardProps) => {
   const uptime = provider.uptime30days || 0;
   const downtimeText = getDowntimeMinutes(uptime);
-
   const getStaticMonthlyData = (providerId: number) => {
     if (providerId === 1) {
       return [
@@ -272,6 +271,14 @@ export const UptimeProviderCard = ({
       ];
     }
   };
+  const getStaticYearDownTime = (providerId) => {
+    stats = getStaticMonthlyData(providerId);
+    downtime = 0;
+    for (let i = 0; i < stats.length; i++) {
+      downtime += stats[i]["downtime"];
+    }
+    return downtime;
+  };
 
   const shouldShowGraph =
     provider.id === 1 ||
@@ -304,38 +311,46 @@ export const UptimeProviderCard = ({
       {index < 3 && (
         <div className="absolute -top-3 -left-3 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
           <div className="relative flex items-center justify-center">
-            <Icon 
-              name="Cloud" 
-              size={37} 
+            <Icon
+              name="Cloud"
+              size={37}
               className={
-                index === 0 ? 'text-yellow-500' : 
-                index === 1 ? 'text-gray-400' : 
-                'text-amber-700'
+                index === 0
+                  ? "text-yellow-500"
+                  : index === 1
+                    ? "text-gray-400"
+                    : "text-amber-700"
               }
               style={{
-                filter: index === 0 
-                  ? 'drop-shadow(0 0 10px rgba(234, 179, 8, 0.7))' 
-                  : index === 1 
-                  ? 'drop-shadow(0 0 10px rgba(156, 163, 175, 0.7))' 
-                  : 'drop-shadow(0 0 10px rgba(180, 83, 9, 0.7))'
+                filter:
+                  index === 0
+                    ? "drop-shadow(0 0 10px rgba(234, 179, 8, 0.7))"
+                    : index === 1
+                      ? "drop-shadow(0 0 10px rgba(156, 163, 175, 0.7))"
+                      : "drop-shadow(0 0 10px rgba(180, 83, 9, 0.7))",
               }}
             />
-            <span 
+            <span
               className={`absolute text-xs font-bold ${
-                index === 0 ? 'text-yellow-600' : 
-                index === 1 ? 'text-gray-500' : 
-                'text-amber-800'
+                index === 0
+                  ? "text-yellow-600"
+                  : index === 1
+                    ? "text-gray-500"
+                    : "text-amber-800"
               }`}
-              style={{ marginTop: '2px', marginLeft: '-10%' }}
+              style={{ marginTop: "2px", marginLeft: "-10%" }}
             >
               {index + 1}
             </span>
           </div>
         </div>
       )}
-      
+
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-1 min-w-0" style={{ marginLeft: '36px' }}>
+        <div
+          className="flex items-center gap-3 flex-1 min-w-0"
+          style={{ marginLeft: "36px" }}
+        >
           <div className="flex-shrink-0 w-10 h-10 rounded-lg overflow-hidden bg-white border border-primary/10 flex items-center justify-center">
             <img
               src={provider.logo}
@@ -357,6 +372,9 @@ export const UptimeProviderCard = ({
             </button>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>SLA: {provider.serviceGuarantees.uptimeSLA}</span>
+              <span>
+                Общее время простоя: {getStaticYearDownTime(provider.id)}
+              </span>
             </div>
           </div>
         </div>
