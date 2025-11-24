@@ -26,9 +26,9 @@ export const UptimeProviderCard = ({
       for (let i = 0; i < stats.length; i++) {
         downtime += stats[i]["downtime"];
       }
-      return downtime;
+      return(<span>SLA: {downtime}</span>);
     }else{
-      return false;
+      return;
     }
   };
   const uptime = provider.uptime30days || 0;
@@ -378,11 +378,7 @@ export const UptimeProviderCard = ({
             </button>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>SLA: {provider.serviceGuarantees.uptimeSLA}</span>
-              {if(getStaticYearDownTime(provider.id)){
-                <span>
-                Общее время простоя: {getStaticYearDownTime(provider.id)}
-                </span>
-              }}
+              {getStaticYearDownTime(provider.id)}
             </div>
           </div>
         </div>
