@@ -372,7 +372,9 @@ export const UptimeProviderCard = ({
             </button>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>SLA: {provider.serviceGuarantees.uptimeSLA}</span>
-              <span>Общее время простоя: {provider.id}</span>
+              <span>
+                Общее время простоя: {getStaticMonthlyData(provider.id)}
+              </span>
             </div>
           </div>
         </div>
