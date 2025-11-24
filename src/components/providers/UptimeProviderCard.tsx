@@ -273,7 +273,7 @@ export const UptimeProviderCard = ({
   };
   const getStaticYearDownTime = (providerId: number) => {
     const stats = getStaticMonthlyData(providerId);
-    downtime = 0;
+    let downtime = 0;
     for (let i = 0; i < stats.length; i++) {
       downtime += stats[i]["downtime"];
     }
