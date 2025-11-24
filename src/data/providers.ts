@@ -3051,6 +3051,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.97
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -3074,8 +3075,7 @@ export const providers: Provider[] = [
       "CMS проекты",
       "Веб-приложения",
     ],
-    uptime30days: 99.98,
-    reviews: [
+       reviews: [
       {
         author: "Сергей Д.",
         text: "Пользуюсь eurobyte уже 2 года. Стабильная работа, цены адекватные. ISPmanager удобный, всё настраивается быстро.",
