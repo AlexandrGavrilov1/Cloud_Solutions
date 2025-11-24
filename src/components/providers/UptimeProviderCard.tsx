@@ -272,7 +272,8 @@ export const UptimeProviderCard = ({
     }
   };
   const getStaticYearDownTime = (providerId: number) => {
-    const stats = getStaticMonthlyData(providerId);
+    const id = providerId;
+    const stats = getStaticMonthlyData(id);
     let downtime = 0;
     for (let i = 0; i < stats.length; i++) {
       downtime += stats[i]["downtime"];
