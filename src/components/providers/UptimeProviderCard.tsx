@@ -21,13 +21,13 @@ export const UptimeProviderCard = ({
 }: UptimeProviderCardProps) => {
   const getStaticYearDownTime = (providerId: number) => {
     const stats = getStaticMonthlyData(providerId);
-    if stats{
+    if (stats) {
       let downtime = 0;
       for (let i = 0; i < stats.length; i++) {
         downtime += stats[i]["downtime"];
       }
-      return(<span>SLA: {downtime}</span>);
-    }else{
+      return <span>SLA: {downtime}</span>;
+    } else {
       return;
     }
   };
@@ -281,7 +281,7 @@ export const UptimeProviderCard = ({
         { month: "Сентябрь", uptime: 100, downtime: 0 },
         { month: "Октябрь", uptime: 100, downtime: 0 },
       ];
-    } else{
+    } else {
       return false;
     }
   };
