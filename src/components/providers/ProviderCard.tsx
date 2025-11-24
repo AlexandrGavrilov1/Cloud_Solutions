@@ -158,10 +158,10 @@ export const ProviderCard = ({
         className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
       >
       <div 
-        className="z-50 flex gap-2 pointer-events-auto" 
+        className="z-40 flex gap-2 pointer-events-auto" 
         style={{
           position: showDetails ? 'fixed' : 'absolute',
-          top: showDetails ? '20px' : '5%',
+          top: showDetails ? '96px' : '5%',
           right: showDetails ? '20px' : '2%'
         }}
       >
