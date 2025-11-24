@@ -1556,6 +1556,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.74,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1586,7 +1587,7 @@ export const providers: Provider[] = [
       "Веб-приложения",
       "Dev окружения",
     ],
-    uptime30days: 99.74,
+
     reviews: [
       {
         author: "Андрей С.",
@@ -1672,6 +1673,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1703,7 +1705,7 @@ export const providers: Provider[] = [
       "Корпоративные порталы",
       "Разработка",
     ],
-    uptime30days: 99.88,
+
     reviews: [
       {
         author: "Павел Д.",
@@ -1789,6 +1791,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1822,7 +1825,7 @@ export const providers: Provider[] = [
       "Резервные площадки",
       "Облачная инфраструктура",
     ],
-    uptime30days: 99.98,
+
     reviews: [
       {
         author: "Владимир Р.",
