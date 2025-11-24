@@ -19,8 +19,11 @@ export const UptimeProviderCard = ({
   onProviderClick,
   getDowntimeMinutes,
 }: UptimeProviderCardProps) => {
+  const test = (providerId: number) => {
+    return providerId;
+  };
   const getStaticYearDownTime = (providerId: number) => {
-    const stats = getStaticMonthlyData(providerId);
+    const stats = getStaticMonthlyData(1);
     let downtime = 0;
     for (let i = 0; i < stats.length; i++) {
       downtime += stats[i]["downtime"];
@@ -372,9 +375,7 @@ export const UptimeProviderCard = ({
             </button>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>SLA: {provider.serviceGuarantees.uptimeSLA}</span>
-              <span>
-                Общее время простоя: {getStaticMonthlyData(provider.id)}
-              </span>
+              <span>Общее время простоя: {test(provider.id)}</span>
             </div>
           </div>
         </div>
