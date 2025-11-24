@@ -21,7 +21,7 @@ export const HeroSection = () => {
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[1.1] tracking-tight">
             <span className="block text-foreground">{t('hero.title1')} </span>
-            <span className="block text-foreground">
+            <span className="block text-white">
               {t('hero.title2')}{language === 'ru' && <MatrixSuffix />} <MatrixWord />
             </span>
             <span className="block text-foreground">{t('hero.title3')}</span>
