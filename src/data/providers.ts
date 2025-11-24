@@ -3381,6 +3381,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -3404,7 +3405,7 @@ export const providers: Provider[] = [
       "OpenCart магазины",
       "Корпоративный сектор",
     ],
-    uptime30days: 99.99,
+
     reviews: [
       {
         author: "Сергей М.",
