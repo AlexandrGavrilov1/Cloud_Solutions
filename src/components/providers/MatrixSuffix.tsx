@@ -36,7 +36,7 @@ export const MatrixSuffix = () => {
 
   return (
     <span 
-      className={`text-primary font-extrabold transition-all duration-500 ${
+      className={`text-white font-extrabold transition-all duration-500 ${
         isAnimating 
           ? 'scale-110 opacity-0 blur-sm' 
           : 'scale-100 opacity-100 blur-0'
@@ -44,7 +44,7 @@ export const MatrixSuffix = () => {
       style={{
         textShadow: isAnimating 
           ? '0 0 30px currentColor, 0 0 60px currentColor' 
-          : '0 0 20px rgba(var(--primary-rgb), 0.5)'
+          : '0 0 20px rgba(255, 255, 255, 0.4)'
       }}
     >
       {displayText}
