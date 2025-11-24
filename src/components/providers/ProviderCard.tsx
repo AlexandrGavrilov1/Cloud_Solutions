@@ -158,12 +158,9 @@ export const ProviderCard = ({
         className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
       >
       <div 
-        className="z-40 flex gap-2 pointer-events-auto" 
-        style={{
-          position: showDetails ? 'fixed' : 'absolute',
-          top: showDetails ? '96px' : '5%',
-          right: showDetails ? '20px' : '2%'
-        }}
+        className={`absolute right-5 top-5 md:right-6 md:top-6 z-40 flex gap-2 pointer-events-auto ${
+          showDetails ? 'lg:right-8 lg:top-8' : ''
+        }`}
       >
         {onToggleCompare && (
           <button 
