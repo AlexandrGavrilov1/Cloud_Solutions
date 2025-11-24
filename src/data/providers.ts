@@ -3603,11 +3603,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.98%",
-      supportResponseTime: "< 20 мин",
+      uptimeSLA: "Нет единого SLA",
+      supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 14,
     },
-    uptime30days: 99.96,
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
