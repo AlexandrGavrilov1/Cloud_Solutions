@@ -1405,7 +1405,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 7,
     },
-    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -1436,7 +1435,20 @@ export const providers: Provider[] = [
       "API сервисы",
       "Базы данных",
     ],
-          reviews: [
+    uptime30days: 99.98,
+    monthlyUptimeData: [
+      { month: "Январь", uptime: 100, downtime_minutes: 0 },
+      { month: "Февраль", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Март", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Апрель", uptime: 99.99, downtime_minutes: 3 },
+      { month: "Май", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Июнь", uptime: 99.98, downtime_minutes: 9 },
+      { month: "Июль", uptime: 99.99, downtime_minutes: 6 },
+      { month: "Август", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Сентябрь", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Октябрь", uptime: 100, downtime_minutes: 0 },
+    ],
+    reviews: [
       {
         author: "Игорь М.",
         text: "Использую FirstVDS уже 3 года для корпоративных проектов. Стабильность отличная, цены адекватные. Панель ISPmanager удобная и привычная.",
@@ -1498,7 +1510,7 @@ export const providers: Provider[] = [
         date: "21 окт 2025",
       },
     ],
-  
+  },
   {
     id: 7,
     name: "SprintHost",
