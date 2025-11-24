@@ -3607,6 +3607,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 14,
     },
+    uptime30days: 99.96,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
@@ -3638,7 +3639,7 @@ export const providers: Provider[] = [
       "Kubernetes кластеры",
       "CDN сервисы",
     ],
-    uptime30days: 99.96,
+
     reviews: [
       {
         author: "Игорь Р.",
