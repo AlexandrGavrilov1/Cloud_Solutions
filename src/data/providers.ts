@@ -1922,6 +1922,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 120 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -1954,7 +1955,7 @@ export const providers: Provider[] = [
       "ML/AI проекты с GPU",
       "Highload системы",
     ],
-    uptime30days: 99.98,
+
     reviews: [
       {
         author: "Алексей М.",
@@ -2033,6 +2034,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 30,
     },
+    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -2063,7 +2065,7 @@ export const providers: Provider[] = [
       "Блоги",
       "Корпоративные порталы",
     ],
-    uptime30days: 99.99,
+
     reviews: [
       {
         author: "Иван С.",
@@ -2148,6 +2150,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 60  мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.97,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -2178,7 +2181,7 @@ export const providers: Provider[] = [
       "E-commerce",
       "Dev окружения",
     ],
-    uptime30days: 99.97,
+
     reviews: [
       {
         author: "Алексей Т.",
@@ -2258,6 +2261,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 50,
@@ -2283,7 +2287,7 @@ export const providers: Provider[] = [
       "Малый бизнес",
       "Личные проекты",
     ],
-    uptime30days: 99.98,
+
     reviews: [
       {
         author: "Александр В.",
@@ -2373,6 +2377,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.87,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -2403,7 +2408,7 @@ export const providers: Provider[] = [
       "Dev окружения",
       "Малый бизнес",
     ],
-    uptime30days: 99.87,
+
     reviews: [
       {
         author: "Андрей М.",
