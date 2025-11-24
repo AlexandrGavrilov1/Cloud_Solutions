@@ -26,7 +26,7 @@ export const UptimeProviderCard = ({
       for (let i = 0; i < stats.length; i++) {
         downtime += stats[i]["downtime"];
       }
-      return <span>Общее время простоя: {downtime}</span>;
+      return <span>Общее время простоя: {downtime} мин</span>;
     } else {
       return;
     }
