@@ -2,7 +2,6 @@ import { useState, useEffect, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { AdminLogin } from '@/components/admin/AdminLogin';
-import { VisitorStatsSection } from '@/components/admin/VisitorStatsSection';
 import { ClickStatsSection } from '@/components/admin/ClickStatsSection';
 import { ReviewModerationSection } from '@/components/admin/ReviewModerationSection';
 import { generateSitemap, downloadSitemap } from '@/utils/sitemap-generator';
@@ -29,12 +28,6 @@ interface DailyStats {
   clicks: number;
 }
 
-interface VisitorStats {
-  total_unique_visitors: number;
-  period_unique_visitors: number;
-  daily_stats: { date: string; visitors: number }[];
-}
-
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('admin');
@@ -49,8 +42,6 @@ const Admin = () => {
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [isLoadingDaily, setIsLoadingDaily] = useState(true);
   const [period, setPeriod] = useState<'1' | '7' | '30'>('30');
-  const [visitorStats, setVisitorStats] = useState<VisitorStats | null>(null);
-  const [isLoadingVisitors, setIsLoadingVisitors] = useState(true);
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -97,20 +88,6 @@ const Admin = () => {
     }
   };
 
-  const fetchVisitorStats = async (days: string = '30') => {
-    setIsLoadingVisitors(true);
-    try {
-      const response = await fetch(`https://functions.poehali.dev/94b30990-d971-403f-a237-849453d2ec73?period=${days}`);
-      if (response.ok) {
-        const data = await response.json();
-        setVisitorStats(data);
-      }
-    } catch (error) {
-      console.error('Error fetching visitor stats:', error);
-    } finally {
-      setIsLoadingVisitors(false);
-    }
-  };
 
   useEffect(() => {
     const savedToken = localStorage.getItem('admin_token');
@@ -135,7 +112,6 @@ const Admin = () => {
         fetchPendingReviews();
         fetchClickStats();
         fetchDailyStats(period);
-        fetchVisitorStats(period);
       } else {
         localStorage.removeItem('admin_token');
         setIsLoading(false);
@@ -173,7 +149,6 @@ const Admin = () => {
         fetchPendingReviews();
         fetchClickStats();
         fetchDailyStats(period);
-        fetchVisitorStats(period);
       } else {
         setAuthError(data.error || 'Неверные учётные данные');
       }
@@ -225,7 +200,6 @@ const Admin = () => {
   const handlePeriodChange = (newPeriod: '1' | '7' | '30') => {
     setPeriod(newPeriod);
     fetchDailyStats(newPeriod);
-    fetchVisitorStats(newPeriod);
   };
 
   if (!isAuthenticated) {
@@ -277,14 +251,6 @@ const Admin = () => {
             </Button>
           </div>
         </div>
-
-        <VisitorStatsSection
-          visitorStats={visitorStats}
-          isLoadingVisitors={isLoadingVisitors}
-          isLoadingStats={isLoadingStats}
-          clickStats={clickStats}
-          period={period}
-        />
 
         <ClickStatsSection
           clickStats={clickStats}
