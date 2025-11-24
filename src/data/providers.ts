@@ -3488,6 +3488,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 70,
@@ -3511,7 +3512,7 @@ export const providers: Provider[] = [
       "Веб-приложения",
       "Малый бизнес",
     ],
-    uptime30days: 99.98,
+
     reviews: [
       {
         author: "Алексей М.",
