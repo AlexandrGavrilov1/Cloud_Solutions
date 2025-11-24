@@ -162,7 +162,6 @@ export const ProviderCard = ({
           showDetails ? 'lg:right-8 lg:top-8' : ''
         }`}
       >
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-background/95 via-background/90 to-background/85 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}

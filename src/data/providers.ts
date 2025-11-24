@@ -60,7 +60,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 7,
     },
-    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
@@ -93,7 +92,7 @@ export const providers: Provider[] = [
       "Финтех приложения",
       "Игровые серверы",
     ],
-
+    uptime30days: 99.99,
     reviews: [
       {
         author: "Мария К.",
@@ -423,7 +422,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
-    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: undefined,
@@ -453,6 +451,7 @@ export const providers: Provider[] = [
       "Корпоративные порталы",
       "Блоги и форумы",
     ],
+    uptime30days: 99.99,
     reviews: [
       {
         author: "Ольга В.",
@@ -801,7 +800,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 1 час",
       moneyBackGuarantee: 30,
     },
-    uptime30days: 99.92,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -832,7 +830,7 @@ export const providers: Provider[] = [
       "Доменные порталы",
       "Бизнес-приложения",
     ],
-
+    uptime30days: 99.92,
     reviews: [
       {
         author: "Игорь Р.",
@@ -1169,7 +1167,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 7,
     },
-    uptime30days: 99.68,
     additionalServices: {
       autoBackups: true,
       backupPrice: 105,
@@ -1193,7 +1190,7 @@ export const providers: Provider[] = [
       "CMS-проекты",
       "1C на облаке",
     ],
-
+    uptime30days: 99.68,
     reviews: [],
   },
   {
@@ -1253,7 +1250,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 3,
     },
-    uptime30days: 99.8,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -1286,7 +1282,19 @@ export const providers: Provider[] = [
       "Telegram боты",
       "Базы данных",
     ],
-
+    uptime30days: 99.8,
+    monthlyUptimeData: [
+      { month: "Январь", uptime: 99.7, downtime_minutes: 135 },
+      { month: "Февраль", uptime: 99.51, downtime_minutes: 195 },
+      { month: "Март", uptime: 99.84, downtime_minutes: 69 },
+      { month: "Апрель", uptime: 99.9, downtime_minutes: 45 },
+      { month: "Май", uptime: 99.8, downtime_minutes: 90 },
+      { month: "Июнь", uptime: 99.84, downtime_minutes: 69 },
+      { month: "Июль", uptime: 99.78, downtime_minutes: 96 },
+      { month: "Август", uptime: 99.91, downtime_minutes: 39 },
+      { month: "Сентябрь", uptime: 99.95, downtime_minutes: 21 },
+      { month: "Октябрь", uptime: 99.81, downtime_minutes: 84 },
+    ],
     reviews: [
       {
         author: "Александр В.",
@@ -1405,7 +1413,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 7,
     },
-    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -1436,7 +1443,19 @@ export const providers: Provider[] = [
       "API сервисы",
       "Базы данных",
     ],
-
+    uptime30days: 99.98,
+    monthlyUptimeData: [
+      { month: "Январь", uptime: 100, downtime_minutes: 0 },
+      { month: "Февраль", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Март", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Апрель", uptime: 99.99, downtime_minutes: 3 },
+      { month: "Май", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Июнь", uptime: 99.98, downtime_minutes: 9 },
+      { month: "Июль", uptime: 99.99, downtime_minutes: 6 },
+      { month: "Август", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Сентябрь", uptime: 99.97, downtime_minutes: 12 },
+      { month: "Октябрь", uptime: 100, downtime_minutes: 0 },
+    ],
     reviews: [
       {
         author: "Игорь М.",
@@ -1556,7 +1575,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.74,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1587,7 +1605,7 @@ export const providers: Provider[] = [
       "Веб-приложения",
       "Dev окружения",
     ],
-
+    uptime30days: 99.74,
     reviews: [
       {
         author: "Андрей С.",
@@ -1673,7 +1691,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1705,7 +1722,7 @@ export const providers: Provider[] = [
       "Корпоративные порталы",
       "Разработка",
     ],
-
+    uptime30days: 99.88,
     reviews: [
       {
         author: "Павел Д.",
@@ -1791,7 +1808,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
-    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1825,7 +1841,7 @@ export const providers: Provider[] = [
       "Резервные площадки",
       "Облачная инфраструктура",
     ],
-
+    uptime30days: 99.98,
     reviews: [
       {
         author: "Владимир Р.",
@@ -1922,7 +1938,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 120 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -1955,7 +1970,7 @@ export const providers: Provider[] = [
       "ML/AI проекты с GPU",
       "Highload системы",
     ],
-
+    uptime30days: 99.98,
     reviews: [
       {
         author: "Алексей М.",
@@ -2034,7 +2049,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 30,
     },
-    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -2065,7 +2079,7 @@ export const providers: Provider[] = [
       "Блоги",
       "Корпоративные порталы",
     ],
-
+    uptime30days: 99.99,
     reviews: [
       {
         author: "Иван С.",
@@ -2150,7 +2164,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 60  мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.97,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -2181,7 +2194,19 @@ export const providers: Provider[] = [
       "E-commerce",
       "Dev окружения",
     ],
-
+    uptime30days: 99.97,
+    monthlyUptimeData: [
+      { month: "Январь", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Февраль", uptime: 99.98, downtime_minutes: 9 },
+      { month: "Март", uptime: 99.98, downtime_minutes: 9 },
+      { month: "Апрель", uptime: 99.98, downtime_minutes: 9 },
+      { month: "Май", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Июнь", uptime: 99.96, downtime_minutes: 18 },
+      { month: "Июль", uptime: 99.99, downtime_minutes: 3 },
+      { month: "Август", uptime: 99.99, downtime_minutes: 3 },
+      { month: "Сентябрь", uptime: 99.97, downtime_minutes: 15 },
+      { month: "Октябрь", uptime: 99.97, downtime_minutes: 15 },
+    ],
     reviews: [
       {
         author: "Алексей Т.",
@@ -2261,7 +2286,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 50,
@@ -2287,7 +2311,7 @@ export const providers: Provider[] = [
       "Малый бизнес",
       "Личные проекты",
     ],
-
+    uptime30days: 99.98,
     reviews: [
       {
         author: "Александр В.",
@@ -2377,7 +2401,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.87,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -2408,7 +2431,7 @@ export const providers: Provider[] = [
       "Dev окружения",
       "Малый бизнес",
     ],
-
+    uptime30days: 99.87,
     reviews: [
       {
         author: "Андрей М.",
@@ -2558,7 +2581,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.46,
     additionalServices: {
       autoBackups: true,
       backupPrice: 50,
@@ -2590,7 +2612,7 @@ export const providers: Provider[] = [
       "Dev окружения",
       "Игровые серверы",
     ],
-
+    uptime30days: 99.46,
     reviews: [
       {
         author: "Алексей Д.",
@@ -2734,7 +2756,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 14,
     },
-    uptime30days: 99.88,
     additionalServices: {
       autoBackups: false,
       backupPrice: 60,
@@ -2758,7 +2779,7 @@ export const providers: Provider[] = [
       "Веб-приложения",
       "Малый бизнес",
     ],
-
+    uptime30days: 99.88,
     reviews: [
       {
         author: "Александр Г.",
@@ -2834,7 +2855,6 @@ export const providers: Provider[] = [
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.9,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
