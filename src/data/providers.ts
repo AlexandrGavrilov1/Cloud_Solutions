@@ -5519,10 +5519,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 5,
     },
+    uptime30days: 99.9,
     additionalServices: {
       autoBackups: true,
       backupPrice: 85,
@@ -5541,7 +5542,7 @@ export const providers: Provider[] = [
     popularity: 6500,
     promoText: "Почасовая оплата + NVMe диски от 190₽/мес",
     caseStudies: ["Веб-разработка", "Игровые серверы", "Боты"],
-    uptime30days: 99.53,
+
     reviews: [],
   },
   {
