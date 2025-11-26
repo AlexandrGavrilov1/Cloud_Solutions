@@ -3983,6 +3983,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 30,
     },
+    uptime30days: 99.93,
     additionalServices: {
       autoBackups: true,
       backupPrice: 140,
@@ -4013,7 +4014,7 @@ export const providers: Provider[] = [
       "Kubernetes",
       "DBaaS",
     ],
-    uptime30days: 99.93,
+
     reviews: [
       {
         author: "Игорь В.",
