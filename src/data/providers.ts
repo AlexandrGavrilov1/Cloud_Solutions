@@ -4977,7 +4977,7 @@ export const providers: Provider[] = [
     features: ["NVMe диски", "ЦОД Tier III", "152-ФЗ", "РТК инфраструктура"],
     locations: ["Москва", "Санкт-Петербург", "Ростов-на-Дону"],
     trialDays: 0,
-    url: "https://www.dc.rt.ru/",
+    url: "https://rt-dc.ru/",
     pros: [
       "Инфраструктура Ростелекома",
       "ЦОД Tier III",
@@ -5016,6 +5016,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.93,
     additionalServices: {
       autoBackups: true,
       backupPrice: 200,
@@ -5035,7 +5036,6 @@ export const providers: Provider[] = [
       "Телеком проекты",
       "Банковский сектор",
     ],
-    uptime30days: 99.93,
     reviews: [],
   },
   {
