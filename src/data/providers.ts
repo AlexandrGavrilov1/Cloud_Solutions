@@ -4232,10 +4232,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 20 мин",
+      uptimeSLA: "Нет единого SLA",
+      supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -4266,7 +4267,6 @@ export const providers: Provider[] = [
       "Финтех",
       "VPN сервисы",
     ],
-    uptime30days: 99.88,
     reviews: [
       {
         author: "Максим Л.",
