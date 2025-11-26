@@ -1673,7 +1673,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.88,
+    uptime30days: 99.89,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -3732,7 +3732,7 @@ export const providers: Provider[] = [
       ddosProtection: "До 1 Тбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
+      uptimeSLA: "99.9%",
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 0,
     },
