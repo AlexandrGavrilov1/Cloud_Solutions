@@ -4942,11 +4942,11 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
+      uptimeSLA: "99.9%",
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
-    uptime30days: 99.93,
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 180,
