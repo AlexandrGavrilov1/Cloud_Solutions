@@ -4505,10 +4505,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "Нет официального SLA",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.9 ",
+      supportResponseTime: "<  5 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 96.55,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -4540,7 +4541,7 @@ export const providers: Provider[] = [
       "Веб-разработка",
       "Стриминг",
     ],
-    uptime30days: 99.85,
+
     reviews: [
       {
         author: "Артём К.",
