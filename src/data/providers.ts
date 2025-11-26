@@ -798,7 +798,7 @@ export const providers: Provider[] = [
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
-      supportResponseTime: "< 1 час",
+      supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 30,
     },
     uptime30days: 99.92,
