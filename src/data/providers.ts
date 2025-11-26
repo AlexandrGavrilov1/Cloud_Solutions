@@ -5412,6 +5412,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 140,
@@ -5427,7 +5428,7 @@ export const providers: Provider[] = [
     popularity: 8500,
     promoText: "Облачная инфраструктура на базе ЦОД Билайн",
     caseStudies: ["Корпоративные проекты", "Телеком решения", "E-commerce"],
-    uptime30days: 99.88,
+
     reviews: [],
   },
   {
