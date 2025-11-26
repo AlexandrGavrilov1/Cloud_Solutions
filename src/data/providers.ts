@@ -5203,10 +5203,11 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.89,
     additionalServices: {
       autoBackups: true,
       backupPrice: 170,
@@ -5227,7 +5228,7 @@ export const providers: Provider[] = [
       "1C на облаке",
       "Microsoft инфраструктура",
     ],
-    uptime30days: 99.89,
+
     reviews: [],
   },
   {
@@ -5347,6 +5348,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 5,
     },
+    uptime30days: 99.47,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -5362,7 +5364,6 @@ export const providers: Provider[] = [
     popularity: 4500,
     promoText: "5 дней тест + ISPmanager в подарок",
     caseStudies: ["Корпоративные сайты", "CMS-проекты", "E-commerce"],
-    uptime30days: 99.47,
     reviews: [],
   },
   {
