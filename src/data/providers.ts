@@ -4101,9 +4101,10 @@ export const providers: Provider[] = [
     },
     serviceGuarantees: {
       uptimeSLA: "99.95%",
-      supportResponseTime: "< 15 мин",
+      supportResponseTime: "< 120 мин",
       moneyBackGuarantee: 30,
     },
+    uptime30days: 99.95,
     additionalServices: {
       autoBackups: true,
       backupPrice: 160,
@@ -4128,7 +4129,7 @@ export const providers: Provider[] = [
       "Big Data",
       "Стартапы",
     ],
-    uptime30days: 99.93,
+
     reviews: [
       {
         author: "Максим Д.",
