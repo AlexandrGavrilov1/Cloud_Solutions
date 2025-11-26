@@ -4757,6 +4757,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.94,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
@@ -4776,7 +4777,7 @@ export const providers: Provider[] = [
       "Банковский сектор",
       "Корпоративные приложения",
     ],
-    uptime30days: 99.94,
+
     reviews: [],
   },
   {
