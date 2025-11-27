@@ -272,7 +272,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Сентябрь", uptime: 100, downtime: 0 },
       { month: "Октябрь", uptime: 100, downtime: 0 },
     ];
-  }
+  };
   return [];
 };
 
