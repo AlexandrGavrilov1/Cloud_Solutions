@@ -6065,10 +6065,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
+      uptimeSLA: "99.99%",
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.92,
     additionalServices: {
       autoBackups: true,
       backupPrice: 110,
@@ -6093,7 +6094,7 @@ export const providers: Provider[] = [
       "Gaming серверы",
       "Корпоративные решения",
     ],
-    uptime30days: 99.92,
+
     reviews: [],
   },
 ];
