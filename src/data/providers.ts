@@ -5786,10 +5786,12 @@ export const providers: Provider[] = [
       ddosProtection: "До 50 Гбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
-      supportResponseTime: "< 40 мин",
+      uptimeSLA: "99.9%",
+      supportResponseTime: "<  240 мин",
       moneyBackGuarantee: 3,
     },
+    uptime30days: 99.44,
+
     additionalServices: {
       autoBackups: true,
       backupPrice: 70,
@@ -5805,7 +5807,7 @@ export const providers: Provider[] = [
     popularity: 5500,
     promoText: "Недорогие VPS от 165₽/мес с DDoS защитой",
     caseStudies: ["Личные проекты", "Тестовые среды", "Небольшие сайты"],
-    uptime30days: 99.48,
+
     reviews: [],
   },
   {
