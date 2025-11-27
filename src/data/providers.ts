@@ -5726,10 +5726,11 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.87,
     additionalServices: {
       autoBackups: true,
       backupPrice: 140,
@@ -5747,7 +5748,7 @@ export const providers: Provider[] = [
     popularity: 9500,
     promoText: "Облачная инфраструктура от ТрансТелеКом",
     caseStudies: ["Корпоративные проекты", "Телеком решения", "Госсектор"],
-    uptime30days: 99.87,
+
     reviews: [],
   },
   {
