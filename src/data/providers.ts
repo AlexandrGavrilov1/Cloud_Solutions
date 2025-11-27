@@ -1,6 +1,6 @@
 import { Provider } from "@/components/providers/types";
 
-import { getStaticYearDownTime } from "../providers/UptimeProviderCard.tsx";
+import { getStaticYearDownTime } from "@/components/providers/UptimeProviderCard";
 
 export const lastUpdateDate = "12.11.2025";
 
