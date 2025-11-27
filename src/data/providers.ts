@@ -2675,7 +2675,7 @@ export const providers: Provider[] = [
   {
     id: 16,
     name: "U1Host",
-    logo: "https://cdn.poehali.dev/files/aa6a19cb-f969-4b2b-a20b-e5a5fdfb313c.png",
+    logo: "https://cdn.poehali.dev/files/3d02003c-8802-4f09-931e-f32dcd1558af.jpg",
     rating: 9.0,
     basePrice: 149,
     cpuPrice: 145,
