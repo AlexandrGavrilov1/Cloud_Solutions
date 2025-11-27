@@ -229,6 +229,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
   };
 
   const monthlyData = getStaticMonthlyData(provider.id);
+  const uptime = provider.uptime30days ?? 0;
 
   return (
     <div
@@ -299,12 +300,12 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
           <div className="flex items-center gap-6">
             <div className="text-right">
               <div
-                className={`text-3xl font-bold ${getUptimeColorClass(provider.uptime)}`}
+                className={`text-3xl font-bold ${getUptimeColorClass(uptime)}`}
               >
-                {provider.uptime.toFixed(2)}%
+                {uptime.toFixed(2)}%
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                {getDowntimeMinutes(provider.uptime)}
+                {getDowntimeMinutes(uptime)}
               </div>
             </div>
             <button
@@ -324,8 +325,8 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
 
         <div className="w-full bg-gray-700/30 rounded-full h-2 overflow-hidden">
           <div
-            className={`h-full ${getUptimeBarColorClass(provider.uptime)} transition-all duration-500`}
-            style={{ width: `${provider.uptime}%` }}
+            className={`h-full ${getUptimeBarColorClass(uptime)} transition-all duration-500`}
+            style={{ width: `${uptime}%` }}
           />
         </div>
       </div>
