@@ -6,7 +6,7 @@ export const providers: Provider[] = [
   {
     id: 1,
     name: "Timeweb Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/c68c0760-0692-436d-8905-b2f1b5486586.jpg",
+    logo: "https://cdn.poehali.dev/files/2ecbf88a-b677-42e9-b594-4055095ff71e.jpg",
     rating: 9.8,
     basePrice: 150,
     cpuPrice: 220,
