@@ -21,6 +21,7 @@ export const UptimeProviderCard = ({
 }: UptimeProviderCardProps) => {
   const uptime = provider.uptime30days || 0;
   const downtimeText = getDowntimeMinutes(uptime);
+  
   const getStaticMonthlyData = (providerId: number) => {
     if (providerId === 1) {
       return [
@@ -295,6 +296,11 @@ export const UptimeProviderCard = ({
     provider.id === 22 ||
     provider.id === 23;
 
+  const monthlyData = getStaticMonthlyData(provider.id);
+  const totalDowntime = monthlyData && Array.isArray(monthlyData)
+    ? monthlyData.reduce((sum, month) => sum + month.downtime, 0)
+    : 0;
+
   return (
     <div
       key={provider.id}
@@ -402,6 +408,14 @@ export const UptimeProviderCard = ({
                 {provider.serviceGuarantees.supportResponseTime}
               </span>
             </div>
+            {totalDowntime > 0 && (
+              <div className="flex justify-between py-1">
+                <span>Суммарное время простоя:</span>
+                <span className="font-semibold text-foreground">
+                  {totalDowntime} мин
+                </span>
+              </div>
+            )}
           </div>
 
           {shouldShowGraph && isExpanded && (
