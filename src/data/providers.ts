@@ -5050,7 +5050,7 @@ export const providers: Provider[] = [
     features: ["SSD диски", "152-ФЗ", "Managed услуги", "Российские ЦОД"],
     locations: ["Москва", "Санкт-Петербург", "Екатеринбург"],
     trialDays: 7,
-    url: "https:/iteco.cloud/",
+    url: "https://iteco.cloud/",
     pros: ["Тестовая неделя", "Managed услуги", "Опыт с 2000 года", "152-ФЗ"],
     cons: ["Нет NVMe", "Устаревший интерфейс", "Мало локаций"],
     fz152Compliant: true,
