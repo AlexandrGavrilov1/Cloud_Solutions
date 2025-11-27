@@ -4643,8 +4643,8 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 7,
     },
     additionalServices: {
@@ -4671,7 +4671,7 @@ export const providers: Provider[] = [
       "Веб-приложения",
       "Малый и средний бизнес",
     ],
-    uptime30days: 99.9,
+    uptime30days: 99.99,
     reviews: [
       {
         author: "Михаил Р.",
