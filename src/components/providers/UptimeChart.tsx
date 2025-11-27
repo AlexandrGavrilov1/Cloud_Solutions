@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Provider } from "./types";
 import { UptimeChartHeader } from "./UptimeChartHeader";
-import { UptimeProviderCard } from "./UptimeProviderCard";
+import { UptimeProviderCard, calculateTotalDowntime } from "./UptimeProviderCard";
 
 interface MonthlyDowntime {
   provider_id: number;
@@ -30,7 +30,11 @@ export const UptimeChart = ({
   const providersWithUptime = providers
     .filter((p) => p.uptime30days !== undefined)
     .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    .sort((a, b) => (b.uptime30days || 0) - (a.uptime30days || 0));
+    .sort((a, b) => {
+      const uptimeDiff = (b.uptime30days || 0) - (a.uptime30days || 0);
+      if (uptimeDiff !== 0) return uptimeDiff;
+      return calculateTotalDowntime(a.id) - calculateTotalDowntime(b.id);
+    });
 
   const getUptimeColor = (uptime: number) => {
     if (uptime >= 99.95) return "rgb(0, 128, 0)";
