@@ -1874,7 +1874,7 @@ export const providers: Provider[] = [
   {
     id: 10,
     name: "NetAngels",
-    logo: "https://cdn.poehali.dev/files/026105ab-9f08-4cab-a6f1-63ce5e558a33.png",
+    logo: "https://cdn.poehali.dev/files/ec5f7872-5b5e-473e-a6e4-24df9720299e.jpg",
     rating: 9.2,
     basePrice: 284,
     cpuPrice: 170,
