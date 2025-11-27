@@ -376,7 +376,7 @@ export const providers: Provider[] = [
   {
     id: 2,
     name: "Beget",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/cb5c67be-af76-4963-81a3-66f542907b9d.jpg",
+    logo: "https://cdn.poehali.dev/files/6c01bc04-0485-436b-aa58-b2a44a3f086a.jpg",
     rating: 9.6,
     basePrice: 150,
     cpuPrice: 90,
