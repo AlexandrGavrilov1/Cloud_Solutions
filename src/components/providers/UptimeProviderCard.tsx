@@ -263,12 +263,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
     provider.id === 13 ||
     provider.id === 14 ||
     provider.id === 15 ||
-    provider.id === 18 ||
-    provider.id === 19 ||
-    provider.id === 20 ||
-    provider.id === 21 ||
-    provider.id === 22 ||
-    provider.id === 23;
+    provider.id === 18;
 
   return (
     <div
