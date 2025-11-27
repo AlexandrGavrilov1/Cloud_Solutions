@@ -2146,7 +2146,7 @@ export const providers: Provider[] = [
       ddosProtection: "До 100 Гбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.99%",
+      uptimeSLA: "99.98%",
       supportResponseTime: "< 60  мин",
       moneyBackGuarantee: 0,
     },
