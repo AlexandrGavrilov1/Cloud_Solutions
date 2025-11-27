@@ -5787,7 +5787,7 @@ export const providers: Provider[] = [
     },
     serviceGuarantees: {
       uptimeSLA: "99.9%",
-      supportResponseTime: "<  240 мин",
+      supportResponseTime: "<  4 часа",
       moneyBackGuarantee: 3,
     },
     uptime30days: 99.44,
@@ -5904,7 +5904,7 @@ export const providers: Provider[] = [
   },
   {
     id: 51,
-    name: "PQ.Hosting",
+    name: "The Hosting",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/62bfa585-69de-4303-b44a-925a7b48156f.jpg",
     rating: 8.5,
     basePrice: 0,
@@ -5922,7 +5922,7 @@ export const providers: Provider[] = [
       "Майами",
     ],
     trialDays: 0,
-    url: "https://pq.hosting/",
+    url: "https://the.hosting/ru/",
     pros: [
       "Анонимная регистрация без документов",
       "Оплата криптовалютой",
@@ -5960,10 +5960,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
-      supportResponseTime: "< 2 часа",
+      uptimeSLA: "99.9%",
+      supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.32,
     additionalServices: {
       autoBackups: true,
       backupPrice: 90,
@@ -5996,7 +5997,7 @@ export const providers: Provider[] = [
       "Прокси и VPN",
       "Боты",
     ],
-    uptime30days: 99.54,
+
     reviews: [],
   },
   {
