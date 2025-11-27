@@ -24,6 +24,8 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Август", uptime: 99.99, downtime: 3 },
       { month: "Сентябрь", uptime: 99.99, downtime: 6 },
       { month: "Октябрь", uptime: 99.98, downtime: 6 },
+      { month: "Ноябрь", uptime: 99.98, downtime: 3 },
+      { month: "Декабрь", uptime: 99.98, downtime: 3 },
     ];
   } else if (providerId === 2) {
     return [
@@ -200,7 +202,8 @@ export const getStaticMonthlyData = (providerId: number) => {
 
 export const calculateTotalDowntime = (providerId: number): number => {
   const monthlyData = getStaticMonthlyData(providerId);
-  if (!monthlyData || !Array.isArray(monthlyData) || monthlyData.length === 0) return 0;
+  if (!monthlyData || !Array.isArray(monthlyData) || monthlyData.length === 0)
+    return 0;
   return monthlyData.reduce((sum, month) => sum + month.downtime, 0);
 };
 
@@ -230,9 +233,10 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
 
   const monthlyData = getStaticMonthlyData(provider.id);
   const uptime = provider.uptime30days ?? 0;
-  const totalDowntime = monthlyData && Array.isArray(monthlyData)
-    ? monthlyData.reduce((sum, month) => sum + month.downtime, 0)
-    : 0;
+  const totalDowntime =
+    monthlyData && Array.isArray(monthlyData)
+      ? monthlyData.reduce((sum, month) => sum + month.downtime, 0)
+      : 0;
 
   const shouldShowGraph =
     provider.id === 1 ||
