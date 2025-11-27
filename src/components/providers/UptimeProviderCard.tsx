@@ -259,6 +259,19 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Сентябрь", uptime: 100, downtime: 0 },
       { month: "Октябрь", uptime: 100, downtime: 0 },
     ];
+  } else if (providerId === 32) {
+    return [
+      { month: "Январь", uptime: 99,99, downtime: 6 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
+      { month: "Март", uptime: 100, downtime: 0 },
+      { month: "Апрель", uptime: 100, downtime: 0 },
+      { month: "Май", uptime: 99,98, downtime: 9 },
+      { month: "Июнь", uptime: 99.99, downtime: 3 },
+      { month: "Июль", uptime: 99,99, downtime: 3 },
+      { month: "Август", uptime: 99.98, downtime: 9 },
+      { month: "Сентябрь", uptime: 100, downtime: 0 },
+      { month: "Октябрь", uptime: 100, downtime: 0 },
+    ];
   }
   return [];
 };
@@ -320,7 +333,8 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
     provider.id === 20 ||
     provider.id === 21 ||
     provider.id === 22 ||
-    provider.id === 23;
+    provider.id === 23 ||
+    provider.id === 32;
 
   return (
     <div
