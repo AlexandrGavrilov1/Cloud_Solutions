@@ -5466,6 +5466,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 3,
     },
+    uptime30days: 99.89,
     additionalServices: {
       autoBackups: true,
       backupPrice: 95,
@@ -5481,7 +5482,7 @@ export const providers: Provider[] = [
     popularity: 3500,
     promoText: "3 дня тест + DDoS защита в подарок",
     caseStudies: ["Игровые серверы", "Веб-проекты", "Discord боты"],
-    uptime30days: 99.89,
+
     reviews: [],
   },
   {
