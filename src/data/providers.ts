@@ -3219,7 +3219,7 @@ export const providers: Provider[] = [
   {
     id: 21,
     name: "HANDYHOST",
-    logo: "http://handyhost.ru/tpl/img/logo3.png",
+    logo: "https://cdn.poehali.dev/files/13c84141-374e-4f37-86d9-d7039f43cbe7.jpg",
     rating: 9.0,
     basePrice: 160,
     cpuPrice: 125,
