@@ -5686,7 +5686,7 @@ export const providers: Provider[] = [
   },
   {
     id: 48,
-    name: "TTK Cloud",
+    name: "TTK Облако",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/c805eef9-b67b-4118-92dc-7d811f78b4c1.jpg",
     rating: 8.4,
     basePrice: 0,
