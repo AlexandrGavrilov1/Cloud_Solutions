@@ -208,7 +208,6 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Октябрь", uptime: 99.99, downtime: 0 },
     ];
   }
-  return [];
 };
 
 export const calculateTotalDowntime = (providerId: number): number => {
