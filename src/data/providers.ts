@@ -5868,10 +5868,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.95%",
+      supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.91,
     additionalServices: {
       autoBackups: true,
       backupPrice: 130,
@@ -5899,7 +5900,6 @@ export const providers: Provider[] = [
       "Gaming",
       "Streaming",
     ],
-    uptime30days: 99.91,
     reviews: [],
   },
   {
