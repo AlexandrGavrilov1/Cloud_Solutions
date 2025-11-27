@@ -5548,7 +5548,7 @@ export const providers: Provider[] = [
   },
   {
     id: 46,
-    name: "Croc Cloud",
+    name: "K2 Cloud",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/07ce57c2-c659-4066-9e8c-a98e4550ad20.jpg",
     rating: 8.7,
     basePrice: 0,
@@ -5558,7 +5558,7 @@ export const providers: Provider[] = [
     features: ["NVMe диски", "ФСТЕК K1", "152-ФЗ", "VMware"],
     locations: ["Москва", "Санкт-Петербург"],
     trialDays: 14,
-    url: "https://cloud.croc.ru/",
+    url: "https://k2.cloud/",
     pros: [
       "Системный интегратор с опытом 30+ лет",
       "Сертификация ФСТЕК K1",
@@ -5591,10 +5591,11 @@ export const providers: Provider[] = [
       cpuModels: ["Intel Xeon"],
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
+    uptime30days: 99.96,
     additionalServices: {
       autoBackups: true,
       backupPrice: 180,
@@ -5618,7 +5619,7 @@ export const providers: Provider[] = [
       "Корпоративная инфраструктура",
       "Критичные системы",
     ],
-    uptime30days: 99.96,
+
     reviews: [],
   },
   {
