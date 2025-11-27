@@ -1,7 +1,4 @@
 import { Provider } from "@/components/providers/types";
-
-import { UptimeProviderCardProps } from "@/components/providers/UptimeProviderCard";
-
 export const lastUpdateDate = "12.11.2025";
 
 export const providers: Provider[] = [
@@ -63,7 +60,6 @@ export const providers: Provider[] = [
       moneyBackGuarantee: 7,
     },
     uptime30days: 99.99,
-    downtimeYear: UptimeProviderCardProps.getStaticYearDownTime(id),
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
