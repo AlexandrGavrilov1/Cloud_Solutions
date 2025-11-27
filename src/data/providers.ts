@@ -56,7 +56,7 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.98%",
+      uptimeSLA: "99,98",
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 7,
     },
@@ -798,7 +798,7 @@ export const providers: Provider[] = [
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
-      supportResponseTime: "< 1 час",
+      supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 30,
     },
     uptime30days: 99.92,
@@ -1673,7 +1673,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.88,
+    uptime30days: 99.89,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -2834,7 +2834,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.9,
+    uptime30days: 99.87,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -3267,6 +3267,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 55,
@@ -3290,7 +3291,7 @@ export const providers: Provider[] = [
       "Малый бизнес",
       "Веб-разработка",
     ],
-    uptime30days: 99.99,
+
     reviews: [
       {
         author: "Владимир К.",
@@ -3380,6 +3381,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -3403,7 +3405,7 @@ export const providers: Provider[] = [
       "OpenCart магазины",
       "Корпоративный сектор",
     ],
-    uptime30days: 99.99,
+
     reviews: [
       {
         author: "Сергей М.",
@@ -3486,6 +3488,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 70,
@@ -3509,7 +3512,7 @@ export const providers: Provider[] = [
       "Веб-приложения",
       "Малый бизнес",
     ],
-    uptime30days: 99.98,
+
     reviews: [
       {
         author: "Алексей М.",
@@ -3600,10 +3603,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.98%",
-      supportResponseTime: "< 20 мин",
+      uptimeSLA: "Нет единого SLA",
+      supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 14,
     },
+    uptime30days: 99.97,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
@@ -3635,7 +3639,7 @@ export const providers: Provider[] = [
       "Kubernetes кластеры",
       "CDN сервисы",
     ],
-    uptime30days: 99.96,
+
     reviews: [
       {
         author: "Игорь Р.",
@@ -3728,10 +3732,11 @@ export const providers: Provider[] = [
       ddosProtection: "До 1 Тбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
+      uptimeSLA: "99.9%",
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.94,
     additionalServices: {
       autoBackups: true,
       backupPrice: 180,
@@ -3756,7 +3761,6 @@ export const providers: Provider[] = [
       "Корпоративные решения",
       "Финтех",
     ],
-    uptime30days: 99.94,
     reviews: [
       {
         author: "Дмитрий К.",
@@ -3858,6 +3862,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 10,
     },
+    uptime30days: 99.87,
     additionalServices: {
       autoBackups: true,
       backupPrice: 120,
@@ -3888,7 +3893,7 @@ export const providers: Provider[] = [
       "CDN сервисы",
       "Gaming",
     ],
-    uptime30days: 99.93,
+
     reviews: [
       {
         author: "Дмитрий К.",
@@ -3978,6 +3983,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 30,
     },
+    uptime30days: 99.93,
     additionalServices: {
       autoBackups: true,
       backupPrice: 140,
@@ -4008,7 +4014,7 @@ export const providers: Provider[] = [
       "Kubernetes",
       "DBaaS",
     ],
-    uptime30days: 99.93,
+
     reviews: [
       {
         author: "Игорь В.",
@@ -4095,9 +4101,10 @@ export const providers: Provider[] = [
     },
     serviceGuarantees: {
       uptimeSLA: "99.95%",
-      supportResponseTime: "< 15 мин",
+      supportResponseTime: "< 120 мин",
       moneyBackGuarantee: 30,
     },
+    uptime30days: 99.95,
     additionalServices: {
       autoBackups: true,
       backupPrice: 160,
@@ -4122,7 +4129,7 @@ export const providers: Provider[] = [
       "Big Data",
       "Стартапы",
     ],
-    uptime30days: 99.93,
+
     reviews: [
       {
         author: "Максим Д.",
@@ -4225,10 +4232,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 20 мин",
+      uptimeSLA: "Нет единого SLA",
+      supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -4259,7 +4267,6 @@ export const providers: Provider[] = [
       "Финтех",
       "VPN сервисы",
     ],
-    uptime30days: 99.88,
     reviews: [
       {
         author: "Максим Л.",
@@ -4357,10 +4364,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "Нет официального SLA",
-      supportResponseTime: "< 30 мин",
+      uptimeSLA: "99.9",
+      supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.9,
     additionalServices: {
       autoBackups: true,
       backupPrice: 20,
@@ -4383,7 +4391,7 @@ export const providers: Provider[] = [
       "Kubernetes кластеры",
       "CDN",
     ],
-    uptime30days: 99.9,
+
     reviews: [
       {
         author: "Алексей В.",
@@ -4497,10 +4505,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "Нет официального SLA",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.9 ",
+      supportResponseTime: "<  5 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 96.55,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -4532,7 +4541,7 @@ export const providers: Provider[] = [
       "Веб-разработка",
       "Стриминг",
     ],
-    uptime30days: 99.85,
+
     reviews: [
       {
         author: "Артём К.",
@@ -4748,6 +4757,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.94,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
@@ -4767,11 +4777,11 @@ export const providers: Provider[] = [
       "Банковский сектор",
       "Корпоративные приложения",
     ],
-    uptime30days: 99.94,
+
     reviews: [],
   },
   {
-    id: 33,
+    id: 34,
     name: "MWS",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/f17a3b05-2427-4d90-9b0f-88843dc3ee38.jpg",
     rating: 8.5,
@@ -4801,10 +4811,11 @@ export const providers: Provider[] = [
       ddosProtection: "Базовая защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.52,
     additionalServices: {
       autoBackups: true,
       backupPrice: 120,
@@ -4820,11 +4831,11 @@ export const providers: Provider[] = [
     popularity: 8000,
     promoText: "7 дней тест для новых клиентов",
     caseStudies: ["Корпоративные сайты", "CMS-проекты", "Базы данных"],
-    uptime30days: 99.52,
+
     reviews: [],
   },
   {
-    id: 34,
+    id: 35,
     name: "Rosukrep",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/3cd382b7-b835-4fdf-b680-f4c97992ba6e.jpg",
     rating: 8.3,
@@ -4865,10 +4876,11 @@ export const providers: Provider[] = [
       ddosProtection: "До 50 Гбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.99%",
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.9,
     additionalServices: {
       autoBackups: true,
       backupPrice: 110,
@@ -4888,11 +4900,11 @@ export const providers: Provider[] = [
       "Корпоративные сайты",
       "E-commerce",
     ],
-    uptime30days: 99.48,
+
     reviews: [],
   },
   {
-    id: 35,
+    id: 36,
     name: "IT-GRAD",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/513e6d11-5f72-4b80-8388-1d0d6cd94079.jpg",
     rating: 8.9,
@@ -4930,10 +4942,11 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
+      uptimeSLA: "99.9%",
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 180,
@@ -4949,11 +4962,11 @@ export const providers: Provider[] = [
     popularity: 12000,
     promoText: "14 дней тест + корпоративная техподдержка",
     caseStudies: ["Банки", "Корпоративные системы", "SAP", "1C на облаке"],
-    uptime30days: 99.96,
+
     reviews: [],
   },
   {
-    id: 36,
+    id: 37,
     name: "РТК ЦОД",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1b7d33b7-3fa5-4439-8800-91ed00affd4e.jpg",
     rating: 8.6,
@@ -4964,7 +4977,7 @@ export const providers: Provider[] = [
     features: ["NVMe диски", "ЦОД Tier III", "152-ФЗ", "РТК инфраструктура"],
     locations: ["Москва", "Санкт-Петербург", "Ростов-на-Дону"],
     trialDays: 0,
-    url: "https://www.dc.rt.ru/",
+    url: "https://rt-dc.ru/",
     pros: [
       "Инфраструктура Ростелекома",
       "ЦОД Tier III",
@@ -5003,6 +5016,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.93,
     additionalServices: {
       autoBackups: true,
       backupPrice: 200,
@@ -5022,11 +5036,10 @@ export const providers: Provider[] = [
       "Телеком проекты",
       "Банковский сектор",
     ],
-    uptime30days: 99.93,
     reviews: [],
   },
   {
-    id: 37,
+    id: 38,
     name: "Айтеко",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1ab25c38-2cd4-4a37-8157-7336c06f35da.jpg",
     rating: 8.4,
@@ -5037,7 +5050,7 @@ export const providers: Provider[] = [
     features: ["SSD диски", "152-ФЗ", "Managed услуги", "Российские ЦОД"],
     locations: ["Москва", "Санкт-Петербург", "Екатеринбург"],
     trialDays: 7,
-    url: "https://iteco.ru/",
+    url: "https:/iteco.cloud/",
     pros: ["Тестовая неделя", "Managed услуги", "Опыт с 2000 года", "152-ФЗ"],
     cons: ["Нет NVMe", "Устаревший интерфейс", "Мало локаций"],
     fz152Compliant: true,
@@ -5062,10 +5075,11 @@ export const providers: Provider[] = [
       ddosProtection: "Базовая защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.51,
     additionalServices: {
       autoBackups: true,
       backupPrice: 130,
@@ -5081,11 +5095,11 @@ export const providers: Provider[] = [
     popularity: 7000,
     promoText: "7 дней тест + managed услуги",
     caseStudies: ["Корпоративные проекты", "1C на облаке", "CMS-системы"],
-    uptime30days: 99.51,
+
     reviews: [],
   },
   {
-    id: 38,
+    id: 39,
     name: "Linx",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/8a84de5c-ce2f-403d-b1ad-940798d92888.jpg",
     rating: 8.7,
@@ -5096,7 +5110,7 @@ export const providers: Provider[] = [
     features: ["NVMe диски", "152-ФЗ", "DDoS защита", "Почасовая оплата"],
     locations: ["Москва", "Санкт-Петербург", "Нижний Новгород", "Екатеринбург"],
     trialDays: 3,
-    url: "https://linx-host.ru/",
+    url: "https://linx.ru/",
     pros: ["Почасовая оплата", "NVMe диски", "4 локации", "Доступные цены"],
     cons: [
       "Короткий тестовый период",
@@ -5119,10 +5133,11 @@ export const providers: Provider[] = [
       ddosProtection: "До 80 Гбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.99%",
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 3,
     },
+    uptime30days: 99.84,
     additionalServices: {
       autoBackups: true,
       backupPrice: 90,
@@ -5141,11 +5156,11 @@ export const providers: Provider[] = [
     popularity: 5000,
     promoText: "Почасовая оплата + NVMe диски от 185₽/мес",
     caseStudies: ["Веб-разработка", "Discord боты", "Игровые серверы"],
-    uptime30days: 99.54,
+
     reviews: [],
   },
   {
-    id: 39,
+    id: 40,
     name: "Софтлайн",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/bb737db0-e675-436c-bb84-9078403b1965.jpg",
     rating: 8.5,
@@ -5188,10 +5203,11 @@ export const providers: Provider[] = [
       ddosProtection: "Корпоративная защита",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9%",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.89,
     additionalServices: {
       autoBackups: true,
       backupPrice: 170,
@@ -5212,11 +5228,11 @@ export const providers: Provider[] = [
       "1C на облаке",
       "Microsoft инфраструктура",
     ],
-    uptime30days: 99.89,
+
     reviews: [],
   },
   {
-    id: 40,
+    id: 41,
     name: "Cloud4Y",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/756fd8c6-6b76-429c-bfee-c5d3f9849c2f.jpg",
     rating: 8.9,
@@ -5298,7 +5314,7 @@ export const providers: Provider[] = [
     reviews: [],
   },
   {
-    id: 41,
+    id: 42,
     name: "LANcloud",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/7448d36d-8d45-4a9c-8bc7-d3841eac43bf.jpg",
     rating: 8.2,
@@ -5332,6 +5348,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 5,
     },
+    uptime30days: 99.47,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -5347,11 +5364,10 @@ export const providers: Provider[] = [
     popularity: 4500,
     promoText: "5 дней тест + ISPmanager в подарок",
     caseStudies: ["Корпоративные сайты", "CMS-проекты", "E-commerce"],
-    uptime30days: 99.47,
     reviews: [],
   },
   {
-    id: 42,
+    id: 43,
     name: "Cloud Beeline",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/db830890-b661-457b-b156-11b5d39606a7.jpg",
     rating: 8.3,
@@ -5396,6 +5412,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 20 мин",
       moneyBackGuarantee: 0,
     },
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 140,
@@ -5411,11 +5428,11 @@ export const providers: Provider[] = [
     popularity: 8500,
     promoText: "Облачная инфраструктура на базе ЦОД Билайн",
     caseStudies: ["Корпоративные проекты", "Телеком решения", "E-commerce"],
-    uptime30days: 99.88,
+
     reviews: [],
   },
   {
-    id: 43,
+    id: 44,
     name: "DataRU",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/898888df-2c2f-42fe-962b-78855a45a603.jpg",
     rating: 8.1,
@@ -5445,7 +5462,7 @@ export const providers: Provider[] = [
       ddosProtection: "До 60 Гбит/с",
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 30 мин",
       moneyBackGuarantee: 3,
     },
@@ -5464,11 +5481,11 @@ export const providers: Provider[] = [
     popularity: 3500,
     promoText: "3 дня тест + DDoS защита в подарок",
     caseStudies: ["Игровые серверы", "Веб-проекты", "Discord боты"],
-    uptime30days: 99.46,
+    uptime30days: 99.89,
     reviews: [],
   },
   {
-    id: 44,
+    id: 45,
     name: "mClouds",
     logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/866fd9f6-0bc9-4de7-91f0-5e72c3a604af.jpg",
     rating: 8.4,
@@ -5502,10 +5519,11 @@ export const providers: Provider[] = [
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.5%",
+      uptimeSLA: "99.95%",
       supportResponseTime: "< 25 мин",
       moneyBackGuarantee: 5,
     },
+    uptime30days: 99.9,
     additionalServices: {
       autoBackups: true,
       backupPrice: 85,
@@ -5524,101 +5542,7 @@ export const providers: Provider[] = [
     popularity: 6500,
     promoText: "Почасовая оплата + NVMe диски от 190₽/мес",
     caseStudies: ["Веб-разработка", "Игровые серверы", "Боты"],
-    uptime30days: 99.53,
-    reviews: [],
-  },
-  {
-    id: 45,
-    name: "Т1 Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/dd6e86e2-3e4c-4388-857b-27c9f137f55b.jpg",
-    rating: 8.8,
-    basePrice: 0,
-    cpuPrice: 260,
-    ramPrice: 125,
-    storagePrice: 13,
-    features: ["SSD/NVMe диски", "152-ФЗ", "ФСТЕК K1", "Поддержка 24/7"],
-    locations: [
-      "Москва",
-      "Санкт-Петербург",
-      "Екатеринбург",
-      "Новосибирск",
-      "Краснодар",
-    ],
-    trialDays: 30,
-    url: "https://t1-cloud.ru/",
-    pros: [
-      "Тестовый период 30 дней",
-      "Сертификация ФСТЕК K1",
-      "Федеральный масштаб",
-      "Корпоративная поддержка 24/7",
-    ],
-    cons: [
-      "Выше средней цены на рынке",
-      "Фокус на корпоративных клиентов",
-      "Сложная панель управления",
-    ],
-    fz152Compliant: true,
-    fz152Level: "УЗ-1",
-    fstekCompliant: true,
-    fstekLevel: "K1",
-    technicalSpecs: {
-      diskType: "SSD/NVMe",
-      networkSpeed: "10 Гбит/с",
-      virtualization: ["KVM", "VMware", "OpenStack"],
-      guaranteedResources: true,
-      ipv4: true,
-      ipv6: true,
-      availableOS: [
-        "Ubuntu",
-        "Debian",
-        "CentOS",
-        "Astra Linux",
-        "Alt Linux",
-        "Windows Server",
-        "ROSA Linux",
-      ],
-      controlPanel: "Собственная панель",
-      apiAccess: true,
-      ddosProtection: "Корпоративная защита",
-      cpuModels: ["Intel Xeon", "AMD EPYC"],
-      kubernetes: {
-        available: true,
-        managed: true,
-      },
-    },
-    serviceGuarantees: {
-      uptimeSLA: "99.95%",
-      supportResponseTime: "< 10 мин",
-      moneyBackGuarantee: 30,
-    },
-    additionalServices: {
-      autoBackups: true,
-      backupPrice: 160,
-      monitoring: true,
-      snapshots: true,
-      customOS: true,
-      privateNetwork: true,
-      firewall: true,
-      loadBalancer: true,
-    },
-    pricingDetails: {
-      discounts: [
-        { months: 12, percent: 15 },
-        { months: 6, percent: 8 },
-      ],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
-      minPrice: 260,
-    },
-    popularity: 18000,
-    promoText: "30 дней тест + ФСТЕК K1 + федеральное присутствие",
-    caseStudies: [
-      "Госсектор",
-      "Банковский сектор",
-      "Телеком",
-      "Корпоративные системы",
-      "SAP на облаке",
-    ],
-    uptime30days: 99.94,
+
     reviews: [],
   },
   {
