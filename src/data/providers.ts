@@ -2324,7 +2324,7 @@ export const providers: Provider[] = [
   {
     id: 14,
     name: "Макхост",
-    logo: "https://mchost.ru/files/img/logo.svg",
+    logo: "https://cdn.poehali.dev/files/67144e6a-6a96-4f80-9595-b6bf3c8ffdc3.jpg",
     rating: 9.2,
     basePrice: 220,
     cpuPrice: 160,
