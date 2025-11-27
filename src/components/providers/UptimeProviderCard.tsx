@@ -198,6 +198,12 @@ export const getStaticMonthlyData = (providerId: number) => {
   return [];
 };
 
+export const calculateTotalDowntime = (providerId: number): number => {
+  const monthlyData = getStaticMonthlyData(providerId);
+  if (!monthlyData || !Array.isArray(monthlyData) || monthlyData.length === 0) return 0;
+  return monthlyData.reduce((sum, month) => sum + month.downtime, 0);
+};
+
 export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
   provider,
   index,
