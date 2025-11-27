@@ -5280,8 +5280,8 @@ export const providers: Provider[] = [
       cpuModels: ["Intel Xeon"],
     },
     serviceGuarantees: {
-      uptimeSLA: "99.95%",
-      supportResponseTime: "< 15 мин",
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 14,
     },
     additionalServices: {
@@ -5310,7 +5310,7 @@ export const providers: Provider[] = [
       "Государственные системы",
       "Банковский сектор",
     ],
-    uptime30days: 99.93,
+    uptime30days: 99.76,
     reviews: [],
   },
   {
