@@ -19,7 +19,7 @@ export const MonthlyUptimeGraph = ({
         График Uptime по месяцам 2025
       </h4>
 
-      <div className="relative h-44 md:h-58 mb-2">
+      <div className="relative h-48 md:h-64 mb-2">
         {/* Ось Y */}
         <div className="absolute left-0 top-0 bottom-6 md:bottom-8 w-10 md:w-16 flex flex-col justify-between text-[7px] md:text-[9px] text-muted-foreground">
           {Array.from({ length: 81 }, (_, i) => (100.3 - i * 0.01).toFixed(2))
@@ -47,7 +47,7 @@ export const MonthlyUptimeGraph = ({
               viewBox="0 0 1000 200"
               preserveAspectRatio="none"
             >
-              {/* Вертикальные линии от точек до оси X (только для десктопа) */}
+              {/* Вертикальные линии от точек до оси X */}
               {data.map((dataPoint, idx) => {
                 const minUptime = 99.5;
                 const maxUptime = 100.3;
@@ -66,41 +66,14 @@ export const MonthlyUptimeGraph = ({
                     x2={x}
                     y2={200}
                     stroke="darkgrey"
-                    strokeWidth="12"
-                    className="hidden md:block"
+                    strokeWidth="8"
+                    className="md:stroke-[12]"
                     style={{
                       animation: `lineGrow 0.6s ease-out ${idx * 0.05}s both`,
                     }}
                   />
                 );
               })}
-
-              {/* Соединительная линия между точками (только для мобильных) */}
-              <polyline
-                points={data
-                  .map((dataPoint, idx) => {
-                    const minUptime = 99.5;
-                    const maxUptime = 100.3;
-                    const normalizedHeight =
-                      ((dataPoint.uptime - minUptime) / (maxUptime - minUptime)) *
-                      100;
-                    const segmentWidth = 1000 / data.length;
-                    const x = segmentWidth * idx + segmentWidth / 2;
-                    let y = 200 - (normalizedHeight / 100) * 200;
-                    if (dataPoint.uptime < 99.5) {
-                      y = 200;
-                    }
-                    return `${x},${y}`;
-                  })
-                  .join(" ")}
-                fill="none"
-                stroke="hsl(var(--primary))"
-                strokeWidth="2"
-                className="md:hidden"
-                style={{
-                  animation: `lineAppear 0.8s ease-out both`,
-                }}
-              />
 
               {/* Точки на графике */}
               {data.map((dataPoint, idx) => {
@@ -215,18 +188,6 @@ export const MonthlyUptimeGraph = ({
           }
           to {
             opacity: 0.2;
-          }
-        }
-
-        @keyframes lineAppear {
-          from {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            opacity: 0;
-          }
-          to {
-            stroke-dashoffset: 0;
-            opacity: 1;
           }
         }
 
