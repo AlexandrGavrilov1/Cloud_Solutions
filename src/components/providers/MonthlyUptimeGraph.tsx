@@ -14,14 +14,14 @@ export const MonthlyUptimeGraph = ({
   providerId,
 }: MonthlyUptimeGraphProps) => {
   return (
-    <div className="border-t border-border pt-4">
-      <h4 className="text-sm font-bold text-foreground mb-4">
+    <div className="border-t border-border pt-3 md:pt-4">
+      <h4 className="text-xs md:text-sm font-bold text-foreground mb-3 md:mb-4">
         График Uptime по месяцам 2025
       </h4>
 
-      <div className="relative h-64 mb-2">
+      <div className="relative h-48 md:h-64 mb-2">
         {/* Ось Y */}
-        <div className="absolute left-0 top-0 bottom-8 w-16 flex flex-col justify-between text-[9px] text-muted-foreground">
+        <div className="absolute left-0 top-0 bottom-6 md:bottom-8 w-10 md:w-16 flex flex-col justify-between text-[7px] md:text-[9px] text-muted-foreground">
           {Array.from({ length: 81 }, (_, i) => (100.3 - i * 0.01).toFixed(2))
             .filter((_, idx) => idx % 8 === 0)
             .map((value, idx) => (
@@ -30,7 +30,7 @@ export const MonthlyUptimeGraph = ({
         </div>
 
         {/* График */}
-        <div className="absolute left-[68px] right-0 top-0 bottom-8 border-l-2 border-b-2 border-border">
+        <div className="absolute left-[44px] md:left-[68px] right-0 top-0 bottom-6 md:bottom-8 border-l border-b border-border md:border-l-2 md:border-b-2">
           {/* Горизонтальные линии сетки */}
           {Array.from({ length: 11 }, (_, i) => i * 10).map((percent) => (
             <div
@@ -66,8 +66,8 @@ export const MonthlyUptimeGraph = ({
                     x2={x}
                     y2={200}
                     stroke="darkgrey"
-                    strokeWidth="12"
-                    // opacity="0.5"
+                    strokeWidth="8"
+                    className="md:stroke-[12]"
                     style={{
                       animation: `lineGrow 0.6s ease-out ${idx * 0.05}s both`,
                     }}
@@ -114,19 +114,21 @@ export const MonthlyUptimeGraph = ({
                     <circle
                       cx={x}
                       cy={y}
-                      r="6"
+                      r="4"
+                      className="md:r-[6]"
                       fill={fillColor}
                       stroke="darkgrey"
-                      strokeWidth="2"
+                      strokeWidth="1.5"
                       style={{
                         animation: `pointAppear 0.4s ease-out ${idx * 0.05 + 0.3}s both`,
                       }}
                     />
                     <text
                       x={x}
-                      y={y - 12}
+                      y={y - 8}
                       textAnchor="middle"
-                      fontSize="10"
+                      fontSize="8"
+                      className="md:text-[10px]"
                       fill="currentColor"
                       fontWeight="600"
                       style={{
@@ -146,15 +148,15 @@ export const MonthlyUptimeGraph = ({
         </div>
 
         {/* Ось X - месяцы */}
-        <div className="absolute left-[68px] right-0 bottom-0 flex justify-around text-xs text-muted-foreground">
+        <div className="absolute left-[44px] md:left-[68px] right-0 bottom-0 flex justify-around text-[9px] md:text-xs text-muted-foreground">
           {data.map((dataPoint, idx) => (
             <div key={idx} className="flex flex-col items-center flex-1">
               <span className="font-semibold">
                 {dataPoint.month.slice(0, 3)}
               </span>
               {dataPoint.downtime > 0 && (
-                <span className="text-[10px] text-red-500 font-medium mt-0.5">
-                  {dataPoint.downtime} мин
+                <span className="text-[8px] md:text-[10px] text-red-500 font-medium mt-0.5">
+                  {dataPoint.downtime} м
                 </span>
               )}
             </div>
@@ -163,17 +165,17 @@ export const MonthlyUptimeGraph = ({
       </div>
 
       {/* Легенда */}
-      <div className="flex items-center gap-4 text-xs mt-4 pt-2 border-t border-border">
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-green-500"></div>
-          <span className="text-muted-foreground">100% uptime</span>
+      <div className="flex flex-wrap items-center gap-2 md:gap-4 text-[10px] md:text-xs mt-3 md:mt-4 pt-2 border-t border-border">
+        <div className="flex items-center gap-1 md:gap-1.5">
+          <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-green-500"></div>
+          <span className="text-muted-foreground">100%</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-orange-500"></div>
+        <div className="flex items-center gap-1 md:gap-1.5">
+          <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-orange-500"></div>
           <span className="text-muted-foreground">99.5-99.99%</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-red-500"></div>
+        <div className="flex items-center gap-1 md:gap-1.5">
+          <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-red-500"></div>
           <span className="text-muted-foreground">&lt; 99.5%</span>
         </div>
       </div>
