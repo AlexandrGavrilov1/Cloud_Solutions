@@ -19,7 +19,7 @@ export const MonthlyUptimeGraph = ({
         График Uptime по месяцам 2025
       </h4>
 
-      <div className="relative h-48 md:h-64 mb-2">
+      <div className="relative h-44 md:h-58 mb-2">
         {/* Ось Y */}
         <div className="absolute left-0 top-0 bottom-6 md:bottom-8 w-10 md:w-16 flex flex-col justify-between text-[7px] md:text-[9px] text-muted-foreground">
           {Array.from({ length: 81 }, (_, i) => (100.3 - i * 0.01).toFixed(2))
