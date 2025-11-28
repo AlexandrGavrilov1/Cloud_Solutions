@@ -90,11 +90,11 @@ export const UptimeChart = ({
   };
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-8 md:py-24 relative overflow-hidden">
       <div className="absolute top-20 right-10 w-[400px] h-[400px] bg-orange-500/10 rounded-full blur-[100px]"></div>
       <div className="absolute bottom-20 left-10 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]"></div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
         <div className="max-w-6xl mx-auto">
           <UptimeChartHeader
             lastCheckTime={lastCheckTime}
@@ -102,8 +102,8 @@ export const UptimeChart = ({
             onSearchChange={setSearchQuery}
           />
 
-          <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-3xl p-8 shadow-xl">
-            <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               {providersWithUptime.map((provider, index) => (
                 <UptimeProviderCard
                   key={provider.id}
@@ -117,42 +117,42 @@ export const UptimeChart = ({
               ))}
             </div>
 
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-background border border-border rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-green-600"></div>
-                  <span className="text-xs font-bold text-muted-foreground">
+            <div className="mt-4 md:mt-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-600"></div>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
                     ≥ 99.95%
                   </span>
                 </div>
-                <div className="text-sm text-foreground">Отличный</div>
+                <div className="text-xs md:text-sm text-foreground">Отличный</div>
               </div>
-              <div className="bg-background border border-border rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <span className="text-xs font-bold text-muted-foreground">
+              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-400"></div>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
                     ≥ 99.9%
                   </span>
                 </div>
-                <div className="text-sm text-foreground">Хороший</div>
+                <div className="text-xs md:text-sm text-foreground">Хороший</div>
               </div>
-              <div className="bg-background border border-border rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                  <span className="text-xs font-bold text-muted-foreground">
+              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-orange-500"></div>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
                     ≥ 99.5%
                   </span>
                 </div>
-                <div className="text-sm text-foreground">Средний</div>
+                <div className="text-xs md:text-sm text-foreground">Средний</div>
               </div>
-              <div className="bg-background border border-border rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <span className="text-xs font-bold text-muted-foreground">
+              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500"></div>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
                     &lt; 99.5%
                   </span>
                 </div>
-                <div className="text-sm text-foreground">Низкий</div>
+                <div className="text-xs md:text-sm text-foreground">Низкий</div>
               </div>
             </div>
           </div>

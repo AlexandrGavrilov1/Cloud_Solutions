@@ -353,22 +353,22 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
   return (
     <div
       key={provider.id}
-      className={`group bg-background border border-border rounded-xl p-4 hover:border-primary/50 transition-all relative ${
+      className={`group bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4 hover:border-primary/50 transition-all relative ${
         isExpanded ? "md:col-span-2" : ""
       }`}
     >
       {index < 3 && (
-        <div className="absolute -top-3 -left-3 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+        <div className="absolute -top-2 -left-2 md:-top-3 md:-left-3 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg">
           <div className="relative flex items-center justify-center">
             <Icon
               name="Cloud"
-              size={37}
+              size={32}
               className={
                 index === 0
-                  ? "text-yellow-500"
+                  ? "text-yellow-500 md:w-[37px] md:h-[37px]"
                   : index === 1
-                    ? "text-gray-400"
-                    : "text-amber-700"
+                    ? "text-gray-400 md:w-[37px] md:h-[37px]"
+                    : "text-amber-700 md:w-[37px] md:h-[37px]"
               }
               style={{
                 filter:
@@ -380,7 +380,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
               }}
             />
             <span
-              className={`absolute text-xs font-bold ${
+              className={`absolute text-[10px] md:text-xs font-bold ${
                 index === 0
                   ? "text-yellow-600"
                   : index === 1
@@ -397,54 +397,54 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
 
       <div className="flex items-center justify-between">
         <div
-          className="flex items-center gap-3 flex-1 min-w-0"
-          style={{ marginLeft: "36px" }}
+          className="flex items-center gap-2 md:gap-3 flex-1 min-w-0"
+          style={{ marginLeft: "28px" }}
         >
-          <div className="flex-shrink-0 w-10 h-10 rounded-lg overflow-hidden bg-white border border-primary/10 flex items-center justify-center">
+          <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg overflow-hidden bg-white border border-primary/10 flex items-center justify-center">
             <img
               src={provider.logo}
               alt={provider.name}
-              className="w-8 h-8 object-contain"
+              className="w-6 h-6 md:w-8 md:h-8 object-contain"
             />
           </div>
           <div className="flex-1 min-w-0">
             <button
               onClick={() => onProviderClick(provider)}
-              className="font-bold text-foreground truncate hover:text-primary transition-colors flex items-center gap-1 group/name"
+              className="text-sm md:text-base font-bold text-foreground truncate hover:text-primary transition-colors flex items-center gap-1 group/name"
             >
               {provider.name}
               <Icon
                 name="ExternalLink"
-                size={14}
-                className="opacity-0 group-hover/name:opacity-100 transition-opacity"
+                size={12}
+                className="opacity-0 group-hover/name:opacity-100 transition-opacity md:w-[14px] md:h-[14px]"
               />
             </button>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2 text-[10px] md:text-xs text-muted-foreground">
               <span>SLA: {provider.serviceGuarantees.uptimeSLA}</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="text-xl font-black text-foreground">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="text-base md:text-xl font-black text-foreground">
             {uptime.toFixed(2)}%
           </div>
           <button
             onClick={onToggleExpand}
-            className="p-1.5 hover:bg-accent rounded-lg transition-colors"
+            className="p-1 md:p-1.5 hover:bg-accent rounded-lg transition-colors"
           >
             <Icon
               name={isExpanded ? "ChevronUp" : "ChevronDown"}
-              size={18}
-              className="text-muted-foreground"
+              size={16}
+              className="text-muted-foreground md:w-[18px] md:h-[18px]"
             />
           </button>
         </div>
       </div>
 
       {isExpanded && (
-        <div className="mt-4 pt-4 border-t border-border space-y-4">
-          <div className="text-xs text-muted-foreground">
+        <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-border space-y-3 md:space-y-4">
+          <div className="text-[11px] md:text-xs text-muted-foreground">
             <div className="flex justify-between py-1">
               <span>SLA гарантия:</span>
               <span className="font-semibold text-foreground">
