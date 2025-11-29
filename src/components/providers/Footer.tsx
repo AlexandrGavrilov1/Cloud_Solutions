@@ -32,7 +32,7 @@ export const Footer = () => {
                   className="rounded-xl hover:border-primary hover:bg-primary/10 hover:text-primary transition-all"
                   asChild
                 >
-                  <a href="https://t.me/top_vds_com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://t.me/topcloudhub" target="_blank" rel="noopener noreferrer">
                     <Icon name="Send" size={18} />
                   </a>
                 </Button>
