@@ -2219,7 +2219,7 @@ export const providers: Provider[] = [
   {
     id: 13,
     name: "SmartApe",
-    logo: "https://cdn.poehali.dev/files/39a36182-052c-4e13-bb59-20fef03449a4.jpg",
+    logo: "providers_logo/13_SmartApe.jpg",
     rating: 8.9,
     basePrice: 145,
     cpuPrice: 130,
