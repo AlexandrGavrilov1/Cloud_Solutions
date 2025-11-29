@@ -19,7 +19,7 @@ export const MonthlyUptimeGraph = ({
         График Uptime по месяцам 2025
       </h4>
 
-      <div className="relative h-48 md:h-64 mb-2">
+      <div className="relative h-44 md:h-58 mb-2">
         {/* Ось Y */}
         <div className="absolute left-0 top-0 bottom-6 md:bottom-8 w-10 md:w-16 flex flex-col justify-between text-[7px] md:text-[9px] text-muted-foreground">
           {Array.from({ length: 81 }, (_, i) => (100.3 - i * 0.01).toFixed(2))
@@ -47,7 +47,7 @@ export const MonthlyUptimeGraph = ({
               viewBox="0 0 1000 200"
               preserveAspectRatio="none"
             >
-              {/* Вертикальные линии от точек до оси X (только десктоп) */}
+              {/* Вертикальные линии от точек до оси X (только для десктопа) */}
               {data.map((dataPoint, idx) => {
                 const minUptime = 99.5;
                 const maxUptime = 100.3;
@@ -75,7 +75,7 @@ export const MonthlyUptimeGraph = ({
                 );
               })}
 
-              {/* Соединительная линия для мобильных */}
+              {/* Соединительная линия между точками (только для мобильных) */}
               <polyline
                 points={data
                   .map((dataPoint, idx) => {
@@ -142,7 +142,7 @@ export const MonthlyUptimeGraph = ({
                       cx={x}
                       cy={y}
                       r="4"
-                      className="hidden md:block md:r-[6]"
+                      className="md:r-[6]"
                       fill={fillColor}
                       stroke="darkgrey"
                       strokeWidth="1.5"
@@ -155,7 +155,7 @@ export const MonthlyUptimeGraph = ({
                       y={y - 8}
                       textAnchor="middle"
                       fontSize="8"
-                      className="hidden md:block md:text-[10px]"
+                      className="md:text-[10px]"
                       fill="currentColor"
                       fontWeight="600"
                       style={{

@@ -1,0 +1,30 @@
+{
+  "tests": [
+
+    {
+      "name": "Get uptime stats for specific provider",
+      "method": "GET",
+      "path": "/?provider_id=1&days=7",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "provider_id": 1,
+        "days": 7
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Perform uptime check",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "provider_id": 1,
+        "url": "https://timeweb.cloud"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "provider_id": 1
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

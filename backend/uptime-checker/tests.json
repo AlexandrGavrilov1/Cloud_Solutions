@@ -1,0 +1,26 @@
+{
+  "tests": [
+    {
+      "name": "Check multiple providers",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "providers": [
+          {
+            "id": 1,
+            "url": "https://timeweb.cloud"
+          },
+          {
+            "id": 30,
+            "url": "https://www.hetzner.com"
+          }
+        ]
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "total": 2
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
