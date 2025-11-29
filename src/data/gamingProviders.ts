@@ -1,41 +1,6 @@
 import { GamingProvider } from "@/components/gaming/types";
 
 export const gamingProviders: GamingProvider[] = [
-  {
-    id: 1,
-    name: "Timeweb Cloud Gaming",
-    logo: "providers_logo/01_TimeWeb_Cloud.jpg",
-    rating: 9.7,
-    basePrice: 299,
-    pricePerSlot: 15,
-    features: ["DDoS защита до 500 Гбит/с", "NVMe диски", "Мгновенная установка", "Моды и плагины"],
-    locations: ["Москва", "Санкт-Петербург", "Амстердам"],
-    trialDays: 3,
-    url: "https://timeweb.cloud/?i=123689",
-    pros: [
-      "Самая мощная DDoS защита",
-      "NVMe диски для быстрой загрузки карт",
-      "Поддержка модов и плагинов",
-      "Бесплатный тестовый период 3 дня"
-    ],
-    cons: [
-      "Цена выше среднего",
-      "Панель управления сложная для новичков"
-    ],
-    supportedGames: [
-      { game: "Minecraft", icon: "🎮", minPlayers: 10, maxPlayers: 500 },
-      { game: "CS:GO", icon: "🔫", minPlayers: 10, maxPlayers: 64 },
-      { game: "Rust", icon: "⚔️", minPlayers: 50, maxPlayers: 300 },
-      { game: "ARK", icon: "🦖", minPlayers: 20, maxPlayers: 100 },
-      { game: "Valheim", icon: "⚡", minPlayers: 2, maxPlayers: 10 },
-      { game: "Terraria", icon: "🌍", minPlayers: 2, maxPlayers: 8 }
-    ],
-    ddosProtection: "До 500 Гбит/с",
-    uptime: 99.98,
-    supportResponseTime: "< 10 мин",
-    paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Webmoney"],
-    promoText: "Промокод DOUBLE - удвоение первого платежа"
-  },
 
   {
     id: 3,
