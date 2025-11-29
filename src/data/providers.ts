@@ -3112,7 +3112,7 @@ export const providers: Provider[] = [
   {
     id: 20,
     name: "IHC",
-    logo: "https://www.ihc.ru/img/logo-ihc.svg",
+    logo: "providers_logo/20_IHC.jpg",
     rating: 9.3,
     basePrice: 170,
     cpuPrice: 135,
