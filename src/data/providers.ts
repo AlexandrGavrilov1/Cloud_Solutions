@@ -2102,7 +2102,7 @@ export const providers: Provider[] = [
   {
     id: 12,
     name: "Fornex",
-    logo: "https://cdn.poehali.dev/files/7f909cbf-56e7-4b9b-b95b-cdb06ad89d32.jpg",
+    logo: "providers_logo/12_Fornex.jpg",
     rating: 9.1,
     basePrice: 250,
     cpuPrice: 155,
