@@ -2895,7 +2895,7 @@ export const providers: Provider[] = [
   {
     id: 18,
     name: "Cloud4box",
-    logo: "https://cdn.poehali.dev/files/d2e671d1-6589-4724-9c0e-4412622bf5a0.png",
+    logo: "providers_logo/18_Cloud4box.jpg",
     rating: 9.2,
     basePrice: 180,
     cpuPrice: 140,
