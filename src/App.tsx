@@ -18,6 +18,7 @@ import Promo from "./pages/Promo";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import AIData from "./pages/AIData";
+import Gaming from "./pages/Gaming";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -70,6 +71,7 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/ai-data" element={<AIData />} />
+              <Route path="/gaming" element={<Gaming />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
