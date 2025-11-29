@@ -4441,7 +4441,7 @@ export const providers: Provider[] = [
   {
     id: 31,
     name: "Aeza",
-    logo: "https://cdn.poehali.dev/files/0e5cc686-2af5-4b58-aeaa-a86722ba8cd8.png",
+    logo: "providers_logo/31_Aeza.jpg",
     rating: 9.6,
     basePrice: 0,
     cpuPrice: 180,
