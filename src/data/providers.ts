@@ -1353,7 +1353,7 @@ export const providers: Provider[] = [
   {
     id: 6,
     name: "FirstVDS",
-    logo: "https://cdn.poehali.dev/files/7a485506-6ea1-4626-86be-5458b5bcb617.jpg",
+    logo: "providers_logo/06_FirstVds.jpg",
     rating: 9.3,
     basePrice: 0,
     cpuPrice: 165,
