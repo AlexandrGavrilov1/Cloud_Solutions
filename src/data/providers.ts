@@ -1992,7 +1992,7 @@ export const providers: Provider[] = [
   {
     id: 11,
     name: "HostLand",
-    logo: "https://cdn.poehali.dev/files/13305128-ebf9-48b2-a7b8-a7130355b62c.jpg",
+    logo: "providers_logo/11_HostLand.jpg",
     rating: 9.0,
     basePrice: 216,
     cpuPrice: 140,
