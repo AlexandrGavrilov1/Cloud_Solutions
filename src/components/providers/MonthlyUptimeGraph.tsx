@@ -66,7 +66,7 @@ export const MonthlyUptimeGraph = ({
                     x2={x}
                     y2={200}
                     stroke="darkgrey"
-                    strokeWidth="5"
+                    strokeWidth="12"
                     className="hidden md:block"
                     style={{
                       animation: `lineGrow 0.6s ease-out ${idx * 0.05}s both`,
@@ -142,11 +142,11 @@ export const MonthlyUptimeGraph = ({
                     <circle
                       cx={x}
                       cy={y}
-                      r="10"
+                      r="4"
                       className="hidden md:block md:r-[6]"
                       fill={fillColor}
                       stroke="darkgrey"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       style={{
                         animation: `pointAppear 0.4s ease-out ${idx * 0.05 + 0.3}s both`,
                       }}
