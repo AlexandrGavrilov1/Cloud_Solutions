@@ -376,7 +376,7 @@ export const providers: Provider[] = [
   {
     id: 2,
     name: "Beget",
-    logo: "https://cdn.poehali.dev/files/6c01bc04-0485-436b-aa58-b2a44a3f086a.jpg",
+    logo: "providers_logo/02_Beget.jpg",
     rating: 9.6,
     basePrice: 150,
     cpuPrice: 90,
@@ -3676,7 +3676,7 @@ export const providers: Provider[] = [
   {
     id: 25,
     name: "Яндекс Облако",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/30c049ff-e34d-4d12-94d2-d8da64bcc04d.jpg",
+    logo: "providers_logo/01_TimeWeb_Cloud.jpg30c049ff-e34d-4d12-94d2-d8da64bcc04d.jpg",
     rating: 9.7,
     basePrice: 0,
     cpuPrice: 230,
