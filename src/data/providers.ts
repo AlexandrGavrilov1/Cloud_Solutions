@@ -6,7 +6,7 @@ export const providers: Provider[] = [
   {
     id: 1,
     name: "Timeweb Cloud",
-    logo: "https://cdn.poehali.dev/files/2ecbf88a-b677-42e9-b594-4055095ff71e.jpg",
+    logo: "providers_logo/01_TimeWeb_Cloud.jpg",
     rating: 9.8,
     basePrice: 150,
     cpuPrice: 220,
@@ -376,7 +376,7 @@ export const providers: Provider[] = [
   {
     id: 2,
     name: "Beget",
-    logo: "https://cdn.poehali.dev/files/6c01bc04-0485-436b-aa58-b2a44a3f086a.jpg",
+    logo: "providers_logo/02_Beget.jpg",
     rating: 9.6,
     basePrice: 150,
     cpuPrice: 90,
@@ -747,7 +747,7 @@ export const providers: Provider[] = [
   {
     id: 3,
     name: "рег.ру",
-    logo: "https://cdn.poehali.dev/files/6b4d2ef8-b463-49ad-ac69-177248e8dfb8.png",
+    logo: "providers_logo/03_RegRU.jpg",
     rating: 9.4,
     basePrice: 199,
     cpuPrice: 150,
@@ -1992,7 +1992,7 @@ export const providers: Provider[] = [
   {
     id: 11,
     name: "HostLand",
-    logo: "https://cdn.poehali.dev/files/13305128-ebf9-48b2-a7b8-a7130355b62c.jpg",
+    logo: "providers_logo/11_HostLand.jpg",
     rating: 9.0,
     basePrice: 216,
     cpuPrice: 140,
@@ -4441,7 +4441,7 @@ export const providers: Provider[] = [
   {
     id: 31,
     name: "Aeza",
-    logo: "https://cdn.poehali.dev/files/0e5cc686-2af5-4b58-aeaa-a86722ba8cd8.png",
+    logo: "providers_logo/31_Aeza.jpg",
     rating: 9.6,
     basePrice: 0,
     cpuPrice: 180,
@@ -4590,7 +4590,7 @@ export const providers: Provider[] = [
   {
     id: 32,
     name: "SpaceWeb",
-    logo: "https://cdn.poehali.dev/files/b71eed85-81c5-47a5-8cd7-fb21749a46c4.png",
+    logo: "providers_logo/32_SpaceWeb.JPG",
     rating: 9.0,
     basePrice: 199,
     cpuPrice: 150,
