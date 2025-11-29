@@ -1199,7 +1199,7 @@ export const providers: Provider[] = [
   {
     id: 5,
     name: "RUVDS",
-    logo: "https://cdn.poehali.dev/files/fc2e13dd-1aa2-4b0c-a1c3-0be0d63b10e7.jpg",
+    logo: "providers_logo\05_RUVds.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 180,
