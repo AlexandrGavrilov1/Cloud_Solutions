@@ -1503,7 +1503,7 @@ export const providers: Provider[] = [
   {
     id: 7,
     name: "SprintHost",
-    logo: "https://cdn.poehali.dev/files/1b92b591-afaf-4ff7-8ed0-9385f837339d.png",
+    logo: "providers_logo/07_Sprinthost.jpg",
     rating: 9.3,
     basePrice: 190,
     cpuPrice: 150,
