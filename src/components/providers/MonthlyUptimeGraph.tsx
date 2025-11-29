@@ -82,7 +82,8 @@ export const MonthlyUptimeGraph = ({
                     const minUptime = 99.5;
                     const maxUptime = 100.3;
                     const normalizedHeight =
-                      ((dataPoint.uptime - minUptime) / (maxUptime - minUptime)) *
+                      ((dataPoint.uptime - minUptime) /
+                        (maxUptime - minUptime)) *
                       100;
                     const segmentWidth = 1000 / data.length;
                     const x = segmentWidth * idx + segmentWidth / 2;
@@ -145,7 +146,7 @@ export const MonthlyUptimeGraph = ({
                       className="hidden md:block md:r-[6]"
                       fill={fillColor}
                       stroke="darkgrey"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       style={{
                         animation: `pointAppear 0.4s ease-out ${idx * 0.05 + 0.3}s both`,
                       }}
