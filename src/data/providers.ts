@@ -3676,7 +3676,7 @@ export const providers: Provider[] = [
   {
     id: 25,
     name: "Яндекс Облако",
-    logo: "providers_logo/01_TimeWeb_Cloud.jpg30c049ff-e34d-4d12-94d2-d8da64bcc04d.jpg",
+    logo: "providers_logo/25_Yandex.jpg",
     rating: 9.7,
     basePrice: 0,
     cpuPrice: 230,
