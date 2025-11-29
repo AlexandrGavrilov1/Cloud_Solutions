@@ -2493,7 +2493,7 @@ export const providers: Provider[] = [
   {
     id: 15,
     name: "JustHost",
-    logo: "https://cdn.poehali.dev/files/c9c7db95-69e2-4f0b-a222-66d510eb134f.png",
+    logo: "providers_logo/5_JustHost.jpg",
     rating: 9.3,
     basePrice: 0,
     cpuPrice: 200,
