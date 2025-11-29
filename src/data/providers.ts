@@ -6,7 +6,7 @@ export const providers: Provider[] = [
   {
     id: 1,
     name: "Timeweb Cloud",
-    logo: "https://cdn.poehali.dev/files/2ecbf88a-b677-42e9-b594-4055095ff71e.jpg",
+    logo: "providers_logo/01_TimeWeb_Cloud.jpg",
     rating: 9.8,
     basePrice: 150,
     cpuPrice: 220,
@@ -376,7 +376,7 @@ export const providers: Provider[] = [
   {
     id: 2,
     name: "Beget",
-    logo: "https://cdn.poehali.dev/files/6c01bc04-0485-436b-aa58-b2a44a3f086a.jpg",
+    logo: "providers_logo/02_Beget.jpg",
     rating: 9.6,
     basePrice: 150,
     cpuPrice: 90,
@@ -747,7 +747,7 @@ export const providers: Provider[] = [
   {
     id: 3,
     name: "рег.ру",
-    logo: "https://cdn.poehali.dev/files/6b4d2ef8-b463-49ad-ac69-177248e8dfb8.png",
+    logo: "providers_logo\03_RegRU.jpg",
     rating: 9.4,
     basePrice: 199,
     cpuPrice: 150,
@@ -3676,7 +3676,7 @@ export const providers: Provider[] = [
   {
     id: 25,
     name: "Яндекс Облако",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/30c049ff-e34d-4d12-94d2-d8da64bcc04d.jpg",
+    logo: "providers_logo/25_Yandex.jpg",
     rating: 9.7,
     basePrice: 0,
     cpuPrice: 230,
