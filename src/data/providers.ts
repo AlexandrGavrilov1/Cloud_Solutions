@@ -1127,7 +1127,7 @@ export const providers: Provider[] = [
   {
     id: 4,
     name: "Nubes",
-    logo: "https://cdn.poehali.dev/files/b4d24de3-4593-4c4d-9eef-15026eee84b5.jpg",
+    logo: "providers_logo\04_Nubes.jpg",
     rating: 8.6,
     basePrice: 0,
     cpuPrice: 200,
