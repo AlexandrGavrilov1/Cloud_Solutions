@@ -1,40 +1,6 @@
 import { GamingProvider } from "@/components/gaming/types";
 
 export const gamingProviders: GamingProvider[] = [
-
-  {
-    id: 3,
-    name: "Hosting-Ninja Gaming",
-    logo: "providers_logo/04_Hosting-Ninja.jpg",
-    rating: 9.3,
-    basePrice: 199,
-    pricePerSlot: 10,
-    features: ["DDoS защита", "SSD накопители", "Панель управления", "Моды"],
-    locations: ["Москва", "Варшава"],
-    url: "https://hosting-ninja.ru/?utm_source=gdehosting",
-    pros: [
-      "Лучшие цены на рынке",
-      "Удобная панель управления",
-      "Хорошая поддержка",
-      "Быстрое развертывание серверов"
-    ],
-    cons: [
-      "Нет тестового периода",
-      "Ограниченный выбор локаций"
-    ],
-    supportedGames: [
-      { game: "Minecraft", icon: "🎮", minPlayers: 10, maxPlayers: 250 },
-      { game: "CS:GO", icon: "🔫", minPlayers: 10, maxPlayers: 32 },
-      { game: "GTA V", icon: "🚗", minPlayers: 32, maxPlayers: 128 },
-      { game: "Rust", icon: "⚔️", minPlayers: 50, maxPlayers: 200 },
-      { game: "ARK", icon: "🦖", minPlayers: 20, maxPlayers: 70 }
-    ],
-    ddosProtection: "До 200 Гбит/с",
-    uptime: 99.9,
-    supportResponseTime: "< 20 мин",
-    paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Криптовалюта"],
-    promoText: "Первый месяц со скидкой 20%"
-  },
   {
     id: 4,
     name: "Fornex Game Hosting",
