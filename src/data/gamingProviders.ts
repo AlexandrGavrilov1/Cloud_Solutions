@@ -35,40 +35,5 @@ export const gamingProviders: GamingProvider[] = [
     supportResponseTime: "< 5 мин",
     paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Криптовалюта"],
     promoText: "Промокод IMBA20 - скидка 20% на первый месяц"
-  },
-  {
-    id: 2,
-    name: "XLGames",
-    logo: "https://cdn.poehali.dev/files/xlgames-logo.png",
-    rating: 9.6,
-    basePrice: 149,
-    pricePerSlot: 7,
-    features: ["DDoS защита", "NVMe накопители", "Мгновенная установка", "Техподдержка 24/7"],
-    locations: ["Москва", "Санкт-Петербург", "Новосибирск"],
-    trialDays: 1,
-    url: "https://xlgames.pro/games/",
-    pros: [
-      "Самые низкие цены на рынке",
-      "Быстрая техподдержка 24/7",
-      "NVMe диски для максимальной скорости",
-      "Простая панель управления"
-    ],
-    cons: [
-      "Только российские локации",
-      "Тестовый период 1 день"
-    ],
-    supportedGames: [
-      { game: "Minecraft", icon: "🎮", minPlayers: 10, maxPlayers: 300 },
-      { game: "CS:GO", icon: "🔫", minPlayers: 10, maxPlayers: 32 },
-      { game: "Rust", icon: "⚔️", minPlayers: 50, maxPlayers: 200 },
-      { game: "ARK", icon: "🦖", minPlayers: 20, maxPlayers: 100 },
-      { game: "MTA", icon: "🚗", minPlayers: 32, maxPlayers: 128 },
-      { game: "Valheim", icon: "⚡", minPlayers: 2, maxPlayers: 10 }
-    ],
-    ddosProtection: "До 300 Гбит/с",
-    uptime: 99.95,
-    supportResponseTime: "< 10 мин",
-    paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Webmoney"],
-    promoText: "Скидка 15% на первый месяц - промокод START15"
   }
 ];
