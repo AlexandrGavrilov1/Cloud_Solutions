@@ -36,40 +36,7 @@ export const gamingProviders: GamingProvider[] = [
     paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Webmoney"],
     promoText: "Промокод DOUBLE - удвоение первого платежа"
   },
-  {
-    id: 2,
-    name: "REG.RU Game Servers",
-    logo: "providers_logo/02_Reg.ru.jpg",
-    rating: 9.5,
-    basePrice: 250,
-    pricePerSlot: 12,
-    features: ["DDoS защита", "SSD диски", "Автобэкапы", "FTP доступ"],
-    locations: ["Москва", "Санкт-Петербург"],
-    trialDays: 1,
-    url: "https://www.reg.ru/hosting/game?rlink=reflink-11144155",
-    pros: [
-      "Доступные цены",
-      "Простая панель управления",
-      "Автоматические бэкапы",
-      "Быстрая установка популярных модпаков"
-    ],
-    cons: [
-      "Только российские локации",
-      "SSD вместо NVMe"
-    ],
-    supportedGames: [
-      { game: "Minecraft", icon: "🎮", minPlayers: 10, maxPlayers: 300 },
-      { game: "CS:GO", icon: "🔫", minPlayers: 10, maxPlayers: 32 },
-      { game: "Rust", icon: "⚔️", minPlayers: 50, maxPlayers: 200 },
-      { game: "7 Days to Die", icon: "🧟", minPlayers: 8, maxPlayers: 16 },
-      { game: "Valheim", icon: "⚡", minPlayers: 2, maxPlayers: 10 }
-    ],
-    ddosProtection: "До 100 Гбит/с",
-    uptime: 99.95,
-    supportResponseTime: "< 15 мин",
-    paymentMethods: ["Карта", "ЮMoney", "Qiwi"],
-    promoText: "Скидка 10% по промокоду GAME10"
-  },
+
   {
     id: 3,
     name: "Hosting-Ninja Gaming",
