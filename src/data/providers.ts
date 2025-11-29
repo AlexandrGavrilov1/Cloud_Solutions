@@ -6,7 +6,7 @@ export const providers: Provider[] = [
   {
     id: 1,
     name: "Timeweb Cloud",
-    logo: "https://github.com/vladislavkonkin/vds-rating-portal/blob/main/providers_logo/01_TimeWeb_Cloud.jpg",
+    logo: "https://cdn.poehali.dev/files/2ecbf88a-b677-42e9-b594-4055095ff71e.jpg",
     rating: 9.8,
     basePrice: 150,
     cpuPrice: 220,
@@ -3676,7 +3676,7 @@ export const providers: Provider[] = [
   {
     id: 25,
     name: "Яндекс Облако",
-    logo: "https://github.com/vladislavkonkin/vds-rating-portal/blob/main/providers_logo/25_Yandex.jpg",
+    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/30c049ff-e34d-4d12-94d2-d8da64bcc04d.jpg",
     rating: 9.7,
     basePrice: 0,
     cpuPrice: 230,
