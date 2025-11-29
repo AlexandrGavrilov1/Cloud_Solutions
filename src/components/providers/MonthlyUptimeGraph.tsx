@@ -146,7 +146,7 @@ export const MonthlyUptimeGraph = ({
                       className="hidden md:block md:r-[6]"
                       fill={fillColor}
                       stroke="darkgrey"
-                      strokeWidth="2"
+                      strokeWidth="0.5"
                       style={{
                         animation: `pointAppear 0.4s ease-out ${idx * 0.05 + 0.3}s both`,
                       }}
