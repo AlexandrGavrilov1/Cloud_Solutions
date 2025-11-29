@@ -2783,7 +2783,7 @@ export const providers: Provider[] = [
   {
     id: 17,
     name: "VDSka",
-    logo: "https://cdn.poehali.dev/files/aea1fda7-d43c-4751-9792-a963e15f2850.png",
+    logo: "providers_logo/17_VDSka.jpg",
     rating: 8.8,
     basePrice: 294,
     cpuPrice: 98,
