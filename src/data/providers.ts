@@ -2493,7 +2493,7 @@ export const providers: Provider[] = [
   {
     id: 15,
     name: "JustHost",
-    logo: "providers_logo/5_JustHost.jpg",
+    logo: "providers_logo/15_JustHost.jpg",
     rating: 9.3,
     basePrice: 0,
     cpuPrice: 200,
