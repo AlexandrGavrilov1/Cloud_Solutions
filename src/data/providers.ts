@@ -1624,7 +1624,7 @@ export const providers: Provider[] = [
   {
     id: 8,
     name: "FastVPS",
-    logo: "https://cdn.poehali.dev/files/19becc2d-1a44-441d-b901-9f82eda67445.jpg",
+    logo: "providers_logo\08_FastVPS.jpg,
     rating: 9.1,
     basePrice: 299,
     cpuPrice: 180,
