@@ -142,7 +142,7 @@ export const MonthlyUptimeGraph = ({
                     <circle
                       cx={x}
                       cy={y}
-                      r="5"
+                      r="6"
                       className="hidden md:block md:r-[6]"
                       fill={fillColor}
                       stroke="darkgrey"
