@@ -40,7 +40,7 @@ export const gamingProviders: GamingProvider[] = [
   },
   {
     id: 2,
-    name: "XLGames_",
+    name: "XLGames",
     logo: "https://cdn.poehali.dev/files/xlgames-logo.png",
     rating: 9.6,
     basePrice: 149,
