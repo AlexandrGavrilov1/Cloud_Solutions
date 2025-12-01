@@ -4051,7 +4051,7 @@ export const providers: Provider[] = [
   {
     id: 28,
     name: "VK Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/e06e2fc0-7dd2-4591-9d37-1494d45ebad9.jpg",
+    logo: "providers_logo/28_VK_Cloud.jpg",
     rating: 9.6,
     basePrice: 0,
     cpuPrice: 210,
