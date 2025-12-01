@@ -5813,7 +5813,7 @@ export const providers: Provider[] = [
   {
     id: 50,
     name: "Gcore",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1c45cb02-317c-4aa5-b30a-068f2136ff4a.jpg",
+    logo: "providers_logo/50_Gcore.JPG",
     rating: 9.0,
     basePrice: 0,
     cpuPrice: 240,
