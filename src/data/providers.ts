@@ -4709,7 +4709,7 @@ export const providers: Provider[] = [
   {
     id: 33,
     name: "T1 Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/397057a6-339e-404a-b3df-dc4fa9db03fe.jpg",
+    logo: "providers_logo/33_T1_CLOUD.jpg",
     rating: 8.8,
     basePrice: 0,
     cpuPrice: 220,
