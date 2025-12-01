@@ -5488,7 +5488,7 @@ export const providers: Provider[] = [
   {
     id: 45,
     name: "mClouds",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/866fd9f6-0bc9-4de7-91f0-5e72c3a604af.jpg",
+    logo: "providers_logo/45_mClouds.JPG",
     rating: 8.4,
     basePrice: 0,
     cpuPrice: 190,
