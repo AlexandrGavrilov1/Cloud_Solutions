@@ -4968,7 +4968,7 @@ export const providers: Provider[] = [
   {
     id: 37,
     name: "РТК ЦОД",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1b7d33b7-3fa5-4439-8800-91ed00affd4e.jpg",
+    logo: "providers_logo/37_ RTK_COD.jpg",
     rating: 8.6,
     basePrice: 0,
     cpuPrice: 240,
