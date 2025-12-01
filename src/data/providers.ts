@@ -5434,7 +5434,7 @@ export const providers: Provider[] = [
   {
     id: 44,
     name: "DataRU",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/898888df-2c2f-42fe-962b-78855a45a603.jpg",
+    logo: "providers_logo/44_DataRu.JPG",
     rating: 8.1,
     basePrice: 0,
     cpuPrice: 195,
