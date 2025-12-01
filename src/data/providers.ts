@@ -5101,7 +5101,7 @@ export const providers: Provider[] = [
   {
     id: 39,
     name: "Linx",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/8a84de5c-ce2f-403d-b1ad-940798d92888.jpg",
+    logo: "providers_logo/39_Linx.jpg",
     rating: 8.7,
     basePrice: 0,
     cpuPrice: 185,
