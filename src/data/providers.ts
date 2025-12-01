@@ -6,7 +6,7 @@ export const providers: Provider[] = [
   {
     id: 1,
     name: "Timeweb Cloud",
-    logo: "https://s.iimg.su/s/01/gSGQSiVxhZI5wZoTI0EClkeaYnNC6EaOEfqMXwpV.jpg"",
+    logo: "https://s.iimg.su/s/01/gSGQSiVxhZI5wZoTI0EClkeaYnNC6EaOEfqMXwpV.jpg",
     rating: 9.8,
     basePrice: 150,
     cpuPrice: 220,
