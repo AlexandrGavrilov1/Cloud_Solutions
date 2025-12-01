@@ -5162,7 +5162,7 @@ export const providers: Provider[] = [
   {
     id: 40,
     name: "Софтлайн",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/bb737db0-e675-436c-bb84-9078403b1965.jpg",
+    logo: "providers_logo/40_Softline.JPG",
     rating: 8.5,
     basePrice: 0,
     cpuPrice: 235,
