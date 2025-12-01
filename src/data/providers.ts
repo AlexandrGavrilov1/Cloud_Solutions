@@ -5316,7 +5316,7 @@ export const providers: Provider[] = [
   {
     id: 42,
     name: "LANcloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/7448d36d-8d45-4a9c-8bc7-d3841eac43bf.jpg",
+    logo: "providers_logo/42_Lancloud.JPG",
     rating: 8.2,
     basePrice: 0,
     cpuPrice: 205,
