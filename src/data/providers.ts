@@ -6,7 +6,7 @@ export const providers: Provider[] = [
   {
     id: 1,
     name: "Timeweb Cloud",
-    logo: "https://cdn.poehali.dev/files/2ecbf88a-b677-42e9-b594-4055095ff71e.jpg",
+    logo: "providers_logo/01_TimeWeb_Cloud.jpg",
     rating: 9.8,
     basePrice: 150,
     cpuPrice: 220,
@@ -376,7 +376,7 @@ export const providers: Provider[] = [
   {
     id: 2,
     name: "Beget",
-    logo: "https://cdn.poehali.dev/files/6c01bc04-0485-436b-aa58-b2a44a3f086a.jpg",
+    logo: "providers_logo/02_Beget.jpg",
     rating: 9.6,
     basePrice: 150,
     cpuPrice: 90,
@@ -747,7 +747,7 @@ export const providers: Provider[] = [
   {
     id: 3,
     name: "рег.ру",
-    logo: "https://cdn.poehali.dev/files/6b4d2ef8-b463-49ad-ac69-177248e8dfb8.png",
+    logo: "providers_logo/03_RegRU.jpg",
     rating: 9.4,
     basePrice: 199,
     cpuPrice: 150,
@@ -1127,7 +1127,7 @@ export const providers: Provider[] = [
   {
     id: 4,
     name: "Nubes",
-    logo: "https://cdn.poehali.dev/files/b4d24de3-4593-4c4d-9eef-15026eee84b5.jpg",
+    logo: "providers_logo/04_Nubes.jpg",
     rating: 8.6,
     basePrice: 0,
     cpuPrice: 200,
@@ -1199,7 +1199,7 @@ export const providers: Provider[] = [
   {
     id: 5,
     name: "RUVDS",
-    logo: "https://cdn.poehali.dev/files/fc2e13dd-1aa2-4b0c-a1c3-0be0d63b10e7.jpg",
+    logo: "providers_logo/05_RUVds.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 180,
@@ -1353,7 +1353,7 @@ export const providers: Provider[] = [
   {
     id: 6,
     name: "FirstVDS",
-    logo: "https://cdn.poehali.dev/files/7a485506-6ea1-4626-86be-5458b5bcb617.jpg",
+    logo: "providers_logo/06_FirstVds.jpg",
     rating: 9.3,
     basePrice: 0,
     cpuPrice: 165,
@@ -1503,7 +1503,7 @@ export const providers: Provider[] = [
   {
     id: 7,
     name: "SprintHost",
-    logo: "https://cdn.poehali.dev/files/1b92b591-afaf-4ff7-8ed0-9385f837339d.png",
+    logo: "providers_logo/07_Sprinthost.jpg",
     rating: 9.3,
     basePrice: 190,
     cpuPrice: 150,
@@ -1624,7 +1624,7 @@ export const providers: Provider[] = [
   {
     id: 8,
     name: "FastVPS",
-    logo: "https://cdn.poehali.dev/files/19becc2d-1a44-441d-b901-9f82eda67445.jpg",
+    logo: "providers_logo/08_FastVPS.jpg",
     rating: 9.1,
     basePrice: 299,
     cpuPrice: 180,
@@ -1742,7 +1742,7 @@ export const providers: Provider[] = [
   {
     id: 9,
     name: "Rusonyx",
-    logo: "https://cdn.poehali.dev/files/37034f9e-3d43-4d63-8725-b1f5db99e0f9.jpg",
+    logo: "providers_logo/09_Rusonyx.jpg",
     rating: 9.4,
     basePrice: 200,
     cpuPrice: 160,
@@ -1874,7 +1874,7 @@ export const providers: Provider[] = [
   {
     id: 10,
     name: "NetAngels",
-    logo: "https://cdn.poehali.dev/files/ec5f7872-5b5e-473e-a6e4-24df9720299e.jpg",
+    logo: "providers_logo/10_NetAngels.jpg",
     rating: 9.2,
     basePrice: 284,
     cpuPrice: 170,
@@ -1992,7 +1992,7 @@ export const providers: Provider[] = [
   {
     id: 11,
     name: "HostLand",
-    logo: "https://cdn.poehali.dev/files/13305128-ebf9-48b2-a7b8-a7130355b62c.jpg",
+    logo: "providers_logo/11_HostLand.jpg",
     rating: 9.0,
     basePrice: 216,
     cpuPrice: 140,
@@ -2102,7 +2102,7 @@ export const providers: Provider[] = [
   {
     id: 12,
     name: "Fornex",
-    logo: "https://cdn.poehali.dev/files/7f909cbf-56e7-4b9b-b95b-cdb06ad89d32.jpg",
+    logo: "providers_logo/12_Fornex.jpg",
     rating: 9.1,
     basePrice: 250,
     cpuPrice: 155,
@@ -2219,7 +2219,7 @@ export const providers: Provider[] = [
   {
     id: 13,
     name: "SmartApe",
-    logo: "https://cdn.poehali.dev/files/39a36182-052c-4e13-bb59-20fef03449a4.jpg",
+    logo: "providers_logo/13_SmartApe.jpg",
     rating: 8.9,
     basePrice: 145,
     cpuPrice: 130,
@@ -2324,7 +2324,7 @@ export const providers: Provider[] = [
   {
     id: 14,
     name: "Макхост",
-    logo: "https://cdn.poehali.dev/files/67144e6a-6a96-4f80-9595-b6bf3c8ffdc3.jpg",
+    logo: "providers_logo/14_Макхост.jpg",
     rating: 9.2,
     basePrice: 220,
     cpuPrice: 160,
@@ -2493,7 +2493,7 @@ export const providers: Provider[] = [
   {
     id: 15,
     name: "JustHost",
-    logo: "https://cdn.poehali.dev/files/c9c7db95-69e2-4f0b-a222-66d510eb134f.png",
+    logo: "providers_logo/15_JustHost.jpg",
     rating: 9.3,
     basePrice: 0,
     cpuPrice: 200,
@@ -2675,7 +2675,7 @@ export const providers: Provider[] = [
   {
     id: 16,
     name: "U1Host",
-    logo: "https://cdn.poehali.dev/files/3d02003c-8802-4f09-931e-f32dcd1558af.jpg",
+    logo: "providers_logo/16_U1Host.jpg",
     rating: 9.0,
     basePrice: 149,
     cpuPrice: 145,
@@ -2783,7 +2783,7 @@ export const providers: Provider[] = [
   {
     id: 17,
     name: "VDSka",
-    logo: "https://cdn.poehali.dev/files/aea1fda7-d43c-4751-9792-a963e15f2850.png",
+    logo: "providers_logo/17_VDSka.jpg",
     rating: 8.8,
     basePrice: 294,
     cpuPrice: 98,
@@ -2895,7 +2895,7 @@ export const providers: Provider[] = [
   {
     id: 18,
     name: "Cloud4box",
-    logo: "https://cdn.poehali.dev/files/d2e671d1-6589-4724-9c0e-4412622bf5a0.png",
+    logo: "providers_logo/18_Cloud4box.jpg",
     rating: 9.2,
     basePrice: 180,
     cpuPrice: 140,
@@ -3004,7 +3004,7 @@ export const providers: Provider[] = [
   {
     id: 19,
     name: "Евробайт",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/50a5c758-a64e-44fe-911b-6d12ea0637a9.jpg",
+    logo: "providers_logo/19_Евробайт.jpg",
     rating: 9.1,
     basePrice: 195,
     cpuPrice: 150,
@@ -3112,7 +3112,7 @@ export const providers: Provider[] = [
   {
     id: 20,
     name: "IHC",
-    logo: "https://www.ihc.ru/img/logo-ihc.svg",
+    logo: "providers_logo/20_IHC.jpg",
     rating: 9.3,
     basePrice: 170,
     cpuPrice: 135,
@@ -3219,7 +3219,7 @@ export const providers: Provider[] = [
   {
     id: 21,
     name: "HANDYHOST",
-    logo: "https://cdn.poehali.dev/files/13c84141-374e-4f37-86d9-d7039f43cbe7.jpg",
+    logo: "providers_logo/21_HANDYHOST.jpg",
     rating: 9.0,
     basePrice: 160,
     cpuPrice: 125,
@@ -3328,7 +3328,7 @@ export const providers: Provider[] = [
   {
     id: 22,
     name: "AdminVPS",
-    logo: "https://adminvps.ru/assets/img/logos/logo.svg",
+    logo: "providers_logo/22_AdminVPS.jpg",
     rating: 9.1,
     basePrice: 299,
     cpuPrice: 140,
@@ -3442,7 +3442,7 @@ export const providers: Provider[] = [
   {
     id: 23,
     name: "Adman",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/5add3136-cb6a-48cf-9c01-254f2d0d5952.jpg",
+    logo: "providers_logo/23_Adman.jpg",
     rating: 9.2,
     basePrice: 250,
     cpuPrice: 150,
@@ -3549,7 +3549,7 @@ export const providers: Provider[] = [
   {
     id: 24,
     name: "Selectel",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/b17e31dd-bcc7-4aa2-a0e7-b6cd2042a7a0.jpg",
+    logo: "providers_logo/24_Selectel.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 195,
@@ -3563,7 +3563,7 @@ export const providers: Provider[] = [
     ],
     locations: ["Москва", "Санкт-Петербург", "Новосибирск"],
     trialDays: 14,
-    url: "https://selectel.ru/services/cloud/servers/",
+    url: "providers_logo/24_Selectel.jpg",
     pros: [
       "25 лет на рынке",
       "Собственные дата-центры в России",
@@ -3676,7 +3676,7 @@ export const providers: Provider[] = [
   {
     id: 25,
     name: "Яндекс Облако",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/30c049ff-e34d-4d12-94d2-d8da64bcc04d.jpg",
+    logo: "providers_logo/25_Yandex.jpg",
     rating: 9.7,
     basePrice: 0,
     cpuPrice: 230,
@@ -3797,7 +3797,7 @@ export const providers: Provider[] = [
   {
     id: 26,
     name: "Serverspace",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/063d36f0-177c-4ae0-b26e-45bafe64e1eb.jpg",
+    logo: "providers_logo/26_Serverspace.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 180,
@@ -3930,7 +3930,7 @@ export const providers: Provider[] = [
   {
     id: 27,
     name: "Cloud.ru",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/eb9cf2f4-f0cf-4796-856f-e616df3857fe.jpg",
+    logo: "providers_logo/27_Cloudru.jpg",
     rating: 9.4,
     basePrice: 0,
     cpuPrice: 200,
@@ -4051,7 +4051,7 @@ export const providers: Provider[] = [
   {
     id: 28,
     name: "VK Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/e06e2fc0-7dd2-4591-9d37-1494d45ebad9.jpg",
+    logo: "providers_logo/28_VK_Cloud.jpg",
     rating: 9.6,
     basePrice: 0,
     cpuPrice: 210,
@@ -4166,7 +4166,7 @@ export const providers: Provider[] = [
   {
     id: 29,
     name: "HostKey",
-    logo: "https://cdn.poehali.dev/files/0cf5de36-7228-484c-9fc4-627f990d3767.png",
+    logo: "providers_logo/29_HostKey.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 160,
@@ -4315,7 +4315,7 @@ export const providers: Provider[] = [
   {
     id: 30,
     name: "Hetzner",
-    logo: "https://cdn.poehali.dev/files/7554b41f-b1d2-4a4a-ad1e-f4a02703cead.png",
+    logo: "providers_logo/30_Hetzner.jpg",
     rating: 9.7,
     basePrice: 0,
     cpuPrice: 190,
@@ -4441,7 +4441,7 @@ export const providers: Provider[] = [
   {
     id: 31,
     name: "Aeza",
-    logo: "https://cdn.poehali.dev/files/0e5cc686-2af5-4b58-aeaa-a86722ba8cd8.png",
+    logo: "providers_logo/31_Aeza.jpg",
     rating: 9.6,
     basePrice: 0,
     cpuPrice: 180,
@@ -4590,7 +4590,7 @@ export const providers: Provider[] = [
   {
     id: 32,
     name: "SpaceWeb",
-    logo: "https://cdn.poehali.dev/files/b71eed85-81c5-47a5-8cd7-fb21749a46c4.png",
+    logo: "providers_logo/32_SpaceWeb.JPG",
     rating: 9.0,
     basePrice: 199,
     cpuPrice: 150,
@@ -4709,7 +4709,7 @@ export const providers: Provider[] = [
   {
     id: 33,
     name: "T1 Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/397057a6-339e-404a-b3df-dc4fa9db03fe.jpg",
+    logo: "providers_logo/33_T1_CLOUD.jpg",
     rating: 8.8,
     basePrice: 0,
     cpuPrice: 220,
@@ -4783,7 +4783,7 @@ export const providers: Provider[] = [
   {
     id: 34,
     name: "MWS",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/f17a3b05-2427-4d90-9b0f-88843dc3ee38.jpg",
+    logo: "providers_logo/34_MWS.jpg",
     rating: 8.5,
     basePrice: 0,
     cpuPrice: 200,
@@ -4837,7 +4837,7 @@ export const providers: Provider[] = [
   {
     id: 35,
     name: "Rosukrep",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/3cd382b7-b835-4fdf-b680-f4c97992ba6e.jpg",
+    logo: "providers_logo/35_Rosukrep.jpg",
     rating: 8.3,
     basePrice: 0,
     cpuPrice: 195,
@@ -4906,7 +4906,7 @@ export const providers: Provider[] = [
   {
     id: 36,
     name: "IT-GRAD",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/513e6d11-5f72-4b80-8388-1d0d6cd94079.jpg",
+    logo: "providers_logo/36_ IT_GRAD.jpg",
     rating: 8.9,
     basePrice: 0,
     cpuPrice: 230,
@@ -4968,7 +4968,7 @@ export const providers: Provider[] = [
   {
     id: 37,
     name: "РТК ЦОД",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1b7d33b7-3fa5-4439-8800-91ed00affd4e.jpg",
+    logo: "providers_logo/37_ RTK_COD.jpg",
     rating: 8.6,
     basePrice: 0,
     cpuPrice: 240,
@@ -5041,7 +5041,7 @@ export const providers: Provider[] = [
   {
     id: 38,
     name: "Айтеко",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1ab25c38-2cd4-4a37-8157-7336c06f35da.jpg",
+    logo: "providers_logo/38_ iteco_cloud.jpg",
     rating: 8.4,
     basePrice: 0,
     cpuPrice: 210,
@@ -5101,7 +5101,7 @@ export const providers: Provider[] = [
   {
     id: 39,
     name: "Linx",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/8a84de5c-ce2f-403d-b1ad-940798d92888.jpg",
+    logo: "providers_logo/39_Linx.jpg",
     rating: 8.7,
     basePrice: 0,
     cpuPrice: 185,
@@ -5162,7 +5162,7 @@ export const providers: Provider[] = [
   {
     id: 40,
     name: "Софтлайн",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/bb737db0-e675-436c-bb84-9078403b1965.jpg",
+    logo: "providers_logo/40_Softline.JPG",
     rating: 8.5,
     basePrice: 0,
     cpuPrice: 235,
@@ -5234,7 +5234,7 @@ export const providers: Provider[] = [
   {
     id: 41,
     name: "Cloud4Y",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/756fd8c6-6b76-429c-bfee-c5d3f9849c2f.jpg",
+    logo: "providers_logo/41_Cloud4Y.JPG",
     rating: 8.9,
     basePrice: 0,
     cpuPrice: 280,
@@ -5316,7 +5316,7 @@ export const providers: Provider[] = [
   {
     id: 42,
     name: "LANcloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/7448d36d-8d45-4a9c-8bc7-d3841eac43bf.jpg",
+    logo: "providers_logo/42_Lancloud.JPG",
     rating: 8.2,
     basePrice: 0,
     cpuPrice: 205,
@@ -5369,7 +5369,7 @@ export const providers: Provider[] = [
   {
     id: 43,
     name: "Cloud Beeline",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/db830890-b661-457b-b156-11b5d39606a7.jpg",
+    logo: "providers_logo/43_Cloud_beeline.JPG",
     rating: 8.3,
     basePrice: 0,
     cpuPrice: 225,
@@ -5434,7 +5434,7 @@ export const providers: Provider[] = [
   {
     id: 44,
     name: "DataRU",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/898888df-2c2f-42fe-962b-78855a45a603.jpg",
+    logo: "providers_logo/44_DataRu.JPG",
     rating: 8.1,
     basePrice: 0,
     cpuPrice: 195,
@@ -5488,7 +5488,7 @@ export const providers: Provider[] = [
   {
     id: 45,
     name: "mClouds",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/866fd9f6-0bc9-4de7-91f0-5e72c3a604af.jpg",
+    logo: "providers_logo/45_mClouds.JPG",
     rating: 8.4,
     basePrice: 0,
     cpuPrice: 190,
@@ -5549,7 +5549,7 @@ export const providers: Provider[] = [
   {
     id: 46,
     name: "K2 Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/07ce57c2-c659-4066-9e8c-a98e4550ad20.jpg",
+    logo: "providers_logo/46_K2_Cloud.JPG",
     rating: 8.7,
     basePrice: 0,
     cpuPrice: 275,
@@ -5625,7 +5625,7 @@ export const providers: Provider[] = [
   {
     id: 47,
     name: "Clodo",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/fc0ad644-b908-4aad-86c2-c4c07efab9bd.jpg",
+    logo: "providers_logo/47_Clodo.JPG",
     rating: 8.3,
     basePrice: 0,
     cpuPrice: 180,
@@ -5687,7 +5687,7 @@ export const providers: Provider[] = [
   {
     id: 48,
     name: "TTK Облако",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/c805eef9-b67b-4118-92dc-7d811f78b4c1.jpg",
+    logo: "providers_logo/48_TTK_CLOUD.JPG",
     rating: 8.4,
     basePrice: 0,
     cpuPrice: 230,
@@ -5754,7 +5754,7 @@ export const providers: Provider[] = [
   {
     id: 49,
     name: "Skyhost",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/afc5ec4f-2678-4230-a55f-1c788ccfe23b.jpg",
+    logo: "providers_logo/49_Skyhost.JPG",
     rating: 7.9,
     basePrice: 0,
     cpuPrice: 165,
@@ -5813,7 +5813,7 @@ export const providers: Provider[] = [
   {
     id: 50,
     name: "Gcore",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1c45cb02-317c-4aa5-b30a-068f2136ff4a.jpg",
+    logo: "providers_logo/50_Gcore.JPG",
     rating: 9.0,
     basePrice: 0,
     cpuPrice: 240,
@@ -5905,7 +5905,7 @@ export const providers: Provider[] = [
   {
     id: 51,
     name: "The Hosting",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/62bfa585-69de-4303-b44a-925a7b48156f.jpg",
+    logo: "providers_logo/51_The_Hosting.JPG",
     rating: 8.5,
     basePrice: 0,
     cpuPrice: 200,
@@ -6003,7 +6003,7 @@ export const providers: Provider[] = [
   {
     id: 52,
     name: "OVH",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/eca1145c-02b0-4757-8de2-be0484cdc74b.jpg",
+    logo: "providers_logo/52_OVH.JPG",
     rating: 8.8,
     basePrice: 0,
     cpuPrice: 210,

@@ -24,6 +24,10 @@ export const Header = () => {
             />
           </a>
           <div className="hidden md:flex items-center gap-8">
+            <a href="/gaming" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
+              <Icon name="Gamepad2" size={14} />
+              Игровые
+            </a>
             <a href="/blog" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
               <Icon name="BookOpen" size={14} />
               Блог
@@ -66,6 +70,14 @@ export const Header = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
+              <a 
+                href="/gaming" 
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Icon name="Gamepad2" size={16} />
+                Игровые
+              </a>
               <a 
                 href="/blog" 
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-accent rounded-lg transition-all"
