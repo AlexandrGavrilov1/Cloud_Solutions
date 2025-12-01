@@ -3563,7 +3563,7 @@ export const providers: Provider[] = [
     ],
     locations: ["Москва", "Санкт-Петербург", "Новосибирск"],
     trialDays: 14,
-    url: "https://selectel.ru/services/cloud/servers/",
+    url: "providers_logo/24_Selectel.jpg",
     pros: [
       "25 лет на рынке",
       "Собственные дата-центры в России",
