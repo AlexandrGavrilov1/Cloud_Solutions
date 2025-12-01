@@ -180,8 +180,8 @@ export const ProviderCard = ({
       </div>
       
       <Card 
-        className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift
-          ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : ''} transition-all`}
+        className={`border-2 border-border overflow-visible relative flex flex-col bg-card rounded-3xl
+          ${isSelected ? 'border-primary/50 shadow-lg shadow-primary/30' : 'hover:border-primary/50'} transition-all`}
         style={{
           clipPath: onToggleCompare 
             ? 'path("M 0 24 Q 0 0 24 0 L calc(100% - 164px) 0 Q calc(100% - 152px) 0 calc(100% - 152px) 12 L calc(100% - 152px) 48 Q calc(100% - 152px) 60 calc(100% - 140px) 60 L calc(100% - 24px) 60 Q calc(100% - 0px) 60 calc(100% - 0px) 84 L calc(100% - 0px) calc(100% - 24px) Q calc(100% - 0px) 100% calc(100% - 24px) 100% L 24 100% Q 0 100% 0 calc(100% - 24px) Z")'
