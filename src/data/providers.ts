@@ -3930,7 +3930,7 @@ export const providers: Provider[] = [
   {
     id: 27,
     name: "Cloud.ru",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/eb9cf2f4-f0cf-4796-856f-e616df3857fe.jpg",
+    logo: "providers_logo/27_Cloudru.jpg",
     rating: 9.4,
     basePrice: 0,
     cpuPrice: 200,
