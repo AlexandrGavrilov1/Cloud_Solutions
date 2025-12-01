@@ -5369,7 +5369,7 @@ export const providers: Provider[] = [
   {
     id: 43,
     name: "Cloud Beeline",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/db830890-b661-457b-b156-11b5d39606a7.jpg",
+    logo: "providers_logo/43_Cloud_beeline.JPG",
     rating: 8.3,
     basePrice: 0,
     cpuPrice: 225,
