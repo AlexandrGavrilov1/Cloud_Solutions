@@ -3442,7 +3442,7 @@ export const providers: Provider[] = [
   {
     id: 23,
     name: "Adman",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/5add3136-cb6a-48cf-9c01-254f2d0d5952.jpg",
+    logo: "providers_logo/23_Adman.jpg",
     rating: 9.2,
     basePrice: 250,
     cpuPrice: 150,
