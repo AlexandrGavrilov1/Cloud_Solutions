@@ -5234,7 +5234,7 @@ export const providers: Provider[] = [
   {
     id: 41,
     name: "Cloud4Y",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/756fd8c6-6b76-429c-bfee-c5d3f9849c2f.jpg",
+    logo: "providers_logo/41_Cloud4Y.JPG",
     rating: 8.9,
     basePrice: 0,
     cpuPrice: 280,
