@@ -5549,7 +5549,7 @@ export const providers: Provider[] = [
   {
     id: 46,
     name: "K2 Cloud",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/07ce57c2-c659-4066-9e8c-a98e4550ad20.jpg",
+    logo: "providers_logo/46_K2_Cloud.JPG",
     rating: 8.7,
     basePrice: 0,
     cpuPrice: 275,
