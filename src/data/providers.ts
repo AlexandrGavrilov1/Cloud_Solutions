@@ -3549,7 +3549,7 @@ export const providers: Provider[] = [
   {
     id: 24,
     name: "Selectel",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/b17e31dd-bcc7-4aa2-a0e7-b6cd2042a7a0.jpg",
+    logo: "providers_logo/24_Selectel.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 195,
