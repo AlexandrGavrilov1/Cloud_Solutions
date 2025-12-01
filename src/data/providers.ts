@@ -3328,7 +3328,7 @@ export const providers: Provider[] = [
   {
     id: 22,
     name: "AdminVPS",
-    logo: "https://adminvps.ru/assets/img/logos/logo.svg",
+    logo: "providers_logo/22_AdminVPS.jpg",
     rating: 9.1,
     basePrice: 299,
     cpuPrice: 140,
