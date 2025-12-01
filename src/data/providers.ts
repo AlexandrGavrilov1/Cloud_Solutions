@@ -4783,7 +4783,7 @@ export const providers: Provider[] = [
   {
     id: 34,
     name: "MWS",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/f17a3b05-2427-4d90-9b0f-88843dc3ee38.jpg",
+    logo: "providers_logo/34_MWS.jpg",
     rating: 8.5,
     basePrice: 0,
     cpuPrice: 200,
