@@ -3797,7 +3797,7 @@ export const providers: Provider[] = [
   {
     id: 26,
     name: "Serverspace",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/063d36f0-177c-4ae0-b26e-45bafe64e1eb.jpg",
+    logo: "providers_logo/26_Serverspace.jpg",
     rating: 9.5,
     basePrice: 0,
     cpuPrice: 180,
