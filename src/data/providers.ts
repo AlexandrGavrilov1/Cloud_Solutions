@@ -5625,7 +5625,7 @@ export const providers: Provider[] = [
   {
     id: 47,
     name: "Clodo",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/fc0ad644-b908-4aad-86c2-c4c07efab9bd.jpg",
+    logo: "providers_logo/47_Clodo.JPG",
     rating: 8.3,
     basePrice: 0,
     cpuPrice: 180,
