@@ -6003,7 +6003,7 @@ export const providers: Provider[] = [
   {
     id: 52,
     name: "OVH",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/eca1145c-02b0-4757-8de2-be0484cdc74b.jpg",
+    logo: "providers_logo/52_OVH.JPG",
     rating: 8.8,
     basePrice: 0,
     cpuPrice: 210,
