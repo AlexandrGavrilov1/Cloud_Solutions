@@ -747,7 +747,7 @@ export const providers: Provider[] = [
   {
     id: 3,
     name: "рег.ру",
-    logo: "providers_logo/03_RegRU.jpg",
+    logo: "/providers_logo/03_RegRU.jpg",
     rating: 9.4,
     basePrice: 199,
     cpuPrice: 150,
