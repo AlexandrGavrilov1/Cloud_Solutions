@@ -5041,7 +5041,7 @@ export const providers: Provider[] = [
   {
     id: 38,
     name: "Айтеко",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/1ab25c38-2cd4-4a37-8157-7336c06f35da.jpg",
+    logo: "providers_logo/38_ iteco_cloud.jpg",
     rating: 8.4,
     basePrice: 0,
     cpuPrice: 210,
