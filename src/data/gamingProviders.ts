@@ -4,7 +4,7 @@ export const gamingProviders: GamingProvider[] = [
   {
     id: 1,
     name: "IMBA Host",
-    logo: "https://cdn.poehali.dev/files/imba-host-logo.png",
+    logo: "/game_providers_logo/01_imbahost.JPG",
     rating: 9.8,
     basePrice: 199,
     pricePerSlot: 8,
@@ -41,7 +41,7 @@ export const gamingProviders: GamingProvider[] = [
   {
     id: 2,
     name: "XLGames",
-    logo: "https://cdn.poehali.dev/files/xlgames-logo.png",
+    logo: "/game_providers_logo/02_Xlgames.JPG",
     rating: 9.6,
     basePrice: 149,
     pricePerSlot: 7,
