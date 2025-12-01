@@ -8,7 +8,12 @@ export const gamingProviders: GamingProvider[] = [
     rating: 9.8,
     basePrice: 199,
     pricePerSlot: 8,
-    features: ["DDoS защита до 1 Тбит/с", "NVMe диски", "Панель управления Pterodactyl", "Автоматическая установка модов"],
+    features: [
+      "DDoS защита до 1 Тбит/с",
+      "NVMe диски",
+      "Панель управления Pterodactyl",
+      "Автоматическая установка модов",
+    ],
     locations: ["Москва", "Санкт-Петербург", "Казань"],
     trialDays: 3,
     url: "https://imba.host/",
@@ -16,25 +21,22 @@ export const gamingProviders: GamingProvider[] = [
       "Лучшая цена за слот на рынке",
       "Мощнейшая DDoS защита до 1 Тбит/с",
       "Современная панель Pterodactyl",
-      "Бесплатный тестовый период 3 дня"
+      "Бесплатный тестовый период 3 дня",
     ],
-    cons: [
-      "Только российские локации",
-      "Молодая компания на рынке"
-    ],
+    cons: ["Только российские локации", "Молодая компания на рынке"],
     supportedGames: [
       { game: "Minecraft", icon: "🎮", minPlayers: 10, maxPlayers: 500 },
       { game: "CS:GO", icon: "🔫", minPlayers: 10, maxPlayers: 64 },
       { game: "Rust", icon: "⚔️", minPlayers: 50, maxPlayers: 300 },
       { game: "ARK", icon: "🦖", minPlayers: 20, maxPlayers: 150 },
       { game: "Valheim", icon: "⚡", minPlayers: 2, maxPlayers: 10 },
-      { game: "Terraria", icon: "🌍", minPlayers: 2, maxPlayers: 8 }
+      { game: "Terraria", icon: "🌍", minPlayers: 2, maxPlayers: 8 },
     ],
     ddosProtection: "До 1 Тбит/с",
     uptime: 99.98,
     supportResponseTime: "< 5 мин",
     paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Криптовалюта"],
-    promoText: "Промокод IMBA20 - скидка 20% на первый месяц"
+    promoText: "Промокод IMBA20 - скидка 20% на первый месяц",
   },
   {
     id: 2,
@@ -43,7 +45,12 @@ export const gamingProviders: GamingProvider[] = [
     rating: 9.6,
     basePrice: 149,
     pricePerSlot: 7,
-    features: ["DDoS защита", "NVMe накопители", "Мгновенная установка", "Техподдержка 24/7"],
+    features: [
+      "DDoS защита",
+      "NVMe накопители",
+      "Мгновенная установка",
+      "Техподдержка 24/7",
+    ],
     locations: ["Москва", "Санкт-Петербург", "Новосибирск"],
     trialDays: 1,
     url: "https://xlgames.pro/games/",
@@ -51,24 +58,21 @@ export const gamingProviders: GamingProvider[] = [
       "Самые низкие цены на рынке",
       "Быстрая техподдержка 24/7",
       "NVMe диски для максимальной скорости",
-      "Простая панель управления"
+      "Простая панель управления",
     ],
-    cons: [
-      "Только российские локации",
-      "Тестовый период 1 день"
-    ],
+    cons: ["Только российские локации", "Тестовый период 1 день"],
     supportedGames: [
       { game: "Minecraft", icon: "🎮", minPlayers: 10, maxPlayers: 300 },
       { game: "CS:GO", icon: "🔫", minPlayers: 10, maxPlayers: 32 },
       { game: "Rust", icon: "⚔️", minPlayers: 50, maxPlayers: 200 },
       { game: "ARK", icon: "🦖", minPlayers: 20, maxPlayers: 100 },
       { game: "MTA", icon: "🚗", minPlayers: 32, maxPlayers: 128 },
-      { game: "Valheim", icon: "⚡", minPlayers: 2, maxPlayers: 10 }
+      { game: "Valheim", icon: "⚡", minPlayers: 2, maxPlayers: 10 },
     ],
     ddosProtection: "До 300 Гбит/с",
     uptime: 99.95,
     supportResponseTime: "< 10 мин",
     paymentMethods: ["Карта", "ЮMoney", "Qiwi", "Webmoney"],
-    promoText: "Скидка 15% на первый месяц - промокод START15"
-  }
+    promoText: "Скидка 15% на первый месяц - промокод START15",
+  },
 ];
