@@ -4906,7 +4906,7 @@ export const providers: Provider[] = [
   {
     id: 36,
     name: "IT-GRAD",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/513e6d11-5f72-4b80-8388-1d0d6cd94079.jpg",
+    logo: "providers_logo/36_ IT_GRAD.jpg",
     rating: 8.9,
     basePrice: 0,
     cpuPrice: 230,
