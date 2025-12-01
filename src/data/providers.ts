@@ -5754,7 +5754,7 @@ export const providers: Provider[] = [
   {
     id: 49,
     name: "Skyhost",
-    logo: "https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/files/afc5ec4f-2678-4230-a55f-1c788ccfe23b.jpg",
+    logo: "providers_logo/49_Skyhost.JPG",
     rating: 7.9,
     basePrice: 0,
     cpuPrice: 165,
