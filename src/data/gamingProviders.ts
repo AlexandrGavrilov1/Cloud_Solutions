@@ -41,7 +41,7 @@ export const gamingProviders: GamingProvider[] = [
   {
     id: 2,
     name: "XLGames",
-    logo: "/game_providers_logo/02_Xlgames.JPG",
+    logo: "game_providers_logo/02__Xlgames.JPG",
     rating: 9.6,
     basePrice: 149,
     pricePerSlot: 7,
