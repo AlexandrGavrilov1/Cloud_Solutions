@@ -4,7 +4,7 @@ export const gamingProviders: GamingProvider[] = [
   {
     id: 1,
     name: "IMBA Host",
-    logo: "/game_providers_logo/01_imbahost.JPG",
+    logo: "game_providers_logo/01_imbahost.JPG",
     rating: 9.8,
     basePrice: 199,
     pricePerSlot: 8,
@@ -53,7 +53,7 @@ export const gamingProviders: GamingProvider[] = [
     ],
     locations: ["Москва", "Санкт-Петербург", "Новосибирск"],
     trialDays: 1,
-    url: "https://xlgames.pro/games/",
+    url: "https://Xlgames.pro/games/",
     pros: [
       "Самые низкие цены на рынке",
       "Быстрая техподдержка 24/7",
