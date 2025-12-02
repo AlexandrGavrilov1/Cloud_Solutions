@@ -5625,7 +5625,7 @@ export const providers: Provider[] = [
   {
     id: 47,
     name: "Clodo",
-    logo: "providers_logo/47_Clodo.JPG",
+    logo: "providers_logo/47_Clodo.jpg",
     rating: 8.3,
     basePrice: 0,
     cpuPrice: 180,
