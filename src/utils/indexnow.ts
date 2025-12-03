@@ -1,7 +1,17 @@
 const INDEXNOW_KEY = '7f8a9b2c3d4e5f6a1b2c3d4e5f6a7b8c';
 const SITE_URL = 'https://topcloudhub.ru';
 
+const isProduction = () => {
+  if (typeof window === 'undefined') return false;
+  return window.location.hostname === 'topcloudhub.ru';
+};
+
 export const submitToIndexNow = async (urls: string[]) => {
+  if (!isProduction()) {
+    console.debug('IndexNow: отключен для preview-версии');
+    return [];
+  }
+
   const endpoints = [
     'https://api.indexnow.org/indexnow',
     'https://yandex.com/indexnow',
