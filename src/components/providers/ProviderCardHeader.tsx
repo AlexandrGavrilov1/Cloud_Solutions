@@ -117,7 +117,7 @@ export const ProviderCardHeader = ({
         </div>
       </div>
         
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-1.5 text-sm">
             <Icon name="HardDrive" size={14} className="text-primary flex-shrink-0" />
@@ -144,7 +144,7 @@ export const ProviderCardHeader = ({
 
         <div className="flex flex-col items-end gap-2 pr-24">
           <div className="flex flex-col items-end">
-            <div className="flex items-baseline gap- 3 whitespace-nowrap">
+            <div className="flex items-baseline gap-2 whitespace-nowrap">
               <span className="text-sm text-muted-foreground">{t('common.from')}</span>
               <span className="text-2xl font-black text-primary">{calculatedPrice}</span>
               <span className="text-xs text-muted-foreground">{t('common.perMonth')}</span>
