@@ -162,7 +162,7 @@ export const ProviderCard = ({
           showDetails ? 'lg:right-8 lg:top-8' : ''
         }`}
       >
-        {onToggleCompare && provider.id === 1 && (
+        {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
             className={`w-14 h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
