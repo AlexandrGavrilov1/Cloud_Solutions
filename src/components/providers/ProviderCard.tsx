@@ -172,14 +172,14 @@ export const ProviderCard = ({
                 name={isSelected ? "Check" : "GitCompare"}
                 size={17}
                 className="text-foreground"
-              />
+              >
             </button>
           )}
           <button
             onClick={handleProviderClick}
             className="w-14 h-14 rounded-full bg-card flex items-center justify-center border-2 border-border hover:border-primary/50 transition-all"
           >
-            <Icon name="ArrowUpRight" size={17} className="text-primary" />
+            <Icon name="ArrowUpRight" size={17} className="text-primary" >
           </button>
         </div>
 
