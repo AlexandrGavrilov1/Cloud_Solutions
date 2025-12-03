@@ -162,12 +162,7 @@ export const ProviderCard = ({
         ref={containerRef}
         className={`relative flex flex-col group ${showDetails ? "col-span-full z-10" : ""}`}
       >
-        <div
-          className={`absolute right-5 top-5 md:right-6 md:top-6 z-40 flex gap-2 pointer-events-auto ${
-            showDetails ? "lg:right-8 lg:top-8" : ""
-          }`}
-        >
-          {onToggleCompare && (
+                {onToggleCompare && (
             <button
               onClick={onToggleCompare}
               className={`w-14 h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
