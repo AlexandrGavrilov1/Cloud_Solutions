@@ -74,7 +74,7 @@ export const HeroSection = () => {
               }}
             >
               <Icon name="Lightbulb" size={18} className="mr-2" />
-              {t("   Как выбрать   ")}
+              {t("hero.howToChose")}
             </Button>
           </div>
         </div>
