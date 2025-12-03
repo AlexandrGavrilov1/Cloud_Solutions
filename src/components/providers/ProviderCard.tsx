@@ -157,11 +157,11 @@ export const ProviderCard = ({
         ref={containerRef}
         className={`relative flex flex-col group ${showDetails ? 'col-span-full z-10' : ''}`}
       >
-      <div 
-        className={`absolute right-5 top-5 md:right-6 md:top-6 z-40 flex gap-2 pointer-events-auto ${
-          showDetails ? 'lg:right-8 lg:top-8' : ''
-        }`}
-      >
+      //<div 
+      //  className={`absolute right-5 top-5 md:right-6 md:top-6 z-40 flex gap-2 pointer-events-auto ${
+      //    showDetails ? 'lg:right-8 lg:top-8' : ''
+      //  }`}
+      //>
         {onToggleCompare && (
           <button 
             onClick={onToggleCompare}
@@ -177,7 +177,7 @@ export const ProviderCard = ({
         >
           <Icon name="ArrowUpRight" size={17} className="text-primary" />
         </button>
-      </div>
+      //</div>
       
       <Card 
         className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift
