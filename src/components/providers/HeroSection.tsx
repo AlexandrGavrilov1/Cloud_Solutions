@@ -52,7 +52,7 @@ export const HeroSection = () => {
                 }
               }}
             >
-              {t("hero.view")}
+              {t("hero.viewRating")}
               <Icon
                 name="ArrowRight"
                 size={20}
