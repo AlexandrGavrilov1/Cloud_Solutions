@@ -62,7 +62,7 @@ export const HeroSection = () => {
             <Button
               size="lg"
               variant="outline"
-              className="h-30 w-60 px-5 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all"
+              className="h-30 w-59 px-5 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all"
               onClick={() => {
                 const guideSection = document.getElementById("guide");
                 if (guideSection) {
