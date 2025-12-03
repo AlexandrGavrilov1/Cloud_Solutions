@@ -40,7 +40,6 @@ export const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button
-              size="lg"
               className="h-14 px-8 text-base font-bold bg-primary text-background shadow-xl shadow-primary/30 hover:shadow-neon transition-all group rounded-xl"
               onClick={() => {
                 const providersSection = document.getElementById("providers");
@@ -60,8 +59,6 @@ export const HeroSection = () => {
               />
             </Button>
             <Button
-              size="lg"
-              variant="outline"
               className="h-14 px-8 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all"
               onClick={() => {
                 const guideSection = document.getElementById("guide");
@@ -74,7 +71,7 @@ export const HeroSection = () => {
               }}
             >
               <Icon name="Lightbulb" size={18} className="mr-2" />
-              {t("  hero.howToChoose  ")}
+              {t("hero.howToChoose")}
             </Button>
           </div>
         </div>
