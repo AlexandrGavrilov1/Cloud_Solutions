@@ -179,7 +179,7 @@ export const ProviderCard = ({
             {onToggleCompare && (
               <button
                 onClick={onToggleCompare}
-                className={`w-14 sm:w-auto sm:min-w-[220px] h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
+                className={`w-14 sm:w-auto sm:min-w-[20px] h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
               ${isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : "border-border hover:border-primary/50"}`}
               >
                 <Icon
