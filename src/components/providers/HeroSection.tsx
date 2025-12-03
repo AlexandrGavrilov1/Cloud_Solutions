@@ -60,7 +60,7 @@ export const HeroSection = () => {
               />
             </Button>
             <Button
-              size="small"
+              size="lg"
               variant="outline"
               className="h-14 px-5 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all"
               onClick={() => {
