@@ -20,7 +20,7 @@ export const Header = () => {
             <img
               src={
                 theme === "dark"
-                  ? "TCH_logo/logo_v4.png"
+                  ? "TCH_logo/logo_v3.png"
                   : "https://cdn.poehali.dev/files/8f328ff2-4310-4457-a129-5e42f69ef566.png"
               }
               alt="TopCloudHub Logo"
