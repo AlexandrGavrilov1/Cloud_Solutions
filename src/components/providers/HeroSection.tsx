@@ -52,7 +52,7 @@ export const HeroSection = () => {
                 }
               }}
             >
-              {t("Рейтинг")}
+              {t("hero.Rating")}
               <Icon
                 name="ArrowRight"
                 size={20}
@@ -74,7 +74,7 @@ export const HeroSection = () => {
               }}
             >
               <Icon name="Lightbulb" size={18} className="mr-2" />
-              {t("Как выбрать")}
+              {t("hero.HowtoChoose")}
             </Button>
           </div>
         </div>
