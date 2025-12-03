@@ -46,7 +46,9 @@ export const GlobalResourceConfig = ({
               className="text-primary sm:w-5 sm:h-5"
             />
           </div>
+          //{" "}
           <div className="text-left">
+            //{" "}
             <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
               {t("resources.configurator")}
             </h3>
@@ -55,7 +57,9 @@ export const GlobalResourceConfig = ({
               // CPU: {config.cpu} • RAM: {config.ram}GB •{" "}
               {t("resources.storage")}: {config.storage}GB //
             </p>
+            //{" "}
           </div>
+          //{" "}
         </div>
         <Icon
           name={isOpen ? "ChevronUp" : "ChevronDown"}
