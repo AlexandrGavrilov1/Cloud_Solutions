@@ -94,7 +94,7 @@ export const FilterPanel = ({
 
   return (
     <div className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? 'max-w-full' : 'max-w-[190px] sm:max-w-[230px]'}`}>
-      <button
+      <button className="w-full px-6 py-6 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl"
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full px-6 py-4 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl"
       >
