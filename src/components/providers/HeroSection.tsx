@@ -41,7 +41,7 @@ export const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button
               size="lg"
-              className="h-14 px-8 text-base font-bold bg-primary text-background shadow-xl shadow-primary/30 hover:shadow-neon transition-all group rounded-xl w-18 sm:w-auto sm:min-w-[220px]"
+              className="h-14 px-8 text-base font-bold bg-primary text-background shadow-xl shadow-primary/30 hover:shadow-neon transition-all group rounded-xl w-20 sm:w-auto sm:min-w-[220px]"
               onClick={() => {
                 const providersSection = document.getElementById("providers");
                 if (providersSection) {
@@ -62,7 +62,7 @@ export const HeroSection = () => {
             <Button
               size="lg"
               variant="outline"
-              className="h-14 px-8 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all w-18 sm:w-auto sm:min-w-[220px]"
+              className="h-14 px-8 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all w-20 sm:w-auto sm:min-w-[220px]"
               onClick={() => {
                 const guideSection = document.getElementById("guide");
                 if (guideSection) {
