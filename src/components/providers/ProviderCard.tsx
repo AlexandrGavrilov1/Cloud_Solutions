@@ -178,6 +178,7 @@ export const ProviderCard = ({
           >
             {onToggleCompare && (
               <button
+                size="lg"
                 onClick={onToggleCompare}
                 className={`w-14 h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
               ${isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : "border-border hover:border-primary/50"}`}
@@ -190,6 +191,7 @@ export const ProviderCard = ({
               </button>
             )}
             <button
+              size="lg"
               onClick={handleProviderClick}
               className="w-14 h-14 rounded-full bg-card flex items-center justify-center border-2 border-border hover:border-primary/50 transition-all"
             >
