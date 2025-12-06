@@ -199,7 +199,7 @@ export const ProviderCard = ({
             )}
             <button
               onClick={handleProviderClick}
-              className="w-14 h-14 rounded-full bg-card flex items-center justify-center border-2 border-border hover:border-primary/50 transition-all"
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200  hover:border-primary/50 focus:outline-none  focus:ring-2 focus:ring-primary/50 focus:ring-offset-2"
             >
               <Icon name="ArrowUpRight" size={17} className="text-primary" />
             </button>
