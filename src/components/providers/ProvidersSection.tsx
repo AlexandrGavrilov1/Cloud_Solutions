@@ -405,10 +405,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* 🔧 Grid система для точного контроля ширины */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
-        {/* 🔧 На мобильных: поиск первый (на всю ширину) */}
-        <div className="order-1 lg:hidden col-span-1">
+      {/* 🔧 Гибкая структура с justify-between */}
+      <div className="flex flex-col lg:flex-row gap-6 mb-6 items-start justify-between">
+        {/* 🔧 На мобильных: поиск первый */}
+        <div className="order-1 lg:hidden w-full">
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
@@ -417,30 +417,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
         </div>
 
-        {/* 🔧 На десктопе: GlobalResourceConfig слева, компактный (4 колонки) */}
-        <div className="order-2 lg:order-1 lg:col-span-4 xl:col-span-3">
+        {/* 🔧 На десктопе: GlobalResourceConfig слева */}
+        <div className="order-2 lg:order-1">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* 🔧 Пустое пространство между (только на десктопе) */}
-        <div className="hidden lg:block lg:col-span-1 xl:col-span-2"></div>
-
-        {/* 🔧 На десктопе: поиск и фильтры справа, компактные (7 колонки) */}
-        <div className="order-3 lg:order-2 lg:col-span-7 xl:col-span-7">
-          {/* Поиск на десктопе - компактный, выровнен по правому краю */}
+        {/* 🔧 На десктопе: поиск и фильтры справа, компактные, в колонке */}
+        <div className="order-3 lg:order-2 lg:w-64 xl:w-72">
+          {/* Поиск на десктопе - компактный */}
           <div className="hidden lg:block mb-4">
-            <div className="max-w-xs ml-auto">
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Поиск провайдера..."
-                className="w-full"
-              />
-            </div>
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Поиск..."
+              className="w-full"
+            />
           </div>
 
-          {/* FilterPanel под поиском, той же ширины */}
-          <div className="w-full lg:max-w-xs lg:ml-auto">
+          {/* FilterPanel - компактный, под поиском */}
+          <div className="w-full">
             <FilterPanel
               filterFZ152={filterFZ152}
               setFilterFZ152={setFilterFZ152}
@@ -455,9 +450,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               filterMinDatacenters={filterMinDatacenters}
               setFilterMinDatacenters={setFilterMinDatacenters}
               filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
+              setFilterDiskType={filterDiskType}
               filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
+              setFilterPaymentMethod={filterPaymentMethod}
               filterOS={filterOS}
               setFilterOS={setFilterOS}
               filterCPU={filterCPU}
