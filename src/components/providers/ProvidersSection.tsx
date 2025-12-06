@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Provider, ResourceConfig, Review } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
-import { FilterPanel } from "./FilterPanel";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
@@ -12,6 +11,39 @@ import { SearchInput } from "./SearchInput";
 interface ProvidersSectionProps {
   providers: Provider[];
 }
+
+// 🔧 Создаем компактный FilterButton с аккордеоном
+const FilterButton = ({
+  isOpen,
+  onClick,
+  filteredCount,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+  filteredCount: number;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center justify-between p-3 bg-card border border-border rounded-lg hover:bg-accent transition-colors"
+    >
+      <div className="flex items-center gap-2">
+        <Icon name="Filter" size={18} className="text-muted-foreground" />
+        <span className="font-medium">Фильтры</span>
+        {filteredCount > 0 && (
+          <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+            {filteredCount}
+          </span>
+        )}
+      </div>
+      <Icon
+        name={isOpen ? "ChevronUp" : "ChevronDown"}
+        size={18}
+        className="text-muted-foreground transition-transform"
+      />
+    </button>
+  );
+};
 
 export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
@@ -89,6 +121,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     const fetchApprovedReviews = async () => {
@@ -405,8 +438,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* 🔧 Гибкая структура с justify-between */}
-      <div className="flex flex-col lg:flex-row gap-6 mb-6 items-start justify-between">
+      {/* 🔧 Структура с двумя колонками на десктопе */}
+      <div className="flex flex-col lg:flex-row gap-6 mb-6">
         {/* 🔧 На мобильных: поиск первый */}
         <div className="order-1 lg:hidden w-full">
           <SearchInput
@@ -418,11 +451,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
 
         {/* 🔧 На десктопе: GlobalResourceConfig слева */}
-        <div className="order-2 lg:order-1">
+        <div className="order-2 lg:order-1 lg:w-64 xl:w-72">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* 🔧 На десктопе: поиск и фильтры справа, компактные, в колонке */}
+        {/* 🔧 На десктопе: правая колонка с поиском и кнопкой фильтров */}
         <div className="order-3 lg:order-2 lg:w-64 xl:w-72">
           {/* Поиск на десктопе - компактный */}
           <div className="hidden lg:block mb-4">
@@ -434,39 +467,189 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             />
           </div>
 
-          {/* FilterPanel - компактный, под поиском */}
-          <div className="w-full">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={filterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={filterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
+          {/* 🔧 Кнопка фильтров с аккордеоном */}
+          <div className="w-full relative">
+            <FilterButton
+              isOpen={filtersOpen}
+              onClick={() => setFiltersOpen(!filtersOpen)}
               filteredCount={filteredProviders.length}
             />
+
+            {/* 🔧 Контейнер с фильтрами - раскрывается вниз */}
+            {filtersOpen && (
+              <div className="absolute top-full left-0 right-0 mt-2 z-10 bg-card border border-border rounded-lg shadow-lg">
+                <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+                  {/* Сортировка */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">
+                      Сортировка:
+                    </label>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setSortBy("rating")}
+                        className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                          sortBy === "rating"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-accent text-accent-foreground hover:bg-accent/80"
+                        }`}
+                      >
+                        По рейтингу
+                      </button>
+                      <button
+                        onClick={() => setSortBy("price")}
+                        className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                          sortBy === "price"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-accent text-accent-foreground hover:bg-accent/80"
+                        }`}
+                      >
+                        По цене
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Чекбоксы */}
+                  <div className="space-y-3">
+                    <label className="text-sm font-medium text-foreground">
+                      Фильтры:
+                    </label>
+
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="filterFZ152"
+                        checked={filterFZ152}
+                        onChange={(e) => setFilterFZ152(e.target.checked)}
+                        className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                      />
+                      <label
+                        htmlFor="filterFZ152"
+                        className="text-sm cursor-pointer"
+                      >
+                        Соответствие ФЗ-152
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="filterFSTEK"
+                        checked={filterFSTEK}
+                        onChange={(e) => setFilterFSTEK(e.target.checked)}
+                        className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                      />
+                      <label
+                        htmlFor="filterFSTEK"
+                        className="text-sm cursor-pointer"
+                      >
+                        Лицензия ФСТЭК
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="filterTrialPeriod"
+                        checked={filterTrialPeriod}
+                        onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+                        className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                      />
+                      <label
+                        htmlFor="filterTrialPeriod"
+                        className="text-sm cursor-pointer"
+                      >
+                        Есть тестовый период
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Селекты */}
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground">
+                        Локация:
+                      </label>
+                      <select
+                        value={filterLocation || ""}
+                        onChange={(e) =>
+                          setFilterLocation(e.target.value || null)
+                        }
+                        className="w-full p-2 text-sm bg-background border border-border rounded-lg focus:border-primary focus:outline-none"
+                      >
+                        <option value="">Все локации</option>
+                        {allLocations.map((loc) => (
+                          <option key={loc} value={loc}>
+                            {loc}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground">
+                        Виртуализация:
+                      </label>
+                      <select
+                        value={filterVirtualization || ""}
+                        onChange={(e) =>
+                          setFilterVirtualization(e.target.value || null)
+                        }
+                        className="w-full p-2 text-sm bg-background border border-border rounded-lg focus:border-primary focus:outline-none"
+                      >
+                        <option value="">Все типы</option>
+                        {allVirtualizations.map((virt) => (
+                          <option key={virt} value={virt}>
+                            {virt}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground">
+                        Тип диска:
+                      </label>
+                      <select
+                        value={filterDiskType || ""}
+                        onChange={(e) =>
+                          setFilterDiskType(e.target.value || null)
+                        }
+                        className="w-full p-2 text-sm bg-background border border-border rounded-lg focus:border-primary focus:outline-none"
+                      >
+                        <option value="">Все типы</option>
+                        {allDiskTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Кнопка сброса */}
+                  <div className="pt-2">
+                    <button
+                      onClick={() => {
+                        setFilterFZ152(false);
+                        setFilterFSTEK(false);
+                        setFilterTrialPeriod(false);
+                        setFilterLocation(null);
+                        setFilterVirtualization(null);
+                        setFilterMinDatacenters(null);
+                        setFilterDiskType(null);
+                        setFilterPaymentMethod(null);
+                        setFilterOS(null);
+                        setFilterCPU(null);
+                        setSortBy("rating");
+                      }}
+                      className="w-full py-2 px-4 text-sm font-medium bg-destructive/10 text-destructive rounded-lg hover:bg-destructive/20 transition-colors"
+                    >
+                      Сбросить все фильтры
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
