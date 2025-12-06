@@ -7,7 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
-import { SearchInput } from "@/components/ui/SearchInput"; // ← Добавляем импорт
+import { SearchInput } from "./SearchInput"; // ← Добавляем импорт
 
 interface ProvidersSectionProps {
   providers: Provider[];
