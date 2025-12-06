@@ -15,7 +15,7 @@ interface SearchInputProps {
 export const SearchInput: React.FC<SearchInputProps> = ({
   value = '',
   onChange,
-  placeholder = 'Поиск...',
+  placeholder = 'РџРѕРёСЃРє...',
   debounceDelay = 300,
   className = '',
   autoFocus = false,
@@ -91,9 +91,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           onClick={handleClear}
           type="button"
           className={`absolute ${sizeClasses.button} top-1/2 -translate-y-1/2 hover:bg-accent rounded transition-colors`}
-          aria-label="Очистить поиск"
+          aria-label="РћС‡РёСЃС‚РёС‚СЊ РїРѕРёСЃРє"
         >
-          ?
+          Г—
         </button>
       )}
     </div>
