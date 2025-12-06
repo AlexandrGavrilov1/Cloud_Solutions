@@ -179,7 +179,16 @@ export const ProviderCard = ({
             {onToggleCompare && (
               <button
                 onClick={onToggleCompare}
-                className={` min-w-[44px] min-h-[44px] w-11 h-11   xs:w-12 xs:h-12  sm:w-14 sm:h-14 md:w-16 md:h-16  rounded-full bg-card  flex tems-center justify-center   border-2 border-border   hover:border-primary/50   transition-all   ${isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : "border-border hover:border-primary/50"}`}
+                className={` w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16
+    rounded-full flex items-center justify-center
+    bg-card border-2 transition-all duration-200
+    hover:border-primary/50 focus:outline-none
+    focus:ring-2 focus:ring-primary/50 focus:ring-offset-2
+    ${
+      isSelected
+        ? "border-primary/50 shadow-lg shadow-primary/30"
+        : "border-border hover:border-primary/50"
+    }`}
               >
                 <Icon
                   name={isSelected ? "Check" : "GitCompare"}
@@ -190,7 +199,7 @@ export const ProviderCard = ({
             )}
             <button
               onClick={handleProviderClick}
-              className=" min-w-[44px] min-h-[44px] w-11 h-11   xs:w-12 xs:h-12  sm:w-14 sm:h-14 md:w-16 md:h-16  rounded-full bg-card  flex tems-center justify-center   border-2 border-border   hover:border-primary/50   transition-all"
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200  hover:border-primary/50 focus:outline-none  focus:ring-2 focus:ring-primary/50 focus:ring-offset-2"
             >
               <Icon name="ArrowUpRight" size={17} className="text-primary" />
             </button>
