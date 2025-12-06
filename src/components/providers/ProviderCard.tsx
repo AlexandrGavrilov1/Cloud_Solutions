@@ -179,8 +179,16 @@ export const ProviderCard = ({
             {onToggleCompare && (
               <button
                 onClick={onToggleCompare}
-                className={`w-14 h-14 rounded-full flex items-center justify-center bg-card border-2 transition-all
-              ${isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : "border-border hover:border-primary/50"}`}
+                className={` w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16
+    rounded-full flex items-center justify-center
+    bg-card border-2 transition-all duration-200
+    hover:border-primary/50 focus:outline-none
+    focus:ring-2 focus:ring-primary/50 focus:ring-offset-2
+    ${
+      isSelected
+        ? "border-primary/50 shadow-lg shadow-primary/30"
+        : "border-border hover:border-primary/50"
+    }`}
               >
                 <Icon
                   name={isSelected ? "Check" : "GitCompare"}
