@@ -7,7 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
-import { SearchInput } from "./SearchInput"; // Импортируем
+import { SearchInput } from "./SearchInput";
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -405,56 +405,72 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* 🔧 Верхняя строка: GlobalResourceConfig (слева) + FilterPanel (центр) + SearchInput (справа) */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
-        {/* Слева: GlobalResourceConfig */}
-        <div className="lg:w-1/3">
-          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-        </div>
-
-        {/* По центру: FilterPanel */}
-        <div className="lg:w-1/3">
-          <FilterPanel
-            filterFZ152={filterFZ152}
-            setFilterFZ152={setFilterFZ152}
-            filterFSTEK={filterFSTEK}
-            setFilterFSTEK={setFilterFSTEK}
-            filterTrialPeriod={filterTrialPeriod}
-            setFilterTrialPeriod={setFilterTrialPeriod}
-            filterLocation={filterLocation}
-            setFilterLocation={setFilterLocation}
-            filterVirtualization={filterVirtualization}
-            setFilterVirtualization={setFilterVirtualization}
-            filterMinDatacenters={filterMinDatacenters}
-            setFilterMinDatacenters={setFilterMinDatacenters}
-            filterDiskType={filterDiskType}
-            setFilterDiskType={setFilterDiskType}
-            filterPaymentMethod={filterPaymentMethod}
-            setFilterPaymentMethod={setFilterPaymentMethod}
-            filterOS={filterOS}
-            setFilterOS={setFilterOS}
-            filterCPU={filterCPU}
-            setFilterCPU={setFilterCPU}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            allLocations={allLocations}
-            allVirtualizations={allVirtualizations}
-            allDiskTypes={allDiskTypes}
-            allPaymentMethods={allPaymentMethods}
-            allOS={allOS}
-            allCPUs={allCPUs}
-            filteredCount={filteredProviders.length}
+      {/* 🔧 Grid система для точного контроля ширины */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        {/* 🔧 На мобильных: поиск первый (на всю ширину) */}
+        <div className="order-1 lg:hidden col-span-1">
+          <SearchInput
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Поиск провайдера..."
+            className="w-full"
           />
         </div>
 
-        {/* Справа: SearchInput - компактный */}
-        <div className="lg:w-1/3 flex justify-end">
-          <div className="w-full max-w-xs">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Поиск провайдера..."
-              className="w-full"
+        {/* 🔧 На десктопе: GlobalResourceConfig слева, компактный (4 колонки) */}
+        <div className="order-2 lg:order-1 lg:col-span-4 xl:col-span-3">
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
+
+        {/* 🔧 Пустое пространство между (только на десктопе) */}
+        <div className="hidden lg:block lg:col-span-1 xl:col-span-2"></div>
+
+        {/* 🔧 На десктопе: поиск и фильтры справа, компактные (7 колонки) */}
+        <div className="order-3 lg:order-2 lg:col-span-7 xl:col-span-7">
+          {/* Поиск на десктопе - компактный, выровнен по правому краю */}
+          <div className="hidden lg:block mb-4">
+            <div className="max-w-xs ml-auto">
+              <SearchInput
+                value={searchQuery}
+                onChange={setSearchQuery}
+                placeholder="Поиск провайдера..."
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          {/* FilterPanel под поиском, той же ширины */}
+          <div className="w-full lg:max-w-xs lg:ml-auto">
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
             />
           </div>
         </div>
