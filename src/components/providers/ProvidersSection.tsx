@@ -7,7 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
-import { SearchInput } from "./SearchInput"; // ← Добавляем импорт
+import { SearchInput } from "./SearchInput"; // Импортируем
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -123,19 +123,121 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     fetchApprovedReviews();
   }, [providers]);
 
-  // Сохранение фильтров в localStorage (остается без изменений)
-  // ... все useEffect для сохранения в localStorage остаются как есть
+  // Сохранение фильтров в localStorage
+  useEffect(() => {
+    localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
+  }, [filterFZ152]);
+
+  useEffect(() => {
+    localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
+  }, [filterFSTEK]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "filterTrialPeriod",
+      JSON.stringify(filterTrialPeriod),
+    );
+  }, [filterTrialPeriod]);
+
+  useEffect(() => {
+    if (filterLocation) {
+      localStorage.setItem("filterLocation", filterLocation);
+    } else {
+      localStorage.removeItem("filterLocation");
+    }
+  }, [filterLocation]);
+
+  useEffect(() => {
+    if (filterVirtualization) {
+      localStorage.setItem("filterVirtualization", filterVirtualization);
+    } else {
+      localStorage.removeItem("filterVirtualization");
+    }
+  }, [filterVirtualization]);
+
+  useEffect(() => {
+    if (filterMinDatacenters !== null) {
+      localStorage.setItem(
+        "filterMinDatacenters",
+        filterMinDatacenters.toString(),
+      );
+    } else {
+      localStorage.removeItem("filterMinDatacenters");
+    }
+  }, [filterMinDatacenters]);
+
+  useEffect(() => {
+    if (filterDiskType) {
+      localStorage.setItem("filterDiskType", filterDiskType);
+    } else {
+      localStorage.removeItem("filterDiskType");
+    }
+  }, [filterDiskType]);
+
+  useEffect(() => {
+    if (filterPaymentMethod) {
+      localStorage.setItem("filterPaymentMethod", filterPaymentMethod);
+    } else {
+      localStorage.removeItem("filterPaymentMethod");
+    }
+  }, [filterPaymentMethod]);
+
+  useEffect(() => {
+    if (filterOS) {
+      localStorage.setItem("filterOS", filterOS);
+    } else {
+      localStorage.removeItem("filterOS");
+    }
+  }, [filterOS]);
+
+  useEffect(() => {
+    if (filterCPU) {
+      localStorage.setItem("filterCPU", filterCPU);
+    } else {
+      localStorage.removeItem("filterCPU");
+    }
+  }, [filterCPU]);
+
+  useEffect(() => {
+    localStorage.setItem("sortBy", sortBy);
+  }, [sortBy]);
 
   const calculatePrice = (provider: Provider, config?: ResourceConfig) => {
-    // ... функция calculatePrice остается без изменений
+    if (!config) {
+      config = { cpu: 1, ram: 1, storage: 10 };
+    }
+
+    const calculatedPrice = Math.round(
+      provider.basePrice +
+        config.cpu * provider.cpuPrice +
+        config.ram * provider.ramPrice +
+        config.storage * provider.storagePrice,
+    );
+
+    if (
+      config.cpu === 1 &&
+      config.ram === 1 &&
+      config.storage === 10 &&
+      provider.pricingDetails.minPrice
+    ) {
+      return Math.min(calculatedPrice, provider.pricingDetails.minPrice);
+    }
+
+    return calculatedPrice;
   };
 
   const toggleComparison = (providerId: number) => {
-    // ... функция toggleComparison остается без изменений
+    setSelectedForComparison((prev) =>
+      prev.includes(providerId)
+        ? prev.filter((id) => id !== providerId)
+        : [...prev, providerId],
+    );
   };
 
   const compareProviders = () => {
-    // ... функция compareProviders остается без изменений
+    if (selectedForComparison.length >= 2) {
+      setShowComparison(true);
+    }
   };
 
   const updateConfig = (
@@ -143,11 +245,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     key: keyof ResourceConfig,
     value: number,
   ) => {
-    // ... функция updateConfig остается без изменений
+    setConfigs((prev) => ({
+      ...prev,
+      [providerId]: { ...prev[providerId], [key]: value },
+    }));
   };
 
   const applyGlobalConfig = (config: ResourceConfig) => {
-    // ... функция applyGlobalConfig остается без изменений
+    const updatedConfigs: Record<number, ResourceConfig> = {};
+    providersWithReviews.forEach((provider) => {
+      updatedConfigs[provider.id] = { ...config };
+    });
+    setConfigs(updatedConfigs);
   };
 
   const allLocations = useMemo(
@@ -296,23 +405,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start">
-        <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+      {/* 🔧 Верхняя строка: GlobalResourceConfig (слева) + FilterPanel (центр) + SearchInput (справа) */}
+      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
+        {/* Слева: GlobalResourceConfig */}
+        <div className="lg:w-1/3">
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
 
-        <div className="flex-1">
-          {/* Заменяем старое поле поиска на SearchInput */}
-          <div className="mb-4">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Найти провайдера по названию..."
-              debounceDelay={300}
-              size="md"
-              className="w-full"
-              autoFocus={false}
-            />
-          </div>
-
+        {/* По центру: FilterPanel */}
+        <div className="lg:w-1/3">
           <FilterPanel
             filterFZ152={filterFZ152}
             setFilterFZ152={setFilterFZ152}
@@ -343,8 +444,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             allOS={allOS}
             allCPUs={allCPUs}
             filteredCount={filteredProviders.length}
-            // Убираем старые пропсы для поиска
           />
+        </div>
+
+        {/* Справа: SearchInput - компактный */}
+        <div className="lg:w-1/3 flex justify-end">
+          <div className="w-full max-w-xs">
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Поиск провайдера..."
+              className="w-full"
+            />
+          </div>
         </div>
       </div>
 
