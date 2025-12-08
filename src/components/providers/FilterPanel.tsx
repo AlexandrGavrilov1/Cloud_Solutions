@@ -425,7 +425,8 @@ export const FilterPanel = ({
             </div>
 
             <div className="space-y-2">
-              <div className="relative">
+              <div className="relative px-2">
+                {/* Ползунок с отступами, соответствующими позициям значений */}
                 <input
                   type="range"
                   min="0"
@@ -436,40 +437,26 @@ export const FilterPanel = ({
                     handleDatacentersChange(parseInt(e.target.value))
                   }
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
+                  style={{
+                    // Компенсация ширины ползунка для точного позиционирования
+                    marginLeft: "0.25rem",
+                    marginRight: "0.25rem",
+                    width: "calc(100% - 0.5rem)",
+                  }}
                 />
 
-                {/* Контейнер для отображения всех значений */}
-                <div className="relative w-full h-6 mt-2">
-                  {/* Линия для выравнивания */}
-                  <div className="absolute w-full h-px top-3 left-0"></div>
-
-                  {/* Все значения от 0 до 15 */}
-                  {Array.from({ length: 16 }, (_, i) => {
-                    // Рассчитываем позицию для каждого значения
-                    const position = (i / 15) * 100; // 0-100%
-                    const isFirst = i === 0;
-                    const isLast = i === 15;
-
-                    return (
-                      <div
-                        key={i}
-                        className="absolute flex flex-col items-center"
-                        style={{
-                          left: `${position}%`,
-                          transform: isFirst
-                            ? "translateX(0)"
-                            : isLast
-                              ? "translateX(-100%)"
-                              : "translateX(-50%)",
-                        }}
-                      >
-                        <div className="w-px h-2 bg-border"></div>
-                        <span className="text-[10px] text-muted-foreground mt-1">
-                          {i}
-                        </span>
-                      </div>
-                    );
-                  })}
+                {/* Значения под шкалой - 16 колонок */}
+                <div className="grid grid-cols-16 mt-3 -mx-1">
+                  {Array.from({ length: 16 }, (_, i) => (
+                    <div key={i} className="flex flex-col items-center">
+                      {/* Вертикальная линия-маркер */}
+                      <div className="w-px h-2 bg-border"></div>
+                      {/* Числовое значение */}
+                      <span className="text-[10px] text-muted-foreground mt-1">
+                        {i}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
