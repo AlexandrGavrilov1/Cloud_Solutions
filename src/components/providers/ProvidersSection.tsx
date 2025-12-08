@@ -90,6 +90,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
   useEffect(() => {
     const fetchApprovedReviews = async () => {
@@ -408,65 +409,139 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка с конфигуратором и элементами управления */}
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-        {/* Конфигуратор ресурсов - занимает первые 2 колонки */}
+        {/* Конфигуратор ресурсов - занимает колонки 1 и 2 */}
         <div className="lg:col-span-2">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Пустые колонки 3, 4, 5 */}
-        <div className="lg:col-span-1 hidden lg:block"></div>
-        <div className="lg:col-span-1 hidden lg:block"></div>
-        <div className="lg:col-span-1 hidden lg:block"></div>
+        {/* Фильтры - занимают колонки 3-5 при раскрытии, только колонку 3 при свернутом состоянии */}
+        {isFiltersExpanded ? (
+          // Развернутые фильтры занимают колонки 3-5
+          <div className="lg:col-span-3">
+            <div className="bg-card border border-border rounded-md p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Filter" size={16} className="text-primary" />
+                  </div>
+                  <span className="font-bold text-lg text-foreground">
+                    Фильтры
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsFiltersExpanded(false)}
+                  className="p-1 hover:bg-accent rounded-md transition-colors"
+                >
+                  <Icon name="X" size={20} className="text-muted-foreground" />
+                </button>
+              </div>
 
-        {/* Поиск, сортировка и фильтры - занимают последнюю 6 колонку */}
+              {/* Используем тот же FilterPanel, но с компактным пропсом для десктопа */}
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+                filteredCount={filteredProviders.length}
+                isCompact={true} // Добавляем пропс для компактного отображения
+              />
+            </div>
+          </div>
+        ) : (
+          // Свернутое состояние - только кнопка в колонке 3
+          <>
+            <div className="lg:col-span-1">
+              <button
+                onClick={() => setIsFiltersExpanded(true)}
+                className="w-full bg-card border border-border rounded-md p-4 flex items-center justify-between hover:bg-accent transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Filter" size={16} className="text-primary" />
+                  </div>
+                  <span className="font-medium text-foreground">Фильтры</span>
+                </div>
+                <Icon
+                  name="ChevronDown"
+                  size={20}
+                  className="text-muted-foreground"
+                />
+              </button>
+            </div>
+
+            {/* Пустые колонки 4 и 5 в свернутом состоянии */}
+            <div className="lg:col-span-2 hidden lg:block"></div>
+          </>
+        )}
+
+        {/* Поиск и сортировка - колонка 6 */}
         <div className="lg:col-span-1 space-y-4">
-          {/* Поиск */}
+          {/* Поиск - импортируется из SearchInput */}
           <SearchInput
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
 
-          {/* Сортировка */}
+          {/* Сортировка - импортируется из SortPanel */}
           <div className="bg-card border border-border rounded-md p-4">
-            <label className="text-sm font-medium text-foreground mb-3 block">
-              Сортировка
-            </label>
             <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
-
-          {/* Фильтры */}
-          <div>
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-            />
-          </div>
         </div>
+      </div>
+
+      {/* Фильтры для мобильных - вне сетки */}
+      <div className="lg:hidden mb-6">
+        <FilterPanel
+          filterFZ152={filterFZ152}
+          setFilterFZ152={setFilterFZ152}
+          filterFSTEK={filterFSTEK}
+          setFilterFSTEK={setFilterFSTEK}
+          filterTrialPeriod={filterTrialPeriod}
+          setFilterTrialPeriod={setFilterTrialPeriod}
+          filterLocation={filterLocation}
+          setFilterLocation={setFilterLocation}
+          filterVirtualization={filterVirtualization}
+          setFilterVirtualization={setFilterVirtualization}
+          filterMinDatacenters={filterMinDatacenters}
+          setFilterMinDatacenters={setFilterMinDatacenters}
+          filterDiskType={filterDiskType}
+          setFilterDiskType={setFilterDiskType}
+          filterPaymentMethod={filterPaymentMethod}
+          setFilterPaymentMethod={setFilterPaymentMethod}
+          filterOS={filterOS}
+          setFilterOS={setFilterOS}
+          filterCPU={filterCPU}
+          setFilterCPU={setFilterCPU}
+          allLocations={allLocations}
+          allVirtualizations={allVirtualizations}
+          allDiskTypes={allDiskTypes}
+          allPaymentMethods={allPaymentMethods}
+          allOS={allOS}
+          allCPUs={allCPUs}
+          filteredCount={filteredProviders.length}
+        />
       </div>
 
       {/* Список провайдеров */}
