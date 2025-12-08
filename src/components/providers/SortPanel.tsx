@@ -11,7 +11,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
     <div className="flex flex-col gap-3">
       {/* Заголовок "Сортировка" по центру над кнопками */}
       <div className="flex items-center justify-center gap-2">
-        <div className="w-7 h-7 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-md">
+        <div className="w-7 h-7 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-md transition-colors hover:bg-[rgba(255,143,51,0.3)]">
           <Icon name="ArrowUpDown" className="w-4 h-4 text-[#FF8F33]" />
         </div>
         <span className="text-sm font-medium text-white whitespace-nowrap">
@@ -29,10 +29,10 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
 
         <button
           onClick={() => setSortBy("rating")}
-          className={`relative z-10 flex-1 py-2 rounded-md transition-all flex items-center justify-center ${
+          className={`relative z-10 flex-1 py-2 rounded-md transition-all flex items-center justify-center group ${
             sortBy === "rating"
               ? "text-[#FF8F33]"
-              : "text-white hover:text-gray-200"
+              : "text-white hover:bg-[rgba(255,143,51,0.1)]"
           }`}
           title="По рейтингу"
         >
@@ -41,10 +41,10 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
 
         <button
           onClick={() => setSortBy("price")}
-          className={`relative z-10 flex-1 py-2 rounded-md transition-all flex items-center justify-center ${
+          className={`relative z-10 flex-1 py-2 rounded-md transition-all flex items-center justify-center group ${
             sortBy === "price"
               ? "text-[#FF8F33]"
-              : "text-white hover:text-gray-200"
+              : "text-white hover:bg-[rgba(255,143,51,0.1)]"
           }`}
           title="По цене"
         >
