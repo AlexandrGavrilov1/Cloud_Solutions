@@ -9,24 +9,25 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
     <div className="flex flex-col gap-3">
       {/* Заголовок "Сортировка" по центру над кнопками */}
       <div className="flex items-center justify-center gap-2">
-        <div className="w-6 h-6 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-lg">
+        <div className="w-7 h-7 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-lg">
           <svg
-            className="w-3 h-3 text-white"
+            className="w-4 h-4 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
+            {/* Стрелка вверх и стрелка вниз с разделителем */}
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 15l7-7 7 7"
+              strokeWidth={2.5}
+              d="M7 10l5-5 5 5"
             />
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 9l7 7 7-7"
+              strokeWidth={2.5}
+              d="M7 14l5 5 5-5"
             />
           </svg>
         </div>
