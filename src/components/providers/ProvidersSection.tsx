@@ -401,7 +401,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка - 12 колонок */}
-      <div className="grid grid-cols-12 gap-4 mb-2">
+      <div className="grid grid-cols-12 gap-4 mb-6">
         {/* Конфигуратор - 4 колонки (ширина 1 карточки ≈ 33.3%) */}
         <div className="col-span-4">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
@@ -450,8 +450,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       </div>
 
-      {/* Строка с сортировкой - под поиском без отступа */}
-      <div className="grid grid-cols-12">
+      {/* Строка с сортировкой - занимает 2 колонки под поиском */}
+      <div className="grid grid-cols-12 gap-4 mb-6">
         {/* Пустые 10 колонок */}
         <div className="col-span-10"></div>
 
@@ -463,7 +463,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
       {/* Блок с результатами поиска */}
       {searchQuery && (
-        <div className="mb-6 mt-4 px-2">
+        <div className="mb-6 px-2">
           <div className="text-sm text-muted-foreground">
             Поиск:{" "}
             <span className="font-semibold text-foreground">
