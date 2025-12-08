@@ -104,11 +104,17 @@ export const FilterPanel = ({
 
   return (
     <div
-      className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
+      className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden ${isExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
+      style={{
+        transition: "max-width 0.3s ease-in-out",
+      }}
     >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-primary/5 rounded-2xl"
+        style={{
+          transition: "background-color 0.2s ease-in-out",
+        }}
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center">
@@ -126,7 +132,11 @@ export const FilterPanel = ({
           <Icon
             name={isExpanded ? "ChevronUp" : "ChevronDown"}
             size={24}
-            className="text-muted-foreground transition-transform"
+            className="text-muted-foreground"
+            style={{
+              transition: "transform 0.3s ease-in-out",
+              transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+            }}
           />
         </div>
       </button>
@@ -137,7 +147,11 @@ export const FilterPanel = ({
             variant="outline"
             size="sm"
             onClick={clearFilters}
-            className="text-[10px] sm:text-xs font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow-lg hover:shadow-xl h-8 sm:h-9 px-2 sm:px-3"
+            className="text-[10px] sm:text-xs font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive shadow-lg hover:shadow-xl h-8 sm:h-9 px-2 sm:px-3"
+            style={{
+              transition:
+                "background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+            }}
           >
             <Icon name="X" size={12} className="sm:mr-1" />
             <span className="hidden sm:inline">{t("filters.resetAll")}</span>
@@ -149,7 +163,12 @@ export const FilterPanel = ({
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
           {/* Чекбоксы для булевых фильтров */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+            <div
+              className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30"
+              style={{
+                transition: "border-color 0.2s ease-in-out",
+              }}
+            >
               <div className="relative">
                 <input
                   type="checkbox"
@@ -158,7 +177,13 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFZ152(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div
+                  className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center"
+                  style={{
+                    transition:
+                      "background-color 0.2s ease-in-out, border-color 0.2s ease-in-out",
+                  }}
+                >
                   {filterFZ152 && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -173,7 +198,12 @@ export const FilterPanel = ({
               </label>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+            <div
+              className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30"
+              style={{
+                transition: "border-color 0.2s ease-in-out",
+              }}
+            >
               <div className="relative">
                 <input
                   type="checkbox"
@@ -182,7 +212,13 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFSTEK(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div
+                  className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center"
+                  style={{
+                    transition:
+                      "background-color 0.2s ease-in-out, border-color 0.2s ease-in-out",
+                  }}
+                >
                   {filterFSTEK && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -197,7 +233,12 @@ export const FilterPanel = ({
               </label>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+            <div
+              className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30"
+              style={{
+                transition: "border-color 0.2s ease-in-out",
+              }}
+            >
               <div className="relative">
                 <input
                   type="checkbox"
@@ -206,7 +247,13 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterTrialPeriod(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div
+                  className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary flex items-center justify-center"
+                  style={{
+                    transition:
+                      "background-color 0.2s ease-in-out, border-color 0.2s ease-in-out",
+                  }}
+                >
                   {filterTrialPeriod && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -237,9 +284,13 @@ export const FilterPanel = ({
                   <Icon name="Globe" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 pl-11 pr-10"
                   value={filterLocation || ""}
                   onChange={(e) => setFilterLocation(e.target.value || null)}
+                  style={{
+                    transition:
+                      "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                  }}
                 >
                   <option value="">{t("filters.anyLocation")}</option>
                   {allLocations.map((loc) => (
@@ -267,11 +318,15 @@ export const FilterPanel = ({
                   <Icon name="Box" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 pl-11 pr-10"
                   value={filterVirtualization || ""}
                   onChange={(e) =>
                     setFilterVirtualization(e.target.value || null)
                   }
+                  style={{
+                    transition:
+                      "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                  }}
                 >
                   <option value="">{t("filters.anyDisk")}</option>
                   {allVirtualizations.map((virt) => (
@@ -299,9 +354,13 @@ export const FilterPanel = ({
                   <Icon name="Database" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 pl-11 pr-10"
                   value={filterDiskType || ""}
                   onChange={(e) => setFilterDiskType(e.target.value || null)}
+                  style={{
+                    transition:
+                      "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                  }}
                 >
                   <option value="">{t("filters.anyDisk")}</option>
                   {allDiskTypes.map((type) => (
@@ -329,11 +388,15 @@ export const FilterPanel = ({
                   <Icon name="Wallet" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 pl-11 pr-10"
                   value={filterPaymentMethod || ""}
                   onChange={(e) =>
                     setFilterPaymentMethod(e.target.value || null)
                   }
+                  style={{
+                    transition:
+                      "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                  }}
                 >
                   <option value="">{t("filters.anyMethod")}</option>
                   {allPaymentMethods.map((method) => (
@@ -361,9 +424,13 @@ export const FilterPanel = ({
                   <Icon name="Terminal" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 pl-11 pr-10"
                   value={filterOS || ""}
                   onChange={(e) => setFilterOS(e.target.value || null)}
+                  style={{
+                    transition:
+                      "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                  }}
                 >
                   <option value="">{t("filters.anyOS")}</option>
                   {allOS.map((os) => (
@@ -391,9 +458,13 @@ export const FilterPanel = ({
                   <Icon name="Cpu" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 pl-11 pr-10"
                   value={filterCPU || ""}
                   onChange={(e) => setFilterCPU(e.target.value || null)}
+                  style={{
+                    transition:
+                      "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                  }}
                 >
                   <option value="">Любой процессор</option>
                   {allCPUs.map((cpu) => (
@@ -437,6 +508,10 @@ export const FilterPanel = ({
                   size="sm"
                   onClick={() => handleDatacentersChange(value)}
                   className="text-xs h-7 px-3 min-w-[50px] flex items-center justify-center"
+                  style={{
+                    transition:
+                      "background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out",
+                  }}
                 >
                   {value === 0 ? t("filters.anyAmount") : value}
                 </Button>
@@ -454,6 +529,9 @@ export const FilterPanel = ({
                   handleDatacentersChange(parseInt(e.target.value))
                 }
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
+                style={{
+                  transition: "background-color 0.2s ease-in-out",
+                }}
               />
 
               <div className="flex justify-between text-xs text-muted-foreground px-1">
