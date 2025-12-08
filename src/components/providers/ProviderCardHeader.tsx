@@ -70,7 +70,8 @@ export const ProviderCardHeader = ({
           </div>
           
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1.5 truncate">{provider.name}</h3>
+            <h3 className=" text-base      sm:text-lg     md:text-xl      lg:text-2xl     font-bold   text-foreground   mb-1.5 
+  truncate">{provider.name}</h3>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
