@@ -73,17 +73,18 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
+            {/* Символ рубля (₽) */}
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={sortBy === "price" ? 2.5 : 1.5}
-              d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0"
+              d="M9 8h6M9 12h6m-3 4H9m6-8H9V5h6v3m-6 6v3m3-3v3"
             />
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={sortBy === "price" ? 2.5 : 1.5}
-              d="M8 10.5h4m-4 3h4m9-1.5a9 9 0 11-18 0 9 9 0 0118 0z"
+              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
             />
           </svg>
         </button>
