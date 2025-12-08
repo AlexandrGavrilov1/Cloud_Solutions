@@ -145,8 +145,6 @@ export const FilterPanel = ({
       {isExpanded && (
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
           {/* Чекбоксы для булевых фильтров */}
-          // FilterPanel.tsx (фрагмент с чекбоксами)
-          {/* Чекбоксы для булевых фильтров */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
               <div className="relative">
@@ -157,9 +155,9 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFZ152(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-4 h-4 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterFZ152 && (
-                    <Icon name="Check" size={10} className="text-background" />
+                    <Icon name="Check" size={12} className="text-background" />
                   )}
                 </div>
               </div>
@@ -181,9 +179,9 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFSTEK(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-4 h-4 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterFSTEK && (
-                    <Icon name="Check" size={10} className="text-background" />
+                    <Icon name="Check" size={12} className="text-background" />
                   )}
                 </div>
               </div>
@@ -222,6 +220,7 @@ export const FilterPanel = ({
               </label>
             </div>
           </div>
+
           {/* Выпадающие списки */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Локация */}
@@ -408,6 +407,7 @@ export const FilterPanel = ({
               </div>
             </div>
           </div>
+
           {/* Ползунок для минимального количества дата-центров */}
           <div className="space-y-4 p-4 bg-background/50 rounded-lg border border-border">
             <div className="flex items-center justify-between">
