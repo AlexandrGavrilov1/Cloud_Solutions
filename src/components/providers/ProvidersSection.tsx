@@ -18,7 +18,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null,
   );
-  const [configOpen, setConfigOpen] = useState<number | null>(null);
+  const [configOpen, setConfigOpen] = useState<number | null>(null); // Для конфигураторов
+  const [filterPanelOpen, setFilterPanelOpen] = useState<boolean>(false); // Для панели фильтров
   const [searchQuery, setSearchQuery] = useState("");
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
@@ -390,6 +391,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     ],
   );
 
+  // Закрываем все конфигураторы при открытии фильтра
+  useEffect(() => {
+    if (filterPanelOpen) {
+      setConfigOpen(null);
+    }
+  }, [filterPanelOpen]);
+
   if (showComparison) {
     const selectedProviders = providersWithReviews.filter((p) =>
       selectedForComparison.includes(p.id),
@@ -437,6 +445,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             allOS={allOS}
             allCPUs={allCPUs}
             filteredCount={filteredProviders.length}
+            isOpen={filterPanelOpen}
+            setIsOpen={setFilterPanelOpen}
           />
         </div>
 
