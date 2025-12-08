@@ -400,7 +400,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       />
     );
   }
-
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
@@ -441,14 +440,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
         <div className="w-full lg:w-auto lg:ml-auto mt-4 lg:mt-0">
           <div className="relative w-[220px]">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Поиск провайдеров"
-              className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-            />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -463,6 +455,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 />
               </svg>
             </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск провайдеров"
+              className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+            />
           </div>
         </div>
       </div>
