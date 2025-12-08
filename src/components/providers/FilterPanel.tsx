@@ -144,6 +144,7 @@ export const FilterPanel = ({
 
       {isExpanded && (
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
+          {/* Чекбоксы для булевых фильтров */}
           // FilterPanel.tsx (фрагмент с чекбоксами)
           {/* Чекбоксы для булевых фильтров */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
