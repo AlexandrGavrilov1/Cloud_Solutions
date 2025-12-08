@@ -6,7 +6,6 @@ import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SortPanel } from "./SortPanel";
-import { SearchInput } from "./SearchInput";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
 
@@ -406,9 +405,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
-        <div className="flex flex-col lg:flex-row gap-4 w-full">
+      {/* Контейнер для конфигуратора - фиксированная ширина */}
+      <div className="mb-4">
+        <div className="w-full max-w-md">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
+      </div>
+
+      {/* Основная строка с фильтрами, поиском и сортировкой */}
+      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
+        {/* Контейнер для фильтров - фиксированная минимальная ширина */}
+        <div
+          className="relative z-10"
+          style={{
+            minWidth: "190px",
+            maxWidth: "230px",
+            width: "230px",
+            flexShrink: 0,
+          }}
+        >
           <FilterPanel
             filterFZ152={filterFZ152}
             setFilterFZ152={setFilterFZ152}
@@ -440,7 +455,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
         </div>
 
-        <div className="flex flex-col gap-4 w-full lg:w-auto">
+        {/* Контейнер для поиска и сортировки */}
+        <div className="flex flex-col gap-4 w-full lg:w-auto flex-grow">
           {/* Поиск провайдеров */}
           <div className="relative w-full lg:w-[220px]">
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -463,15 +479,20 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Поиск провайдеров"
-              className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              style={{
+                transition:
+                  "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+              }}
             />
           </div>
 
-          {/* Сортировка - теперь под поиском */}
+          {/* Сортировка */}
           <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
 
+      {/* Список провайдеров */}
       <ProvidersList
         filteredProviders={filteredProviders.slice(0, providersToShow)}
         configs={configs}
@@ -491,16 +512,28 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         <div className="flex justify-center mt-8">
           <button
             onClick={() => setProvidersToShow((prev) => prev + 9)}
-            className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              transition:
+                "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div
+              className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100"
+              style={{
+                transition: "opacity 0.3s ease-in-out",
+              }}
+            ></div>
             <span className="relative flex items-center gap-2">
               Показать ещё 9 провайдеров
               <svg
-                className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                className="w-5 h-5 group-hover:translate-y-1"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                style={{
+                  transition: "transform 0.3s ease-in-out",
+                }}
               >
                 <path
                   strokeLinecap="round"
