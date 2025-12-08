@@ -414,29 +414,33 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Фильтры - занимают колонки 3-5 при раскрытии, только колонку 3 при свернутом состоянии */}
-        {isFiltersExpanded ? (
-          // Развернутые фильтры занимают колонки 3-5
-          <div className="lg:col-span-3">
-            <div className="bg-card border border-border rounded-md p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Filter" size={16} className="text-primary" />
-                  </div>
-                  <span className="font-bold text-lg text-foreground">
-                    Фильтры
-                  </span>
+        {/* Фильтры - занимают колонки 3-5 */}
+        <div className="lg:col-span-3">
+          <div className="bg-card border border-border rounded-md p-4">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Icon name="Filter" size={16} className="text-primary" />
                 </div>
+                <span className="font-bold text-lg text-foreground">
+                  Фильтры
+                </span>
+              </div>
+              {isFiltersExpanded && (
                 <button
                   onClick={() => setIsFiltersExpanded(false)}
                   className="p-1 hover:bg-accent rounded-md transition-colors"
                 >
-                  <Icon name="X" size={20} className="text-muted-foreground" />
+                  <Icon
+                    name="ChevronUp"
+                    size={20}
+                    className="text-muted-foreground"
+                  />
                 </button>
-              </div>
+              )}
+            </div>
 
-              {/* Используем тот же FilterPanel, но с компактным пропсом для десктопа */}
+            {isFiltersExpanded ? (
               <FilterPanel
                 filterFZ152={filterFZ152}
                 setFilterFZ152={setFilterFZ152}
@@ -465,36 +469,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 allOS={allOS}
                 allCPUs={allCPUs}
                 filteredCount={filteredProviders.length}
-                isCompact={true} // Добавляем пропс для компактного отображения
+                isDesktopExpanded={true}
               />
-            </div>
-          </div>
-        ) : (
-          // Свернутое состояние - только кнопка в колонке 3
-          <>
-            <div className="lg:col-span-1">
+            ) : (
               <button
                 onClick={() => setIsFiltersExpanded(true)}
-                className="w-full bg-card border border-border rounded-md p-4 flex items-center justify-between hover:bg-accent transition-colors"
+                className="w-full h-10 flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-md transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Filter" size={16} className="text-primary" />
-                  </div>
-                  <span className="font-medium text-foreground">Фильтры</span>
-                </div>
-                <Icon
-                  name="ChevronDown"
-                  size={20}
-                  className="text-muted-foreground"
-                />
+                <Icon name="ChevronDown" size={20} />
+                <span>Развернуть фильтры</span>
               </button>
-            </div>
-
-            {/* Пустые колонки 4 и 5 в свернутом состоянии */}
-            <div className="lg:col-span-2 hidden lg:block"></div>
-          </>
-        )}
+            )}
+          </div>
+        </div>
 
         {/* Поиск и сортировка - колонка 6 */}
         <div className="lg:col-span-1 space-y-4">
