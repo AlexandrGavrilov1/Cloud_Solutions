@@ -11,7 +11,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
       <div className="flex items-center justify-center gap-2">
         <div className="w-6 h-6 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-lg">
           <svg
-            className="w-3 h-3 text-[#FF8F33]"
+            className="w-3 h-3 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -30,7 +30,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
             />
           </svg>
         </div>
-        <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+        <span className="text-sm font-medium text-white whitespace-nowrap">
           Сортировка
         </span>
       </div>
@@ -47,8 +47,8 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
           onClick={() => setSortBy("rating")}
           className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
             sortBy === "rating"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
+              ? "text-white"
+              : "text-white hover:text-gray-200"
           }`}
           title="По рейтингу"
         >
@@ -70,14 +70,12 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
         <button
           onClick={() => setSortBy("price")}
           className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
-            sortBy === "price"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
+            sortBy === "price" ? "text-white" : "text-white hover:text-gray-200"
           }`}
           title="По цене"
         >
           <span
-            className={`text-lg font-bold ${sortBy === "price" ? "text-primary" : "text-muted-foreground"}`}
+            className={`text-lg font-bold ${sortBy === "price" ? "text-white" : "text-white"}`}
           >
             ₽
           </span>
