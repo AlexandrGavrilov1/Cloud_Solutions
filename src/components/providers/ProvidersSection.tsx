@@ -5,6 +5,7 @@ import { FilterPanel } from "./FilterPanel";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
+import { SearchInput } from "./SearchInput";
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -15,6 +16,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     null,
   );
   const [configOpen, setConfigOpen] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -201,7 +203,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         config.storage * provider.storagePrice,
     );
 
-    // Если конфигурация минимальная и есть minPrice, используем его
     if (
       config.cpu === 1 &&
       config.ram === 1 &&
@@ -306,6 +307,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const filteredProviders = useMemo(
     () =>
       providersWithReviews.filter((p) => {
+        if (
+          searchQuery &&
+          !p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+          return false;
         if (filterFZ152 && !p.fz152Compliant) return false;
         if (filterFSTEK && !p.fstekCompliant) return false;
         if (filterTrialPeriod && p.trialDays === 0) return false;
@@ -340,6 +346,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       }),
     [
       providersWithReviews,
+      searchQuery,
       filterFZ152,
       filterFSTEK,
       filterTrialPeriod,
@@ -368,79 +375,171 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start">
-        <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-        <FilterPanel
-          filterFZ152={filterFZ152}
-          setFilterFZ152={setFilterFZ152}
-          filterFSTEK={filterFSTEK}
-          setFilterFSTEK={setFilterFSTEK}
-          filterTrialPeriod={filterTrialPeriod}
-          setFilterTrialPeriod={setFilterTrialPeriod}
-          filterLocation={filterLocation}
-          setFilterLocation={setFilterLocation}
-          filterVirtualization={filterVirtualization}
-          setFilterVirtualization={setFilterVirtualization}
-          filterMinDatacenters={filterMinDatacenters}
-          setFilterMinDatacenters={setFilterMinDatacenters}
-          filterDiskType={filterDiskType}
-          setFilterDiskType={setFilterDiskType}
-          filterPaymentMethod={filterPaymentMethod}
-          setFilterPaymentMethod={setFilterPaymentMethod}
-          filterOS={filterOS}
-          setFilterOS={setFilterOS}
-          filterCPU={filterCPU}
-          setFilterCPU={setFilterCPU}
-          allLocations={allLocations}
-          allVirtualizations={allVirtualizations}
-          allDiskTypes={allDiskTypes}
-          allPaymentMethods={allPaymentMethods}
-          allOS={allOS}
-          allCPUs={allCPUs}
-        />
+    <section
+      id="providers"
+      className="container mx-auto px-4 sm:px-6 py-6 sm:py-8"
+    >
+      {/* АДАПТИВНАЯ СЕТКА ДЛЯ ВСЕХ УСТРОЙСТВ */}
+      <div
+        className="
+        grid 
+        grid-cols-1           /* Мобилка (<640px): 1 колонка */
+        sm:grid-cols-12       /* Планшет (≥640px): 12 колонок */
+        lg:grid-cols-24       /* Десктоп (≥1024px): 24 колонки */
+        gap-4 sm:gap-6 mb-6
+      "
+      >
+        {/* КОНФИГУРАТОР */}
+        <div
+          className="
+          sm:col-span-12       /* Планшет: полная ширина (для лучшей читаемости) */
+          md:col-span-4        /* Большой планшет (≥768px): 4 из 12 */
+          lg:col-span-6        /* Десктоп: 6 из 24 */
+        "
+        >
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
+
+        {/* ФИЛЬТР */}
+        <div
+          className="
+          sm:col-span-12       /* Планшет: полная ширина */
+          md:col-span-8        /* Большой планшет: 8 из 12 */
+          lg:col-span-15       /* Десктоп: 15 из 24 */
+        "
+        >
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+          />
+        </div>
+
+        {/* ПОИСК */}
+        <div
+          className="
+          sm:col-span-12       /* Планшет: полная ширина */
+          md:col-span-12       /* Большой планшет: полная ширина */
+          lg:col-span-3        /* Десктоп: 3 из 24 */
+          flex items-start     /* Для выравнивания по высоте */
+        "
+        >
+          <SearchInput
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Поиск провайдера..."
+            className="w-full"
+          />
+        </div>
       </div>
 
-      <ProvidersList
-        filteredProviders={filteredProviders.slice(0, providersToShow)}
-        configs={configs}
-        calculatePrice={calculatePrice}
-        configOpen={configOpen}
-        setConfigOpen={setConfigOpen}
-        updateConfig={updateConfig}
-        selectedProvider={selectedProvider}
-        setSelectedProvider={setSelectedProvider}
-        reviewsToShow={reviewsToShow}
-        setReviewsToShow={setReviewsToShow}
-        selectedForComparison={selectedForComparison}
-        toggleComparison={toggleComparison}
-      />
-
-      {filteredProviders.length > providersToShow && (
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={() => setProvidersToShow((prev) => prev + 9)}
-            className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <span className="relative flex items-center gap-2">
-              Показать ещё 9 провайдеров
-              <svg
-                className="w-5 h-5 group-hover:translate-y-1 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+      {/* БЛОК РЕЗУЛЬТАТОВ ПОИСКА */}
+      {searchQuery && (
+        <div className="mb-4 sm:mb-6 px-2">
+          <div className="text-sm sm:text-base text-muted-foreground">
+            Результаты поиска по запросу:
+            <span className="font-semibold text-foreground ml-1">
+              "{searchQuery}"
             </span>
-          </button>
+            {filteredProviders.length > 0 && (
+              <span className="ml-2">
+                ({filteredProviders.length} провайдер
+                {filteredProviders.length === 1 ? "" : "ов"})
+              </span>
+            )}
+          </div>
         </div>
+      )}
+
+      {searchQuery && filteredProviders.length === 0 ? (
+        <div className="text-center py-8 sm:py-12">
+          <div className="text-muted-foreground text-base sm:text-lg mb-2">
+            По запросу "{searchQuery}" ничего не найдено
+          </div>
+          <div className="text-sm text-muted-foreground">
+            Попробуйте изменить поисковый запрос или сбросить фильтры
+          </div>
+        </div>
+      ) : (
+        <>
+          <ProvidersList
+            filteredProviders={filteredProviders.slice(0, providersToShow)}
+            configs={configs}
+            calculatePrice={calculatePrice}
+            configOpen={configOpen}
+            setConfigOpen={setConfigOpen}
+            updateConfig={updateConfig}
+            selectedProvider={selectedProvider}
+            setSelectedProvider={setSelectedProvider}
+            reviewsToShow={reviewsToShow}
+            setReviewsToShow={setReviewsToShow}
+            selectedForComparison={selectedForComparison}
+            toggleComparison={toggleComparison}
+          />
+
+          {/* КНОПКА "ПОКАЗАТЬ ЕЩЁ" С АДАПТИВНОСТЬЮ */}
+          {filteredProviders.length > providersToShow && (
+            <div className="flex justify-center mt-6 sm:mt-8">
+              <button
+                onClick={() => setProvidersToShow((prev) => prev + 9)}
+                className="
+                  group relative 
+                  px-4 sm:px-6 md:px-8 
+                  py-3 sm:py-4 
+                  bg-gradient-to-r from-primary to-primary/80 
+                  text-background font-bold 
+                  text-sm sm:text-base md:text-lg 
+                  rounded-xl sm:rounded-2xl 
+                  shadow-lg sm:shadow-xl shadow-primary/30 
+                  hover:shadow-2xl hover:shadow-primary/40 
+                  transition-all hover:scale-[1.02] active:scale-[0.98]
+                  w-full sm:w-auto
+                "
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="relative flex items-center justify-center gap-2">
+                  Показать ещё 9 провайдеров
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       <ComparisonControls
