@@ -155,9 +155,9 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFZ152(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-6 h-6 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterFZ152 && (
-                    <Icon name="Check" size={16} className="text-background" />
+                    <Icon name="Check" size={12} className="text-background" />
                   )}
                 </div>
               </div>
@@ -165,10 +165,8 @@ export const FilterPanel = ({
                 htmlFor="fz152"
                 className="flex items-center gap-2 cursor-pointer"
               >
-                <Icon name="ShieldCheck" size={18} className="text-primary" />
-                <span className="font-medium text-foreground">
-                  {t("filters.fz152Compliance")}
-                </span>
+                <Icon name="ShieldCheck" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">152-ФЗ</span>
               </label>
             </div>
 
@@ -181,9 +179,9 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFSTEK(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-6 h-6 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterFSTEK && (
-                    <Icon name="Check" size={16} className="text-background" />
+                    <Icon name="Check" size={12} className="text-background" />
                   )}
                 </div>
               </div>
@@ -191,7 +189,7 @@ export const FilterPanel = ({
                 htmlFor="fstek"
                 className="flex items-center gap-2 cursor-pointer"
               >
-                <Icon name="ShieldAlert" size={18} className="text-primary" />
+                <Icon name="ShieldAlert" size={16} className="text-primary" />
                 <span className="font-medium text-foreground">ФСТЕК</span>
               </label>
             </div>
@@ -205,9 +203,9 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterTrialPeriod(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-6 h-6 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterTrialPeriod && (
-                    <Icon name="Check" size={16} className="text-background" />
+                    <Icon name="Check" size={12} className="text-background" />
                   )}
                 </div>
               </div>
@@ -215,7 +213,7 @@ export const FilterPanel = ({
                 htmlFor="trial"
                 className="flex items-center gap-2 cursor-pointer"
               >
-                <Icon name="Gift" size={18} className="text-primary" />
+                <Icon name="Gift" size={16} className="text-primary" />
                 <span className="font-medium text-foreground">
                   {t("filters.trialPeriod")}
                 </span>
