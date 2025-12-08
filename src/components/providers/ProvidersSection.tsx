@@ -405,76 +405,88 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка с двумя колонками */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Левая колонка: Конфигуратор */}
-        <div>
-          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+      {/* Верхняя строка: Конфигуратор слева, поиск и фильтры справа */}
+      <div className="flex flex-col lg:flex-row justify-between gap-6 mb-8">
+        {/* Левая часть: Конфигуратор - ширина как карточка товара */}
+        <div className="lg:w-1/3">
+          {" "}
+          {/* 1/3 ширины = ширина 1 из 3 карточек */}
+          <div className="bg-card border rounded-lg p-4 shadow-sm">
+            <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+          </div>
         </div>
 
-        {/* Правая колонка: Поиск и фильтры */}
-        <div className="space-y-4">
-          {/* Поиск */}
-          <SearchInput
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Поиск провайдеров..."
-            className="w-full"
-          />
-
-          {/* Компактные фильтры */}
-          <div className="bg-card border rounded-lg p-4">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-              compact={true}
+        {/* Правая часть: Поиск и фильтры - ширина как половина карточки */}
+        <div className="lg:w-1/6">
+          {" "}
+          {/* 1/6 ширины = половина от 1/3 */}
+          <div className="space-y-4">
+            {/* Поиск */}
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Поиск провайдеров..."
+              className="w-full"
             />
+
+            {/* Фильтры */}
+            <div className="bg-card border rounded-lg p-4">
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+                filteredCount={filteredProviders.length}
+                compact={true}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <ProvidersList
-        filteredProviders={filteredProviders.slice(0, providersToShow)}
-        configs={configs}
-        calculatePrice={calculatePrice}
-        configOpen={configOpen}
-        setConfigOpen={setConfigOpen}
-        updateConfig={updateConfig}
-        selectedProvider={selectedProvider}
-        setSelectedProvider={setSelectedProvider}
-        reviewsToShow={reviewsToShow}
-        setReviewsToShow={setReviewsToShow}
-        selectedForComparison={selectedForComparison}
-        toggleComparison={toggleComparison}
-      />
+      {/* Карточки товаров под верхней строкой */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <ProvidersList
+          filteredProviders={filteredProviders.slice(0, providersToShow)}
+          configs={configs}
+          calculatePrice={calculatePrice}
+          configOpen={configOpen}
+          setConfigOpen={setConfigOpen}
+          updateConfig={updateConfig}
+          selectedProvider={selectedProvider}
+          setSelectedProvider={setSelectedProvider}
+          reviewsToShow={reviewsToShow}
+          setReviewsToShow={setReviewsToShow}
+          selectedForComparison={selectedForComparison}
+          toggleComparison={toggleComparison}
+        />
+      </div>
 
+      {/* Остальной код без изменений */}
       {filteredProviders.length > providersToShow && (
         <div className="flex justify-center mt-8">
           <button
