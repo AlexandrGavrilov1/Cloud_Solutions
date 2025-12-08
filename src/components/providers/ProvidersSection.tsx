@@ -6,6 +6,7 @@ import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
+import { SortPanel } from "./SortPanel";
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -17,6 +18,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [configOpen, setConfigOpen] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -191,6 +193,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterCPU]);
 
+  useEffect(() => {
+    localStorage.setItem("sortBy", sortBy);
+  }, [sortBy]);
+
   const calculatePrice = (provider: Provider, config?: ResourceConfig) => {
     if (!config) {
       config = { cpu: 1, ram: 1, storage: 10 };
@@ -306,44 +312,60 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const filteredProviders = useMemo(
     () =>
-      providersWithReviews.filter((p) => {
-        if (
-          searchQuery &&
-          !p.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-          return false;
-        if (filterFZ152 && !p.fz152Compliant) return false;
-        if (filterFSTEK && !p.fstekCompliant) return false;
-        if (filterTrialPeriod && p.trialDays === 0) return false;
-        if (filterLocation && !p.locations.includes(filterLocation))
-          return false;
-        if (
-          filterVirtualization &&
-          !p.technicalSpecs.virtualization.includes(filterVirtualization)
-        )
-          return false;
-        if (
-          filterMinDatacenters !== null &&
-          p.locations.length < filterMinDatacenters
-        )
-          return false;
-        if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType)
-          return false;
-        if (
-          filterPaymentMethod &&
-          !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)
-        )
-          return false;
-        if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS))
-          return false;
-        if (
-          filterCPU &&
-          (!p.technicalSpecs.cpuModels ||
-            !p.technicalSpecs.cpuModels.includes(filterCPU))
-        )
-          return false;
-        return true;
-      }),
+      providersWithReviews
+        .filter((p) => {
+          if (
+            searchQuery &&
+            !p.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+            return false;
+          if (filterFZ152 && !p.fz152Compliant) return false;
+          if (filterFSTEK && !p.fstekCompliant) return false;
+          if (filterTrialPeriod && p.trialDays === 0) return false;
+          if (filterLocation && !p.locations.includes(filterLocation))
+            return false;
+          if (
+            filterVirtualization &&
+            !p.technicalSpecs.virtualization.includes(filterVirtualization)
+          )
+            return false;
+          if (
+            filterMinDatacenters !== null &&
+            p.locations.length < filterMinDatacenters
+          )
+            return false;
+          if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType)
+            return false;
+          if (
+            filterPaymentMethod &&
+            !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)
+          )
+            return false;
+          if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS))
+            return false;
+          if (
+            filterCPU &&
+            (!p.technicalSpecs.cpuModels ||
+              !p.technicalSpecs.cpuModels.includes(filterCPU))
+          )
+            return false;
+          return true;
+        })
+        .sort((a, b) => {
+          if (sortBy === "rating") {
+            const avgRatingA =
+              a.reviews.reduce((sum, r) => sum + r.rating, 0) /
+              a.reviews.length;
+            const avgRatingB =
+              b.reviews.reduce((sum, r) => sum + r.rating, 0) /
+              b.reviews.length;
+            return avgRatingB - avgRatingA;
+          } else {
+            const priceA = calculatePrice(a, configs[a.id]);
+            const priceB = calculatePrice(b, configs[b.id]);
+            return priceA - priceB;
+          }
+        }),
     [
       providersWithReviews,
       searchQuery,
@@ -357,6 +379,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterPaymentMethod,
       filterOS,
       filterCPU,
+      sortBy,
+      configs,
     ],
   );
 
@@ -423,6 +447,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             placeholder="Поиск..."
             className="w-full"
           />
+        </div>
+      </div>
+
+      {/* Строка с сортировкой - занимает 2 колонки под поиском */}
+      <div className="grid grid-cols-12 gap-4 mb-6">
+        {/* Пустые 10 колонок */}
+        <div className="col-span-10"></div>
+
+        {/* Сортировка - 2 колонки (такая же ширина как поиск) */}
+        <div className="col-span-2">
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
 
