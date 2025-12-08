@@ -421,9 +421,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         {/* Сортировка - колонка 5 */}
         <div className="lg:col-span-1">
           <div className="bg-card border border-border rounded-md p-4 h-full">
-            <label className="text-sm font-medium text-foreground mb-3 block">
-              Сортировка
-            </label>
             <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
         </div>
