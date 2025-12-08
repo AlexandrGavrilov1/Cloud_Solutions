@@ -99,6 +99,9 @@ export const FilterPanel = ({
     setFilterMinDatacenters(value > 0 ? value : null);
   };
 
+  // Популярные значения для кнопок
+  const popularValues = [0, 1, 3, 5, 10, 15];
+
   return (
     <div
       className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
@@ -410,7 +413,7 @@ export const FilterPanel = ({
 
           {/* Ползунок для минимального количества дата-центров */}
           <div className="space-y-4 p-4 bg-background/50 rounded-lg border border-border">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Icon name="Server" size={18} className="text-primary" />
                 <h4 className="font-bold text-foreground">
@@ -419,9 +422,25 @@ export const FilterPanel = ({
               </div>
               <span className="font-bold text-primary text-lg">
                 {datacentersValue > 0
-                  ? `${datacentersValue}+`
+                  ? `${datacentersValue}`
                   : t("filters.anyAmount")}
               </span>
+            </div>
+
+            {/* Кнопки с популярными значениями */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {popularValues.map((value) => (
+                <Button
+                  key={value}
+                  type="button"
+                  variant={datacentersValue === value ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleDatacentersChange(value)}
+                  className="text-xs h-7 px-3 min-w-[50px] flex items-center justify-center"
+                >
+                  {value === 0 ? t("filters.anyAmount") : value}
+                </Button>
+              ))}
             </div>
 
             <div className="space-y-2">
@@ -443,7 +462,7 @@ export const FilterPanel = ({
                 <span>6</span>
                 <span>9</span>
                 <span>12</span>
-                <span>15+</span>
+                <span>15</span>
               </div>
             </div>
           </div>
