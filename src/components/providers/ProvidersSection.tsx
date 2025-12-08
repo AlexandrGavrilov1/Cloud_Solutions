@@ -409,127 +409,150 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка с конфигуратором и элементами управления */}
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-        {/* Конфигуратор ресурсов - занимает колонки 1 и 2 */}
+        {/* Конфигуратор ресурсов - занимает первые 2 колонки */}
         <div className="lg:col-span-2">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Фильтры - занимают колонки 3-5 */}
-        <div className="lg:col-span-3">
-          <div className="bg-card border border-border rounded-md p-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                  <Icon name="Filter" size={16} className="text-primary" />
-                </div>
-                <span className="font-bold text-lg text-foreground">
-                  Фильтры
-                </span>
-              </div>
-              {isFiltersExpanded && (
-                <button
-                  onClick={() => setIsFiltersExpanded(false)}
-                  className="p-1 hover:bg-accent rounded-md transition-colors"
-                >
-                  <Icon
-                    name="ChevronUp"
-                    size={20}
-                    className="text-muted-foreground"
-                  />
-                </button>
-              )}
-            </div>
+        {/* Пустые колонки 3 и 4 */}
+        <div className="lg:col-span-1 hidden lg:block"></div>
+        <div className="lg:col-span-1 hidden lg:block"></div>
 
-            {isFiltersExpanded ? (
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-                filteredCount={filteredProviders.length}
-                isDesktopExpanded={true}
-              />
-            ) : (
-              <button
-                onClick={() => setIsFiltersExpanded(true)}
-                className="w-full h-10 flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-md transition-colors"
-              >
-                <Icon name="ChevronDown" size={20} />
-                <span>Развернуть фильтры</span>
-              </button>
-            )}
+        {/* Сортировка - колонка 5 */}
+        <div className="lg:col-span-1">
+          <div className="bg-card border border-border rounded-md p-4 h-full">
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
         </div>
 
-        {/* Поиск и сортировка - колонка 6 */}
+        {/* Поиск и фильтры - колонка 6 */}
         <div className="lg:col-span-1 space-y-4">
-          {/* Поиск - импортируется из SearchInput */}
+          {/* Поиск */}
           <SearchInput
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
 
-          {/* Сортировка - импортируется из SortPanel */}
-          <div className="bg-card border border-border rounded-md p-4">
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          {/* Фильтры для мобильных */}
+          <div className="lg:hidden">
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
+            />
+          </div>
+
+          {/* Фильтры для десктопа - только кнопка в свернутом состоянии */}
+          <div className="hidden lg:block">
+            {!isFiltersExpanded ? (
+              <button
+                onClick={() => setIsFiltersExpanded(true)}
+                className="w-full bg-card border border-border rounded-md p-4 flex items-center justify-between hover:bg-accent transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Filter" size={16} className="text-primary" />
+                  </div>
+                  <span className="font-medium text-foreground">Фильтры</span>
+                </div>
+                <Icon
+                  name="ChevronDown"
+                  size={20}
+                  className="text-muted-foreground"
+                />
+              </button>
+            ) : (
+              <div className="bg-card border border-border rounded-md p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <Icon name="Filter" size={16} className="text-primary" />
+                    </div>
+                    <span className="font-bold text-lg text-foreground">
+                      Фильтры
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIsFiltersExpanded(false)}
+                    className="p-1 hover:bg-accent rounded-md transition-colors"
+                  >
+                    <Icon
+                      name="X"
+                      size={20}
+                      className="text-muted-foreground"
+                    />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Фильтры для мобильных - вне сетки */}
-      <div className="lg:hidden mb-6">
-        <FilterPanel
-          filterFZ152={filterFZ152}
-          setFilterFZ152={setFilterFZ152}
-          filterFSTEK={filterFSTEK}
-          setFilterFSTEK={setFilterFSTEK}
-          filterTrialPeriod={filterTrialPeriod}
-          setFilterTrialPeriod={setFilterTrialPeriod}
-          filterLocation={filterLocation}
-          setFilterLocation={setFilterLocation}
-          filterVirtualization={filterVirtualization}
-          setFilterVirtualization={setFilterVirtualization}
-          filterMinDatacenters={filterMinDatacenters}
-          setFilterMinDatacenters={setFilterMinDatacenters}
-          filterDiskType={filterDiskType}
-          setFilterDiskType={setFilterDiskType}
-          filterPaymentMethod={filterPaymentMethod}
-          setFilterPaymentMethod={setFilterPaymentMethod}
-          filterOS={filterOS}
-          setFilterOS={setFilterOS}
-          filterCPU={filterCPU}
-          setFilterCPU={setFilterCPU}
-          allLocations={allLocations}
-          allVirtualizations={allVirtualizations}
-          allDiskTypes={allDiskTypes}
-          allPaymentMethods={allPaymentMethods}
-          allOS={allOS}
-          allCPUs={allCPUs}
-          filteredCount={filteredProviders.length}
-        />
-      </div>
+      {/* Блок развернутых фильтров для десктопа */}
+      {isFiltersExpanded && (
+        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
+          {/* Пустые колонки 1-3 */}
+          <div className="lg:col-span-3"></div>
+
+          {/* Развернутые фильтры занимают колонки 4-6 */}
+          <div className="lg:col-span-3">
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Список провайдеров */}
       <div>
