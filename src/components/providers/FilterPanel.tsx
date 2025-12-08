@@ -425,24 +425,52 @@ export const FilterPanel = ({
             </div>
 
             <div className="space-y-2">
-              <input
-                type="range"
-                min="0"
-                max="15"
-                step="1"
-                value={datacentersValue}
-                onChange={(e) =>
-                  handleDatacentersChange(parseInt(e.target.value))
-                }
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
-              />
+              <div className="relative">
+                <input
+                  type="range"
+                  min="0"
+                  max="15"
+                  step="1"
+                  value={datacentersValue}
+                  onChange={(e) =>
+                    handleDatacentersChange(parseInt(e.target.value))
+                  }
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
+                />
 
-              <div className="flex justify-between text-xs text-muted-foreground px-1">
-                {Array.from({ length: 16 }, (_, i) => (
-                  <span key={i} className={`${i === 15 ? "ml-auto" : ""}`}>
-                    {i}
-                  </span>
-                ))}
+                {/* Контейнер для отображения всех значений */}
+                <div className="relative w-full h-6 mt-2">
+                  {/* Линия для выравнивания */}
+                  <div className="absolute w-full h-px top-3 left-0"></div>
+
+                  {/* Все значения от 0 до 15 */}
+                  {Array.from({ length: 16 }, (_, i) => {
+                    // Рассчитываем позицию для каждого значения
+                    const position = (i / 15) * 100; // 0-100%
+                    const isFirst = i === 0;
+                    const isLast = i === 15;
+
+                    return (
+                      <div
+                        key={i}
+                        className="absolute flex flex-col items-center"
+                        style={{
+                          left: `${position}%`,
+                          transform: isFirst
+                            ? "translateX(0)"
+                            : isLast
+                              ? "translateX(-100%)"
+                              : "translateX(-50%)",
+                        }}
+                      >
+                        <div className="w-px h-2 bg-border"></div>
+                        <span className="text-[10px] text-muted-foreground mt-1">
+                          {i}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
