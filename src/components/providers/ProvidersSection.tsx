@@ -409,13 +409,30 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка с конфигуратором и элементами управления */}
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-        {/* Конфигуратор ресурсов - занимает колонки 1 и 2 */}
+        {/* Конфигуратор ресурсов - занимает первые 2 колонки */}
         <div className="lg:col-span-2">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Фильтры - колонка 3 (свернутое состояние) */}
+        {/* Пустые колонки 3 и 4 */}
+        <div className="lg:col-span-1 hidden lg:block"></div>
+        <div className="lg:col-span-1 hidden lg:block"></div>
+
+        {/* Сортировка - колонка 5 */}
         <div className="lg:col-span-1">
+          <div className="bg-card border border-border rounded-md p-4 h-full">
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
+        </div>
+
+        {/* Поиск и фильтры - колонка 6 */}
+        <div className="lg:col-span-1 space-y-4">
+          {/* Поиск */}
+          <SearchInput
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+
           {/* Фильтры для мобильных */}
           <div className="lg:hidden">
             <FilterPanel
@@ -449,7 +466,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             />
           </div>
 
-          {/* Фильтры для десктопа - в свернутом состоянии показываем только кнопку */}
+          {/* Фильтры для десктопа - только кнопка в свернутом состоянии */}
           <div className="hidden lg:block">
             {!isFiltersExpanded ? (
               <button
@@ -469,30 +486,29 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 />
               </button>
             ) : (
-              /* В развернутом состоянии фильтры занимают отдельную строку ниже */
-              <div className="h-10 flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">
-                  Фильтры раскрыты
-                </span>
+              <div className="bg-card border border-border rounded-md p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <Icon name="Filter" size={16} className="text-primary" />
+                    </div>
+                    <span className="font-bold text-lg text-foreground">
+                      Фильтры
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIsFiltersExpanded(false)}
+                    className="p-1 hover:bg-accent rounded-md transition-colors"
+                  >
+                    <Icon
+                      name="X"
+                      size={20}
+                      className="text-muted-foreground"
+                    />
+                  </button>
+                </div>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Пустые колонки 4 и 5 в свернутом состоянии */}
-        <div className="lg:col-span-2 hidden lg:block"></div>
-
-        {/* Поиск и сортировка - колонка 6 */}
-        <div className="lg:col-span-1 space-y-4">
-          {/* Поиск - импортируется из SearchInput */}
-          <SearchInput
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-
-          {/* Сортировка - импортируется из SortPanel */}
-          <div className="bg-card border border-border rounded-md p-4">
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
         </div>
       </div>
@@ -500,64 +516,41 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       {/* Блок развернутых фильтров для десктопа */}
       {isFiltersExpanded && (
         <div className="hidden lg:grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-          {/* Пустые колонки 1 и 2 */}
-          <div className="lg:col-span-2"></div>
+          {/* Пустые колонки 1-3 */}
+          <div className="lg:col-span-3"></div>
 
-          {/* Развернутые фильтры занимают колонки 3-5 */}
+          {/* Развернутые фильтры занимают колонки 4-6 */}
           <div className="lg:col-span-3">
-            <div className="bg-card border border-border rounded-md p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Filter" size={16} className="text-primary" />
-                  </div>
-                  <span className="font-bold text-lg text-foreground">
-                    Фильтры
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsFiltersExpanded(false)}
-                  className="p-1 hover:bg-accent rounded-md transition-colors"
-                >
-                  <Icon name="X" size={20} className="text-muted-foreground" />
-                </button>
-              </div>
-
-              {/* Полный компонент FilterPanel отображается сразу */}
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-                filteredCount={filteredProviders.length}
-              />
-            </div>
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
+            />
           </div>
-
-          {/* Пустая колонка 6 */}
-          <div className="lg:col-span-1"></div>
         </div>
       )}
 
