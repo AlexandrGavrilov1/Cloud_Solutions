@@ -6,7 +6,7 @@ import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SortPanel } from "./SortPanel";
-import { SearchInput } from "./SearchInput";
+import { SearchInput } from "./SearchInput.tsx";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
 
@@ -90,7 +90,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
-  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
   useEffect(() => {
     const fetchApprovedReviews = async () => {
@@ -407,202 +406,116 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка с конфигуратором и элементами управления */}
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-        {/* Конфигуратор ресурсов - занимает первые 2 колонки */}
-        <div className="lg:col-span-2">
+      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
+        <div className="flex flex-col lg:flex-row gap-4 w-full">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-        </div>
-
-        {/* Пустые колонки 3 и 4 */}
-        <div className="lg:col-span-1 hidden lg:block"></div>
-        <div className="lg:col-span-1 hidden lg:block"></div>
-
-        {/* Сортировка - колонка 5 */}
-        <div className="lg:col-span-1">
-          <div className="bg-card border border-border rounded-md p-4 h-full">
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-          </div>
-        </div>
-
-        {/* Поиск и фильтры - колонка 6 */}
-        <div className="lg:col-span-1 space-y-4">
-          {/* Поиск */}
-          <SearchInput
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+            filteredCount={filteredProviders.length}
           />
+        </div>
 
-          {/* Фильтры для мобильных */}
-          <div className="lg:hidden">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-            />
-          </div>
+        <div className="flex items-center gap-4">
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
-          {/* Фильтры для десктопа - только кнопка в свернутом состоянии */}
-          <div className="hidden lg:block">
-            {!isFiltersExpanded ? (
-              <button
-                onClick={() => setIsFiltersExpanded(true)}
-                className="w-full bg-card border border-border rounded-md p-4 flex items-center justify-between hover:bg-accent transition-colors"
+          <div className="relative w-[220px]">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Filter" size={16} className="text-primary" />
-                  </div>
-                  <span className="font-medium text-foreground">Фильтры</span>
-                </div>
-                <Icon
-                  name="ChevronDown"
-                  size={20}
-                  className="text-muted-foreground"
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
-              </button>
-            ) : (
-              <div className="bg-card border border-border rounded-md p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <Icon name="Filter" size={16} className="text-primary" />
-                    </div>
-                    <span className="font-bold text-lg text-foreground">
-                      Фильтры
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setIsFiltersExpanded(false)}
-                    className="p-1 hover:bg-accent rounded-md transition-colors"
-                  >
-                    <Icon
-                      name="X"
-                      size={20}
-                      className="text-muted-foreground"
-                    />
-                  </button>
-                </div>
-              </div>
-            )}
+              </svg>
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск провайдеров"
+              className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+            />
           </div>
         </div>
       </div>
 
-      {/* Блок развернутых фильтров для десктопа */}
-      {isFiltersExpanded && (
-        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-          {/* Пустые колонки 1-3 */}
-          <div className="lg:col-span-3"></div>
+      <ProvidersList
+        filteredProviders={filteredProviders.slice(0, providersToShow)}
+        configs={configs}
+        calculatePrice={calculatePrice}
+        configOpen={configOpen}
+        setConfigOpen={setConfigOpen}
+        updateConfig={updateConfig}
+        selectedProvider={selectedProvider}
+        setSelectedProvider={setSelectedProvider}
+        reviewsToShow={reviewsToShow}
+        setReviewsToShow={setReviewsToShow}
+        selectedForComparison={selectedForComparison}
+        toggleComparison={toggleComparison}
+      />
 
-          {/* Развернутые фильтры занимают колонки 4-6 */}
-          <div className="lg:col-span-3">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-            />
-          </div>
+      {filteredProviders.length > providersToShow && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setProvidersToShow((prev) => prev + 9)}
+            className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <span className="relative flex items-center gap-2">
+              Показать ещё 9 провайдеров
+              <svg
+                className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </span>
+          </button>
         </div>
       )}
 
-      {/* Список провайдеров */}
-      <div>
-        <ProvidersList
-          filteredProviders={filteredProviders.slice(0, providersToShow)}
-          configs={configs}
-          calculatePrice={calculatePrice}
-          configOpen={configOpen}
-          setConfigOpen={setConfigOpen}
-          updateConfig={updateConfig}
-          selectedProvider={selectedProvider}
-          setSelectedProvider={setSelectedProvider}
-          reviewsToShow={reviewsToShow}
-          setReviewsToShow={setReviewsToShow}
-          selectedForComparison={selectedForComparison}
-          toggleComparison={toggleComparison}
-        />
-
-        {filteredProviders.length > providersToShow && (
-          <div className="flex justify-center mt-8">
-            <button
-              onClick={() => setProvidersToShow((prev) => prev + 9)}
-              className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <span className="relative flex items-center gap-2">
-                Показать ещё 9 провайдеров
-                <svg
-                  className="w-5 h-5 group-hover:translate-y-1 transition-transform"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </span>
-            </button>
-          </div>
-        )}
-
-        <ComparisonControls
-          selectedForComparison={selectedForComparison}
-          compareProviders={compareProviders}
-        />
-      </div>
+      <ComparisonControls
+        selectedForComparison={selectedForComparison}
+        compareProviders={compareProviders}
+      />
     </section>
   );
 };
