@@ -99,6 +99,9 @@ export const FilterPanel = ({
     setFilterMinDatacenters(value > 0 ? value : null);
   };
 
+  // Максимальное значение для шкалы (15 ЦОДов)
+  const MAX_CENTERS = 15;
+
   return (
     <div
       className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
@@ -408,7 +411,7 @@ export const FilterPanel = ({
             </div>
           </div>
 
-          {/* Ползунок для минимального количества дата-центров */}
+          {/* Ползунок для минимального количества дата-центров с шагом 1 */}
           <div className="space-y-4 p-4 bg-background/50 rounded-lg border border-border">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -419,7 +422,7 @@ export const FilterPanel = ({
               </div>
               <span className="font-bold text-primary text-lg">
                 {datacentersValue > 0
-                  ? `${datacentersValue}+`
+                  ? `${datacentersValue}+ ЦОД`
                   : t("filters.anyAmount")}
               </span>
             </div>
@@ -428,23 +431,100 @@ export const FilterPanel = ({
               <input
                 type="range"
                 min="0"
-                max="15"
+                max={MAX_CENTERS}
                 step="1"
                 value={datacentersValue}
                 onChange={(e) =>
                   handleDatacentersChange(parseInt(e.target.value))
                 }
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
+                list="datacenter-markers"
               />
 
+              {/* Генерация маркеров для каждого значения */}
+              <datalist id="datacenter-markers">
+                {Array.from({ length: MAX_CENTERS + 1 }, (_, i) => (
+                  <option key={i} value={i} className="datacenter-option" />
+                ))}
+              </datalist>
+
               <div className="flex justify-between text-xs text-muted-foreground px-1">
-                <span>0</span>
-                <span>3</span>
-                <span>6</span>
-                <span>9</span>
-                <span>12</span>
-                <span>15+</span>
+                {Array.from({ length: 6 }, (_, i) => (
+                  <span key={i} className="flex-1 text-center">
+                    {i === 0 ? "0" : i === 5 ? `${MAX_CENTERS}+` : i * 3}
+                  </span>
+                ))}
               </div>
+            </div>
+
+            {/* Детальная шкала с шагом 1 (скрытая на мобильных) */}
+            <div className="hidden sm:block">
+              <div className="flex justify-between text-[10px] text-muted-foreground mt-2">
+                {Array.from({ length: MAX_CENTERS + 1 }, (_, i) => (
+                  <div key={i} className="flex flex-col items-center">
+                    <div className="w-px h-2 bg-border"></div>
+                    <span className="mt-1">{i}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Кнопки для быстрого выбора популярных значений */}
+            <div className="flex flex-wrap gap-2 pt-2">
+              <Button
+                type="button"
+                variant={datacentersValue === 0 ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(0)}
+                className="text-xs h-7 px-3"
+              >
+                0
+              </Button>
+              <Button
+                type="button"
+                variant={datacentersValue === 1 ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(1)}
+                className="text-xs h-7 px-3"
+              >
+                1+
+              </Button>
+              <Button
+                type="button"
+                variant={datacentersValue === 3 ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(3)}
+                className="text-xs h-7 px-3"
+              >
+                3+
+              </Button>
+              <Button
+                type="button"
+                variant={datacentersValue === 5 ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(5)}
+                className="text-xs h-7 px-3"
+              >
+                5+
+              </Button>
+              <Button
+                type="button"
+                variant={datacentersValue === 10 ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(10)}
+                className="text-xs h-7 px-3"
+              >
+                10+
+              </Button>
+              <Button
+                type="button"
+                variant={datacentersValue === 15 ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(15)}
+                className="text-xs h-7 px-3"
+              >
+                15+
+              </Button>
             </div>
           </div>
         </div>
