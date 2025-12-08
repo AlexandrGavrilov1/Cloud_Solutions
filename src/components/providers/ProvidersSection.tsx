@@ -467,8 +467,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             />
           </div>
 
-          {/* 🔧 Контейнер с фильтрами - теперь с относительным позиционированием */}
-          <div className="w-full">
+          {/* 🔧 Контейнер с фильтрами - с абсолютным позиционированием для выпадающего меню */}
+          <div className="w-full relative">
             <FilterButton
               isOpen={filtersOpen}
               onClick={() => setFiltersOpen(!filtersOpen)}
@@ -488,10 +488,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               }
             />
 
-            {/* 🔧 Контейнер с фильтрами - раскрывается вниз и смещает контент */}
+            {/* 🔧 Выпадающее меню фильтров - абсолютное позиционирование */}
             {filtersOpen && (
-              <div className="mt-2 bg-card border border-border rounded-lg shadow-lg">
-                <div className="p-4 space-y-4">
+              <div className="absolute top-full left-0 right-0 mt-2 z-20 bg-card border border-border rounded-lg shadow-lg">
+                <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
                   {/* Сортировка */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">
