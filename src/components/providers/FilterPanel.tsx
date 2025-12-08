@@ -144,10 +144,10 @@ export const FilterPanel = ({
 
       {isExpanded && (
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
-          {/* Чекбоксы для булевых фильтров */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-              <div className="relative">
+          {/* Чекбоксы для булевых фильтров - адаптивная ширина */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-4">
+            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors min-w-0">
+              <div className="relative shrink-0">
                 <input
                   type="checkbox"
                   id="fz152"
@@ -155,7 +155,7 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFZ152(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center shrink-0">
                   {filterFZ152 && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -163,15 +163,21 @@ export const FilterPanel = ({
               </div>
               <label
                 htmlFor="fz152"
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
               >
-                <Icon name="ShieldCheck" size={16} className="text-primary" />
-                <span className="font-medium text-foreground">152-ФЗ</span>
+                <Icon
+                  name="ShieldCheck"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
+                <span className="font-medium text-foreground truncate">
+                  152-ФЗ
+                </span>
               </label>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-              <div className="relative">
+            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors min-w-0">
+              <div className="relative shrink-0">
                 <input
                   type="checkbox"
                   id="fstek"
@@ -179,7 +185,7 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFSTEK(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center shrink-0">
                   {filterFSTEK && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -187,15 +193,21 @@ export const FilterPanel = ({
               </div>
               <label
                 htmlFor="fstek"
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
               >
-                <Icon name="ShieldAlert" size={16} className="text-primary" />
-                <span className="font-medium text-foreground">ФСТЕК</span>
+                <Icon
+                  name="ShieldAlert"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
+                <span className="font-medium text-foreground truncate">
+                  ФСТЕК
+                </span>
               </label>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-              <div className="relative">
+            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors min-w-0">
+              <div className="relative shrink-0">
                 <input
                   type="checkbox"
                   id="trial"
@@ -203,7 +215,7 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterTrialPeriod(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center shrink-0">
                   {filterTrialPeriod && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -211,10 +223,10 @@ export const FilterPanel = ({
               </div>
               <label
                 htmlFor="trial"
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
               >
-                <Icon name="Gift" size={16} className="text-primary" />
-                <span className="font-medium text-foreground">
+                <Icon name="Gift" size={16} className="text-primary shrink-0" />
+                <span className="font-medium text-foreground truncate">
                   {t("filters.trialPeriod")}
                 </span>
               </label>
@@ -223,6 +235,8 @@ export const FilterPanel = ({
 
           {/* Выпадающие списки */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Остальной код остается без изменений... */}
+
             {/* Локация */}
             <div className="group">
               <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
@@ -439,11 +453,16 @@ export const FilterPanel = ({
 
               <div className="flex justify-between text-xs text-muted-foreground px-1">
                 <span>0</span>
+                <span>1</span>
+                <span>2</span>
                 <span>3</span>
+                <span>4</span>
+                <span>5</span>
                 <span>6</span>
+                <span>7</span>
+                <span>8</span>
                 <span>9</span>
-                <span>12</span>
-                <span>15+</span>
+                <span>10</span>
               </div>
             </div>
           </div>
