@@ -414,44 +414,220 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Фильтры - колонка 3 (свернутое состояние) */}
-        <div className="lg:col-span-1">
-          {/* Фильтры для мобильных */}
-          <div className="lg:hidden">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-            />
-          </div>
+        {/* Фильтры - занимают колонки 3-5 при раскрытии, только колонку 3 при свернутом состоянии */}
+        {isFiltersExpanded ? (
+          // Развернутые фильтры занимают колонки 3-5
+          <div className="lg:col-span-3">
+            <div className="bg-card border border-border rounded-md p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Filter" size={16} className="text-primary" />
+                  </div>
+                  <span className="font-bold text-lg text-foreground">
+                    Фильтры
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsFiltersExpanded(false)}
+                  className="p-1 hover:bg-accent rounded-md transition-colors"
+                >
+                  <Icon name="X" size={20} className="text-muted-foreground" />
+                </button>
+              </div>
 
-          {/* Фильтры для десктопа - в свернутом состоянии показываем только кнопку */}
-          <div className="hidden lg:block">
-            {!isFiltersExpanded && (
+              {/* Упрощенная версия фильтров для десктопа */}
+              <div className="space-y-4">
+                {/* Чекбоксы */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border">
+                    <input
+                      type="checkbox"
+                      id="fz152-desktop"
+                      checked={filterFZ152}
+                      onChange={(e) => setFilterFZ152(e.target.checked)}
+                      className="w-4 h-4 rounded border-2 border-primary text-primary focus:ring-primary/20"
+                    />
+                    <label
+                      htmlFor="fz152-desktop"
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <Icon
+                        name="ShieldCheck"
+                        size={16}
+                        className="text-primary"
+                      />
+                      <span className="text-sm">ФЗ-152</span>
+                    </label>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border">
+                    <input
+                      type="checkbox"
+                      id="fstek-desktop"
+                      checked={filterFSTEK}
+                      onChange={(e) => setFilterFSTEK(e.target.checked)}
+                      className="w-4 h-4 rounded border-2 border-primary text-primary focus:ring-primary/20"
+                    />
+                    <label
+                      htmlFor="fstek-desktop"
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <Icon
+                        name="ShieldAlert"
+                        size={16}
+                        className="text-primary"
+                      />
+                      <span className="text-sm">ФСТЕК</span>
+                    </label>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border">
+                    <input
+                      type="checkbox"
+                      id="trial-desktop"
+                      checked={filterTrialPeriod}
+                      onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+                      className="w-4 h-4 rounded border-2 border-primary text-primary focus:ring-primary/20"
+                    />
+                    <label
+                      htmlFor="trial-desktop"
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <Icon name="Gift" size={16} className="text-primary" />
+                      <span className="text-sm">Триал</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Выпадающие списки */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div className="relative">
+                    <select
+                      className="w-full h-10 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all px-3"
+                      value={filterLocation || ""}
+                      onChange={(e) =>
+                        setFilterLocation(e.target.value || null)
+                      }
+                    >
+                      <option value="">Локация</option>
+                      {allLocations.map((loc) => (
+                        <option key={loc} value={loc}>
+                          {loc}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      className="w-full h-10 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all px-3"
+                      value={filterVirtualization || ""}
+                      onChange={(e) =>
+                        setFilterVirtualization(e.target.value || null)
+                      }
+                    >
+                      <option value="">Виртуализация</option>
+                      {allVirtualizations.map((virt) => (
+                        <option key={virt} value={virt}>
+                          {virt}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      className="w-full h-10 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all px-3"
+                      value={filterDiskType || ""}
+                      onChange={(e) =>
+                        setFilterDiskType(e.target.value || null)
+                      }
+                    >
+                      <option value="">Тип диска</option>
+                      {allDiskTypes.map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      className="w-full h-10 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all px-3"
+                      value={filterPaymentMethod || ""}
+                      onChange={(e) =>
+                        setFilterPaymentMethod(e.target.value || null)
+                      }
+                    >
+                      <option value="">Оплата</option>
+                      {allPaymentMethods.map((method) => (
+                        <option key={method} value={method}>
+                          {method}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      className="w-full h-10 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all px-3"
+                      value={filterOS || ""}
+                      onChange={(e) => setFilterOS(e.target.value || null)}
+                    >
+                      <option value="">ОС</option>
+                      {allOS.map((os) => (
+                        <option key={os} value={os}>
+                          {os}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      className="w-full h-10 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all px-3"
+                      value={filterCPU || ""}
+                      onChange={(e) => setFilterCPU(e.target.value || null)}
+                    >
+                      <option value="">Процессор</option>
+                      {allCPUs.map((cpu) => (
+                        <option key={cpu} value={cpu}>
+                          {cpu}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Кнопка сброса */}
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => {
+                      setFilterFZ152(false);
+                      setFilterFSTEK(false);
+                      setFilterTrialPeriod(false);
+                      setFilterLocation(null);
+                      setFilterVirtualization(null);
+                      setFilterDiskType(null);
+                      setFilterPaymentMethod(null);
+                      setFilterOS(null);
+                      setFilterCPU(null);
+                      setFilterMinDatacenters(null);
+                    }}
+                    className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Сбросить все фильтры
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Свернутое состояние - только кнопка в колонке 3
+          <>
+            <div className="lg:col-span-1">
               <button
                 onClick={() => setIsFiltersExpanded(true)}
                 className="w-full bg-card border border-border rounded-md p-4 flex items-center justify-between hover:bg-accent transition-colors"
@@ -468,12 +644,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   className="text-muted-foreground"
                 />
               </button>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Пустые колонки 4 и 5 в свернутом состоянии */}
-        <div className="lg:col-span-2 hidden lg:block"></div>
+            {/* Пустые колонки 4 и 5 в свернутом состоянии */}
+            <div className="lg:col-span-2 hidden lg:block"></div>
+          </>
+        )}
 
         {/* Поиск и сортировка - колонка 6 */}
         <div className="lg:col-span-1 space-y-4">
@@ -490,50 +666,38 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       </div>
 
-      {/* Блок развернутых фильтров для десктопа */}
-      {isFiltersExpanded && (
-        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-          {/* Пустые колонки 1 и 2 */}
-          <div className="lg:col-span-2"></div>
-
-          {/* Развернутые фильтры занимают колонки 3-5 */}
-          <div className="lg:col-span-3">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-              forceExpanded={true}
-            />
-          </div>
-
-          {/* Пустая колонка 6 */}
-          <div className="lg:col-span-1"></div>
-        </div>
-      )}
+      {/* Фильтры для мобильных - вне сетки */}
+      <div className="lg:hidden mb-6">
+        <FilterPanel
+          filterFZ152={filterFZ152}
+          setFilterFZ152={setFilterFZ152}
+          filterFSTEK={filterFSTEK}
+          setFilterFSTEK={setFilterFSTEK}
+          filterTrialPeriod={filterTrialPeriod}
+          setFilterTrialPeriod={setFilterTrialPeriod}
+          filterLocation={filterLocation}
+          setFilterLocation={setFilterLocation}
+          filterVirtualization={filterVirtualization}
+          setFilterVirtualization={setFilterVirtualization}
+          filterMinDatacenters={filterMinDatacenters}
+          setFilterMinDatacenters={setFilterMinDatacenters}
+          filterDiskType={filterDiskType}
+          setFilterDiskType={setFilterDiskType}
+          filterPaymentMethod={filterPaymentMethod}
+          setFilterPaymentMethod={setFilterPaymentMethod}
+          filterOS={filterOS}
+          setFilterOS={setFilterOS}
+          filterCPU={filterCPU}
+          setFilterCPU={setFilterCPU}
+          allLocations={allLocations}
+          allVirtualizations={allVirtualizations}
+          allDiskTypes={allDiskTypes}
+          allPaymentMethods={allPaymentMethods}
+          allOS={allOS}
+          allCPUs={allCPUs}
+          filteredCount={filteredProviders.length}
+        />
+      </div>
 
       {/* Список провайдеров */}
       <div>
