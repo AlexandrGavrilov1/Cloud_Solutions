@@ -409,30 +409,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка с конфигуратором и элементами управления */}
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-        {/* Конфигуратор ресурсов - занимает первые 2 колонки */}
+        {/* Конфигуратор ресурсов - занимает колонки 1 и 2 */}
         <div className="lg:col-span-2">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Пустые колонки 3 и 4 */}
-        <div className="lg:col-span-1 hidden lg:block"></div>
-        <div className="lg:col-span-1 hidden lg:block"></div>
-
-        {/* Сортировка - колонка 5 */}
+        {/* Фильтры - колонка 3 (свернутое состояние) */}
         <div className="lg:col-span-1">
-          <div className="bg-card border border-border rounded-md p-4 h-full">
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-          </div>
-        </div>
-
-        {/* Поиск и фильтры - колонка 6 */}
-        <div className="lg:col-span-1 space-y-4">
-          {/* Поиск */}
-          <SearchInput
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-
           {/* Фильтры для мобильных */}
           <div className="lg:hidden">
             <FilterPanel
@@ -511,15 +494,32 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             )}
           </div>
         </div>
+
+        {/* Пустые колонки 4 и 5 в свернутом состоянии */}
+        <div className="lg:col-span-2 hidden lg:block"></div>
+
+        {/* Поиск и сортировка - колонка 6 */}
+        <div className="lg:col-span-1 space-y-4">
+          {/* Поиск */}
+          <SearchInput
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+
+          {/* Сортировка */}
+          <div className="bg-card border border-border rounded-md p-4">
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
+        </div>
       </div>
 
       {/* Блок развернутых фильтров для десктопа */}
       {isFiltersExpanded && (
         <div className="hidden lg:grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
-          {/* Пустые колонки 1-3 */}
-          <div className="lg:col-span-3"></div>
+          {/* Пустые колонки 1 и 2 */}
+          <div className="lg:col-span-2"></div>
 
-          {/* Развернутые фильтры занимают колонки 4-6 */}
+          {/* Развернутые фильтры занимают колонки 3-5 */}
           <div className="lg:col-span-3">
             <FilterPanel
               filterFZ152={filterFZ152}
@@ -551,6 +551,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               filteredCount={filteredProviders.length}
             />
           </div>
+
+          {/* Пустая колонка 6 */}
+          <div className="lg:col-span-1"></div>
         </div>
       )}
 
