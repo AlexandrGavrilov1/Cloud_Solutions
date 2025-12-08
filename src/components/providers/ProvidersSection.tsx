@@ -12,11 +12,9 @@ import Icon from "@/components/ui/icon";
 const SearchBar = ({
   searchQuery,
   setSearchQuery,
-  filteredCount,
 }: {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  filteredCount: number;
 }) => {
   return (
     <div className="w-full lg:w-1/2 lg:max-w-md ml-auto mb-6">
@@ -29,11 +27,8 @@ const SearchBar = ({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Поиск провайдеров..."
-          className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-2xl bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-2xl bg-gray-100 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all hover:bg-gray-50"
         />
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
-          {filteredCount} найдено
-        </div>
       </div>
     </div>
   );
@@ -465,16 +460,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           allPaymentMethods={allPaymentMethods}
           allOS={allOS}
           allCPUs={allCPUs}
-          // Убираем searchQuery и setSearchQuery из FilterPanel
           filteredCount={filteredProviders.length}
         />
 
         {/* Добавляем SearchBar справа */}
-        <SearchBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          filteredCount={filteredProviders.length}
-        />
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
 
       <ProvidersList
