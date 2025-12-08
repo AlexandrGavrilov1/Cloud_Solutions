@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import Icon from "@/components/ui/icon";
-import { Provider } from "./types";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
+import { Provider } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProviderCardHeaderProps {
   provider: Provider;
@@ -16,57 +16,43 @@ export const ProviderCardHeader = ({
   provider,
   index,
   calculatedPrice,
-  onProviderClick,
+  onProviderClick
 }: ProviderCardHeaderProps) => {
   const { t, language } = useLanguage();
-  const avgRating =
-    provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
-    provider.reviews.length;
+  const avgRating = provider.reviews.reduce((sum, r) => sum + r.rating, 0) / provider.reviews.length;
   const [showAllLocations, setShowAllLocations] = useState(false);
 
   const getSupportSpeedColor = (responseTime: string) => {
     const time = responseTime.toLowerCase();
-    if (
-      time.includes("5 мин") ||
-      time.includes("< 5") ||
-      time.includes("мгновенно")
-    ) {
+    if (time.includes('5 мин') || time.includes('< 5') || time.includes('мгновенно')) {
       return {
-        bg: "bg-green-500/10",
-        border: "border-green-500/30",
-        text: "text-green-700 dark:text-green-400",
-        icon: "Zap",
+        bg: 'bg-green-500/10',
+        border: 'border-green-500/30',
+        text: 'text-green-700 dark:text-green-400',
+        icon: 'Zap'
       };
     }
-    if (
-      time.includes("15 мин") ||
-      time.includes("< 15") ||
-      time.includes("10 мин")
-    ) {
+    if (time.includes('15 мин') || time.includes('< 15') || time.includes('10 мин')) {
       return {
-        bg: "bg-yellow-500/10",
-        border: "border-yellow-500/30",
-        text: "text-yellow-700 dark:text-yellow-400",
-        icon: "Clock",
+        bg: 'bg-yellow-500/10',
+        border: 'border-yellow-500/30',
+        text: 'text-yellow-700 dark:text-yellow-400',
+        icon: 'Clock'
       };
     }
-    if (
-      time.includes("30 мин") ||
-      time.includes("1 час") ||
-      time.includes("час")
-    ) {
+    if (time.includes('30 мин') || time.includes('1 час') || time.includes('час')) {
       return {
-        bg: "bg-orange-500/10",
-        border: "border-orange-500/30",
-        text: "text-orange-700 dark:text-orange-400",
-        icon: "Clock",
+        bg: 'bg-orange-500/10',
+        border: 'border-orange-500/30',
+        text: 'text-orange-700 dark:text-orange-400',
+        icon: 'Clock'
       };
     }
     return {
-      bg: "bg-gray-500/10",
-      border: "border-gray-500/30",
-      text: "text-gray-700 dark:text-gray-400",
-      icon: "MessageCircle",
+      bg: 'bg-gray-500/10',
+      border: 'border-gray-500/30',
+      text: 'text-gray-700 dark:text-gray-400',
+      icon: 'MessageCircle'
     };
   };
 
@@ -76,36 +62,24 @@ export const ProviderCardHeader = ({
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <div className="relative flex-shrink-0">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-white border border-primary/10 shadow-soft flex items-center justify-center">
-              <img
-                src={provider.logo}
-                alt={provider.name}
-                className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-              />
+              <img src={provider.logo} alt={provider.name} className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
             </div>
             <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-lg text-background text-xs font-bold">
               {index + 1}
             </div>
           </div>
-
+          
           <div className="flex-1 min-w-0">
-            <h3
-              className=" text-base      sm:text-lg     md:text-xl      lg:text-2xl     font-bold   text-foreground   mb-1.5 
-  truncate"
-            >
-              {provider.name}
-            </h3>
+            <h3 className=" text-base      sm:text-lg     md:text-xl      lg:text-2xl     font-bold   text-foreground   mb-1.5 
+  truncate">{provider.name}</h3>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <Icon
+                  <Icon 
                     key={i}
-                    name="Star"
-                    size={16}
-                    className={
-                      i < Math.round(avgRating)
-                        ? "fill-primary text-primary"
-                        : "text-muted"
-                    }
+                    name="Star" 
+                    size={16} 
+                    className={i < Math.round(avgRating) ? "fill-primary text-primary" : "text-muted"}
                   />
                 ))}
               </div>
@@ -118,18 +92,14 @@ export const ProviderCardHeader = ({
       </div>
 
       <div className="flex items-start gap-1.5 text-sm">
-        <Icon
-          name="MapPin"
-          size={14}
-          className="text-primary mt-0.5 flex-shrink-0"
-        />
+        <Icon name="MapPin" size={14} className="text-primary mt-0.5 flex-shrink-0" />
         <div className="flex items-center gap-1">
           <span className="text-foreground text-xs">
-            {showAllLocations
-              ? provider.locations.join(", ")
-              : provider.locations.slice(0, 2).join(", ")}
+            {showAllLocations 
+              ? provider.locations.join(', ')
+              : provider.locations.slice(0, 2).join(', ')}
             {provider.locations.length > 2 && !showAllLocations && (
-              <button
+              <button 
                 onClick={() => setShowAllLocations(true)}
                 className="text-primary hover:underline ml-1"
               >
@@ -137,7 +107,7 @@ export const ProviderCardHeader = ({
               </button>
             )}
             {showAllLocations && provider.locations.length > 2 && (
-              <button
+              <button 
                 onClick={() => setShowAllLocations(false)}
                 className="text-primary hover:underline ml-1"
               >
@@ -147,32 +117,22 @@ export const ProviderCardHeader = ({
           </span>
         </div>
       </div>
-
+        
       <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-1.5 text-sm">
-            <Icon
-              name="HardDrive"
-              size={14}
-              className="text-primary flex-shrink-0"
-            />
-            <span className="text-foreground truncate">
-              {provider.technicalSpecs.diskType}
-            </span>
+            <Icon name="HardDrive" size={14} className="text-primary flex-shrink-0" />
+            <span className="text-foreground truncate">{provider.technicalSpecs.diskType}</span>
           </div>
           <div className="flex items-center gap-1.5 text-sm">
             <Icon name="Box" size={14} className="text-primary flex-shrink-0" />
             <span className="text-foreground truncate">
-              {provider.technicalSpecs.virtualization.slice(0, 2).join(", ")}
+              {provider.technicalSpecs.virtualization.slice(0, 2).join(', ')}
             </span>
           </div>
           {provider.technicalSpecs.kubernetes?.available && (
             <div className="flex items-center gap-1.5 text-sm">
-              <Icon
-                name="Network"
-                size={14}
-                className="text-primary flex-shrink-0"
-              />
+              <Icon name="Network" size={14} className="text-primary flex-shrink-0" />
               <span className="text-foreground">Kubernetes</span>
               {provider.technicalSpecs.kubernetes.managed && (
                 <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-[10px] px-1 py-0">
@@ -186,53 +146,30 @@ export const ProviderCardHeader = ({
         <div className="flex flex-col items-end gap-2 pr-3">
           <div className="flex flex-col items-end">
             <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <span className="text-sm text-muted-foreground">
-                {t("common.from")}
-              </span>
-              <span className="text-2xl font-black text-primary">
-                {calculatedPrice}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {t("common.perMonth")}
-              </span>
+              <span className="text-sm text-muted-foreground">{t('common.from')}</span>
+              <span className="text-2xl font-black text-primary">{calculatedPrice}</span>
+              <span className="text-xs text-muted-foreground">{t('common.perMonth')}</span>
             </div>
           </div>
           <div className="flex items-center gap-1.5 text-sm">
-            <Icon
-              name="Gift"
-              size={14}
-              className={
-                provider.trialDays ? "text-primary" : "text-muted-foreground"
-              }
-            />
+            <Icon name="Gift" size={14} className={provider.trialDays ? "text-primary" : "text-muted-foreground"} />
             <span className="text-foreground text-xs truncate">
-              {provider.trialDays
-                ? `${provider.trialDays} ${provider.trialDays === 1 ? t("common.day") : provider.trialDays < 5 ? t("common.daysGenitive") : t("common.days")} ${t("common.free")}`
-                : "Тест по запросу"}
+              {provider.trialDays ? `${provider.trialDays} ${provider.trialDays === 1 ? t('common.day') : provider.trialDays < 5 ? t('common.daysGenitive') : t('common.days')} ${t('common.free')}` : 'Тест по запросу'}
             </span>
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">
-        {provider.serviceGuarantees.supportResponseTime &&
-          (() => {
-            const speedColor = getSupportSpeedColor(
-              provider.serviceGuarantees.supportResponseTime,
-            );
-            return (
-              <Badge
-                className={`${speedColor.bg} ${speedColor.border} ${speedColor.text} border font-semibold text-xs px-2 py-1 transition-all duration-300 hover:scale-105 hover:shadow-md`}
-              >
-                <Icon
-                  name={speedColor.icon as any}
-                  size={12}
-                  className="mr-1"
-                />
-                Поддержка: {provider.serviceGuarantees.supportResponseTime}
-              </Badge>
-            );
-          })()}
+        {provider.serviceGuarantees.supportResponseTime && (() => {
+          const speedColor = getSupportSpeedColor(provider.serviceGuarantees.supportResponseTime);
+          return (
+            <Badge className={`${speedColor.bg} ${speedColor.border} ${speedColor.text} border font-semibold text-xs px-2 py-1 transition-all duration-300 hover:scale-105 hover:shadow-md`}>
+              <Icon name={speedColor.icon as any} size={12} className="mr-1" />
+              Поддержка: {provider.serviceGuarantees.supportResponseTime}
+            </Badge>
+          );
+        })()}
         {provider.fz152Compliant && (
           <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
             <Icon name="ShieldCheck" size={12} className="mr-1" />
@@ -242,7 +179,7 @@ export const ProviderCardHeader = ({
         {provider.uptime30days && (
           <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
             <Icon name="Activity" size={12} className="mr-1" />
-            {t("common.uptime")}: {provider.uptime30days}%
+            {t('common.uptime')}: {provider.uptime30days}%
           </Badge>
         )}
       </div>
