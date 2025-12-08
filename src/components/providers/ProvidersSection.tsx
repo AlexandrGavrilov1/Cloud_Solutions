@@ -408,58 +408,60 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка с конфигуратором и элементами управления */}
       <div className="flex flex-col lg:flex-row gap-6 mb-6">
-        {/* Конфигуратор ресурсов слева */}
-        <div className="lg:w-2/3">
+        {/* Конфигуратор ресурсов слева - фиксированная ширина 10 см */}
+        <div className="w-[10cm]">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Поиск, сортировка и фильтры справа */}
-        <div className="lg:w-1/3 space-y-4">
-          {/* Поиск */}
-          <SearchInput
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-
-          {/* Сортировка */}
-          <div className="w-full bg-card border border-border rounded-md p-4">
-            <label className="text-sm font-medium text-foreground mb-3 block">
-              Сортировка
-            </label>
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-          </div>
-
-          {/* Фильтры */}
-          <div className="w-full">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
+        {/* Поиск, сортировка и фильтры справа - занимают оставшееся пространство */}
+        <div className="flex-1 lg:pl-6">
+          <div className="space-y-4">
+            {/* Поиск */}
+            <SearchInput
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
             />
+
+            {/* Сортировка */}
+            <div className="bg-card border border-border rounded-md p-4">
+              <label className="text-sm font-medium text-foreground mb-3 block">
+                Сортировка
+              </label>
+              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+            </div>
+
+            {/* Фильтры */}
+            <div>
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+                filteredCount={filteredProviders.length}
+              />
+            </div>
           </div>
         </div>
       </div>
