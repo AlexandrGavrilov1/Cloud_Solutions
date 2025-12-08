@@ -406,66 +406,60 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка с конфигуратором, поиском, сортировкой и фильтрами */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-6">
-        {/* Конфигуратор ресурсов */}
-        <div className="lg:w-1/4">
+      {/* Верхняя строка с конфигуратором и элементами управления */}
+      <div className="flex flex-col lg:flex-row gap-6 mb-6">
+        {/* Конфигуратор ресурсов слева */}
+        <div className="lg:w-2/3">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Поиск, сортировка и фильтры */}
-        <div className="lg:w-3/4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Поиск */}
-            <div className="md:col-span-1">
-              <SearchInput
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-              />
-            </div>
+        {/* Поиск, сортировка и фильтры справа */}
+        <div className="lg:w-1/3 space-y-4">
+          {/* Поиск */}
+          <SearchInput
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
 
-            {/* Сортировка */}
-            <div className="md:col-span-1">
-              <div className="w-full bg-card border border-border rounded-md p-4 h-full">
-                <label className="text-sm font-medium text-foreground mb-3 block">
-                  Сортировка
-                </label>
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
-            </div>
+          {/* Сортировка */}
+          <div className="w-full bg-card border border-border rounded-md p-4">
+            <label className="text-sm font-medium text-foreground mb-3 block">
+              Сортировка
+            </label>
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
 
-            {/* Фильтры */}
-            <div className="md:col-span-1">
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-                filteredCount={filteredProviders.length}
-              />
-            </div>
+          {/* Фильтры */}
+          <div className="w-full">
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
+            />
           </div>
         </div>
       </div>
