@@ -415,8 +415,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
         </div>
 
-        {/* Поиск - 2 колонки (0.5 карточки ≈ 16.7%, выравнен по правому краю) */}
-        <div className="col-span-2 flex justify-end">
+        {/* Поиск - 2 колонки (0.5 карточки ≈ 16.7%) */}
+        <div className="col-span-2">
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
