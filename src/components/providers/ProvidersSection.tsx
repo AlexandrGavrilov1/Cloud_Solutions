@@ -6,7 +6,7 @@ import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SortPanel } from "./SortPanel";
-import { SearchInput } from "./SearchInput.tsx";
+import { SearchInput } from "./SearchInput";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
 
