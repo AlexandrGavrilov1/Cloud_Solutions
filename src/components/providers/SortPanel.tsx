@@ -47,7 +47,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
           onClick={() => setSortBy("rating")}
           className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
             sortBy === "rating"
-              ? "text-white"
+              ? "text-[#FF8F33]"
               : "text-white hover:text-gray-200"
           }`}
           title="По рейтингу"
@@ -70,12 +70,14 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
         <button
           onClick={() => setSortBy("price")}
           className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
-            sortBy === "price" ? "text-white" : "text-white hover:text-gray-200"
+            sortBy === "price"
+              ? "text-[#FF8F33]"
+              : "text-white hover:text-gray-200"
           }`}
           title="По цене"
         >
           <span
-            className={`text-lg font-bold ${sortBy === "price" ? "text-white" : "text-white"}`}
+            className={`text-lg font-bold ${sortBy === "price" ? "text-[#FF8F33]" : "text-white"}`}
           >
             ₽
           </span>
