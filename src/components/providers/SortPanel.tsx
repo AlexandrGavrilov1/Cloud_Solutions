@@ -20,7 +20,13 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M3 4h13M3 8h9m-9 4h6m-3.5 4.5l-3.5-4 3.5-4m5 4h4"
+              d="M5 15l7-7 7 7"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 9l7 7 7-7"
             />
           </svg>
         </div>
