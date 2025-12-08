@@ -425,39 +425,25 @@ export const FilterPanel = ({
             </div>
 
             <div className="space-y-2">
-              <div className="relative px-2">
-                {/* Ползунок с отступами, соответствующими позициям значений */}
-                <input
-                  type="range"
-                  min="0"
-                  max="15"
-                  step="1"
-                  value={datacentersValue}
-                  onChange={(e) =>
-                    handleDatacentersChange(parseInt(e.target.value))
-                  }
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
-                  style={{
-                    // Компенсация ширины ползунка для точного позиционирования
-                    marginLeft: "0.25rem",
-                    marginRight: "0.25rem",
-                    width: "calc(100% - 0.5rem)",
-                  }}
-                />
+              <input
+                type="range"
+                min="0"
+                max="15"
+                step="1"
+                value={datacentersValue}
+                onChange={(e) =>
+                  handleDatacentersChange(parseInt(e.target.value))
+                }
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
+              />
 
-                {/* Значения под шкалой - 16 колонок */}
-                <div className="grid grid-cols-16 mt-3 -mx-1">
-                  {Array.from({ length: 16 }, (_, i) => (
-                    <div key={i} className="flex flex-col items-center">
-                      {/* Вертикальная линия-маркер */}
-                      <div className="w-px h-2 bg-border"></div>
-                      {/* Числовое значение */}
-                      <span className="text-[10px] text-muted-foreground mt-1">
-                        {i}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex justify-between text-xs text-muted-foreground px-1">
+                <span>0</span>
+                <span>3</span>
+                <span>6</span>
+                <span>9</span>
+                <span>12</span>
+                <span>15+</span>
               </div>
             </div>
           </div>
