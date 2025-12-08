@@ -6,6 +6,7 @@ import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SortPanel } from "./SortPanel";
+import { SearchInput } from "./SearchInput";
 import { lastUpdateDate } from "@/data/providers";
 import Icon from "@/components/ui/icon";
 
@@ -213,6 +214,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         config.storage * provider.storagePrice,
     );
 
+    // Если конфигурация минимальная и есть minPrice, используем его
     if (
       config.cpu === 1 &&
       config.ram === 1 &&
@@ -404,174 +406,114 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Левый блок: Конфигуратор и Фильтры */}
-        <div className="lg:w-1/4 flex flex-col gap-6">
-          {/* Конфигуратор */}
-          <div className="bg-white rounded-xl shadow-md p-5 border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Конфигуратор ресурсов
-            </h2>
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r">
-              <p className="text-gray-700 font-medium">
-                CPU 1 + RAM 1GB + Storage 10GB
-              </p>
-            </div>
-          </div>
-
-          {/* Фильтры */}
-          <div className="bg-white rounded-xl shadow-md p-5 border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Фильтры</h2>
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-              compact={true}
-            />
-          </div>
+      <div className="flex flex-col lg:flex-row gap-4 mb-6 items-start justify-between">
+        <div className="flex flex-col lg:flex-row gap-4 w-full">
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+            filteredCount={filteredProviders.length}
+          />
         </div>
 
-        {/* Правый блок: Поиск провайдеров и сортировка + Список провайдеров */}
-        <div className="lg:w-3/4">
-          {/* Верхняя панель с поиском и сортировкой */}
-          <div className="bg-white rounded-xl shadow-md p-5 border border-gray-100 mb-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Поиск провайдеров
-            </h2>
-
-            <div className="flex flex-col md:flex-row gap-4 justify-between">
-              {/* Поиск */}
-              <div className="flex-1">
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Поиск провайдеров"
-                    className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Сортировка */}
-              <div className="md:w-auto">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
+        <div className="flex flex-col gap-4 w-full lg:w-auto">
+          {/* Поиск провайдеров */}
+          <div className="relative w-full lg:w-[220px]">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
             </div>
-
-            {/* Дополнительные фильтры (сертификат, дата) как на изображении */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-medium text-gray-700 mb-2">Сертификат</h3>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="certificate"
-                    className="w-4 h-4 text-blue-600 rounded"
-                  />
-                  <label htmlFor="certificate" className="text-gray-600">
-                    P
-                  </label>
-                </div>
-              </div>
-              <div>
-                <h3 className="font-medium text-gray-700 mb-2">Дата</h3>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="price"
-                      className="w-4 h-4 text-blue-600 rounded"
-                    />
-                    <label htmlFor="price" className="text-gray-600">
-                      180 рублей
-                    </label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="custom-text"
-                      className="w-4 h-4 text-blue-600 rounded"
-                    />
-                    <label htmlFor="custom-text" className="text-gray-600">
-                      Текст по запросу
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск провайдеров"
+              className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+            />
           </div>
 
-          {/* Список провайдеров */}
-          <ProvidersList
-            filteredProviders={filteredProviders.slice(0, providersToShow)}
-            configs={configs}
-            calculatePrice={calculatePrice}
-            configOpen={configOpen}
-            setConfigOpen={setConfigOpen}
-            updateConfig={updateConfig}
-            selectedProvider={selectedProvider}
-            setSelectedProvider={setSelectedProvider}
-            reviewsToShow={reviewsToShow}
-            setReviewsToShow={setReviewsToShow}
-            selectedForComparison={selectedForComparison}
-            toggleComparison={toggleComparison}
-          />
-
-          {/* Кнопка "Показать еще" */}
-          {filteredProviders.length > providersToShow && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => setProvidersToShow((prev) => prev + 9)}
-                className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Показать ещё 9 провайдеров
-              </button>
-            </div>
-          )}
+          {/* Сортировка - теперь под поиском */}
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
 
-      {/* Управление сравнением */}
+      <ProvidersList
+        filteredProviders={filteredProviders.slice(0, providersToShow)}
+        configs={configs}
+        calculatePrice={calculatePrice}
+        configOpen={configOpen}
+        setConfigOpen={setConfigOpen}
+        updateConfig={updateConfig}
+        selectedProvider={selectedProvider}
+        setSelectedProvider={setSelectedProvider}
+        reviewsToShow={reviewsToShow}
+        setReviewsToShow={setReviewsToShow}
+        selectedForComparison={selectedForComparison}
+        toggleComparison={toggleComparison}
+      />
+
+      {filteredProviders.length > providersToShow && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setProvidersToShow((prev) => prev + 9)}
+            className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <span className="relative flex items-center gap-2">
+              Показать ещё 9 провайдеров
+              <svg
+                className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </span>
+          </button>
+        </div>
+      )}
+
       <ComparisonControls
         selectedForComparison={selectedForComparison}
         compareProviders={compareProviders}
