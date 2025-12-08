@@ -18,8 +18,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null,
   );
-  const [configOpen, setConfigOpen] = useState<number | null>(null); // Только для конфигураторов провайдеров
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(false); // Отдельное состояние для фильтров
+  const [configOpen, setConfigOpen] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
@@ -438,8 +437,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             allOS={allOS}
             allCPUs={allCPUs}
             filteredCount={filteredProviders.length}
-            isOpen={filtersOpen} // Передаем новое состояние
-            onToggle={() => setFiltersOpen(!filtersOpen)} // Функция для переключения
           />
         </div>
 
