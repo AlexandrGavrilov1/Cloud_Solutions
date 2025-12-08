@@ -445,7 +445,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           allOS={allOS}
           allCPUs={allCPUs}
           searchQuery={searchQuery}
-          //setSearchQuery={setSearchQuery}
+          ///setSearchQuery={setSearchQuery}
           filteredCount={filteredProviders.length}
         />
       </div>
