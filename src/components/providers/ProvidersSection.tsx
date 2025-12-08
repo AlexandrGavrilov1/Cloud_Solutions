@@ -375,39 +375,16 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section
-      id="providers"
-      className="container mx-auto px-4 sm:px-6 py-6 sm:py-8"
-    >
-      {/* АДАПТИВНАЯ СЕТКА ДЛЯ ВСЕХ УСТРОЙСТВ */}
-      <div
-        className="
-        grid 
-        grid-cols-1           /* Мобилка (<640px): 1 колонка */
-        sm:grid-cols-12       /* Планшет (≥640px): 12 колонок */
-        lg:grid-cols-24       /* Десктоп (≥1024px): 24 колонки */
-        gap-4 sm:gap-6 mb-6
-      "
-      >
-        {/* КОНФИГУРАТОР */}
-        <div
-          className="
-          sm:col-span-12       /* Планшет: полная ширина (для лучшей читаемости) */
-          md:col-span-4        /* Большой планшет (≥768px): 4 из 12 */
-          lg:col-span-6        /* Десктоп: 6 из 24 */
-        "
-        >
+    <section id="providers" className="container mx-auto px-4 py-8">
+      {/* Верхняя строка - 12 колонок */}
+      <div className="grid grid-cols-12 gap-4 mb-6">
+        {/* Конфигуратор - 4 колонки (ширина 1 карточки ≈ 33.3%) */}
+        <div className="col-span-4">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* ФИЛЬТР */}
-        <div
-          className="
-          sm:col-span-12       /* Планшет: полная ширина */
-          md:col-span-8        /* Большой планшет: 8 из 12 */
-          lg:col-span-15       /* Десктоп: 15 из 24 */
-        "
-        >
+        {/* Фильтр - 6 колонок (занимает всё свободное пространство) */}
+        <div className="col-span-6">
           <FilterPanel
             filterFZ152={filterFZ152}
             setFilterFZ152={setFilterFZ152}
@@ -438,30 +415,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
         </div>
 
-        {/* ПОИСК */}
-        <div
-          className="
-          sm:col-span-12       /* Планшет: полная ширина */
-          md:col-span-12       /* Большой планшет: полная ширина */
-          lg:col-span-3        /* Десктоп: 3 из 24 */
-          flex items-start     /* Для выравнивания по высоте */
-        "
-        >
+        {/* Поиск - 2 колонки (0.5 карточки ≈ 16.7%, выравнен по правому краю) */}
+        <div className="col-span-2 flex justify-end">
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Поиск провайдера..."
+            placeholder="Поиск..."
             className="w-full"
           />
         </div>
       </div>
 
-      {/* БЛОК РЕЗУЛЬТАТОВ ПОИСКА */}
+      {/* Блок с результатами поиска */}
       {searchQuery && (
-        <div className="mb-4 sm:mb-6 px-2">
-          <div className="text-sm sm:text-base text-muted-foreground">
-            Результаты поиска по запросу:
-            <span className="font-semibold text-foreground ml-1">
+        <div className="mb-6 px-2">
+          <div className="text-sm text-muted-foreground">
+            Поиск:{" "}
+            <span className="font-semibold text-foreground">
               "{searchQuery}"
             </span>
             {filteredProviders.length > 0 && (
@@ -475,8 +445,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       )}
 
       {searchQuery && filteredProviders.length === 0 ? (
-        <div className="text-center py-8 sm:py-12">
-          <div className="text-muted-foreground text-base sm:text-lg mb-2">
+        <div className="text-center py-12">
+          <div className="text-muted-foreground text-lg mb-2">
             По запросу "{searchQuery}" ничего не найдено
           </div>
           <div className="text-sm text-muted-foreground">
@@ -500,30 +470,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             toggleComparison={toggleComparison}
           />
 
-          {/* КНОПКА "ПОКАЗАТЬ ЕЩЁ" С АДАПТИВНОСТЬЮ */}
           {filteredProviders.length > providersToShow && (
-            <div className="flex justify-center mt-6 sm:mt-8">
+            <div className="flex justify-center mt-8">
               <button
                 onClick={() => setProvidersToShow((prev) => prev + 9)}
-                className="
-                  group relative 
-                  px-4 sm:px-6 md:px-8 
-                  py-3 sm:py-4 
-                  bg-gradient-to-r from-primary to-primary/80 
-                  text-background font-bold 
-                  text-sm sm:text-base md:text-lg 
-                  rounded-xl sm:rounded-2xl 
-                  shadow-lg sm:shadow-xl shadow-primary/30 
-                  hover:shadow-2xl hover:shadow-primary/40 
-                  transition-all hover:scale-[1.02] active:scale-[0.98]
-                  w-full sm:w-auto
-                "
+                className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <span className="relative flex items-center justify-center gap-2">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="relative flex items-center gap-2">
                   Показать ещё 9 провайдеров
                   <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-1 transition-transform"
+                    className="w-5 h-5 group-hover:translate-y-1 transition-transform"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
