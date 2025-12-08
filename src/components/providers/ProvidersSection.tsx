@@ -451,7 +451,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
           {/* Фильтры для десктопа - в свернутом состоянии показываем только кнопку */}
           <div className="hidden lg:block">
-            {!isFiltersExpanded ? (
+            {!isFiltersExpanded && (
               <button
                 onClick={() => setIsFiltersExpanded(true)}
                 className="w-full bg-card border border-border rounded-md p-4 flex items-center justify-between hover:bg-accent transition-colors"
@@ -468,13 +468,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   className="text-muted-foreground"
                 />
               </button>
-            ) : (
-              /* В развернутом состоянии фильтры занимают отдельную строку ниже */
-              <div className="h-10 flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">
-                  Фильтры раскрыты
-                </span>
-              </div>
             )}
           </div>
         </div>
