@@ -498,55 +498,36 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
           {/* Развернутые фильтры занимают колонки 3-5 */}
           <div className="lg:col-span-3">
-            <div className="bg-card border border-border rounded-md p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Filter" size={16} className="text-primary" />
-                  </div>
-                  <span className="font-bold text-lg text-foreground">
-                    Фильтры
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsFiltersExpanded(false)}
-                  className="p-1 hover:bg-accent rounded-md transition-colors"
-                >
-                  <Icon name="X" size={20} className="text-muted-foreground" />
-                </button>
-              </div>
-
-              {/* Полный компонент FilterPanel отображается сразу */}
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-                filteredCount={filteredProviders.length}
-              />
-            </div>
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
+              forceExpanded={true}
+            />
           </div>
 
           {/* Пустая колонка 6 */}
