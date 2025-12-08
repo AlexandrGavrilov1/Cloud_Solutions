@@ -19,29 +19,29 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
         </span>
       </div>
 
-      <div className="relative bg-muted rounded-lg p-1 flex">
+      <div className="relative bg-muted rounded-lg p-0.5 flex">
         {/* Тумблер */}
         <div
-          className={`absolute top-1 bottom-1 w-1/2 bg-background shadow-sm rounded-md transition-transform duration-200 ease-in-out ${
+          className={`absolute top-0.5 bottom-0.5 w-1/2 bg-background shadow-sm rounded-md transition-transform duration-200 ease-in-out ${
             sortBy === "rating" ? "translate-x-0" : "translate-x-full"
           }`}
         />
 
         <button
           onClick={() => setSortBy("rating")}
-          className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
+          className={`relative z-10 flex-1 py-2 rounded-md transition-all flex items-center justify-center ${
             sortBy === "rating"
               ? "text-[#FF8F33]"
               : "text-white hover:text-gray-200"
           }`}
           title="По рейтингу"
         >
-          <Icon name="Star" className="w-5 h-5" />
+          <Icon name="Star" className="w-4 h-4" />
         </button>
 
         <button
           onClick={() => setSortBy("price")}
-          className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
+          className={`relative z-10 flex-1 py-2 rounded-md transition-all flex items-center justify-center ${
             sortBy === "price"
               ? "text-[#FF8F33]"
               : "text-white hover:text-gray-200"
@@ -49,7 +49,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
           title="По цене"
         >
           <span
-            className={`text-lg font-bold ${sortBy === "price" ? "text-[#FF8F33]" : "text-white"}`}
+            className={`text-base font-bold ${sortBy === "price" ? "text-[#FF8F33]" : "text-white"}`}
           >
             ₽
           </span>
