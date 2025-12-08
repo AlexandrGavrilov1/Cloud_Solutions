@@ -438,12 +438,11 @@ export const FilterPanel = ({
               />
 
               <div className="flex justify-between text-xs text-muted-foreground px-1">
-                <span>0</span>
-                <span>3</span>
-                <span>6</span>
-                <span>9</span>
-                <span>12</span>
-                <span>15+</span>
+                {Array.from({ length: 16 }, (_, i) => (
+                  <span key={i} className={`${i === 15 ? "ml-auto" : ""}`}>
+                    {i}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
