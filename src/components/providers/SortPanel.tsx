@@ -11,7 +11,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
     <div className="flex flex-col gap-3">
       {/* Заголовок "Сортировка" по центру над кнопками */}
       <div className="flex items-center justify-center gap-2">
-        <div className="w-7 h-7 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-lg">
+        <div className="w-7 h-7 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-md">
           <Icon name="ArrowUpDown" className="w-4 h-4 text-[#FF8F33]" />
         </div>
         <span className="text-sm font-medium text-white whitespace-nowrap">
