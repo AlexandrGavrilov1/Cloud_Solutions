@@ -20,9 +20,9 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
       </div>
 
       <div className="relative bg-muted rounded-lg p-0.5 flex">
-        {/* Тумблер */}
+        {/* Тумблер - уменьшил ширину на 1/6 */}
         <div
-          className={`absolute top-0.5 bottom-0.5 w-1/2 bg-background shadow-sm rounded-md transition-transform duration-200 ease-in-out ${
+          className={`absolute top-0.5 bottom-0.5 w-5/12 bg-background shadow-sm rounded-md transition-transform duration-200 ease-in-out ${
             sortBy === "rating" ? "translate-x-0" : "translate-x-full"
           }`}
         />
