@@ -7,8 +7,8 @@ interface SortPanelProps {
 export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        {/* Иконка сортировки с фоном в квадрате со скругленными краями */}
+      {/* Заголовок "Сортировка" по центру над кнопками */}
+      <div className="flex items-center justify-center gap-2">
         <div className="w-6 h-6 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-lg">
           <svg
             className="w-3 h-3 text-[#FF8F33]"
