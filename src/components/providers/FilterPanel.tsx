@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface FilterPanelProps {
   filterFZ152: boolean;
@@ -31,8 +31,6 @@ interface FilterPanelProps {
   allOS: string[];
   allCPUs: string[];
   filteredCount: number;
-  isOpen: boolean; // Новый пропс для управления открытием из родителя
-  setIsOpen: (open: boolean) => void; // Новый пропс для управления открытием из родителя
 }
 
 export const FilterPanel = ({
@@ -63,18 +61,9 @@ export const FilterPanel = ({
   allOS,
   allCPUs,
   filteredCount,
-  isOpen, // Получаем состояние открытия из родителя
-  setIsOpen, // Получаем функцию изменения состояния из родителя
 }: FilterPanelProps) => {
   const { t } = useLanguage();
-  const [localIsExpanded, setLocalIsExpanded] = useState(false);
-
-  // Синхронизируем локальное состояние с пропсом из родителя
-  useEffect(() => {
-    if (isOpen !== localIsExpanded) {
-      setLocalIsExpanded(isOpen);
-    }
-  }, [isOpen]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const hasActiveFilters =
     filterFZ152 ||
@@ -113,18 +102,12 @@ export const FilterPanel = ({
   // Популярные значения для кнопок
   const popularValues = [0, 1, 3, 5, 10, 15];
 
-  const handleToggle = () => {
-    const newState = !localIsExpanded;
-    setLocalIsExpanded(newState);
-    setIsOpen(newState); // Уведомляем родительский компонент
-  };
-
   return (
     <div
-      className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${localIsExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
+      className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
     >
       <button
-        onClick={handleToggle}
+        onClick={() => setIsExpanded(!isExpanded)}
         className="w-full px-6 py-4 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl"
       >
         <div className="flex items-center gap-3">
@@ -141,7 +124,7 @@ export const FilterPanel = ({
         </div>
         <div className="flex items-center gap-2">
           <Icon
-            name={localIsExpanded ? "ChevronUp" : "ChevronDown"}
+            name={isExpanded ? "ChevronUp" : "ChevronDown"}
             size={24}
             className="text-muted-foreground transition-transform"
           />
@@ -162,7 +145,7 @@ export const FilterPanel = ({
         </div>
       )}
 
-      {localIsExpanded && (
+      {isExpanded && (
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
           {/* Чекбоксы для булевых фильтров */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
