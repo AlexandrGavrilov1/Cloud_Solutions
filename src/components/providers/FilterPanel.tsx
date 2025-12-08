@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
-import Icon from '@/components/ui/icon';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 
 interface FilterPanelProps {
   filterFZ152: boolean;
@@ -24,16 +24,12 @@ interface FilterPanelProps {
   setFilterOS: (value: string | null) => void;
   filterCPU: string | null;
   setFilterCPU: (value: string | null) => void;
-  sortBy: 'rating' | 'price';
-  setSortBy: (value: 'rating' | 'price') => void;
   allLocations: string[];
   allVirtualizations: string[];
   allDiskTypes: string[];
   allPaymentMethods: string[];
   allOS: string[];
   allCPUs: string[];
-  searchQuery: string;
-  setSearchQuery: (value: string) => void;
   filteredCount: number;
 }
 
@@ -58,24 +54,28 @@ export const FilterPanel = ({
   setFilterOS,
   filterCPU,
   setFilterCPU,
-  sortBy,
-  setSortBy,
   allLocations,
   allVirtualizations,
   allDiskTypes,
   allPaymentMethods,
   allOS,
   allCPUs,
-  searchQuery,
-  setSearchQuery,
-  filteredCount
+  filteredCount,
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  const hasActiveFilters = filterFZ152 || filterFSTEK || filterTrialPeriod || filterLocation || 
-                          filterVirtualization || filterMinDatacenters !== null || 
-                          filterDiskType || filterPaymentMethod || filterOS || filterCPU || searchQuery;
+
+  const hasActiveFilters =
+    filterFZ152 ||
+    filterFSTEK ||
+    filterTrialPeriod ||
+    filterLocation ||
+    filterVirtualization ||
+    filterMinDatacenters !== null ||
+    filterDiskType ||
+    filterPaymentMethod ||
+    filterOS ||
+    filterCPU;
 
   const clearFilters = () => {
     setFilterFZ152(false);
@@ -88,31 +88,49 @@ export const FilterPanel = ({
     setFilterPaymentMethod(null);
     setFilterOS(null);
     setFilterCPU(null);
-    setSortBy('rating');
-    setSearchQuery('');
   };
 
+  const [datacentersValue, setDatacentersValue] = useState(
+    filterMinDatacenters || 0,
+  );
+
+  const handleDatacentersChange = (value: number) => {
+    setDatacentersValue(value);
+    setFilterMinDatacenters(value > 0 ? value : null);
+  };
+
+  // Популярные значения для кнопок
+  const popularValues = [0, 1, 3, 5, 10, 15];
+
   return (
-    <div className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? 'max-w-full' : 'max-w-[190px] sm:max-w-[230px]'}`}>
+    <div
+      className={`bg-card border border-primary/20 rounded-2xl shadow-lg mb-3 sm:mb-4 relative overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-w-full" : "max-w-[190px] sm:max-w-[230px]"}`}
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full px-6 py-4 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl"
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="Filter" size={16} className="text-primary sm:w-5 sm:h-5" />
+            <Icon
+              name="Filter"
+              size={16}
+              className="text-primary sm:w-5 sm:h-5"
+            />
           </div>
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">Фильтры</h3>
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+            Фильтры
+          </h3>
         </div>
         <div className="flex items-center gap-2">
-          <Icon 
-            name={isExpanded ? "ChevronUp" : "ChevronDown"} 
-            size={24} 
+          <Icon
+            name={isExpanded ? "ChevronUp" : "ChevronDown"}
+            size={24}
             className="text-muted-foreground transition-transform"
           />
         </div>
       </button>
-      
+
       {hasActiveFilters && (
         <div className="flex items-center justify-end px-6 pb-2">
           <Button
@@ -122,319 +140,333 @@ export const FilterPanel = ({
             className="text-[10px] sm:text-xs font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow-lg hover:shadow-xl h-8 sm:h-9 px-2 sm:px-3"
           >
             <Icon name="X" size={12} className="sm:mr-1" />
-            <span className="hidden sm:inline">{t('filters.resetAll')}</span>
+            <span className="hidden sm:inline">{t("filters.resetAll")}</span>
           </Button>
         </div>
       )}
 
       {isExpanded && (
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
-          <div className="group">
-            <label className="text-xs sm:text-sm font-bold text-foreground mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-              <Icon name="ShieldCheck" size={14} className="text-primary sm:w-4 sm:h-4" />
-              {t('filters.fz152Compliance')}
-            </label>
-          <Button
-            variant={filterFZ152 ? "default" : "outline"}
-            className={`w-full justify-start h-10 sm:h-11 md:h-12 rounded-xl font-semibold transition-all text-xs sm:text-sm ${
-              filterFZ152 
-                ? 'shadow-lg shadow-primary/30 scale-[1.02]' 
-                : 'hover:scale-[1.02] hover:shadow-md hover:border-primary/50'
-            }`}
-            onClick={() => setFilterFZ152(!filterFZ152)}
-          >
-            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mr-1.5 sm:mr-2 flex-shrink-0 ${
-              filterFZ152 ? 'bg-background/20' : 'bg-primary/10'
-            }`}>
-              <Icon name="ShieldCheck" size={16} className={filterFZ152 ? 'text-background' : 'text-primary'} />
-            </div>
-            <span className="truncate">{filterFZ152 ? t('filters.onlyWithFz152') : t('filters.allProviders')}</span>
-          </Button>
-        </div>
-
-        <div className="group">
-          <label className="text-xs sm:text-sm font-bold text-foreground mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-            <Icon name="ShieldAlert" size={14} className="text-primary sm:w-4 sm:h-4" />
-            ФСТЕК
-          </label>
-          <Button
-            variant={filterFSTEK ? "default" : "outline"}
-            className={`w-full justify-start h-10 sm:h-11 md:h-12 rounded-xl font-semibold transition-all text-xs sm:text-sm ${
-              filterFSTEK 
-                ? 'shadow-lg shadow-primary/30 scale-[1.02]' 
-                : 'hover:scale-[1.02] hover:shadow-md hover:border-primary/50'
-            }`}
-            onClick={() => setFilterFSTEK(!filterFSTEK)}
-          >
-            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mr-1.5 sm:mr-2 flex-shrink-0 ${
-              filterFSTEK ? 'bg-background/20' : 'bg-primary/10'
-            }`}>
-              <Icon name="ShieldAlert" size={16} className={filterFSTEK ? 'text-background' : 'text-primary'} />
-            </div>
-            <span className="truncate">{filterFSTEK ? 'С ФСТЕК' : 'Все провайдеры'}</span>
-          </Button>
-        </div>
-
-        <div className="group">
-          <label className="text-xs sm:text-sm font-bold text-foreground mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-            <Icon name="Gift" size={14} className="text-primary sm:w-4 sm:h-4" />
-            {t('filters.trialPeriod')}
-          </label>
-          <Button
-            variant={filterTrialPeriod ? "default" : "outline"}
-            className={`w-full justify-start h-10 sm:h-11 md:h-12 rounded-xl font-semibold transition-all text-xs sm:text-sm ${
-              filterTrialPeriod 
-                ? 'shadow-lg shadow-primary/30 scale-[1.02]' 
-                : 'hover:scale-[1.02] hover:shadow-md hover:border-primary/50'
-            }`}
-            onClick={() => setFilterTrialPeriod(!filterTrialPeriod)}
-          >
-            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mr-1.5 sm:mr-2 flex-shrink-0 ${
-              filterTrialPeriod ? 'bg-background/20' : 'bg-primary/10'
-            }`}>
-              <Icon name="Gift" size={16} className={filterTrialPeriod ? 'text-background' : 'text-primary'} />
-            </div>
-            <span className="truncate">{filterTrialPeriod ? t('filters.withTrialPeriod') : t('filters.allProviders')}</span>
-          </Button>
-        </div>
-
-        <div className="group">
-          <label className="text-xs sm:text-sm font-bold text-foreground mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-            <Icon name="MapPin" size={14} className="text-primary sm:w-4 sm:h-4" />
-            {t('filters.datacenterLocation')}
-          </label>
-          <div className="relative">
-            <div className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Globe" size={16} className="text-primary sm:w-[18px] sm:h-[18px]" />
-            </div>
-            <select
-              className="w-full h-10 sm:h-11 md:h-12 pl-9 sm:pl-11 pr-3 sm:pr-4 rounded-xl border-2 border-input bg-background text-foreground text-xs sm:text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterLocation || ''}
-              onChange={(e) => setFilterLocation(e.target.value || null)}
-            >
-              <option value="">{t('filters.anyLocation')}</option>
-              {allLocations.map(loc => (
-                <option key={loc} value={loc}>{loc}</option>
-              ))}
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-
-        <div className="group">
-          <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-            <Icon name="Boxes" size={16} className="text-primary" />
-            {t('common.virtualization')}
-          </label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Box" size={18} className="text-primary" />
-            </div>
-            <select
-              className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-input bg-background text-foreground text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterVirtualization || ''}
-              onChange={(e) => setFilterVirtualization(e.target.value || null)}
-            >
-              <option value="">{t('filters.anyDisk')}</option>
-              {allVirtualizations.map(virt => (
-                <option key={virt} value={virt}>{virt}</option>
-              ))}
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-
-        <div className="group">
-          <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-            <Icon name="HardDrive" size={16} className="text-primary" />
-            {t('filters.diskType')}
-          </label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Database" size={18} className="text-primary" />
-            </div>
-            <select
-              className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-input bg-background text-foreground text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterDiskType || ''}
-              onChange={(e) => setFilterDiskType(e.target.value || null)}
-            >
-              <option value="">{t('filters.anyDisk')}</option>
-              {allDiskTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-
-        <div className="group">
-          <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-            <Icon name="CreditCard" size={16} className="text-primary" />
-            {t('filters.paymentMethod')}
-          </label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Wallet" size={18} className="text-primary" />
-            </div>
-            <select
-              className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-input bg-background text-foreground text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterPaymentMethod || ''}
-              onChange={(e) => setFilterPaymentMethod(e.target.value || null)}
-            >
-              <option value="">{t('filters.anyMethod')}</option>
-              {allPaymentMethods.map(method => (
-                <option key={method} value={method}>{method}</option>
-              ))}
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-
-        <div className="group">
-          <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-            <Icon name="Monitor" size={16} className="text-primary" />
-            {t('filters.operatingSystem')}
-          </label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Terminal" size={18} className="text-primary" />
-            </div>
-            <select
-              className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-input bg-background text-foreground text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterOS || ''}
-              onChange={(e) => setFilterOS(e.target.value || null)}
-            >
-              <option value="">{t('filters.anyOS')}</option>
-              {allOS.map(os => (
-                <option key={os} value={os}>{os}</option>
-              ))}
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-
-        <div className="group">
-          <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-            <Icon name="Cpu" size={16} className="text-primary" />
-            Процессор
-          </label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Cpu" size={18} className="text-primary" />
-            </div>
-            <select
-              className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-input bg-background text-foreground text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterCPU || ''}
-              onChange={(e) => setFilterCPU(e.target.value || null)}
-            >
-              <option value="">Любой процессор</option>
-              {allCPUs.map(cpu => (
-                <option key={cpu} value={cpu}>{cpu}</option>
-              ))}
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-
-        <div className="group">
-          <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-            <Icon name="Server" size={16} className="text-primary" />
-            {t('filters.minDatacenters')}
-          </label>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon name="Building2" size={18} className="text-primary" />
-            </div>
-            <select
-              className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-input bg-background text-foreground text-sm font-semibold appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-              value={filterMinDatacenters || ''}
-              onChange={(e) => setFilterMinDatacenters(e.target.value ? parseInt(e.target.value) : null)}
-            >
-              <option value="">{t('filters.anyAmount')}</option>
-              <option value="3">3+ ЦОДа</option>
-              <option value="5">5+ ЦОДов</option>
-              <option value="10">10+ ЦОДов</option>
-            </select>
-            <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
-          </div>
-        </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
-          <div className="group">
-            <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-              <Icon name="ArrowUpDown" size={16} className="text-primary" />
-              {t('filters.sortBy')}
-            </label>
-            <div className="flex gap-3">
-              <Button
-                variant={sortBy === 'rating' ? "default" : "outline"}
-                className={`flex-1 justify-center h-12 rounded-xl font-bold transition-all ${
-                  sortBy === 'rating' 
-                    ? 'shadow-lg shadow-primary/30 scale-[1.02]' 
-                    : 'hover:scale-[1.02] hover:shadow-md hover:border-primary/50'
-                }`}
-                onClick={() => setSortBy('rating')}
-              >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center mr-2 ${
-                  sortBy === 'rating' ? 'bg-background/20' : 'bg-primary/10'
-                }`}>
-                  <Icon name="Star" size={18} className={sortBy === 'rating' ? 'text-background' : 'text-primary'} />
+          {/* Чекбоксы для булевых фильтров */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="fz152"
+                  checked={filterFZ152}
+                  onChange={(e) => setFilterFZ152(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  {filterFZ152 && (
+                    <Icon name="Check" size={12} className="text-background" />
+                  )}
                 </div>
-                {t('filters.byRating')}
-              </Button>
-              <Button
-                variant={sortBy === 'price' ? "default" : "outline"}
-                className={`flex-1 justify-center h-12 rounded-xl font-bold transition-all ${
-                  sortBy === 'price' 
-                    ? 'shadow-lg shadow-primary/30 scale-[1.02]' 
-                    : 'hover:scale-[1.02] hover:shadow-md hover:border-primary/50'
-                }`}
-                onClick={() => setSortBy('price')}
+              </div>
+              <label
+                htmlFor="fz152"
+                className="flex items-center gap-2 cursor-pointer"
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center mr-2 ${
-                  sortBy === 'price' ? 'bg-background/20' : 'bg-primary/10'
-                }`}>
-                  ₽
+                <Icon name="ShieldCheck" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">152-ФЗ</span>
+              </label>
+            </div>
+
+            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="fstek"
+                  checked={filterFSTEK}
+                  onChange={(e) => setFilterFSTEK(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  {filterFSTEK && (
+                    <Icon name="Check" size={12} className="text-background" />
+                  )}
                 </div>
-                {t('filters.byPrice')}
-              </Button>
+              </div>
+              <label
+                htmlFor="fstek"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Icon name="ShieldAlert" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">ФСТЕК</span>
+              </label>
+            </div>
+
+            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="trial"
+                  checked={filterTrialPeriod}
+                  onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  {filterTrialPeriod && (
+                    <Icon name="Check" size={12} className="text-background" />
+                  )}
+                </div>
+              </div>
+              <label
+                htmlFor="trial"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Icon name="Gift" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">
+                  {t("filters.trialPeriod")}
+                </span>
+              </label>
             </div>
           </div>
 
-          <div className="group">
-            <label className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-              <Icon name="Search" size={16} className="text-primary" />
-              {t('filters.searchByName')}
-            </label>
-            <div className="relative">
-              <Icon name="Search" size={18} className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('filters.findProvider')}
-                className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 h-12 bg-background border-2 border-border rounded-xl focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm sm:text-base text-foreground placeholder:text-muted-foreground font-semibold hover:border-primary/50 hover:shadow-md"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-accent rounded-lg transition-colors"
+          {/* Выпадающие списки */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Локация */}
+            <div className="group">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Icon name="MapPin" size={16} className="text-primary" />
+                {t("filters.datacenterLocation")}
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Globe" size={18} className="text-primary" />
+                </div>
+                <select
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  value={filterLocation || ""}
+                  onChange={(e) => setFilterLocation(e.target.value || null)}
                 >
-                  <Icon name="X" size={18} className="text-muted-foreground" />
-                </button>
-              )}
+                  <option value="">{t("filters.anyLocation")}</option>
+                  {allLocations.map((loc) => (
+                    <option key={loc} value={loc}>
+                      {loc}
+                    </option>
+                  ))}
+                </select>
+                <Icon
+                  name="ChevronDown"
+                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+                />
+              </div>
+            </div>
+
+            {/* Виртуализация */}
+            <div className="group">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Icon name="Boxes" size={16} className="text-primary" />
+                {t("common.virtualization")}
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Box" size={18} className="text-primary" />
+                </div>
+                <select
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  value={filterVirtualization || ""}
+                  onChange={(e) =>
+                    setFilterVirtualization(e.target.value || null)
+                  }
+                >
+                  <option value="">{t("filters.anyDisk")}</option>
+                  {allVirtualizations.map((virt) => (
+                    <option key={virt} value={virt}>
+                      {virt}
+                    </option>
+                  ))}
+                </select>
+                <Icon
+                  name="ChevronDown"
+                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+                />
+              </div>
+            </div>
+
+            {/* Тип диска */}
+            <div className="group">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Icon name="HardDrive" size={16} className="text-primary" />
+                {t("filters.diskType")}
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Database" size={18} className="text-primary" />
+                </div>
+                <select
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  value={filterDiskType || ""}
+                  onChange={(e) => setFilterDiskType(e.target.value || null)}
+                >
+                  <option value="">{t("filters.anyDisk")}</option>
+                  {allDiskTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                <Icon
+                  name="ChevronDown"
+                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+                />
+              </div>
+            </div>
+
+            {/* Метод оплаты */}
+            <div className="group">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Icon name="CreditCard" size={16} className="text-primary" />
+                {t("filters.paymentMethod")}
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Wallet" size={18} className="text-primary" />
+                </div>
+                <select
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  value={filterPaymentMethod || ""}
+                  onChange={(e) =>
+                    setFilterPaymentMethod(e.target.value || null)
+                  }
+                >
+                  <option value="">{t("filters.anyMethod")}</option>
+                  {allPaymentMethods.map((method) => (
+                    <option key={method} value={method}>
+                      {method}
+                    </option>
+                  ))}
+                </select>
+                <Icon
+                  name="ChevronDown"
+                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+                />
+              </div>
+            </div>
+
+            {/* Операционная система */}
+            <div className="group">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Icon name="Monitor" size={16} className="text-primary" />
+                {t("filters.operatingSystem")}
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Terminal" size={18} className="text-primary" />
+                </div>
+                <select
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  value={filterOS || ""}
+                  onChange={(e) => setFilterOS(e.target.value || null)}
+                >
+                  <option value="">{t("filters.anyOS")}</option>
+                  {allOS.map((os) => (
+                    <option key={os} value={os}>
+                      {os}
+                    </option>
+                  ))}
+                </select>
+                <Icon
+                  name="ChevronDown"
+                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+                />
+              </div>
+            </div>
+
+            {/* Процессор */}
+            <div className="group">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Icon name="Cpu" size={16} className="text-primary" />
+                Процессор
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Cpu" size={18} className="text-primary" />
+                </div>
+                <select
+                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  value={filterCPU || ""}
+                  onChange={(e) => setFilterCPU(e.target.value || null)}
+                >
+                  <option value="">Любой процессор</option>
+                  {allCPUs.map((cpu) => (
+                    <option key={cpu} value={cpu}>
+                      {cpu}
+                    </option>
+                  ))}
+                </select>
+                <Icon
+                  name="ChevronDown"
+                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Ползунок для минимального количества дата-центров */}
+          <div className="space-y-4 p-4 bg-background/50 rounded-lg border border-border">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Icon name="Server" size={18} className="text-primary" />
+                <h4 className="font-bold text-foreground">
+                  {t("filters.minDatacenters")}
+                </h4>
+              </div>
+              <span className="font-bold text-primary text-lg">
+                {datacentersValue > 0
+                  ? `${datacentersValue}`
+                  : t("filters.anyAmount")}
+              </span>
+            </div>
+
+            {/* Кнопки с популярными значениями */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {popularValues.map((value) => (
+                <Button
+                  key={value}
+                  type="button"
+                  variant={datacentersValue === value ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleDatacentersChange(value)}
+                  className="text-xs h-7 px-3 min-w-[50px] flex items-center justify-center"
+                >
+                  {value === 0 ? t("filters.anyAmount") : value}
+                </Button>
+              ))}
+            </div>
+
+            <div className="space-y-2">
+              <input
+                type="range"
+                min="0"
+                max="15"
+                step="1"
+                value={datacentersValue}
+                onChange={(e) =>
+                  handleDatacentersChange(parseInt(e.target.value))
+                }
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:shadow-lg"
+              />
+
+              <div className="flex justify-between text-xs text-muted-foreground px-1">
+                <span>0</span>
+                <span>3</span>
+                <span>6</span>
+                <span>9</span>
+                <span>12</span>
+                <span>15</span>
+              </div>
             </div>
           </div>
         </div>
-
-        {searchQuery && (
-          <div className="text-sm text-muted-foreground relative z-10">
-            {t('filters.found')}: <span className="font-bold text-foreground">{filteredCount}</span> {t('filters.providers')}
-          </div>
-        )}
-      </div>
       )}
     </div>
   );
