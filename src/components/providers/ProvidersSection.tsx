@@ -401,7 +401,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка - 12 колонок */}
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-12 gap-4 mb-4">
         {/* Конфигуратор - 4 колонки (ширина 1 карточки ≈ 33.3%) */}
         <div className="col-span-4">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
@@ -440,7 +440,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
 
         {/* Правая колонка: Поиск и под ним Сортировка - 2 колонки */}
-        <div className="col-span-2 space-y-0">
+        <div className="col-span-2">
           {/* Поиск (0.5 карточки ≈ 16.7%) */}
           <SearchInput
             value={searchQuery}
@@ -449,16 +449,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
-          {/* Сортировка - сразу под поиском без отступа */}
-          <div className="mt-0">
+          {/* Сортировка - под поиском с небольшим отступом */}
+          <div className="mt-2">
             <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
         </div>
       </div>
 
+      {/* Отступ между сортировкой и карточками */}
+      <div className="mb-4"></div>
+
       {/* Блок с результатами поиска */}
       {searchQuery && (
-        <div className="mb-6 mt-4 px-2">
+        <div className="mb-4 px-2">
           <div className="text-sm text-muted-foreground">
             Поиск:{" "}
             <span className="font-semibold text-foreground">
