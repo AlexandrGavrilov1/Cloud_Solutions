@@ -440,10 +440,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
         </div>
 
-        <div className="flex items-center gap-4">
-          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-
-          <div className="relative w-[220px]">
+        <div className="flex flex-col gap-4 w-full lg:w-auto">
+          {/* Поиск провайдеров */}
+          <div className="relative w-full lg:w-[220px]">
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <svg
                 className="w-5 h-5"
@@ -467,6 +466,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
             />
           </div>
+
+          {/* Сортировка - теперь под поиском */}
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
 
