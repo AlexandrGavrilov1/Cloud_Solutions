@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Provider, ResourceConfig, Review } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanel } from "./FilterPanel";
@@ -6,9 +6,7 @@ import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SortPanel } from "./SortPanel";
-import { SearchInput } from "./SearchInput";
 import { lastUpdateDate } from "@/data/providers";
-import Icon from "@/components/ui/icon";
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -91,6 +89,275 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
 
+  // Memoized setter functions для FilterPanel
+  const setFilterFZ152Memo = useCallback((value: boolean) => {
+    setFilterFZ152(value);
+  }, []);
+
+  const setFilterFSTEKMemo = useCallback((value: boolean) => {
+    setFilterFSTEK(value);
+  }, []);
+
+  const setFilterTrialPeriodMemo = useCallback((value: boolean) => {
+    setFilterTrialPeriod(value);
+  }, []);
+
+  const setFilterLocationMemo = useCallback((value: string | null) => {
+    setFilterLocation(value);
+  }, []);
+
+  const setFilterVirtualizationMemo = useCallback((value: string | null) => {
+    setFilterVirtualization(value);
+  }, []);
+
+  const setFilterMinDatacentersMemo = useCallback((value: number | null) => {
+    setFilterMinDatacenters(value);
+  }, []);
+
+  const setFilterDiskTypeMemo = useCallback((value: string | null) => {
+    setFilterDiskType(value);
+  }, []);
+
+  const setFilterPaymentMethodMemo = useCallback((value: string | null) => {
+    setFilterPaymentMethod(value);
+  }, []);
+
+  const setFilterOSMemo = useCallback((value: string | null) => {
+    setFilterOS(value);
+  }, []);
+
+  const setFilterCPUMemo = useCallback((value: string | null) => {
+    setFilterCPU(value);
+  }, []);
+
+  const setSortByMemo = useCallback((value: "rating" | "price") => {
+    setSortBy(value);
+  }, []);
+
+  const setSearchQueryMemo = useCallback((value: string) => {
+    setSearchQuery(value);
+  }, []);
+
+  const setConfigOpenMemo = useCallback((value: number | null) => {
+    setConfigOpen(value);
+  }, []);
+
+  const setSelectedProviderMemo = useCallback((value: Provider | null) => {
+    setSelectedProvider(value);
+  }, []);
+
+  const setProvidersToShowMemo = useCallback(
+    (value: number | ((prev: number) => number)) => {
+      if (typeof value === "function") {
+        setProvidersToShow(value);
+      } else {
+        setProvidersToShow(value);
+      }
+    },
+    [],
+  );
+
+  const setShowComparisonMemo = useCallback((value: boolean) => {
+    setShowComparison(value);
+  }, []);
+
+  // Memoized остальные функции
+  const calculatePrice = useCallback(
+    (provider: Provider, config?: ResourceConfig) => {
+      if (!config) {
+        config = { cpu: 1, ram: 1, storage: 10 };
+      }
+
+      const calculatedPrice = Math.round(
+        provider.basePrice +
+          config.cpu * provider.cpuPrice +
+          config.ram * provider.ramPrice +
+          config.storage * provider.storagePrice,
+      );
+
+      // Если конфигурация минимальная и есть minPrice, используем его
+      if (
+        config.cpu === 1 &&
+        config.ram === 1 &&
+        config.storage === 10 &&
+        provider.pricingDetails.minPrice
+      ) {
+        return Math.min(calculatedPrice, provider.pricingDetails.minPrice);
+      }
+
+      return calculatedPrice;
+    },
+    [],
+  );
+
+  const toggleComparison = useCallback((providerId: number) => {
+    setSelectedForComparison((prev) =>
+      prev.includes(providerId)
+        ? prev.filter((id) => id !== providerId)
+        : [...prev, providerId],
+    );
+  }, []);
+
+  const compareProviders = useCallback(() => {
+    if (selectedForComparison.length >= 2) {
+      setShowComparison(true);
+    }
+  }, [selectedForComparison]);
+
+  const updateConfig = useCallback(
+    (providerId: number, key: keyof ResourceConfig, value: number) => {
+      setConfigs((prev) => ({
+        ...prev,
+        [providerId]: { ...prev[providerId], [key]: value },
+      }));
+    },
+    [],
+  );
+
+  const applyGlobalConfig = useCallback(
+    (config: ResourceConfig) => {
+      const updatedConfigs: Record<number, ResourceConfig> = {};
+      providersWithReviews.forEach((provider) => {
+        updatedConfigs[provider.id] = { ...config };
+      });
+      setConfigs(updatedConfigs);
+    },
+    [providersWithReviews],
+  );
+
+  // Memoized селекторы данных
+  const allLocations = useMemo(
+    () =>
+      Array.from(
+        new Set(providersWithReviews.flatMap((p) => p.locations)),
+      ).sort(),
+    [providersWithReviews],
+  );
+
+  const allVirtualizations = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          providersWithReviews.flatMap((p) => p.technicalSpecs.virtualization),
+        ),
+      ).sort(),
+    [providersWithReviews],
+  );
+
+  const allDiskTypes = useMemo(
+    () =>
+      Array.from(
+        new Set(providersWithReviews.map((p) => p.technicalSpecs.diskType)),
+      ).sort(),
+    [providersWithReviews],
+  );
+
+  const allPaymentMethods = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          providersWithReviews.flatMap((p) => p.pricingDetails.paymentMethods),
+        ),
+      ).sort(),
+    [providersWithReviews],
+  );
+
+  const allOS = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          providersWithReviews.flatMap((p) => p.technicalSpecs.availableOS),
+        ),
+      ).sort(),
+    [providersWithReviews],
+  );
+
+  const allCPUs = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          providersWithReviews.flatMap((p) => p.technicalSpecs.cpuModels || []),
+        ),
+      ).sort(),
+    [providersWithReviews],
+  );
+
+  // Memoized filtered providers
+  const filteredProviders = useMemo(
+    () =>
+      providersWithReviews
+        .filter((p) => {
+          if (
+            searchQuery &&
+            !p.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+            return false;
+          if (filterFZ152 && !p.fz152Compliant) return false;
+          if (filterFSTEK && !p.fstekCompliant) return false;
+          if (filterTrialPeriod && p.trialDays === 0) return false;
+          if (filterLocation && !p.locations.includes(filterLocation))
+            return false;
+          if (
+            filterVirtualization &&
+            !p.technicalSpecs.virtualization.includes(filterVirtualization)
+          )
+            return false;
+          if (
+            filterMinDatacenters !== null &&
+            p.locations.length < filterMinDatacenters
+          )
+            return false;
+          if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType)
+            return false;
+          if (
+            filterPaymentMethod &&
+            !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)
+          )
+            return false;
+          if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS))
+            return false;
+          if (
+            filterCPU &&
+            (!p.technicalSpecs.cpuModels ||
+              !p.technicalSpecs.cpuModels.includes(filterCPU))
+          )
+            return false;
+          return true;
+        })
+        .sort((a, b) => {
+          if (sortBy === "rating") {
+            const avgRatingA =
+              a.reviews.reduce((sum, r) => sum + r.rating, 0) /
+              a.reviews.length;
+            const avgRatingB =
+              b.reviews.reduce((sum, r) => sum + r.rating, 0) /
+              b.reviews.length;
+            return avgRatingB - avgRatingA;
+          } else {
+            const priceA = calculatePrice(a, configs[a.id]);
+            const priceB = calculatePrice(b, configs[b.id]);
+            return priceA - priceB;
+          }
+        }),
+    [
+      providersWithReviews,
+      searchQuery,
+      filterFZ152,
+      filterFSTEK,
+      filterTrialPeriod,
+      filterLocation,
+      filterVirtualization,
+      filterMinDatacenters,
+      filterDiskType,
+      filterPaymentMethod,
+      filterOS,
+      filterCPU,
+      sortBy,
+      configs,
+      calculatePrice,
+    ],
+  );
+
   useEffect(() => {
     const fetchApprovedReviews = async () => {
       try {
@@ -124,6 +391,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     fetchApprovedReviews();
   }, [providers]);
 
+  // Сохранение фильтров в localStorage
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
@@ -202,194 +470,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-  const calculatePrice = (provider: Provider, config?: ResourceConfig) => {
-    if (!config) {
-      config = { cpu: 1, ram: 1, storage: 10 };
-    }
-
-    const calculatedPrice = Math.round(
-      provider.basePrice +
-        config.cpu * provider.cpuPrice +
-        config.ram * provider.ramPrice +
-        config.storage * provider.storagePrice,
-    );
-
-    // Если конфигурация минимальная и есть minPrice, используем его
-    if (
-      config.cpu === 1 &&
-      config.ram === 1 &&
-      config.storage === 10 &&
-      provider.pricingDetails.minPrice
-    ) {
-      return Math.min(calculatedPrice, provider.pricingDetails.minPrice);
-    }
-
-    return calculatedPrice;
-  };
-
-  const toggleComparison = (providerId: number) => {
-    setSelectedForComparison((prev) =>
-      prev.includes(providerId)
-        ? prev.filter((id) => id !== providerId)
-        : [...prev, providerId],
-    );
-  };
-
-  const compareProviders = () => {
-    if (selectedForComparison.length >= 2) {
-      setShowComparison(true);
-    }
-  };
-
-  const updateConfig = (
-    providerId: number,
-    key: keyof ResourceConfig,
-    value: number,
-  ) => {
-    setConfigs((prev) => ({
-      ...prev,
-      [providerId]: { ...prev[providerId], [key]: value },
-    }));
-  };
-
-  const applyGlobalConfig = (config: ResourceConfig) => {
-    const updatedConfigs: Record<number, ResourceConfig> = {};
-    providersWithReviews.forEach((provider) => {
-      updatedConfigs[provider.id] = { ...config };
-    });
-    setConfigs(updatedConfigs);
-  };
-
-  const allLocations = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.flatMap((p) => p.locations)),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allVirtualizations = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.virtualization),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allDiskTypes = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.map((p) => p.technicalSpecs.diskType)),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allPaymentMethods = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.pricingDetails.paymentMethods),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allOS = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.availableOS),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allCPUs = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.cpuModels || []),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const filteredProviders = useMemo(
-    () =>
-      providersWithReviews
-        .filter((p) => {
-          if (
-            searchQuery &&
-            !p.name.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-            return false;
-          if (filterFZ152 && !p.fz152Compliant) return false;
-          if (filterFSTEK && !p.fstekCompliant) return false;
-          if (filterTrialPeriod && p.trialDays === 0) return false;
-          if (filterLocation && !p.locations.includes(filterLocation))
-            return false;
-          if (
-            filterVirtualization &&
-            !p.technicalSpecs.virtualization.includes(filterVirtualization)
-          )
-            return false;
-          if (
-            filterMinDatacenters !== null &&
-            p.locations.length < filterMinDatacenters
-          )
-            return false;
-          if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType)
-            return false;
-          if (
-            filterPaymentMethod &&
-            !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)
-          )
-            return false;
-          if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS))
-            return false;
-          if (
-            filterCPU &&
-            (!p.technicalSpecs.cpuModels ||
-              !p.technicalSpecs.cpuModels.includes(filterCPU))
-          )
-            return false;
-          return true;
-        })
-        .sort((a, b) => {
-          if (sortBy === "rating") {
-            const avgRatingA =
-              a.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              a.reviews.length;
-            const avgRatingB =
-              b.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              b.reviews.length;
-            return avgRatingB - avgRatingA;
-          } else {
-            const priceA = calculatePrice(a, configs[a.id]);
-            const priceB = calculatePrice(b, configs[b.id]);
-            return priceA - priceB;
-          }
-        }),
-    [
-      providersWithReviews,
-      searchQuery,
-      filterFZ152,
-      filterFSTEK,
-      filterTrialPeriod,
-      filterLocation,
-      filterVirtualization,
-      filterMinDatacenters,
-      filterDiskType,
-      filterPaymentMethod,
-      filterOS,
-      filterCPU,
-      sortBy,
-      configs,
-    ],
-  );
-
   if (showComparison) {
     const selectedProviders = providersWithReviews.filter((p) =>
       selectedForComparison.includes(p.id),
@@ -399,7 +479,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         providers={selectedProviders}
         configs={configs}
         calculatePrice={calculatePrice}
-        onClose={() => setShowComparison(false)}
+        onClose={() => setShowComparisonMemo(false)}
       />
     );
   }
@@ -411,25 +491,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
           <FilterPanel
             filterFZ152={filterFZ152}
-            setFilterFZ152={setFilterFZ152}
+            setFilterFZ152={setFilterFZ152Memo}
             filterFSTEK={filterFSTEK}
-            setFilterFSTEK={setFilterFSTEK}
+            setFilterFSTEK={setFilterFSTEKMemo}
             filterTrialPeriod={filterTrialPeriod}
-            setFilterTrialPeriod={setFilterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriodMemo}
             filterLocation={filterLocation}
-            setFilterLocation={setFilterLocation}
+            setFilterLocation={setFilterLocationMemo}
             filterVirtualization={filterVirtualization}
-            setFilterVirtualization={setFilterVirtualization}
+            setFilterVirtualization={setFilterVirtualizationMemo}
             filterMinDatacenters={filterMinDatacenters}
-            setFilterMinDatacenters={setFilterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacentersMemo}
             filterDiskType={filterDiskType}
-            setFilterDiskType={setFilterDiskType}
+            setFilterDiskType={setFilterDiskTypeMemo}
             filterPaymentMethod={filterPaymentMethod}
-            setFilterPaymentMethod={setFilterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethodMemo}
             filterOS={filterOS}
-            setFilterOS={setFilterOS}
+            setFilterOS={setFilterOSMemo}
             filterCPU={filterCPU}
-            setFilterCPU={setFilterCPU}
+            setFilterCPU={setFilterCPUMemo}
             allLocations={allLocations}
             allVirtualizations={allVirtualizations}
             allDiskTypes={allDiskTypes}
@@ -461,14 +541,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQueryMemo(e.target.value)}
               placeholder="Поиск провайдеров"
               className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
             />
           </div>
 
-          {/* Сортировка - теперь под поиском */}
-          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          {/* Сортировка */}
+          <SortPanel sortBy={sortBy} setSortBy={setSortByMemo} />
         </div>
       </div>
 
@@ -477,10 +557,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         configs={configs}
         calculatePrice={calculatePrice}
         configOpen={configOpen}
-        setConfigOpen={setConfigOpen}
+        setConfigOpen={setConfigOpenMemo}
         updateConfig={updateConfig}
         selectedProvider={selectedProvider}
-        setSelectedProvider={setSelectedProvider}
+        setSelectedProvider={setSelectedProviderMemo}
         reviewsToShow={reviewsToShow}
         setReviewsToShow={setReviewsToShow}
         selectedForComparison={selectedForComparison}
@@ -490,7 +570,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       {filteredProviders.length > providersToShow && (
         <div className="flex justify-center mt-8">
           <button
-            onClick={() => setProvidersToShow((prev) => prev + 9)}
+            onClick={() => setProvidersToShowMemo((prev) => prev + 9)}
             className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
