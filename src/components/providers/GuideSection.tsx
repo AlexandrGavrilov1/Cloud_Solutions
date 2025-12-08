@@ -38,7 +38,7 @@ export const GuideSection = () => {
               },
               {
                 icon: "Cpu",
-                title: "Выбери ресурс",
+                title: "Выбери ресурсы",
                 text: "Подобрать CPU, RAM и диск с запасом для роста проекта",
               },
               {
@@ -57,19 +57,23 @@ export const GuideSection = () => {
                 className="border-2 border-border hover:border-primary/50 transition-all group hover-lift bg-card"
               >
                 <CardHeader className="p-6 md:p-8">
-                  <div className="relative mb-6 inline-block">
-                    <div className="absolute inset-0 bg-primary rounded-2xl blur-lg opacity-40"></div>
-                    <div className="relative w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-neon transition-all">
-                      <Icon
-                        name={step.icon as any}
-                        size={28}
-                        className="text-background"
-                      />
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="relative flex-shrink-0">
+                      <div className="absolute inset-0 bg-primary rounded-2xl blur-lg opacity-40"></div>
+                      <div className="relative w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-neon transition-all">
+                        <Icon
+                          name={step.icon as any}
+                          size={28}
+                          className="text-background"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-1 pt-2">
+                      <CardTitle className="text-2xl font-bold text-foreground">
+                        {step.title}
+                      </CardTitle>
                     </div>
                   </div>
-                  <CardTitle className="text-2xl font-bold text-foreground mb-3">
-                    {step.title}
-                  </CardTitle>
                   <CardDescription className="text-base text-muted-foreground leading-relaxed font-medium">
                     {step.text}
                   </CardDescription>
