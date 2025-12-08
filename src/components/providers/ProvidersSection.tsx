@@ -405,15 +405,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка с GlobalResourceConfig и поиском */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-        {/* Левая часть: GlobalResourceConfig */}
-        <div className="w-full lg:w-auto">
+      {/* Верхняя строка */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
+        <div className="w-full">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Правая часть: Поиск */}
-        <div className="w-full lg:w-1/3 xl:w-1/4 lg:ml-auto">
+        <div className="mb-6">
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
