@@ -407,61 +407,64 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
       {/* Верхняя строка с конфигуратором и элементами управления */}
-      <div className="flex flex-col lg:flex-row gap-6 mb-6">
-        {/* Конфигуратор ресурсов слева - фиксированная ширина 10 см */}
-        <div className="w-[10cm]">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6">
+        {/* Конфигуратор ресурсов - занимает первые 2 колонки */}
+        <div className="lg:col-span-2">
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Поиск, сортировка и фильтры справа - занимают оставшееся пространство */}
-        <div className="flex-1 lg:pl-6">
-          <div className="space-y-4">
-            {/* Поиск */}
-            <SearchInput
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
+        {/* Пустые колонки 3, 4, 5 */}
+        <div className="lg:col-span-1 hidden lg:block"></div>
+        <div className="lg:col-span-1 hidden lg:block"></div>
+        <div className="lg:col-span-1 hidden lg:block"></div>
+
+        {/* Поиск, сортировка и фильтры - занимают последнюю 6 колонку */}
+        <div className="lg:col-span-1 space-y-4">
+          {/* Поиск */}
+          <SearchInput
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+
+          {/* Сортировка */}
+          <div className="bg-card border border-border rounded-md p-4">
+            <label className="text-sm font-medium text-foreground mb-3 block">
+              Сортировка
+            </label>
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
+
+          {/* Фильтры */}
+          <div>
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
             />
-
-            {/* Сортировка */}
-            <div className="bg-card border border-border rounded-md p-4">
-              <label className="text-sm font-medium text-foreground mb-3 block">
-                Сортировка
-              </label>
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
-
-            {/* Фильтры */}
-            <div>
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-                filteredCount={filteredProviders.length}
-              />
-            </div>
           </div>
         </div>
       </div>
