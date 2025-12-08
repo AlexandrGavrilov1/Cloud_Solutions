@@ -67,26 +67,11 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
           }`}
           title="По цене"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <span
+            className={`text-lg font-bold ${sortBy === "price" ? "text-primary" : "text-muted-foreground"}`}
           >
-            {/* Символ рубля (₽) */}
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={sortBy === "price" ? 2.5 : 1.5}
-              d="M9 8h6M9 12h6m-3 4H9m6-8H9V5h6v3m-6 6v3m3-3v3"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={sortBy === "price" ? 2.5 : 1.5}
-              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
-            />
-          </svg>
+            ₽
+          </span>
         </button>
       </div>
     </div>
