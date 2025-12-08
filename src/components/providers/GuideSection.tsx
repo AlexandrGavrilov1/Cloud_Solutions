@@ -38,7 +38,7 @@ export const GuideSection = () => {
               },
               {
                 icon: "Cpu",
-                title: "Выбери ресурсы",
+                title: "Выбери ресурс",
                 text: "Подобрать CPU, RAM и диск с запасом для роста проекта",
               },
               {
