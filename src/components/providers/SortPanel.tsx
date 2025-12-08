@@ -7,23 +7,26 @@ interface SortPanelProps {
 export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        {/* Иконка сортировки с фоном */}
+        <div className="w-6 h-6 flex items-center justify-center bg-[rgba(255,143,51,0.2)] rounded-[12px]">
+          <svg
+            className="w-3 h-3 text-[#FF8F33]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"
+            />
+          </svg>
+        </div>
         <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
           Сортировка
         </span>
-        <svg
-          className="w-4 h-4 text-muted-foreground"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"
-          />
-        </svg>
       </div>
 
       <div className="relative bg-muted rounded-lg p-1 flex">
