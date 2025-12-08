@@ -26,10 +26,10 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
         </svg>
       </div>
 
-      <div className="relative bg-[#2A2A2A] rounded-lg p-1 flex">
+      <div className="relative bg-muted rounded-lg p-1 flex">
         {/* Тумблер */}
         <div
-          className={`absolute top-1 bottom-1 w-1/2 bg-[rgba(255,143,51,0.2)] shadow-sm rounded-md transition-transform duration-200 ease-in-out ${
+          className={`absolute top-1 bottom-1 w-1/2 bg-background shadow-sm rounded-md transition-transform duration-200 ease-in-out ${
             sortBy === "rating" ? "translate-x-0" : "translate-x-full"
           }`}
         />
@@ -38,7 +38,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
           onClick={() => setSortBy("rating")}
           className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
             sortBy === "rating"
-              ? "text-[#FF8F33]"
+              ? "text-primary"
               : "text-muted-foreground hover:text-foreground"
           }`}
           title="По рейтингу"
@@ -62,13 +62,13 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
           onClick={() => setSortBy("price")}
           className={`relative z-10 flex-1 p-3 rounded-md transition-all flex items-center justify-center ${
             sortBy === "price"
-              ? "text-[#FF8F33]"
+              ? "text-primary"
               : "text-muted-foreground hover:text-foreground"
           }`}
           title="По цене"
         >
           <span
-            className={`text-lg font-bold ${sortBy === "price" ? "text-[#FF8F33]" : "text-muted-foreground"}`}
+            className={`text-lg font-bold ${sortBy === "price" ? "text-primary" : "text-muted-foreground"}`}
           >
             ₽
           </span>
