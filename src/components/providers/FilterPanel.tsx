@@ -134,7 +134,7 @@ export const FilterPanel = ({
             variant="outline"
             size="sm"
             onClick={clearFilters}
-            className="text-[10px] sm:text-xs font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow-lg hover:shadow-xl h-8 sm:h-9 px-2 sm:px-3"
+            className="text-[10px] sm:text-xs font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow-lg hover:shadow-xl min-h-8 sm:min-h-9 px-3 sm:px-4 whitespace-nowrap"
           >
             <Icon name="X" size={12} className="sm:mr-1" />
             <span className="hidden sm:inline">{t("filters.resetAll")}</span>
@@ -145,8 +145,9 @@ export const FilterPanel = ({
       {isExpanded && (
         <div className="space-y-5 sm:space-y-6 px-6 pb-6">
           {/* Чекбоксы для булевых фильтров - адаптивная ширина */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-4">
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors min-w-0">
+          <div className="flex flex-wrap gap-4">
+            {/* 152-ФЗ */}
+            <div className="inline-flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
               <div className="relative shrink-0">
                 <input
                   type="checkbox"
@@ -155,7 +156,7 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFZ152(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterFZ152 && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -163,20 +164,15 @@ export const FilterPanel = ({
               </div>
               <label
                 htmlFor="fz152"
-                className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
+                className="flex items-center gap-2 cursor-pointer whitespace-nowrap"
               >
-                <Icon
-                  name="ShieldCheck"
-                  size={16}
-                  className="text-primary shrink-0"
-                />
-                <span className="font-medium text-foreground truncate">
-                  152-ФЗ
-                </span>
+                <Icon name="ShieldCheck" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">152-ФЗ</span>
               </label>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors min-w-0">
+            {/* ФСТЕК */}
+            <div className="inline-flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
               <div className="relative shrink-0">
                 <input
                   type="checkbox"
@@ -185,7 +181,7 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterFSTEK(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterFSTEK && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -193,20 +189,15 @@ export const FilterPanel = ({
               </div>
               <label
                 htmlFor="fstek"
-                className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
+                className="flex items-center gap-2 cursor-pointer whitespace-nowrap"
               >
-                <Icon
-                  name="ShieldAlert"
-                  size={16}
-                  className="text-primary shrink-0"
-                />
-                <span className="font-medium text-foreground truncate">
-                  ФСТЕК
-                </span>
+                <Icon name="ShieldAlert" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">ФСТЕК</span>
               </label>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors min-w-0">
+            {/* Пробный период */}
+            <div className="inline-flex items-center space-x-3 p-3 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
               <div className="relative shrink-0">
                 <input
                   type="checkbox"
@@ -215,7 +206,7 @@ export const FilterPanel = ({
                   onChange={(e) => setFilterTrialPeriod(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-md border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                   {filterTrialPeriod && (
                     <Icon name="Check" size={12} className="text-background" />
                   )}
@@ -223,32 +214,34 @@ export const FilterPanel = ({
               </div>
               <label
                 htmlFor="trial"
-                className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
+                className="flex items-center gap-2 cursor-pointer whitespace-nowrap"
               >
-                <Icon name="Gift" size={16} className="text-primary shrink-0" />
-                <span className="font-medium text-foreground truncate">
+                <Icon name="Gift" size={16} className="text-primary" />
+                <span className="font-medium text-foreground">
                   {t("filters.trialPeriod")}
                 </span>
               </label>
             </div>
           </div>
 
-          {/* Выпадающие списки */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Остальной код остается без изменений... */}
-
+          {/* Выпадающие списки - адаптивная ширина */}
+          <div className="flex flex-wrap gap-4">
             {/* Локация */}
-            <div className="group">
-              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                <Icon name="MapPin" size={16} className="text-primary" />
+            <div className="group min-w-0">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2 whitespace-nowrap">
+                <Icon
+                  name="MapPin"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
                 {t("filters.datacenterLocation")}
               </label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="relative inline-block min-w-[200px] max-w-full">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Icon name="Globe" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10 min-w-0 w-full"
                   value={filterLocation || ""}
                   onChange={(e) => setFilterLocation(e.target.value || null)}
                 >
@@ -268,17 +261,21 @@ export const FilterPanel = ({
             </div>
 
             {/* Виртуализация */}
-            <div className="group">
-              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                <Icon name="Boxes" size={16} className="text-primary" />
+            <div className="group min-w-0">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2 whitespace-nowrap">
+                <Icon
+                  name="Boxes"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
                 {t("common.virtualization")}
               </label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="relative inline-block min-w-[200px] max-w-full">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Icon name="Box" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10 min-w-0 w-full"
                   value={filterVirtualization || ""}
                   onChange={(e) =>
                     setFilterVirtualization(e.target.value || null)
@@ -300,17 +297,21 @@ export const FilterPanel = ({
             </div>
 
             {/* Тип диска */}
-            <div className="group">
-              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                <Icon name="HardDrive" size={16} className="text-primary" />
+            <div className="group min-w-0">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2 whitespace-nowrap">
+                <Icon
+                  name="HardDrive"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
                 {t("filters.diskType")}
               </label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="relative inline-block min-w-[200px] max-w-full">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Icon name="Database" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10 min-w-0 w-full"
                   value={filterDiskType || ""}
                   onChange={(e) => setFilterDiskType(e.target.value || null)}
                 >
@@ -330,17 +331,21 @@ export const FilterPanel = ({
             </div>
 
             {/* Метод оплаты */}
-            <div className="group">
-              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                <Icon name="CreditCard" size={16} className="text-primary" />
+            <div className="group min-w-0">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2 whitespace-nowrap">
+                <Icon
+                  name="CreditCard"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
                 {t("filters.paymentMethod")}
               </label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="relative inline-block min-w-[200px] max-w-full">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Icon name="Wallet" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10 min-w-0 w-full"
                   value={filterPaymentMethod || ""}
                   onChange={(e) =>
                     setFilterPaymentMethod(e.target.value || null)
@@ -362,17 +367,21 @@ export const FilterPanel = ({
             </div>
 
             {/* Операционная система */}
-            <div className="group">
-              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                <Icon name="Monitor" size={16} className="text-primary" />
+            <div className="group min-w-0">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2 whitespace-nowrap">
+                <Icon
+                  name="Monitor"
+                  size={16}
+                  className="text-primary shrink-0"
+                />
                 {t("filters.operatingSystem")}
               </label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="relative inline-block min-w-[200px] max-w-full">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Icon name="Terminal" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10 min-w-0 w-full"
                   value={filterOS || ""}
                   onChange={(e) => setFilterOS(e.target.value || null)}
                 >
@@ -392,17 +401,17 @@ export const FilterPanel = ({
             </div>
 
             {/* Процессор */}
-            <div className="group">
-              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                <Icon name="Cpu" size={16} className="text-primary" />
+            <div className="group min-w-0">
+              <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2 whitespace-nowrap">
+                <Icon name="Cpu" size={16} className="text-primary shrink-0" />
                 Процессор
               </label>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="relative inline-block min-w-[200px] max-w-full">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Icon name="Cpu" size={18} className="text-primary" />
                 </div>
                 <select
-                  className="w-full h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10"
+                  className="h-11 rounded-lg border-2 border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pl-11 pr-10 min-w-0 w-full"
                   value={filterCPU || ""}
                   onChange={(e) => setFilterCPU(e.target.value || null)}
                 >
