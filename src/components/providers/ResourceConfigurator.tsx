@@ -75,9 +75,8 @@ export const GlobalResourceConfig = ({
               className="text-primary sm:w-4 sm:h-4"
             />
           </div>
-          <div
-            className={`flex flex-col items-start ${!isOpen && "hidden sm:flex"}`}
-          >
+          <div className="flex flex-col items-start">
+            {/* УБРАЛ hidden sm:flex - теперь текст показывается и на мобильных */}
             <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
               {t("resources.configurator")}
             </h3>
@@ -97,7 +96,7 @@ export const GlobalResourceConfig = ({
       {/* Абсолютно позиционированная панель конфигуратора */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 right-0 mt-2 z-[9000] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-2 z-[9999] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
           style={{
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
