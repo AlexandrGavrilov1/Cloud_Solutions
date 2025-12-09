@@ -104,12 +104,6 @@ export const GlobalResourceConfig = ({
           }}
         >
           <div className="p-4 sm:p-5" ref={contentRef}>
-            <div className="mb-4">
-              <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
-                <Icon name="Settings" size={12} className="mr-1" />
-                {t("resources.customizeYourself")}
-              </Badge>
-            </div>
             {/* ТОЛЬКО кнопка сброса - без заголовка */}
             <div className="flex items-center justify-end mb-4 pb-3 border-b border-border">
               <Button
@@ -118,11 +112,18 @@ export const GlobalResourceConfig = ({
                 onClick={handleReset}
                 className="text-xs text-muted-foreground hover:text-foreground hover:bg-background h-7 px-2"
               >
+                <Icon name="RotateCcw" size={12} className="mr-1" />
                 Сбросить
               </Button>
             </div>
 
             {/* Бейдж настройки */}
+            <div className="mb-4">
+              <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
+                <Icon name="Settings" size={12} className="mr-1" />
+                {t("resources.customizeYourself")}
+              </Badge>
+            </div>
 
             {/* Настройка CPU */}
             <div className="space-y-3 mb-4 p-3 bg-background/30 rounded-lg border border-border">
