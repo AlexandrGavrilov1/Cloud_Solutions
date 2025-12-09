@@ -68,13 +68,6 @@ export const GlobalResourceConfig = ({
         }`}
       >
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
-            <Icon
-              name="Sliders"
-              size={14}
-              className="text-primary sm:w-4 sm:h-4"
-            />
-          </div>
           <div
             className={`flex flex-col items-start ${!isOpen && "hidden sm:flex"}`}
           >
