@@ -123,31 +123,42 @@ export const FilterPanel = ({
   }, [isExpanded]);
 
   return (
-    <div className="relative inline-block" ref={panelRef}>
-      {/* Кнопка фильтра (занимает только необходимую ширину) */}
+    <div
+      className={`relative ${isExpanded ? "w-full" : "inline-block"}`}
+      ref={panelRef}
+    >
+      {/* Кнопка фильтра - занимает всю ширину только при раскрытии */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="inline-flex items-center gap-3 px-6 py-4 hover:bg-primary/5 transition-colors rounded-2xl bg-card border border-primary/20 shadow-lg whitespace-nowrap"
+        className={`flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl bg-card border border-primary/20 shadow-lg ${
+          isExpanded
+            ? "w-full px-6 py-4"
+            : "inline-flex items-center gap-3 px-6 py-4 whitespace-nowrap"
+        }`}
       >
-        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
-          <Icon
-            name="Filter"
-            size={16}
-            className="text-primary sm:w-5 sm:h-5"
-          />
-        </div>
-        <div className="flex flex-col items-start">
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground leading-tight">
-            Фильтры
-          </h3>
-          {hasActiveFilters && (
-            <span className="text-xs text-muted-foreground mt-1">
-              Активные фильтры
-            </span>
-          )}
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
+            <Icon
+              name="Filter"
+              size={16}
+              className="text-primary sm:w-5 sm:h-5"
+            />
+          </div>
+          <div
+            className={`flex flex-col items-start ${!isExpanded && "hidden sm:flex"}`}
+          >
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground leading-tight">
+              Фильтры
+            </h3>
+            {hasActiveFilters && !isExpanded && (
+              <span className="text-xs text-muted-foreground mt-1">
+                Активные фильтры
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2 ml-2">
-          {hasActiveFilters && (
+          {hasActiveFilters && !isExpanded && (
             <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
           )}
           <Icon
@@ -161,7 +172,7 @@ export const FilterPanel = ({
       {/* Абсолютно позиционированная панель фильтров */}
       {isExpanded && (
         <div
-          className="absolute top-full left-0 mt-2 z-50 bg-card border border-primary/20 rounded-2xl shadow-xl overflow-hidden min-w-[320px] sm:min-w-[400px]"
+          className="absolute top-full left-0 right-0 mt-2 z-50 bg-card border border-primary/20 rounded-2xl shadow-xl overflow-hidden"
           style={{
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
