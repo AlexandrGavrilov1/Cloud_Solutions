@@ -68,6 +68,13 @@ export const GlobalResourceConfig = ({
         }`}
       >
         <div className="flex items-center gap-3">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
+            <Icon
+              name="Sliders"
+              size={14}
+              className="text-primary sm:w-4 sm:h-4"
+            />
+          </div>
           <div
             className={`flex flex-col items-start ${!isOpen && "hidden sm:flex"}`}
           >
@@ -102,6 +109,14 @@ export const GlobalResourceConfig = ({
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                   <Icon name="Sliders" size={16} className="text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">
+                    {t("resources.configurator")}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {t("resources.configureForAll")}
+                  </p>
                 </div>
               </div>
 
