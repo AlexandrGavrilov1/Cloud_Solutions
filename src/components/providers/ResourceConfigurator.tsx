@@ -76,7 +76,7 @@ export const GlobalResourceConfig = ({
             />
           </div>
           <div
-            className="flex flex-col items-start">
+            className={`flex flex-col items-start ${!isOpen && "hidden sm:flex"}`}
           >
             <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
               {t("resources.configurator")}
