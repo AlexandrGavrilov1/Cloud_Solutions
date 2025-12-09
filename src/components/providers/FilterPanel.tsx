@@ -165,9 +165,8 @@ export const FilterPanel = ({
               </div>
             )}
           </div>
-          <div
-            className={`flex flex-col items-start ${!isExpanded && "hidden sm:flex"}`}
-          >
+          <div className="flex flex-col items-start">
+            {/* УБРАЛ hidden sm:flex - теперь текст показывается и на мобильных */}
             <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
               Фильтры
             </h3>
