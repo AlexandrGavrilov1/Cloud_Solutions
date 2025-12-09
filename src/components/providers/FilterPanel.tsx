@@ -197,24 +197,8 @@ export const FilterPanel = ({
           }}
         >
           <div className="p-4 sm:p-5" ref={contentRef}>
-            {/* Заголовок и кнопка сброса */}
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Icon name="Filter" size={16} className="text-primary" />
-                  </div>
-                  {activeFiltersCount > 0 && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-background text-xs font-bold rounded-full flex items-center justify-center border-2 border-card">
-                      {activeFiltersCount}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">Фильтры</h3>
-                </div>
-              </div>
-
+            {/* Кнопка сброса */}
+            <div className="flex items-center justify-end mb-4 pb-3 border-b border-border">
               {hasActiveFilters && (
                 <Button
                   variant="outline"
