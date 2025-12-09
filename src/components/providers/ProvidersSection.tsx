@@ -399,199 +399,138 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="container mx-auto px-4 py-8 relative">
-      {/* ОБЕРТКА ДЛЯ ВСЕХ КОМПОНЕНТОВ УПРАВЛЕНИЯ С ВЫСОКИМ Z-INDEX */}
-      <div className="relative z-[9999]">
-        {/* Верхняя строка - адаптивная сетка */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
-          {/* Для мобилки: ПОИСК - полная ширина */}
-          <div className="md:hidden">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Поиск..."
-              className="w-full"
-            />
-          </div>
-
-          {/* Для мобилки: СОРТИРОВКА - полная ширина */}
-          <div className="md:hidden">
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-          </div>
-
-          {/* Для мобилки: ФИЛЬТР - полная ширина */}
-          <div className="md:hidden">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-            />
-          </div>
-
-          {/* Для мобилки: КОНФИГУРАТОР - полная ширина */}
-          <div className="md:hidden">
-            <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-          </div>
-
-          {/* Для десктопа и планшета: исходная раскладка */}
-          {/* Конфигуратор - 4 колонки на десктопе, полная ширина на планшете */}
-          <div className="hidden md:block md:col-span-12 lg:col-span-4">
-            <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-          </div>
-
-          {/* Фильтр - 6 колонки на десктопе, полная ширина на планшете */}
-          <div className="hidden md:block md:col-span-12 lg:col-span-6">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              filteredCount={filteredProviders.length}
-            />
-          </div>
-
-          {/* Правая колонка для десктопа и планшета: Поиск и под ним Сортировка */}
-          <div className="hidden md:block md:col-span-12 lg:col-span-2">
-            {/* Поиск (0.5 карточки ≈ 16.7%) */}
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Поиск..."
-              className="w-full"
-            />
-
-            {/* Сортировка - под поиском с небольшим отступом */}
-            <div className="mt-2">
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
-          </div>
+    <section id="providers" className="container mx-auto px-4 py-8">
+      {/* Верхняя строка - 12 колонок */}
+      <div className="grid grid-cols-12 gap-4 mb-4">
+        {/* Конфигуратор - 4 колонки (ширина 1 карточки ≈ 33.3%) */}
+        <div className="col-span-4">
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Отступ между сортировкой и карточками */}
-        <div className="mb-4"></div>
+        {/* Фильтр - 6 колонок (занимает всё свободное пространство) */}
+        <div className="col-span-6">
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+          />
+        </div>
 
-        {/* Блок с результатами поиска */}
-        {searchQuery && (
-          <div className="mb-4 px-2">
-            <div className="text-sm text-muted-foreground">
-              Поиск:{" "}
-              <span className="font-semibold text-foreground">
-                "{searchQuery}"
+        {/* Правая колонка: Поиск и под ним Сортировка - 2 колонки */}
+        <div className="col-span-2">
+          {/* Поиск (0.5 карточки ≈ 16.7%) */}
+          <SearchInput
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Поиск..."
+            className="w-full"
+          />
+
+          {/* Сортировка - под поиском с небольшим отступом */}
+          <div className="mt-2">
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
+        </div>
+      </div>
+
+      {/* Отступ между сортировкой и карточками */}
+      <div className="mb-4"></div>
+
+      {/* Блок с результатами поиска */}
+      {searchQuery && (
+        <div className="mb-4 px-2">
+          <div className="text-sm text-muted-foreground">
+            Поиск:{" "}
+            <span className="font-semibold text-foreground">
+              "{searchQuery}"
+            </span>
+            {filteredProviders.length > 0 && (
+              <span className="ml-2">
+                ({filteredProviders.length} провайдер
+                {filteredProviders.length === 1 ? "" : "ов"})
               </span>
-              {filteredProviders.length > 0 && (
-                <span className="ml-2">
-                  ({filteredProviders.length} провайдер
-                  {filteredProviders.length === 1 ? "" : "ов"})
-                </span>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* КОНТЕЙНЕР ДЛЯ КАРТОЧЕК - ОТДЕЛЬНЫЙ СЛОЙ С НИЗКИМ Z-INDEX */}
-      <div className="relative z-0">
-        {searchQuery && filteredProviders.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-muted-foreground text-lg mb-2">
-              По запросу "{searchQuery}" ничего не найдено
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Попробуйте изменить поисковый запрос или сбросить фильтры
-            </div>
-          </div>
-        ) : (
-          <>
-            <ProvidersList
-              filteredProviders={filteredProviders.slice(0, providersToShow)}
-              configs={configs}
-              calculatePrice={calculatePrice}
-              configOpen={configOpen}
-              setConfigOpen={setConfigOpen}
-              updateConfig={updateConfig}
-              selectedProvider={selectedProvider}
-              setSelectedProvider={setSelectedProvider}
-              reviewsToShow={reviewsToShow}
-              setReviewsToShow={setReviewsToShow}
-              selectedForComparison={selectedForComparison}
-              toggleComparison={toggleComparison}
-            />
-
-            {filteredProviders.length > providersToShow && (
-              <div className="flex justify-center mt-8">
-                <button
-                  onClick={() => setProvidersToShow((prev) => prev + 9)}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center gap-2">
-                    Показать ещё 9 провайдеров
-                    <svg
-                      className="w-5 h-5 group-hover:translate-y-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </div>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
+
+      {searchQuery && filteredProviders.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-muted-foreground text-lg mb-2">
+            По запросу "{searchQuery}" ничего не найдено
+          </div>
+          <div className="text-sm text-muted-foreground">
+            Попробуйте изменить поисковый запрос или сбросить фильтры
+          </div>
+        </div>
+      ) : (
+        <>
+          <ProvidersList
+            filteredProviders={filteredProviders.slice(0, providersToShow)}
+            configs={configs}
+            calculatePrice={calculatePrice}
+            configOpen={configOpen}
+            setConfigOpen={setConfigOpen}
+            updateConfig={updateConfig}
+            selectedProvider={selectedProvider}
+            setSelectedProvider={setSelectedProvider}
+            reviewsToShow={reviewsToShow}
+            setReviewsToShow={setReviewsToShow}
+            selectedForComparison={selectedForComparison}
+            toggleComparison={toggleComparison}
+          />
+
+          {filteredProviders.length > providersToShow && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={() => setProvidersToShow((prev) => prev + 9)}
+                className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="relative flex items-center gap-2">
+                  Показать ещё 9 провайдеров
+                  <svg
+                    className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          )}
+        </>
+      )}
 
       <ComparisonControls
         selectedForComparison={selectedForComparison}
