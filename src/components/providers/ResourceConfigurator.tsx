@@ -59,6 +59,7 @@ export const GlobalResourceConfig = ({
       ref={panelRef}
     >
       {/* Кнопка конфигуратора - занимает всю ширину только при раскрытии */}
+      <Icon name="RotateCcw" size={12} className="mr-1" />
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl bg-card border border-primary/20 shadow-lg ${
@@ -105,23 +106,21 @@ export const GlobalResourceConfig = ({
           <div className="p-4 sm:p-5" ref={contentRef}>
             {/* ТОЛЬКО кнопка сброса - без заголовка */}
             <div className="flex items-center justify-end mb-4 pb-3 border-b border-border">
+              {/* Бейдж настройки */}
+              <div className="mb-4">
+                <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
+                  <Icon name="Settings" size={12} className="mr-1" />
+                  {t("resources.customizeYourself")}
+                </Badge>
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleReset}
                 className="text-xs text-muted-foreground hover:text-foreground hover:bg-background h-7 px-2"
               >
-                <Icon name="RotateCcw" size={12} className="mr-1" />
                 Сбросить
               </Button>
-            </div>
-
-            {/* Бейдж настройки */}
-            <div className="mb-4">
-              <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
-                <Icon name="Settings" size={12} className="mr-1" />
-                {t("resources.customizeYourself")}
-              </Badge>
             </div>
 
             {/* Настройка CPU */}
