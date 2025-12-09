@@ -112,7 +112,6 @@ export const GlobalResourceConfig = ({
                 onClick={handleReset}
                 className="text-xs text-muted-foreground hover:text-foreground hover:bg-background h-7 px-2"
               >
-                <Icon name="RotateCcw" size={12} className="mr-1" />
                 Сбросить
               </Button>
             </div>
