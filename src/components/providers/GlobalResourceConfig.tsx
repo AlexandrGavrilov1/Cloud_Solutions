@@ -103,7 +103,22 @@ export const GlobalResourceConfig = ({
             overflowY: "auto",
           }}
         >
-     
+          <div className="p-4 sm:p-5" ref={contentRef}>
+            {/* Заголовок и кнопка сброса */}
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Icon name="Sliders" size={16} className="text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">
+                    {t("resources.configurator")}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {t("resources.configureForAll")}
+                  </p>
+                </div>
+              </div>
 
               <Button
                 variant="ghost"
