@@ -53,37 +53,35 @@ export const GlobalResourceConfig = ({
     };
   }, [isOpen]);
 
-  // Рассчитываем высоту контента
-  const [contentHeight, setContentHeight] = useState(0);
-
-  useEffect(() => {
-    if (contentRef.current && isOpen) {
-      setContentHeight(contentRef.current.scrollHeight);
-    } else {
-      setContentHeight(0);
-    }
-  }, [isOpen]);
-
   return (
-    <div className="relative" ref={panelRef}>
-      {/* Кнопка конфигуратора (всегда в потоке) */}
+    <div
+      className={`relative ${isOpen ? "w-full" : "inline-block"}`}
+      ref={panelRef}
+    >
+      {/* Кнопка конфигуратора - занимает всю ширину только при раскрытии */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl bg-card border border-primary/20 shadow-lg"
+        className={`flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl bg-card border border-primary/20 shadow-lg ${
+          isOpen
+            ? "w-full px-4 py-3"
+            : "inline-flex items-center gap-3 px-4 py-3 whitespace-nowrap"
+        }`}
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-xl flex items-center justify-center">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
             <Icon
               name="Sliders"
-              size={16}
-              className="text-primary sm:w-5 sm:h-5"
+              size={14}
+              className="text-primary sm:w-4 sm:h-4"
             />
           </div>
-          <div className="text-left">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+          <div
+            className={`flex flex-col items-start ${!isOpen && "hidden sm:flex"}`}
+          >
+            <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
               {t("resources.configurator")}
             </h3>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[10px] text-muted-foreground mt-0.5">
               CPU: {config.cpu} • RAM: {config.ram}GB • {t("resources.storage")}
               : {config.storage}GB
             </p>
@@ -91,7 +89,7 @@ export const GlobalResourceConfig = ({
         </div>
         <Icon
           name={isOpen ? "ChevronUp" : "ChevronDown"}
-          size={24}
+          size={20}
           className="text-muted-foreground transition-transform"
         />
       </button>
@@ -105,18 +103,18 @@ export const GlobalResourceConfig = ({
             overflowY: "auto",
           }}
         >
-          <div className="p-6" ref={contentRef}>
+          <div className="p-4 sm:p-5" ref={contentRef}>
             {/* Заголовок и кнопка сброса */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-border">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
-                  <Icon name="Sliders" size={20} className="text-primary" />
+                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Icon name="Sliders" size={16} className="text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">
+                  <h3 className="text-lg font-bold text-foreground">
                     {t("resources.configurator")}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {t("resources.configureForAll")}
                   </p>
                 </div>
@@ -126,27 +124,27 @@ export const GlobalResourceConfig = ({
                 variant="ghost"
                 size="sm"
                 onClick={handleReset}
-                className="text-xs text-muted-foreground hover:text-foreground hover:bg-background"
+                className="text-xs text-muted-foreground hover:text-foreground hover:bg-background h-7 px-2"
               >
-                <Icon name="RotateCcw" size={14} className="mr-1" />
+                <Icon name="RotateCcw" size={12} className="mr-1" />
                 Сбросить
               </Button>
             </div>
 
             {/* Бейдж настройки */}
-            <div className="mb-6">
-              <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1.5">
+            <div className="mb-4">
+              <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
                 <Icon name="Settings" size={12} className="mr-1" />
                 {t("resources.customizeYourself")}
               </Badge>
             </div>
 
             {/* Настройка CPU */}
-            <div className="space-y-4 mb-6 p-4 bg-background/30 rounded-xl border border-border">
+            <div className="space-y-3 mb-4 p-3 bg-background/30 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Cpu" size={18} className="text-primary" />
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Cpu" size={16} className="text-primary" />
                   </div>
                   <div>
                     <span className="text-sm font-bold text-foreground">
@@ -157,7 +155,7 @@ export const GlobalResourceConfig = ({
                     </p>
                   </div>
                 </div>
-                <span className="text-2xl font-black text-primary">
+                <span className="text-xl font-black text-primary">
                   {config.cpu} vCPU
                 </span>
               </div>
@@ -171,7 +169,7 @@ export const GlobalResourceConfig = ({
                 step={1}
                 className="cursor-pointer"
               />
-              <div className="flex justify-between text-xs text-muted-foreground px-1">
+              <div className="flex justify-between text-xs text-muted-foreground px-0.5">
                 <span>1 vCPU</span>
                 <span>4 vCPU</span>
                 <span>8 vCPU</span>
@@ -181,13 +179,13 @@ export const GlobalResourceConfig = ({
             </div>
 
             {/* Настройка RAM */}
-            <div className="space-y-4 mb-6 p-4 bg-background/30 rounded-xl border border-border">
+            <div className="space-y-3 mb-4 p-3 bg-background/30 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
                     <Icon
                       name="MemoryStick"
-                      size={18}
+                      size={16}
                       className="text-primary"
                     />
                   </div>
@@ -200,7 +198,7 @@ export const GlobalResourceConfig = ({
                     </p>
                   </div>
                 </div>
-                <span className="text-2xl font-black text-primary">
+                <span className="text-xl font-black text-primary">
                   {config.ram} GB
                 </span>
               </div>
@@ -214,7 +212,7 @@ export const GlobalResourceConfig = ({
                 step={1}
                 className="cursor-pointer"
               />
-              <div className="flex justify-between text-xs text-muted-foreground px-1">
+              <div className="flex justify-between text-xs text-muted-foreground px-0.5">
                 <span>1 GB</span>
                 <span>16 GB</span>
                 <span>32 GB</span>
@@ -224,11 +222,11 @@ export const GlobalResourceConfig = ({
             </div>
 
             {/* Настройка хранилища */}
-            <div className="space-y-4 mb-6 p-4 bg-background/30 rounded-xl border border-border">
+            <div className="space-y-3 mb-4 p-3 bg-background/30 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="HardDrive" size={18} className="text-primary" />
+                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="HardDrive" size={16} className="text-primary" />
                   </div>
                   <div>
                     <span className="text-sm font-bold text-foreground">
@@ -239,7 +237,7 @@ export const GlobalResourceConfig = ({
                     </p>
                   </div>
                 </div>
-                <span className="text-2xl font-black text-primary">
+                <span className="text-xl font-black text-primary">
                   {config.storage} GB
                 </span>
               </div>
@@ -253,7 +251,7 @@ export const GlobalResourceConfig = ({
                 step={10}
                 className="cursor-pointer"
               />
-              <div className="flex justify-between text-xs text-muted-foreground px-1">
+              <div className="flex justify-between text-xs text-muted-foreground px-0.5">
                 <span>10 GB</span>
                 <span>100 GB</span>
                 <span>250 GB</span>
@@ -263,11 +261,11 @@ export const GlobalResourceConfig = ({
             </div>
 
             {/* Трафик и кнопка применения */}
-            <div className="pt-6 border-t border-border">
-              <div className="flex items-center justify-between mb-6 p-4 bg-background/30 rounded-xl">
+            <div className="pt-4 border-t border-border">
+              <div className="flex items-center justify-between mb-4 p-3 bg-background/30 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
-                    <Icon name="Wifi" size={18} className="text-secondary" />
+                  <div className="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
+                    <Icon name="Wifi" size={16} className="text-secondary" />
                   </div>
                   <div>
                     <span className="text-sm font-bold text-foreground">
@@ -279,7 +277,7 @@ export const GlobalResourceConfig = ({
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-lg font-black text-secondary">
+                  <span className="text-base font-black text-secondary">
                     {t("resources.unlimited")}
                   </span>
                   <p className="text-xs text-muted-foreground">
@@ -290,10 +288,10 @@ export const GlobalResourceConfig = ({
 
               <Button
                 onClick={handleApply}
-                className="w-full bg-primary hover:bg-primary/90 text-background font-bold py-6 text-lg rounded-xl"
+                className="w-full bg-primary hover:bg-primary/90 text-background font-bold py-4 text-base rounded-lg"
                 size="lg"
               >
-                <Icon name="Check" size={20} className="mr-3" />
+                <Icon name="Check" size={16} className="mr-2" />
                 Применить ко всем провайдерам
               </Button>
             </div>
