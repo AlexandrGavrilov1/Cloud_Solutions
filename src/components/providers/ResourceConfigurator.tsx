@@ -97,14 +97,14 @@ export const GlobalResourceConfig = ({
       {/* Абсолютно позиционированная панель конфигуратора */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 right-0 mt-2 z-[9999] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-2 z-[9000] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
           style={{
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
           }}
         >
           <div className="p-4 sm:p-5" ref={contentRef}>
-            {/* ТОЛЬКО кнопка сброса */}
+            {/* ТОЛЬКО кнопка сброса - без заголовка */}
             <div className="flex items-center justify-end mb-4 pb-3 border-b border-border">
               <Button
                 variant="ghost"
