@@ -400,8 +400,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8 relative">
-      {/* Обертка для фиксированной позиции раскрытых элементов */}
-      <div className="relative z-10">
+      {/* ОБЕРТКА ДЛЯ ВСЕХ КОМПОНЕНТОВ УПРАВЛЕНИЯ С ВЫСОКИМ Z-INDEX */}
+      <div className="relative z-[9999]">
         {/* Верхняя строка - адаптивная сетка */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
           {/* Для мобилки: ПОИСК - полная ширина */}
@@ -448,6 +448,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               allPaymentMethods={allPaymentMethods}
               allOS={allOS}
               allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
             />
           </div>
 
@@ -491,6 +492,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               allPaymentMethods={allPaymentMethods}
               allOS={allOS}
               allCPUs={allCPUs}
+              filteredCount={filteredProviders.length}
             />
           </div>
 
@@ -533,7 +535,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         )}
       </div>
 
-      {/* Контейнер для карточек - фиксированная позиция */}
+      {/* КОНТЕЙНЕР ДЛЯ КАРТОЧЕК - ОТДЕЛЬНЫЙ СЛОЙ С НИЗКИМ Z-INDEX */}
       <div className="relative z-0">
         {searchQuery && filteredProviders.length === 0 ? (
           <div className="text-center py-12">
