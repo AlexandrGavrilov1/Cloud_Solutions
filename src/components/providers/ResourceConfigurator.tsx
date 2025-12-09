@@ -97,7 +97,7 @@ export const GlobalResourceConfig = ({
       {/* Абсолютно позиционированная панель конфигуратора */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 right-0 mt-2 z-[9999] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-2 z-[9000] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
           style={{
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
