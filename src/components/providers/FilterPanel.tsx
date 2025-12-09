@@ -79,6 +79,20 @@ export const FilterPanel = ({
     filterOS ||
     filterCPU;
 
+  // Подсчет активных фильтров
+  const activeFiltersCount = [
+    filterFZ152,
+    filterFSTEK,
+    filterTrialPeriod,
+    filterLocation,
+    filterVirtualization,
+    filterMinDatacenters !== null,
+    filterDiskType,
+    filterPaymentMethod,
+    filterOS,
+    filterCPU,
+  ].filter(Boolean).length;
+
   const clearFilters = () => {
     setFilterFZ152(false);
     setFilterFSTEK(false);
@@ -137,12 +151,19 @@ export const FilterPanel = ({
         }`}
       >
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
-            <Icon
-              name="Filter"
-              size={14}
-              className="text-primary sm:w-4 sm:h-4"
-            />
+          <div className="relative">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
+              <Icon
+                name="Filter"
+                size={14}
+                className="text-primary sm:w-4 sm:h-4"
+              />
+            </div>
+            {activeFiltersCount > 0 && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-background text-xs font-bold rounded-full flex items-center justify-center border-2 border-card">
+                {activeFiltersCount}
+              </div>
+            )}
           </div>
           <div
             className={`flex flex-col items-start ${!isExpanded && "hidden sm:flex"}`}
@@ -150,17 +171,14 @@ export const FilterPanel = ({
             <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
               Фильтры
             </h3>
-            {hasActiveFilters && !isExpanded && (
+            {activeFiltersCount > 0 && !isExpanded && (
               <span className="text-[10px] text-muted-foreground mt-0.5">
-                Активные фильтры
+                {activeFiltersCount} активных
               </span>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2 ml-2">
-          {hasActiveFilters && !isExpanded && (
-            <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></div>
-          )}
           <Icon
             name={isExpanded ? "ChevronUp" : "ChevronDown"}
             size={20}
@@ -179,17 +197,21 @@ export const FilterPanel = ({
           }}
         >
           <div className="p-4 sm:p-5" ref={contentRef}>
-            {/* Счётчик и кнопка сброса */}
+            {/* Заголовок и кнопка сброса */}
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Icon name="Filter" size={16} className="text-primary" />
+                <div className="relative">
+                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Icon name="Filter" size={16} className="text-primary" />
+                  </div>
+                  {activeFiltersCount > 0 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-background text-xs font-bold rounded-full flex items-center justify-center border-2 border-card">
+                      {activeFiltersCount}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-foreground">Фильтры</h3>
-                  <p className="text-xs text-muted-foreground">
-                    {filteredCount} результатов
-                  </p>
                 </div>
               </div>
 
