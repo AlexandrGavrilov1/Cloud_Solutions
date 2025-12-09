@@ -164,13 +164,6 @@ export const GlobalResourceConfig = ({
       >
         <div className="flex items-center gap-3">
           {/* Иконка слева от названия на основной кнопке */}
-          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
-            <Icon
-              name="Sliders"
-              size={14}
-              className="text-primary sm:w-4 sm:h-4"
-            />
-          </div>
 
           <div className="flex flex-col items-start">
             <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
