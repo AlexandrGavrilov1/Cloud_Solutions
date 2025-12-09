@@ -97,26 +97,15 @@ export const GlobalResourceConfig = ({
       {/* Абсолютно позиционированная панель конфигуратора */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 right-0 mt-2 z-50 bg-card border border-primary/20 rounded-2xl shadow-xl overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-2 z-[9999] bg-card border border-primary/20 rounded-2xl shadow-2xl overflow-hidden"
           style={{
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
           }}
         >
           <div className="p-4 sm:p-5" ref={contentRef}>
-            {/* Заголовок и кнопка сброса */}
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Icon name="Sliders" size={16} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">
-                    {t("resources.configurator")}
-                  </h3>
-                </div>
-              </div>
-
+            {/* ТОЛЬКО кнопка сброса - без заголовка */}
+            <div className="flex items-center justify-end mb-4 pb-3 border-b border-border">
               <Button
                 variant="ghost"
                 size="sm"
