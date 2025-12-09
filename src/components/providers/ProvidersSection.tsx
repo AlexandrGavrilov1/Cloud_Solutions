@@ -400,15 +400,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка - 12 колонок */}
-      <div className="grid grid-cols-12 gap-4 mb-4">
-        {/* Конфигуратор - 4 колонки (ширина 1 карточки ≈ 33.3%) */}
-        <div className="col-span-4">
-          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+      {/* Верхняя строка - адаптивная сетка */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+        {/* Для мобилки: ПОИСК - полная ширина */}
+        <div className="md:hidden">
+          <SearchInput
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Поиск..."
+            className="w-full"
+          />
         </div>
 
-        {/* Фильтр - 6 колонок (занимает всё свободное пространство) */}
-        <div className="col-span-6">
+        {/* Для мобилки: СОРТИРОВКА - полная ширина */}
+        <div className="md:hidden">
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+        </div>
+
+        {/* Для мобилки: ФИЛЬТР - полная ширина */}
+        <div className="md:hidden">
           <FilterPanel
             filterFZ152={filterFZ152}
             setFilterFZ152={setFilterFZ152}
@@ -439,8 +449,51 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
         </div>
 
-        {/* Правая колонка: Поиск и под ним Сортировка - 2 колонки */}
-        <div className="col-span-2">
+        {/* Для мобилки: КОНФИГУРАТОР - полная ширина */}
+        <div className="md:hidden">
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
+
+        {/* Для десктопа и планшета: исходная раскладка */}
+        {/* Конфигуратор - 4 колонки на десктопе, полная ширина на планшете */}
+        <div className="hidden md:block md:col-span-12 lg:col-span-4">
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
+
+        {/* Фильтр - 6 колонки на десктопе, полная ширина на планшете */}
+        <div className="hidden md:block md:col-span-12 lg:col-span-6">
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+          />
+        </div>
+
+        {/* Правая колонка для десктопа и планшета: Поиск и под ним Сортировка */}
+        <div className="hidden md:block md:col-span-12 lg:col-span-2">
           {/* Поиск (0.5 карточки ≈ 16.7%) */}
           <SearchInput
             value={searchQuery}
