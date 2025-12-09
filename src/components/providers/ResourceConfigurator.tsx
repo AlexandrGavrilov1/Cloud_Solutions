@@ -72,7 +72,7 @@ export const GlobalResourceConfig = ({
           <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
             <Icon
               name="Sliders"
-              size={14}
+              size={13}
               className="text-primary sm:w-4 sm:h-4"
             />
           </div>
