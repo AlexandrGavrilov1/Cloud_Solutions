@@ -187,10 +187,10 @@ export const FilterPanel = ({
         </div>
       </button>
 
-      {/* Абсолютно позиционированная панель фильтров */}
+      {/* Абсолютно позиционированная панель фильтров - УВЕЛИЧЕННЫЙ Z-INDEX */}
       {isExpanded && (
         <div
-          className="absolute top-full left-0 right-0 mt-2 z-50 bg-card border border-primary/20 rounded-2xl shadow-xl overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-2 z-[1000] bg-card border border-primary/20 rounded-2xl shadow-xl overflow-hidden"
           style={{
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
