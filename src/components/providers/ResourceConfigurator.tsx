@@ -59,7 +59,6 @@ export const GlobalResourceConfig = ({
       ref={panelRef}
     >
       {/* Кнопка конфигуратора - занимает всю ширину только при раскрытии */}
-      <Icon name="RotateCcw" size={12} className="mr-1" />
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-between hover:bg-primary/5 transition-colors rounded-2xl bg-card border border-primary/20 shadow-lg ${
@@ -69,6 +68,7 @@ export const GlobalResourceConfig = ({
         }`}
       >
         <div className="flex items-center gap-3">
+          {/* Иконка слева от названия на основной кнопке */}
           <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center shrink-0">
             <Icon
               name="Sliders"
@@ -77,7 +77,6 @@ export const GlobalResourceConfig = ({
             />
           </div>
           <div className="flex flex-col items-start">
-            {/* УБРАЛ hidden sm:flex - теперь текст показывается и на мобильных */}
             <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">
               {t("resources.configurator")}
             </h3>
@@ -104,21 +103,22 @@ export const GlobalResourceConfig = ({
           }}
         >
           <div className="p-4 sm:p-5" ref={contentRef}>
-            {/* ТОЛЬКО кнопка сброса - без заголовка */}
-            <div className="flex items-center justify-end mb-4 pb-3 border-b border-border">
-              {/* Бейдж настройки */}
-              <div className="mb-4">
-                <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
-                  <Icon name="Settings" size={12} className="mr-1" />
-                  {t("resources.customizeYourself")}
-                </Badge>
-              </div>
+            {/* Бейдж "Настройте под себя" и кнопка сброса в одной строке */}
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
+              {/* Бейдж слева */}
+              <Badge className="bg-primary/20 text-primary border-0 text-xs px-3 py-1">
+                <Icon name="Settings" size={12} className="mr-1" />
+                {t("resources.customizeYourself")}
+              </Badge>
+
+              {/* Кнопка сброса справа */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleReset}
                 className="text-xs text-muted-foreground hover:text-foreground hover:bg-background h-7 px-2"
               >
+                <Icon name="RotateCcw" size={12} className="mr-1" />
                 Сбросить
               </Button>
             </div>
