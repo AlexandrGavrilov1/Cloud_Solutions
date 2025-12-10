@@ -409,8 +409,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
           </div>
 
-          {/* Фильтр - вплотную справа от конфигуратора */}
-          <div className="pl-2">
+          {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
+          <div className="pl-2 w-full">
             <FilterPanel
               filterFZ152={filterFZ152}
               setFilterFZ152={setFilterFZ152}
