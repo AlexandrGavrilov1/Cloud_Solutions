@@ -400,50 +400,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка */}
-      <div className="grid grid-cols-12 gap-0 mb-4">
-        {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
-        <div className="col-span-9 flex gap-0">
-          {/* Конфигуратор */}
-          <div className="pr-2">
-            <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-          </div>
-
-          {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
-          <div className="pl-2 w-full">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-            />
-          </div>
-        </div>
-
-        {/* Правая часть: Поиск и Сортировка вплотную к правому краю */}
-        <div className="col-span-3 flex flex-col items-end gap-2">
+      {/* Верхняя строка - адаптивная */}
+      <div className="mb-4">
+        {/* Для мобильных: вертикальное расположение */}
+        <div className="flex flex-col sm:hidden gap-2">
           {/* Поиск */}
           <SearchInput
             value={searchQuery}
@@ -454,6 +414,96 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
           {/* Сортировка */}
           <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+
+          {/* Фильтр */}
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+          />
+
+          {/* Конфигуратор */}
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+        </div>
+
+        {/* Для планшетов и десктопов: горизонтальное расположение */}
+        <div className="hidden sm:grid sm:grid-cols-12 gap-0">
+          {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
+          <div className="col-span-9 flex gap-0">
+            {/* Конфигуратор */}
+            <div className="pr-2">
+              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+            </div>
+
+            {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
+            <div className="pl-2 w-full">
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+              />
+            </div>
+          </div>
+
+          {/* Правая часть: Поиск и Сортировка вплотную к правому краю */}
+          <div className="col-span-3 flex flex-col items-end gap-2">
+            {/* Поиск */}
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Поиск..."
+              className="w-full"
+            />
+
+            {/* Сортировка */}
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
         </div>
       </div>
 
