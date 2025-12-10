@@ -8,7 +8,7 @@ interface SortPanelProps {
 
 export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
   return (
-    <div className="mb-2 sm:mb-3 w-full max-w-[140px] sm:max-w-[160px]">
+    <div className="mb-2 sm:mb-3 w-full w-[140px] sm:w-[160px]">
       <div className="px-2 py-1 sm:px-2 sm:py-1.5">
         <div className="relative bg-muted/50 rounded-xl p-0.5 flex border border-border">
           {/* Тумблер - занимает 48% ширины с одинаковыми отступами */}
