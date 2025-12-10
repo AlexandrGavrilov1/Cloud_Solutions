@@ -35,7 +35,7 @@ export const GlobalResourceConfig = ({
   return (
     <div className="relative">
       <div
-        className={`bg-card border border-primary/20 rounded-xl shadow-md transition-all duration-500 ease-in-out ${isOpen ? "absolute top-0 left-0 z-50 w-full min-w-[280px]" : "w-full max-w-[168px] sm:max-w-[192px] md:max-w-[216px] lg:max-w-[240px]"}`}
+        className={`bg-card border border-primary/20 rounded-xl shadow-md transition-all duration-500 ease-in-out ${isOpen ? "absolute top-0 left-0 z-50 min-w-[280px]" : "w-full max-w-[151px] sm:max-w-[173px] md:max-w-[194px] lg:max-w-[216px]"}`}
       >
         <button
           onClick={() => setIsOpen(!isOpen)}
