@@ -28,7 +28,7 @@ export const SearchInput = ({
         placeholder={placeholder}
         className="
           w-full pl-9 pr-8 h-9
-          bg-background border-2 border-border rounded-lg
+          bg-background border-2 border-border rounded-xl
           focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 
           transition-all text-xs text-foreground placeholder:text-muted-foreground 
           font-medium hover:border-primary/50 hover:shadow-md
@@ -41,7 +41,7 @@ export const SearchInput = ({
           type="button"
           className="
             absolute right-2 top-1/2 -translate-y-1/2 p-1
-            hover:bg-accent rounded-md transition-colors
+            hover:bg-accent rounded-lg transition-colors
           "
           aria-label="Очистить поиск"
         >
