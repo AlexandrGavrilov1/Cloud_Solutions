@@ -48,7 +48,7 @@ export const GlobalResourceConfig = ({
           </div>
           <div className="text-left">
             <h3 className="text-sm sm:text-base font-bold text-foreground">
-              {t("resources.configurator")}
+              Конфигуратор
             </h3>
             <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5 leading-tight">
               CPU: {config.cpu} • RAM: {config.ram}GB • {t("resources.storage")}
