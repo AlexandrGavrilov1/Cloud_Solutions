@@ -15,11 +15,11 @@ export const SearchInput = ({
   className = "",
 }: SearchInputProps) => {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative w-[140px] sm:w-[160px] ${className}`}>
       <Icon
         name="Search"
-        size={16}
-        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+        size={14}
+        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground"
       />
       <input
         type="text"
@@ -27,10 +27,10 @@ export const SearchInput = ({
         onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
         className="
-          w-full pl-10 pr-10 h-10 
+          w-full pl-9 pr-8 h-9
           bg-background border-2 border-border rounded-lg
           focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 
-          transition-all text-sm text-foreground placeholder:text-muted-foreground 
+          transition-all text-xs text-foreground placeholder:text-muted-foreground 
           font-medium hover:border-primary/50 hover:shadow-md
         "
         aria-label={placeholder}
@@ -40,12 +40,12 @@ export const SearchInput = ({
           onClick={() => onChange?.("")}
           type="button"
           className="
-            absolute right-3 top-1/2 -translate-y-1/2 p-1.5 
-            hover:bg-accent rounded-lg transition-colors
+            absolute right-2 top-1/2 -translate-y-1/2 p-1
+            hover:bg-accent rounded-md transition-colors
           "
           aria-label="Очистить поиск"
         >
-          <Icon name="X" size={16} className="text-muted-foreground" />
+          <Icon name="X" size={14} className="text-muted-foreground" />
         </button>
       )}
     </div>
