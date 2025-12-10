@@ -400,48 +400,51 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      {/* Верхняя строка - 12 колонок */}
-      <div className="grid grid-cols-12 gap-4 mb-4">
-        {/* Конфигуратор - 4 колонки (ширина 1 карточки ≈ 33.3%) */}
-        <div className="col-span-4">
-          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+      {/* Верхняя строка */}
+      <div className="grid grid-cols-12 gap-0 mb-4">
+        {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
+        <div className="col-span-9 flex gap-0">
+          {/* Конфигуратор */}
+          <div className="pr-2">
+            <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+          </div>
+
+          {/* Фильтр - вплотную справа от конфигуратора */}
+          <div className="pl-2">
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+            />
+          </div>
         </div>
 
-        {/* Фильтр - 6 колонок (занимает всё свободное пространство) */}
-        <div className="col-span-6">
-          <FilterPanel
-            filterFZ152={filterFZ152}
-            setFilterFZ152={setFilterFZ152}
-            filterFSTEK={filterFSTEK}
-            setFilterFSTEK={setFilterFSTEK}
-            filterTrialPeriod={filterTrialPeriod}
-            setFilterTrialPeriod={setFilterTrialPeriod}
-            filterLocation={filterLocation}
-            setFilterLocation={setFilterLocation}
-            filterVirtualization={filterVirtualization}
-            setFilterVirtualization={setFilterVirtualization}
-            filterMinDatacenters={filterMinDatacenters}
-            setFilterMinDatacenters={setFilterMinDatacenters}
-            filterDiskType={filterDiskType}
-            setFilterDiskType={setFilterDiskType}
-            filterPaymentMethod={filterPaymentMethod}
-            setFilterPaymentMethod={setFilterPaymentMethod}
-            filterOS={filterOS}
-            setFilterOS={setFilterOS}
-            filterCPU={filterCPU}
-            setFilterCPU={setFilterCPU}
-            allLocations={allLocations}
-            allVirtualizations={allVirtualizations}
-            allDiskTypes={allDiskTypes}
-            allPaymentMethods={allPaymentMethods}
-            allOS={allOS}
-            allCPUs={allCPUs}
-          />
-        </div>
-
-        {/* Правая колонка: Поиск и под ним Сортировка - 2 колонки */}
-        <div className="col-span-2">
-          {/* Поиск (0.5 карточки ≈ 16.7%) */}
+        {/* Правая часть: Поиск и Сортировка вплотную к правому краю */}
+        <div className="col-span-3 flex flex-col items-end gap-2">
+          {/* Поиск */}
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
@@ -449,10 +452,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
-          {/* Сортировка - под поиском с небольшим отступом */}
-          <div className="mt-2">
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-          </div>
+          {/* Сортировка */}
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
 
