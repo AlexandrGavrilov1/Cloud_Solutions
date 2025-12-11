@@ -496,7 +496,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
               {/* Фильтры */}
-              <div className="w-full">
+              <div className="flex-grow">
                 <FilterPanel
                   filterFZ152={filterFZ152}
                   setFilterFZ152={setFilterFZ152}
