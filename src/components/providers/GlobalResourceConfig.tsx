@@ -35,7 +35,8 @@ export const GlobalResourceConfig = ({
   return (
     <div className="relative">
       {/* Кнопка конфигуратора - всегда одного размера */}
-      <div className="w-full max-w-[151px] sm:max-w-[173px] md:max-w-[194px] lg:max-w-[216px]">
+      {/* Изменено: на планшетах и десктопе одинаковая ширина */}
+      <div className="w-full max-w-[151px] sm:max-w-[216px]">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full px-2.5 py-2 sm:px-3 sm:py-2.5 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-xl bg-card border border-primary/20 shadow-md"
