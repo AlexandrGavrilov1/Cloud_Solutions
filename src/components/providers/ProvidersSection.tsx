@@ -489,7 +489,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             {/* Сортировка и Фильтры */}
             <div className="w-2/3 flex gap-0 items-start">
               {/* Сортировка */}
-              <div className="pr-2 pt-0.5">
+              <div className="pr-2 pt-1">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
 
