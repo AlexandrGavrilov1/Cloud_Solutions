@@ -18,7 +18,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
 
       <button
         onClick={() => setSortBy("rating")}
-        className={`relative z-10 w-9 sm:w-10 py-1.5 sm:py-2 rounded-lg transition-all flex items-center justify-center group ${
+        className={`relative z-10 w-9 sm:w-10 py-1.5 sm:py-2 rounded-lg transition-all flex items-center justify-center group h-full ${
           sortBy === "rating"
             ? "text-primary"
             : "text-foreground hover:bg-primary/10"
@@ -30,7 +30,7 @@ export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
 
       <button
         onClick={() => setSortBy("price")}
-        className={`relative z-10 w-9 sm:w-10 py-1.5 sm:py-2 rounded-lg transition-all flex items-center justify-center group ${
+        className={`relative z-10 w-9 sm:w-10 py-1.5 sm:py-2 rounded-lg transition-all flex items-center justify-center group h-full ${
           sortBy === "price"
             ? "text-primary"
             : "text-foreground hover:bg-primary/10"
