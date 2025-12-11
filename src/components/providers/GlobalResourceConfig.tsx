@@ -35,7 +35,6 @@ export const GlobalResourceConfig = ({
   return (
     <div className="relative">
       {/* Кнопка конфигуратора - всегда одного размера */}
-      {/* Изменено: на планшетах и десктопе одинаковая ширина */}
       <div className="w-full max-w-[151px] sm:max-w-[216px]">
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -111,6 +110,7 @@ export const GlobalResourceConfig = ({
                   {config.cpu} vCPU
                 </span>
               </div>
+              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.cpu]}
                 onValueChange={(value) =>
@@ -119,7 +119,7 @@ export const GlobalResourceConfig = ({
                 min={1}
                 max={16}
                 step={1}
-                className="cursor-pointer h-2 [&>div>div]:bg-gray-200"
+                className="cursor-pointer h-2 [&>div]:bg-gray-200"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 vCPU</span>
@@ -143,6 +143,7 @@ export const GlobalResourceConfig = ({
                   {config.ram} GB
                 </span>
               </div>
+              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.ram]}
                 onValueChange={(value) =>
@@ -151,7 +152,7 @@ export const GlobalResourceConfig = ({
                 min={1}
                 max={64}
                 step={1}
-                className="cursor-pointer h-2 [&>div>div]:bg-gray-200"
+                className="cursor-pointer h-2 [&>div]:bg-gray-200"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 GB</span>
@@ -177,6 +178,7 @@ export const GlobalResourceConfig = ({
                   {config.storage} GB
                 </span>
               </div>
+              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.storage]}
                 onValueChange={(value) =>
@@ -185,7 +187,7 @@ export const GlobalResourceConfig = ({
                 min={10}
                 max={500}
                 step={10}
-                className="cursor-pointer h-2 [&>div>div]:bg-gray-200"
+                className="cursor-pointer h-2 [&>div]:bg-gray-200"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>10 GB</span>
