@@ -485,41 +485,43 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
 
           {/* Вторая строка: Сортировка, Фильтры и Конфигуратор в одной строке */}
-          <div className="col-span-12 flex items-center -ml-4">
+          <div className="col-span-12 flex items-center">
             {/* Сортировка и Фильтры - плотно прижаты друг к другу */}
             <div className="flex items-center gap-0">
               {/* Сортировка */}
               <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
               {/* Фильтры */}
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-              />
+              <div className="relative">
+                <FilterPanel
+                  filterFZ152={filterFZ152}
+                  setFilterFZ152={setFilterFZ152}
+                  filterFSTEK={filterFSTEK}
+                  setFilterFSTEK={setFilterFSTEK}
+                  filterTrialPeriod={filterTrialPeriod}
+                  setFilterTrialPeriod={setFilterTrialPeriod}
+                  filterLocation={filterLocation}
+                  setFilterLocation={setFilterLocation}
+                  filterVirtualization={filterVirtualization}
+                  setFilterVirtualization={setFilterVirtualization}
+                  filterMinDatacenters={filterMinDatacenters}
+                  setFilterMinDatacenters={setFilterMinDatacenters}
+                  filterDiskType={filterDiskType}
+                  setFilterDiskType={setFilterDiskType}
+                  filterPaymentMethod={filterPaymentMethod}
+                  setFilterPaymentMethod={setFilterPaymentMethod}
+                  filterOS={filterOS}
+                  setFilterOS={setFilterOS}
+                  filterCPU={filterCPU}
+                  setFilterCPU={setFilterCPU}
+                  allLocations={allLocations}
+                  allVirtualizations={allVirtualizations}
+                  allDiskTypes={allDiskTypes}
+                  allPaymentMethods={allPaymentMethods}
+                  allOS={allOS}
+                  allCPUs={allCPUs}
+                />
+              </div>
             </div>
 
             {/* Конфигуратор */}
