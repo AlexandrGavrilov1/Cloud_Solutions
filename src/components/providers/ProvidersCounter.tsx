@@ -13,7 +13,7 @@ export const ProvidersCounter = ({
 }: ProvidersCounterProps) => {
   return (
     <div
-      className={`text-sm text-muted-foreground font-medium w-full sm:w-[200px] text-center sm:text-left ${className}`}
+      className={`text-sm text-muted-foreground font-medium w-full sm:w-[200px] text-center sm:text-left whitespace-nowrap ${className}`}
     >
       Показано: <span className="font-bold text-primary">{currentCount}</span>{" "}
       из <span className="font-bold text-primary">{totalCount}</span>{" "}
