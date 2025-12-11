@@ -9,12 +9,8 @@ interface SortPanelProps {
 export const SortPanel = ({ sortBy, setSortBy }: SortPanelProps) => {
   return (
     <div className="flex-none">
-      {" "}
-      {/* Внешний контейнер */}
       <div className="px-2 py-1.5 sm:px-2.5 sm:py-2">
-        {" "}
-        {/* Padding как в FilterPanel */}
-        <div className="inline-flex bg-muted/50 rounded-xl p-0.5 border border-border h-9 sm:h-10 relative">
+        <div className="inline-flex bg-muted/50 rounded-xl p-0.5 border border-primary/20 h-9 sm:h-10 relative">
           {/* Тумблер - занимает 48% ширины с одинаковыми отступами */}
           <div
             className={`absolute top-0.5 bottom-0.5 w-[48%] bg-background shadow-sm rounded-lg transition-all duration-200 ease-in-out ${
