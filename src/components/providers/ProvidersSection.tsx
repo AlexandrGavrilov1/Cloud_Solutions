@@ -7,6 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
+import { ProvidersCounter } from "./providers/ProvidersCounter"; // Добавляем импорт счетчика
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -415,6 +416,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           {/* Сортировка */}
           <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
+          {/* Счетчик провайдеров */}
+          <ProvidersCounter
+            currentCount={Math.min(providersToShow, filteredProviders.length)}
+            totalCount={filteredProviders.length}
+            className="w-full"
+          />
+
           {/* Фильтр */}
           <FilterPanel
             filterFZ152={filterFZ152}
@@ -451,47 +459,62 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
         <div className="hidden sm:grid sm:grid-cols-12 gap-0">
-          {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
+          {/* Левая часть: Конфигуратор и вертикальная стопка счетчика и фильтра */}
           <div className="col-span-9 flex gap-0">
-            {/* Конфигуратор */}
+            {/* Конфигуратор остается на том же месте */}
             <div className="pr-2">
               <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
             </div>
 
-            {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
-            <div className="pl-2 w-full">
-              <FilterPanel
-                filterFZ152={filterFZ152}
-                setFilterFZ152={setFilterFZ152}
-                filterFSTEK={filterFSTEK}
-                setFilterFSTEK={setFilterFSTEK}
-                filterTrialPeriod={filterTrialPeriod}
-                setFilterTrialPeriod={setFilterTrialPeriod}
-                filterLocation={filterLocation}
-                setFilterLocation={setFilterLocation}
-                filterVirtualization={filterVirtualization}
-                setFilterVirtualization={setFilterVirtualization}
-                filterMinDatacenters={filterMinDatacenters}
-                setFilterMinDatacenters={setFilterMinDatacenters}
-                filterDiskType={filterDiskType}
-                setFilterDiskType={setFilterDiskType}
-                filterPaymentMethod={filterPaymentMethod}
-                setFilterPaymentMethod={setFilterPaymentMethod}
-                filterOS={filterOS}
-                setFilterOS={setFilterOS}
-                filterCPU={filterCPU}
-                setFilterCPU={setFilterCPU}
-                allLocations={allLocations}
-                allVirtualizations={allVirtualizations}
-                allDiskTypes={allDiskTypes}
-                allPaymentMethods={allPaymentMethods}
-                allOS={allOS}
-                allCPUs={allCPUs}
-              />
+            {/* Вертикальная стопка: счетчик сверху, фильтры снизу */}
+            <div className="pl-2 w-full flex flex-col">
+              {/* Счетчик провайдеров */}
+              <div className="mb-2">
+                <ProvidersCounter
+                  currentCount={Math.min(
+                    providersToShow,
+                    filteredProviders.length,
+                  )}
+                  totalCount={filteredProviders.length}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Фильтр строго под счетчиком */}
+              <div className="w-full">
+                <FilterPanel
+                  filterFZ152={filterFZ152}
+                  setFilterFZ152={setFilterFZ152}
+                  filterFSTEK={filterFSTEK}
+                  setFilterFSTEK={setFilterFSTEK}
+                  filterTrialPeriod={filterTrialPeriod}
+                  setFilterTrialPeriod={setFilterTrialPeriod}
+                  filterLocation={filterLocation}
+                  setFilterLocation={setFilterLocation}
+                  filterVirtualization={filterVirtualization}
+                  setFilterVirtualization={setFilterVirtualization}
+                  filterMinDatacenters={filterMinDatacenters}
+                  setFilterMinDatacenters={setFilterMinDatacenters}
+                  filterDiskType={filterDiskType}
+                  setFilterDiskType={setFilterDiskType}
+                  filterPaymentMethod={filterPaymentMethod}
+                  setFilterPaymentMethod={setFilterPaymentMethod}
+                  filterOS={filterOS}
+                  setFilterOS={setFilterOS}
+                  filterCPU={filterCPU}
+                  setFilterCPU={setFilterCPU}
+                  allLocations={allLocations}
+                  allVirtualizations={allVirtualizations}
+                  allDiskTypes={allDiskTypes}
+                  allPaymentMethods={allPaymentMethods}
+                  allOS={allOS}
+                  allCPUs={allCPUs}
+                />
+              </div>
             </div>
           </div>
 
-          {/* Правая часть: Поиск и Сортировка вплотную к правому краю */}
+          {/* Правая часть: Поиск и Сортировка */}
           <div className="col-span-3 flex flex-col items-end gap-2">
             {/* Поиск */}
             <SearchInput
