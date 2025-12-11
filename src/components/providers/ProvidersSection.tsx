@@ -458,7 +458,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
-        <div className="hidden sm:grid sm:grid-cols-12">
+        <div className="hidden sm:grid sm:grid-cols-12 items-center">
           {/* Первая строка: Счетчик провайдеров и Поиск в одной строке */}
           <div className="col-span-12 flex gap-4 mb-0.5">
             {/* Счетчик провайдеров */}
@@ -473,28 +473,27 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               />
             </div>
 
-            {/* Поиск */}
+            {/* Поиск выровнен по правому краю */}
             <div className="w-1/3 flex justify-end">
               <SearchInput
                 value={searchQuery}
                 onChange={setSearchQuery}
                 placeholder="Поиск..."
-                className="w-full max-w-[400px]"
               />
             </div>
           </div>
 
-          {/* Вторая строка: Сортировка, Фильтры и Конфигуратор в одной строке */}
-          <div className="col-span-12 flex gap-0">
+          {/* Вторая строка: Сортировка, Фильтры и Конфигуратор на одном уровне */}
+          <div className="col-span-12 flex items-center gap-0">
             {/* Сортировка и Фильтры */}
-            <div className="w-2/3 flex gap-0 items-start">
+            <div className="flex items-center gap-0">
               {/* Сортировка */}
               <div className="pr-2">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
 
               {/* Фильтры */}
-              <div className="w-full">
+              <div className="flex-1">
                 <FilterPanel
                   filterFZ152={filterFZ152}
                   setFilterFZ152={setFilterFZ152}
@@ -527,7 +526,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
 
             {/* Конфигуратор */}
-            <div className="w-1/3 flex justify-end">
+            <div className="flex-1 flex justify-end">
               <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
             </div>
           </div>
