@@ -19,7 +19,7 @@ export const SearchInput = ({
       <Icon
         name="Search"
         size={14}
-        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
       />
       <input
         type="text"
@@ -30,9 +30,8 @@ export const SearchInput = ({
           w-full pl-9 pr-8 h-9
           bg-background border-2 border-border rounded-xl
           focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 
-          transition-all text-xs text-foreground placeholder:text-muted-foreground 
-          font-medium hover:border-primary/50 hover:shadow-md
-          sm:max-w-[172px] md:max-w-[192px] lg:max-w-[100px]
+          transition-all text-sm text-foreground placeholder:text-muted-foreground 
+          font-medium hover:border-primary/50
         "
         aria-label={placeholder}
       />
@@ -43,6 +42,7 @@ export const SearchInput = ({
           className="
             absolute right-2 top-1/2 -translate-y-1/2 p-1
             hover:bg-accent rounded-lg transition-colors
+            focus:outline-none focus:ring-2 focus:ring-primary/20
           "
           aria-label="Очистить поиск"
         >
