@@ -150,9 +150,9 @@ export const FilterPanel = ({
         </button>
       </div>
 
-      {/* Выпадающая панель фильтров */}
+      {/* Выпадающая панель фильтров - адаптивная ширина */}
       {isExpanded && (
-        <div className="absolute top-full left-0 mt-2 w-[420px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
+        <div className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-[400px] sm:max-w-[450px] md:max-w-[500px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
           {hasActiveFilters && (
             <div className="flex items-center justify-end px-3 pt-3 pb-2">
               <Button
@@ -169,7 +169,7 @@ export const FilterPanel = ({
 
           <div className="space-y-4 p-3 max-h-[70vh] overflow-y-auto">
             {/* Чекбоксы для булевых фильтров */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -274,7 +274,7 @@ export const FilterPanel = ({
             </div>
 
             {/* Выпадающие списки */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Локация */}
               <div className="group">
                 <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
