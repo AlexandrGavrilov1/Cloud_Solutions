@@ -483,16 +483,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               />
             </div>
           </div>
-
           {/* Вторая строка: Сортировка, Фильтры и Конфигуратор в одной строке */}
-          <div className="col-span-12 flex gap-0">
+          <div className="col-span-12 flex items-center gap-2">
+            {" "}
+            {/* items-center вместо gap-0 */}
             {/* Сортировка и Фильтры */}
-            <div className="w-2/3 flex gap-0 items-start">
+            <div className="w-2/3 flex items-center gap-2">
+              {" "}
+              {/* items-center вместо items-start */}
               {/* Сортировка */}
-              <div className="pr-2">
+              <div className="flex-shrink-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
-
               {/* Фильтры */}
               <div className="w-full">
                 <FilterPanel
@@ -525,7 +527,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 />
               </div>
             </div>
-
             {/* Конфигуратор */}
             <div className="w-1/3 flex justify-end">
               <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
