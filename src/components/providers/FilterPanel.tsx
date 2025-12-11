@@ -77,6 +77,20 @@ export const FilterPanel = ({
     filterOS ||
     filterCPU;
 
+  // Подсчет количества активных фильтров
+  const activeFiltersCount = [
+    filterFZ152,
+    filterFSTEK,
+    filterTrialPeriod,
+    filterLocation,
+    filterVirtualization,
+    filterMinDatacenters !== null,
+    filterDiskType,
+    filterPaymentMethod,
+    filterOS,
+    filterCPU,
+  ].filter(Boolean).length;
+
   const clearFilters = () => {
     setFilterFZ152(false);
     setFilterFSTEK(false);
@@ -108,15 +122,22 @@ export const FilterPanel = ({
       >
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full px-2 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-xl"
+          className="w-full px-2 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-xl relative"
         >
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary/20 rounded-lg flex items-center justify-center">
+            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary/20 rounded-lg flex items-center justify-center relative">
               <Icon
                 name="Filter"
                 size={10}
                 className="text-primary w-3 h-3 sm:w-3.5 sm:h-3.5"
               />
+
+              {/* Бейдж с счетчиком активных фильтров */}
+              {activeFiltersCount > 0 && (
+                <div className="absolute -top-1 -right-1 bg-primary text-background text-[8px] sm:text-[9px] font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center border-2 border-card">
+                  {activeFiltersCount}
+                </div>
+              )}
             </div>
             <h3 className="text-xs sm:text-sm font-bold text-foreground">
               Фильтры
