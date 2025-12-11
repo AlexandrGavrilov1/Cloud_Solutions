@@ -69,10 +69,11 @@ export const GlobalResourceConfig = ({
       {/* Выпадающая панель конфигуратора - адаптивная ширина */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 mt-2 
-                  w-[calc(100vw-2rem)] 
-                  max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
-                  bg-card border border-primary/20 rounded-xl shadow-md z-50"
+          className="absolute top-full mt-2 
+                        left-0 
+                        w-[calc(100vw-2rem)] 
+                        max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
+                        bg-card border border-primary/20 rounded-xl shadow-md z-50"
         >
           <div className="px-3 pb-3.5 pt-3 space-y-4">
             <div className="flex items-center justify-between">
@@ -106,15 +107,26 @@ export const GlobalResourceConfig = ({
                   {config.cpu} vCPU
                 </span>
               </div>
-              <Slider
-                value={[config.cpu]}
-                onValueChange={(value) =>
-                  setConfig((prev) => ({ ...prev, cpu: value[0] }))
+              <input
+                type="range"
+                min="1"
+                max="16"
+                step="1"
+                value={config.cpu}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    cpu: parseInt(e.target.value),
+                  }))
                 }
-                min={1}
-                max={16}
-                step={1}
-                className="cursor-pointer h-2"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer 
+                           [&::-webkit-slider-thumb]:appearance-none 
+                           [&::-webkit-slider-thumb]:h-4 
+                           [&::-webkit-slider-thumb]:w-4 
+                           [&::-webkit-slider-thumb]:rounded-full 
+                           [&::-webkit-slider-thumb]:bg-primary 
+                           [&::-webkit-slider-thumb]:border-2 
+                           [&::-webkit-slider-thumb]:border-background"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 vCPU</span>
@@ -138,15 +150,26 @@ export const GlobalResourceConfig = ({
                   {config.ram} GB
                 </span>
               </div>
-              <Slider
-                value={[config.ram]}
-                onValueChange={(value) =>
-                  setConfig((prev) => ({ ...prev, ram: value[0] }))
+              <input
+                type="range"
+                min="1"
+                max="64"
+                step="1"
+                value={config.ram}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    ram: parseInt(e.target.value),
+                  }))
                 }
-                min={1}
-                max={64}
-                step={1}
-                className="cursor-pointer h-2"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer 
+                           [&::-webkit-slider-thumb]:appearance-none 
+                           [&::-webkit-slider-thumb]:h-4 
+                           [&::-webkit-slider-thumb]:w-4 
+                           [&::-webkit-slider-thumb]:rounded-full 
+                           [&::-webkit-slider-thumb]:bg-primary 
+                           [&::-webkit-slider-thumb]:border-2 
+                           [&::-webkit-slider-thumb]:border-background"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 GB</span>
@@ -172,15 +195,26 @@ export const GlobalResourceConfig = ({
                   {config.storage} GB
                 </span>
               </div>
-              <Slider
-                value={[config.storage]}
-                onValueChange={(value) =>
-                  setConfig((prev) => ({ ...prev, storage: value[0] }))
+              <input
+                type="range"
+                min="10"
+                max="500"
+                step="10"
+                value={config.storage}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    storage: parseInt(e.target.value),
+                  }))
                 }
-                min={10}
-                max={500}
-                step={10}
-                className="cursor-pointer h-2"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer 
+                           [&::-webkit-slider-thumb]:appearance-none 
+                           [&::-webkit-slider-thumb]:h-4 
+                           [&::-webkit-slider-thumb]:w-4 
+                           [&::-webkit-slider-thumb]:rounded-full 
+                           [&::-webkit-slider-thumb]:bg-primary 
+                           [&::-webkit-slider-thumb]:border-2 
+                           [&::-webkit-slider-thumb]:border-background"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>10 GB</span>
@@ -217,4 +251,4 @@ export const GlobalResourceConfig = ({
       )}
     </div>
   );
-};
+}; /////////////////////////////////////////////////////////////
