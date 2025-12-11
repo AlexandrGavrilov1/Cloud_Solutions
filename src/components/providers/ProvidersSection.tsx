@@ -7,6 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
+import { ProvidersCounter } from "./providers/ProvidersCounter"; // Импортируем компонент счетчика
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -415,6 +416,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           {/* Сортировка */}
           <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
+          {/* Счетчик провайдеров */}
+          <ProvidersCounter
+            currentCount={Math.min(providersToShow, filteredProviders.length)}
+            totalCount={filteredProviders.length}
+            className="justify-center sm:justify-start"
+          />
+
           {/* Фильтр */}
           <FilterPanel
             filterFZ152={filterFZ152}
@@ -451,15 +459,30 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
         <div className="hidden sm:grid sm:grid-cols-12 gap-0">
-          {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
-          <div className="col-span-9 flex gap-0">
-            {/* Конфигуратор */}
-            <div className="pr-2">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+          {/* Левая часть: Конфигуратор и счетчик с фильтром */}
+          <div className="col-span-9 flex flex-col gap-0">
+            {/* Первая строка: Конфигуратор + счетчик */}
+            <div className="flex gap-0 mb-2">
+              {/* Конфигуратор */}
+              <div className="pr-2">
+                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+              </div>
+
+              {/* Счетчик провайдеров - справа от конфигуратора */}
+              <div className="pl-2 flex items-center">
+                <ProvidersCounter
+                  currentCount={Math.min(
+                    providersToShow,
+                    filteredProviders.length,
+                  )}
+                  totalCount={filteredProviders.length}
+                  className="w-full sm:w-[200px]"
+                />
+              </div>
             </div>
 
-            {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
-            <div className="pl-2 w-full">
+            {/* Вторая строка: Фильтр - под счетчиком и конфигуратором */}
+            <div className="w-full mt-0">
               <FilterPanel
                 filterFZ152={filterFZ152}
                 setFilterFZ152={setFilterFZ152}
