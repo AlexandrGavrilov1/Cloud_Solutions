@@ -68,7 +68,12 @@ export const GlobalResourceConfig = ({
 
       {/* Выпадающая панель конфигуратора - адаптивная ширина */}
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-[calc(100vw-2rem)] max-w-[320px] sm:max-w-[360px] md:max-w-[400px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
+        <div
+          className="absolute top-full left-0 mt-2 
+                  w-[calc(100vw-2rem)] 
+                  max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
+                  bg-card border border-primary/20 rounded-xl shadow-md z-50"
+        >
           <div className="px-3 pb-3.5 pt-3 space-y-4">
             <div className="flex items-center justify-between">
               <Badge className="bg-primary/20 text-primary border-0 text-xs px-2.5 py-1">
