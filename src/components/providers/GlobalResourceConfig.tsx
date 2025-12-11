@@ -70,10 +70,10 @@ export const GlobalResourceConfig = ({
       {isOpen && (
         <div
           className="absolute top-full mt-2 
-                        /* На мобильных: открывается ВПРАВО от кнопки (left-0) */
+                        /* На мобильных (<768px): открывается ВПРАВО от кнопки */
                         left-0 
-                        /* На десктопе: открывается ВЛЕВО от кнопки (right-0) */
-                        lg:left-auto lg:right-0 
+                        /* На планшетах и десктопах (≥768px): открывается ВЛЕВО от кнопки */
+                        md:left-auto md:right-0 
                         w-[calc(100vw-2rem)] 
                         max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
                         bg-card border border-primary/20 rounded-xl shadow-md z-50"
