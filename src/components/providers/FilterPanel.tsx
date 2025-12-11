@@ -152,7 +152,7 @@ export const FilterPanel = ({
 
       {/* Выпадающая панель фильтров */}
       {isExpanded && (
-        <div className="absolute top-full left-0 mt-2 w-[320px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
+        <div className="absolute top-full left-0 mt-2 w-[420px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
           {hasActiveFilters && (
             <div className="flex items-center justify-end px-3 pt-3 pb-2">
               <Button
