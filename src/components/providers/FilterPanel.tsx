@@ -554,23 +554,7 @@ export const FilterPanel = ({
                   onChange={(e) =>
                     handleDatacentersChange(parseInt(e.target.value))
                   }
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer 
-                             [&::-webkit-slider-thumb]:appearance-none 
-                             [&::-webkit-slider-thumb]:h-4 
-                             [&::-webkit-slider-thumb]:w-4 
-                             [&::-webkit-slider-thumb]:rounded-full 
-                             [&::-webkit-slider-thumb]:bg-primary 
-                             [&::-webkit-slider-thumb]:border-2 
-                             [&::-webkit-slider-thumb]:border-background
-                             
-                             /* Для Firefox */
-                             [&::-moz-range-thumb]:appearance-none 
-                             [&::-moz-range-thumb]:h-4 
-                             [&::-moz-range-thumb]:w-4 
-                             [&::-moz-range-thumb]:rounded-full 
-                             [&::-moz-range-thumb]:bg-primary 
-                             [&::-moz-range-thumb]:border-2 
-                             [&::-moz-range-thumb]:border-background"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background"
                 />
 
                 <div className="flex justify-between text-xs text-muted-foreground">

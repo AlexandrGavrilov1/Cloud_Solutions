@@ -110,6 +110,7 @@ export const GlobalResourceConfig = ({
                   {config.cpu} vCPU
                 </span>
               </div>
+              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.cpu]}
                 onValueChange={(value) =>
@@ -142,6 +143,7 @@ export const GlobalResourceConfig = ({
                   {config.ram} GB
                 </span>
               </div>
+              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.ram]}
                 onValueChange={(value) =>
@@ -176,6 +178,7 @@ export const GlobalResourceConfig = ({
                   {config.storage} GB
                 </span>
               </div>
+              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.storage]}
                 onValueChange={(value) =>
