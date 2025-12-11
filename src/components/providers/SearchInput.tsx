@@ -32,7 +32,7 @@ export const SearchInput = ({
           focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 
           transition-all text-xs text-foreground placeholder:text-muted-foreground 
           font-medium hover:border-primary/50 hover:shadow-md
-          sm:max-w-[172px] md:max-w-[192px] lg:max-w-[250px]
+          sm:max-w-[172px] md:max-w-[192px] lg:max-w-[100px]
         "
         aria-label={placeholder}
       />
