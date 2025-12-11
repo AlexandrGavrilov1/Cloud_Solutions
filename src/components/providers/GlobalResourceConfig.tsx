@@ -1,4 +1,4 @@
-import { useState } from "react";
+/import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -68,12 +68,14 @@ export const GlobalResourceConfig = ({
 
       {/* Выпадающая панель конфигуратора - адаптивная ширина */}
       {isOpen && (
-        <div
-          className="absolute top-full left-0 mt-2 
-                  w-[calc(100vw-2rem)] 
-                  max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
-                  bg-card border border-primary/20 rounded-xl shadow-md z-50"
-        >
+        <div className="absolute top-full mt-2 
+                        /* На мобильных: открывается ВПРАВО от кнопки (left-0) */
+                        left-0 
+                        /* На десктопе: открывается ВЛЕВО от кнопки (right-0) */
+                        lg:left-auto lg:right-0 
+                        w-[calc(100vw-2rem)] 
+                        max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
+                        bg-card border border-primary/20 rounded-xl shadow-md z-50">
           <div className="px-3 pb-3.5 pt-3 space-y-4">
             <div className="flex items-center justify-between">
               <Badge className="bg-primary/20 text-primary border-0 text-xs px-2.5 py-1">
@@ -114,7 +116,7 @@ export const GlobalResourceConfig = ({
                 min={1}
                 max={16}
                 step={1}
-                className="cursor-pointer h-2"
+                className="cursor-pointer h-2 [&>div>div]:bg-gray-200"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 vCPU</span>
@@ -146,7 +148,7 @@ export const GlobalResourceConfig = ({
                 min={1}
                 max={64}
                 step={1}
-                className="cursor-pointer h-2"
+                className="cursor-pointer h-2 [&>div>div]:bg-gray-200"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 GB</span>
@@ -180,7 +182,7 @@ export const GlobalResourceConfig = ({
                 min={10}
                 max={500}
                 step={10}
-                className="cursor-pointer h-2"
+                className="cursor-pointer h-2 [&>div>div]:bg-gray-200"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>10 GB</span>
@@ -217,4 +219,4 @@ export const GlobalResourceConfig = ({
       )}
     </div>
   );
-};
+};////////////
