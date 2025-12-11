@@ -7,7 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
-import { ProvidersCounter } from "./ProvidersCounter"; // Добавляем импорт счетчика
+import { ProvidersCounter } from "./ProvidersCounter";
 
 interface ProvidersSectionProps {
   providers: Provider[];
@@ -458,30 +458,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
-        <div className="hidden sm:grid sm:grid-cols-12 gap-0">
-          {/* Левая часть: Конфигуратор и вертикальная стопка счетчика и фильтра */}
-          <div className="col-span-9 flex gap-0">
-            {/* Конфигуратор остается на том же месте */}
-            <div className="pr-2">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-            </div>
+        <div className="hidden sm:grid sm:grid-cols-12 gap-4">
+          {/* Левая часть: Счетчик, сортировка и фильтры */}
+          <div className="col-span-8 space-y-2">
+            {/* Счетчик провайдеров */}
+            <ProvidersCounter
+              currentCount={Math.min(providersToShow, filteredProviders.length)}
+              totalCount={filteredProviders.length}
+              className="w-full"
+            />
 
-            {/* Вертикальная стопка: счетчик сверху, фильтры снизу */}
-            <div className="pl-2 w-full flex flex-col">
-              {/* Счетчик провайдеров */}
-              <div className="mb-2">
-                <ProvidersCounter
-                  currentCount={Math.min(
-                    providersToShow,
-                    filteredProviders.length,
-                  )}
-                  totalCount={filteredProviders.length}
-                  className="w-full"
-                />
+            {/* Сортировка и фильтры в одной строке */}
+            <div className="flex gap-2">
+              {/* Сортировка слева */}
+              <div className="w-1/4">
+                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
 
-              {/* Фильтр строго под счетчиком */}
-              <div className="w-full">
+              {/* Фильтры справа */}
+              <div className="w-3/4">
                 <FilterPanel
                   filterFZ152={filterFZ152}
                   setFilterFZ152={setFilterFZ152}
@@ -514,8 +509,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
           </div>
 
-          {/* Правая часть: Поиск и Сортировка */}
-          <div className="col-span-3 flex flex-col items-end gap-2">
+          {/* Правая часть: Поиск и Конфигуратор */}
+          <div className="col-span-4 space-y-2">
             {/* Поиск */}
             <SearchInput
               value={searchQuery}
@@ -524,8 +519,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               className="w-full"
             />
 
-            {/* Сортировка */}
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+            {/* Конфигуратор */}
+            <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
           </div>
         </div>
       </div>
