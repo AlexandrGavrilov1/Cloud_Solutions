@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 interface FilterPanelProps {
   filterFZ152: boolean;
@@ -64,8 +64,6 @@ export const FilterPanel = ({
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const expandedRef = useRef<HTMLDivElement>(null);
 
   const hasActiveFilters =
     filterFZ152 ||
@@ -117,37 +115,10 @@ export const FilterPanel = ({
 
   const popularValues = [0, 1, 3, 5, 10, 15];
 
-  // Закрытие фильтров при клике вне компонента
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        expandedRef.current &&
-        !expandedRef.current.contains(event.target as Node) &&
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsExpanded(false);
-      }
-    };
-
-    if (isExpanded) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isExpanded]);
-
   return (
-    <div className="relative" ref={containerRef}>
-      {/* Основная кнопка фильтров */}
+    <div className="relative">
       <div
-        className={`bg-card border border-primary/20 rounded-xl shadow-md transition-all duration-300 ease-in-out ${
-          isExpanded
-            ? "absolute top-0 left-0 z-[100] w-[320px] sm:w-[400px]"
-            : "w-full max-w-[100px] sm:max-w-[120px] md:max-w-[151px]"
-        }`}
+        className={`bg-card border border-primary/20 rounded-xl shadow-md transition-all duration-500 ease-in-out ${isExpanded ? "absolute top-0 left-0 z-[100] w-full min-w-[280px]" : "w-full max-w-[100px] sm:max-w-[120px] md:max-w-[151px]"}`}
       >
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -181,7 +152,7 @@ export const FilterPanel = ({
           </div>
         </button>
 
-        {hasActiveFilters && !isExpanded && (
+        {hasActiveFilters && (
           <div className="flex items-center justify-end px-2 sm:px-2.5 pb-0.5">
             <Button
               variant="outline"
@@ -197,12 +168,8 @@ export const FilterPanel = ({
           </div>
         )}
 
-        {/* Раскрывающаяся панель */}
         {isExpanded && (
-          <div
-            ref={expandedRef}
-            className="space-y-3 sm:space-y-4 px-2 sm:px-2.5 pb-3 sm:pb-4 pt-2"
-          >
+          <div className="space-y-3 sm:space-y-4 px-2 sm:px-2.5 pb-3 sm:pb-4">
             {/* Чекбоксы для булевых фильтров */}
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
               <div className="flex items-center space-x-1.5 p-1.5 sm:p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
@@ -611,19 +578,6 @@ export const FilterPanel = ({
                   <span>15</span>
                 </div>
               </div>
-            </div>
-
-            {/* Кнопка сброса в раскрытом состоянии */}
-            <div className="flex items-center justify-end">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearFilters}
-                className="text-xs font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow hover:shadow-sm h-6 px-2"
-              >
-                <Icon name="X" size={10} className="w-2.5 h-2.5 mr-1" />
-                {t("filters.resetAll")}
-              </Button>
             </div>
           </div>
         )}
