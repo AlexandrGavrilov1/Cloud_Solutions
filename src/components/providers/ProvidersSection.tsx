@@ -457,10 +457,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
-        {/* Для планшетов и десктопов: горизонтальное расположение */}
-        <div className="hidden sm:grid sm:grid-cols-12">
-          {/* Первая строка: Счетчик провайдеров и Поиск в одной строке */}
-          <div className="col-span-12 flex gap-4 mb-0.5">
+        {/* Для планшетов и десктопов */}
+        <div className="hidden sm:block">
+          {/* Первая строка: Счетчик провайдеров и Поиск */}
+          <div className="flex gap-4 mb-0.5">
             {/* Счетчик провайдеров */}
             <div className="w-2/3">
               <ProvidersCounter
@@ -473,7 +473,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               />
             </div>
 
-            {/* Поиск - выровнен по правому краю */}
+            {/* Поиск */}
             <div className="w-1/3 flex justify-end">
               <SearchInput
                 value={searchQuery}
@@ -484,50 +484,46 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
           </div>
 
-          {/* Вторая строка: Сортировка, Фильтры и Конфигуратор в одной строке */}
-          <div className="col-span-12 flex gap-0">
+          {/* Вторая строка: Сортировка, Фильтры и Конфигуратор */}
+          <div className="flex items-center">
             {/* Сортировка и Фильтры */}
-            <div className="w-2/3 flex gap-0 items-start">
+            <div className="flex items-center gap-0">
               {/* Сортировка */}
-              <div className="pr-2  -ml-2 -mt-0.5">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
+              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
               {/* Фильтры */}
-              <div className="w-full">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                />
-              </div>
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+              />
             </div>
 
             {/* Конфигуратор */}
-            <div className="w-1/3 flex justify-end">
+            <div className="flex-1 flex justify-end">
               <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
             </div>
           </div>
