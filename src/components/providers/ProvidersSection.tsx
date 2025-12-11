@@ -7,7 +7,7 @@ import { ProvidersList } from "./ProvidersList";
 import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
-import { ProvidersCounter } from "./providers/ProvidersCounter"; // Добавляем импорт счетчика
+import { ProvidersCounter } from "./ProvidersCounter"; // Добавляем импорт счетчика
 
 interface ProvidersSectionProps {
   providers: Provider[];
