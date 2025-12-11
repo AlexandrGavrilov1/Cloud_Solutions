@@ -473,13 +473,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               />
             </div>
 
-            {/* Поиск */}
+            {/* Поиск - выровнен по правому краю */}
             <div className="w-1/3 flex justify-end">
               <SearchInput
                 value={searchQuery}
                 onChange={setSearchQuery}
                 placeholder="Поиск..."
-                className="w-full max-w-[400px]"
+                className="ml-auto"
               />
             </div>
           </div>
@@ -489,7 +489,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             {/* Сортировка и Фильтры */}
             <div className="w-2/3 flex gap-0 items-start">
               {/* Сортировка */}
-              <div className="pr-2">
+              <div className="pr-2 pt-0.5">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
 
