@@ -415,19 +415,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           {/* Сортировка */}
           <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
-          {/* Счетчик провайдеров - для мобильных */}
-          <div className="bg-card border border-primary/20 rounded-xl shadow-md px-3 py-2">
-            <div className="text-sm font-bold text-foreground">
-              Показано:{" "}
-              <span className="text-primary">
-                {Math.min(providersToShow, filteredProviders.length)}
-              </span>{" "}
-              из{" "}
-              <span className="text-primary">{filteredProviders.length}</span>{" "}
-              провайдеров
-            </div>
-          </div>
-
           {/* Фильтр */}
           <FilterPanel
             filterFZ152={filterFZ152}
@@ -463,77 +450,59 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
-        <div className="hidden sm:block">
-          {/* Верхний ряд: Счетчик провайдеров */}
-          <div className="mb-2">
-            <div className="bg-card border border-primary/20 rounded-xl shadow-md px-4 py-3">
-              <div className="text-base font-bold text-foreground">
-                Показано:{" "}
-                <span className="text-primary">
-                  {Math.min(providersToShow, filteredProviders.length)}
-                </span>{" "}
-                из{" "}
-                <span className="text-primary">{filteredProviders.length}</span>{" "}
-                провайдеров
-              </div>
+        <div className="hidden sm:grid sm:grid-cols-12 gap-0">
+          {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
+          <div className="col-span-9 flex gap-0">
+            {/* Конфигуратор */}
+            <div className="pr-2">
+              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+            </div>
+
+            {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
+            <div className="pl-2 w-full">
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+              />
             </div>
           </div>
 
-          {/* Нижний ряд: Конфигуратор, Фильтр, Поиск и Сортировка */}
-          <div className="grid grid-cols-12 gap-0">
-            {/* Левая часть: Конфигуратор и Фильтр рядом без отступа */}
-            <div className="col-span-9 flex gap-0">
-              {/* Конфигуратор */}
-              <div className="pr-2">
-                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-              </div>
+          {/* Правая часть: Поиск и Сортировка вплотную к правому краю */}
+          <div className="col-span-3 flex flex-col items-end gap-2">
+            {/* Поиск */}
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Поиск..."
+              className="w-full"
+            />
 
-              {/* Фильтр - вплотную справа от конфигуратора, при раскрытии занимает всё пространство */}
-              <div className="pl-2 w-full">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                />
-              </div>
-            </div>
-
-            {/* Правая часть: Поиск и Сортировка вплотную к правому краю */}
-            <div className="col-span-3 flex flex-col items-end gap-2">
-              {/* Поиск */}
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Поиск..."
-                className="w-full"
-              />
-
-              {/* Сортировка */}
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
+            {/* Сортировка */}
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
         </div>
       </div>
