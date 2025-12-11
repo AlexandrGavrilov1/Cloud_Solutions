@@ -458,9 +458,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
-        <div className="hidden sm:grid sm:grid-cols-12 gap-4">
+        <div className="hidden sm:grid sm:grid-cols-12">
           {/* Первая строка: Счетчик провайдеров и Поиск в одной строке */}
-          <div className="col-span-12 flex gap-4 mb-2">
+          <div className="col-span-12 flex gap-4 mb-0.5">
             {/* Счетчик провайдеров */}
             <div className="w-2/3">
               <ProvidersCounter
