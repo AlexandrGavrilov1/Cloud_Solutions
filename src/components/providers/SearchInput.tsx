@@ -15,7 +15,7 @@ export const SearchInput = ({
   className = "",
 }: SearchInputProps) => {
   return (
-    <div className={`relative w-full sm:w-[215px] ${className}`}>
+    <div className={`relative w-full sm:w-[214px] ${className}`}>
       <Icon
         name="Search"
         size={14}
