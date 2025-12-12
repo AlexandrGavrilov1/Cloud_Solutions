@@ -405,14 +405,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       <div className="mb-4">
         {/* Для мобильных: вертикальное расположение */}
         <div className="flex flex-col sm:hidden gap-2">
-          {/* 1. Счетчик провайдеров */}
-          <ProvidersCounter
-            currentCount={Math.min(providersToShow, filteredProviders.length)}
-            totalCount={filteredProviders.length}
-            className="w-full"
-          />
-
-          {/* 2. Поиск */}
+          {/* Поиск */}
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
@@ -420,20 +413,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
-          {/* 3. Сортировка (слева) и Конфигуратор (справа) на одной строке */}
-          <div className="flex justify-between items-center">
-            {/* Сортировка - выровнена по левому краю */}
-            <div className="flex-shrink-0">
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
+          {/* Сортировка */}
+          <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
 
-            {/* Конфигуратор - выровнен по правому краю */}
-            <div className="flex-shrink-0">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-            </div>
-          </div>
+          {/* Счетчик провайдеров */}
+          <ProvidersCounter
+            currentCount={Math.min(providersToShow, filteredProviders.length)}
+            totalCount={filteredProviders.length}
+            className="w-full"
+          />
 
-          {/* 4. Фильтр */}
+          {/* Фильтр */}
           <FilterPanel
             filterFZ152={filterFZ152}
             setFilterFZ152={setFilterFZ152}
@@ -462,6 +452,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             allOS={allOS}
             allCPUs={allCPUs}
           />
+
+          {/* Конфигуратор */}
+          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
@@ -492,8 +485,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
           {/* Вторая строка: Сортировка, Фильтры и Конфигуратор в одной строке */}
           <div className="col-span-12 flex items-center gap-2">
+            {" "}
+            {/* items-center вместо gap-0 */}
             {/* Сортировка и Фильтры */}
             <div className="w-2/3 flex items-center gap-2">
+              {" "}
+              {/* items-center вместо items-start */}
               {/* Сортировка */}
               <div className="flex-shrink-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
