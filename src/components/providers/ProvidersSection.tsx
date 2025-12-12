@@ -582,10 +582,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             toggleComparison={toggleComparison}
           />
 
-          {(filteredProviders.length > providersToShow ||
-            providersToShow > 9) && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
-              {/* Кнопка "Показать ещё 9 провайдеров" */}
+           {(filteredProviders.length > providersToShow || providersToShow > 9) && (
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+      {/* Кнопка "Показать ещё 9 провайдеров" */}
 <button
   onClick={() => setProvidersToShow((prev) => prev + 9)}
   className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-sm rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
@@ -639,8 +638,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     </svg>
   </span>
 </button>
-              )}
-            </div>
+      )}
+    </div>
           )}
         </>
       )}
