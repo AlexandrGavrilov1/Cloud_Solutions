@@ -583,7 +583,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           />
 
           {filteredProviders.length > providersToShow && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-[25px] sm:gap-[50px] mt-8">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
               {/* Кнопка "Показать ещё 9 провайдеров" */}
               <button
                 onClick={() => setProvidersToShow((prev) => prev + 9)}
