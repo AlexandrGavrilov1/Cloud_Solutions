@@ -582,76 +582,64 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             toggleComparison={toggleComparison}
           />
 
-          {(filteredProviders.length > providersToShow ||
-            providersToShow > 9) && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
-              {/* Кнопка "Показать ещё 9 провайдеров" - только если не все показаны */}
-              {filteredProviders.length > providersToShow && (
-                <button
-                  onClick={() => setProvidersToShow((prev) => prev + 9)}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center justify-center gap-2">
-                    Показать ещё 9
-                    <svg
-                      className="w-5 h-5 group-hover:translate-y-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              )}
+           {(filteredProviders.length > providersToShow || providersToShow > 9) && (
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+      {/* Кнопка "Показать ещё 9 провайдеров" */}
+<button
+  onClick={() => setProvidersToShow((prev) => prev + 9)}
+  className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-sm rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+>
+  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+  <span className="relative flex items-center justify-center gap-2">
+    Показать ещё 9 провайдеров
+    <svg
+      className="w-4 h-4 group-hover:translate-y-1 transition-transform"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </span>
+</button>
 
-              {/* Умная кнопка "Показать всех / Скрыть" */}
-              {filteredProviders.length > 0 && (
-                <button
-                  onClick={() => {
-                    if (providersToShow === filteredProviders.length) {
-                      // Если все показаны - сворачиваем обратно
-                      const minToShow = Math.min(9, filteredProviders.length);
-                      setProvidersToShow(minToShow);
-                    } else {
-                      // Иначе показываем всех
-                      setProvidersToShow(filteredProviders.length);
-                    }
-                  }}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center justify-center gap-2">
-                    {providersToShow === filteredProviders.length
-                      ? "Скрыть"
-                      : "Показать всех "}
-                    <svg
-                      className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d={
-                          providersToShow === filteredProviders.length
-                            ? "M5 15l7-7 7 7"
-                            : "M19 9l-7 7-7-7"
-                        }
-                      />
-                    </svg>
-                  </span>
-                </button>
-              )}
-            </div>
+{/* Кнопка "Показать всех / Скрыть" */}
+<button
+  onClick={() => {
+    if (providersToShow === filteredProviders.length) {
+      const minToShow = Math.min(9, filteredProviders.length);
+      setProvidersToShow(minToShow);
+    } else {
+      setProvidersToShow(filteredProviders.length);
+    }
+  }}
+  className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-sm rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+>
+  <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+  <span className="relative flex items-center justify-center gap-2">
+    {providersToShow === filteredProviders.length ? "Скрыть" : "Показать всех провайдеров"}
+    <svg
+      className={`w-4 h-4 transition-transform ${providersToShow === filteredProviders.length ? 'group-hover:-translate-y-1' : 'group-hover:translate-y-1'}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d={providersToShow === filteredProviders.length ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
+      />
+    </svg>
+  </span>
+</button>
+      )}
+    </div>
           )}
         </>
       )}
