@@ -70,10 +70,8 @@ export const GlobalResourceConfig = ({
       {isOpen && (
         <div
           className="absolute top-full mt-2 
-                        /* На мобильных (<640px): открывается ВПРАВО от кнопки */
-                        left-0 
-                        /* На планшетах и десктопах (≥640px): открывается ВЛЕВО от кнопки */
-                        sm:left-auto sm:right-0 
+                        /* На всех устройствах открывается ВЛЕВО от кнопки */
+                        left-auto right-0 
                         w-[calc(100vw-2rem)] 
                         max-w-[320px] sm:max-w-[360px] md:max-w-[400px] 
                         bg-card border border-primary/20 rounded-xl shadow-md z-40"
@@ -110,7 +108,6 @@ export const GlobalResourceConfig = ({
                   {config.cpu} vCPU
                 </span>
               </div>
-              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.cpu]}
                 onValueChange={(value) =>
@@ -143,7 +140,6 @@ export const GlobalResourceConfig = ({
                   {config.ram} GB
                 </span>
               </div>
-              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.ram]}
                 onValueChange={(value) =>
@@ -178,7 +174,6 @@ export const GlobalResourceConfig = ({
                   {config.storage} GB
                 </span>
               </div>
-              {/* Добавлен класс для стилизации дорожки */}
               <Slider
                 value={[config.storage]}
                 onValueChange={(value) =>
