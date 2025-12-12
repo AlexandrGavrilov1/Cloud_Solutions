@@ -632,7 +632,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       </span>
     </button>
   </div>
-)}
+)}}
 
       <ComparisonControls
         selectedForComparison={selectedForComparison}
