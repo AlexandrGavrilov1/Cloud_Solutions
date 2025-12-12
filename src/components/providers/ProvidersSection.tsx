@@ -420,13 +420,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
-          {/* 3. Панель сортировки и фильтр на одной строке */}
+          {/* 3. Фильтр, Конфигуратор и Панель сортировки на одной строке */}
           <div className="flex items-center gap-2">
-            {/* Сортировка */}
-            <div className="flex-shrink-0">
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
-            {/* Фильтры */}
+            {/* Фильтр */}
             <div className="flex-grow">
               <FilterPanel
                 filterFZ152={filterFZ152}
@@ -457,10 +453,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 allCPUs={allCPUs}
               />
             </div>
-          </div>
 
-          {/* 4. Конфигуратор */}
-          <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+            {/* Конфигуратор */}
+            <div className="flex-shrink-0">
+              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+            </div>
+
+            {/* Панель сортировки */}
+            <div className="flex-shrink-0">
+              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+            </div>
+          </div>
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
