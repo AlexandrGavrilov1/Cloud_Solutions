@@ -591,7 +591,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative flex items-center justify-center gap-2">
-                  Показать ещё 9 провайдеров
+                  Показать ещё 9
                   <svg
                     className="w-5 h-5 group-hover:translate-y-1 transition-transform"
                     fill="none"
@@ -615,9 +615,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative flex items-center justify-center gap-2">
-                  Показать всех провайдеров
+                  Показать всех
                   <svg
-                    className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                    className="w-5 h-5 group-hover:rotate-180 transition-transform"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -626,7 +626,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
+                      d="M5 15l7-7 7 7"
                     />
                   </svg>
                 </span>
