@@ -434,7 +434,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
 
           {/* 4. Фильтр - прямо под сортировкой с минимальным отступом */}
-          <div className="mt-1">
+          <div className="mt-0.5">
             {" "}
             {/* Минимальный отступ сверху */}
             <FilterPanel
