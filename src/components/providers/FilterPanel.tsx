@@ -507,7 +507,6 @@ export const FilterPanel = ({
                 </div>
               </div>
             </div>
-
             {/* Ползунок для минимального количества дата-центров */}
             <div className="space-y-3 p-3 bg-background/50 rounded-lg border border-border">
               <div className="flex items-center justify-between">
@@ -554,7 +553,30 @@ export const FilterPanel = ({
                   onChange={(e) =>
                     handleDatacentersChange(parseInt(e.target.value))
                   }
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background"
+                  className="w-full h-2 bg-background rounded-lg appearance-none cursor-pointer
+        dark:bg-gray-800
+        [&::-webkit-slider-thumb]:appearance-none 
+        [&::-webkit-slider-thumb]:h-4 
+        [&::-webkit-slider-thumb]:w-4 
+        [&::-webkit-slider-thumb]:rounded-full 
+        [&::-webkit-slider-thumb]:border-2 
+        [&::-webkit-slider-thumb]:border-primary
+        [&::-webkit-slider-thumb]:bg-background
+        dark:[&::-webkit-slider-thumb]:bg-card
+        
+        [&::-moz-range-thumb]:h-4 
+        [&::-moz-range-thumb]:w-4 
+        [&::-moz-range-thumb]:rounded-full 
+        [&::-moz-range-thumb]:border-2 
+        [&::-moz-range-thumb]:border-primary
+        [&::-moz-range-thumb]:bg-background
+        dark:[&::-moz-range-thumb]:bg-card
+        
+        [&::-webkit-slider-runnable-track]:bg-input
+        dark:[&::-webkit-slider-runnable-track]:bg-gray-700
+        
+        [&::-moz-range-track]:bg-input
+        dark:[&::-moz-range-track]:bg-gray-700"
                 />
 
                 <div className="flex justify-between text-xs text-muted-foreground">
