@@ -404,12 +404,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       {/* Верхняя строка - адаптивная */}
       <div className="mb-4">
         {/* Для мобильных: вертикальное расположение */}
-        <div className="flex flex-col sm:hidden gap-2">
+        <div className="flex flex-col sm:hidden">
           {/* 1. Счетчик провайдеров */}
           <ProvidersCounter
             currentCount={Math.min(providersToShow, filteredProviders.length)}
             totalCount={filteredProviders.length}
-            className="w-full"
+            className="w-full mb-1"
           />
 
           {/* 2. Поиск */}
@@ -417,60 +417,51 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Поиск..."
-            className="w-full"
+            className="w-full mb-1"
           />
 
-          {/* 3. Сортировка, Конфигуратор и Фильтр в гриде 2x2 */}
-          <div className="grid grid-cols-2 gap-2">
-            {/* Левая колонка */}
-            <div className="space-y-2">
-              {/* Сортировка - первая строка, левая колонка */}
-              <div className="flex-shrink-0">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
-
-              {/* Фильтр - вторая строка, левая колонка */}
-              <div className="flex-shrink-0">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                />
-              </div>
+          {/* 3. Сортировка, Конфигуратор и Фильтр в гриде */}
+          <div className="grid grid-cols-2 gap-2 mb-0">
+            {/* Сортировка - левая колонка, первая строка */}
+            <div className="flex-shrink-0">
+              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
             </div>
 
-            {/* Правая колонка */}
-            <div className="space-y-2">
-              {/* Конфигуратор - первая строка, правая колонка */}
-              <div className="flex-shrink-0 h-full flex items-start justify-end">
-                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-              </div>
+            {/* Конфигуратор - правая колонка, первая строка, выровнен по правому краю */}
+            <div className="flex-shrink-0 flex justify-end">
+              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+            </div>
 
-              {/* Пустое место - вторая строка, правая колонка */}
-              <div className="flex-shrink-0"></div>
+            {/* Фильтр - занимает обе колонки, вторая строка */}
+            <div className="col-span-2 mt-0">
+              <FilterPanel
+                filterFZ152={filterFZ152}
+                setFilterFZ152={setFilterFZ152}
+                filterFSTEK={filterFSTEK}
+                setFilterFSTEK={setFilterFSTEK}
+                filterTrialPeriod={filterTrialPeriod}
+                setFilterTrialPeriod={setFilterTrialPeriod}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                filterVirtualization={filterVirtualization}
+                setFilterVirtualization={setFilterVirtualization}
+                filterMinDatacenters={filterMinDatacenters}
+                setFilterMinDatacenters={setFilterMinDatacenters}
+                filterDiskType={filterDiskType}
+                setFilterDiskType={setFilterDiskType}
+                filterPaymentMethod={filterPaymentMethod}
+                setFilterPaymentMethod={setFilterPaymentMethod}
+                filterOS={filterOS}
+                setFilterOS={setFilterOS}
+                filterCPU={filterCPU}
+                setFilterCPU={setFilterCPU}
+                allLocations={allLocations}
+                allVirtualizations={allVirtualizations}
+                allDiskTypes={allDiskTypes}
+                allPaymentMethods={allPaymentMethods}
+                allOS={allOS}
+                allCPUs={allCPUs}
+              />
             </div>
           </div>
         </div>
