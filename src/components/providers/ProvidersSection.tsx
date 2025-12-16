@@ -434,38 +434,35 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
 
           {/* 4. Фильтр - прямо под сортировкой с минимальным отступом */}
-          <div className="mt-0.5">
-            {" "}
-            {/* Минимальный отступ сверху */}
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-            />
-          </div>
+
+          <FilterPanel
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+          />
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
