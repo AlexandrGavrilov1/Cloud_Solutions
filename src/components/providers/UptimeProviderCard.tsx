@@ -149,7 +149,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Август", uptime: 99.99, downtime: 3 },
       { month: "Сентябрь", uptime: 99.97, downtime: 15 },
       { month: "Октябрь", uptime: 99.97, downtime: 15 },
-      { month: "Сентябрь", uptime: 99.98, downtime: 9 },
+      { month: "Ноябрь", uptime: 99.98, downtime: 9 },
     ];
   } else if (providerId === 13) {
     return [
@@ -163,7 +163,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Август", uptime: 100, downtime: 0 },
       { month: "Сентябрь", uptime: 99.99, downtime: 6 },
       { month: "Октябрь", uptime: 99.98, downtime: 9 },
-      { month: "Сентябрь", uptime: 99.98, downtime: 9 },
+      { month: "Ноябрь", uptime: 99.98, downtime: 9 },
     ];
   } else if (providerId === 14) {
     return [
@@ -177,6 +177,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Август", uptime: 99.93, downtime: 30 },
       { month: "Сентябрь", uptime: 99.8, downtime: 87 },
       { month: "Октябрь", uptime: 99.93, downtime: 33 },
+      { month: "Ноябрь", uptime: 99.94, downtime: 24 },
     ];
   } else if (providerId === 15) {
     return [
