@@ -420,48 +420,59 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
-          {/* 3. Сортировка и Конфигуратор на одной строке */}
-          <div className="flex justify-between items-start gap-2">
-            {/* Сортировка - выровнена по левому краю, убираем -ml-2 */}
-            <div className="flex-shrink-0">
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          {/* 3. Сортировка, Конфигуратор и Фильтр в гриде 2x2 */}
+          <div className="grid grid-cols-2 gap-2">
+            {/* Левая колонка */}
+            <div className="space-y-2">
+              {/* Сортировка - первая строка, левая колонка */}
+              <div className="flex-shrink-0">
+                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+              </div>
+
+              {/* Фильтр - вторая строка, левая колонка */}
+              <div className="flex-shrink-0">
+                <FilterPanel
+                  filterFZ152={filterFZ152}
+                  setFilterFZ152={setFilterFZ152}
+                  filterFSTEK={filterFSTEK}
+                  setFilterFSTEK={setFilterFSTEK}
+                  filterTrialPeriod={filterTrialPeriod}
+                  setFilterTrialPeriod={setFilterTrialPeriod}
+                  filterLocation={filterLocation}
+                  setFilterLocation={setFilterLocation}
+                  filterVirtualization={filterVirtualization}
+                  setFilterVirtualization={setFilterVirtualization}
+                  filterMinDatacenters={filterMinDatacenters}
+                  setFilterMinDatacenters={setFilterMinDatacenters}
+                  filterDiskType={filterDiskType}
+                  setFilterDiskType={setFilterDiskType}
+                  filterPaymentMethod={filterPaymentMethod}
+                  setFilterPaymentMethod={setFilterPaymentMethod}
+                  filterOS={filterOS}
+                  setFilterOS={setFilterOS}
+                  filterCPU={filterCPU}
+                  setFilterCPU={setFilterCPU}
+                  allLocations={allLocations}
+                  allVirtualizations={allVirtualizations}
+                  allDiskTypes={allDiskTypes}
+                  allPaymentMethods={allPaymentMethods}
+                  allOS={allOS}
+                  allCPUs={allCPUs}
+                />
+              </div>
             </div>
 
-            {/* Конфигуратор - выровнен по правому краю */}
-            <div className="flex-shrink-0">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+            {/* Правая колонка */}
+            <div className="space-y-2">
+              {/* Конфигуратор - первая строка, правая колонка */}
+              <div className="flex-shrink-0 h-full flex items-start justify-end">
+                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+              </div>
+
+              {/* Пустое место - вторая строка, правая колонка */}
+              <div className="flex-shrink-0"></div>
             </div>
           </div>
-
-          {/* 4. Фильтр */}
-          <FilterPanel
-            filterFZ152={filterFZ152}
-            setFilterFZ152={setFilterFZ152}
-            filterFSTEK={filterFSTEK}
-            setFilterFSTEK={setFilterFSTEK}
-            filterTrialPeriod={filterTrialPeriod}
-            setFilterTrialPeriod={setFilterTrialPeriod}
-            filterLocation={filterLocation}
-            setFilterLocation={setFilterLocation}
-            filterVirtualization={filterVirtualization}
-            setFilterVirtualization={setFilterVirtualization}
-            filterMinDatacenters={filterMinDatacenters}
-            setFilterMinDatacenters={setFilterMinDatacenters}
-            filterDiskType={filterDiskType}
-            setFilterDiskType={setFilterDiskType}
-            filterPaymentMethod={filterPaymentMethod}
-            setFilterPaymentMethod={setFilterPaymentMethod}
-            filterOS={filterOS}
-            setFilterOS={setFilterOS}
-            filterCPU={filterCPU}
-            setFilterCPU={setFilterCPU}
-            allLocations={allLocations}
-            allVirtualizations={allVirtualizations}
-            allDiskTypes={allDiskTypes}
-            allPaymentMethods={allPaymentMethods}
-            allOS={allOS}
-            allCPUs={allCPUs}
-          />
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
