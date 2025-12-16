@@ -495,7 +495,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             {/* Сортировка и Фильтры */}
             <div className="w-2/3 flex items-center">
               {/* Сортировка - прилегает к левому краю */}
-              <div className="flex-shrink-0 -ml-4">
+              <div className="flex-shrink-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
               {/* Фильтры */}
