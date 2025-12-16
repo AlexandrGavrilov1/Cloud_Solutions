@@ -420,8 +420,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
-          {/* 3. Сортировка (слева) и Конфигуратор (справа) на одной строке */}
-          <div className="flex justify-between items-center">
+          {/* 3. Сортировка и Конфигуратор на одной строке */}
+          <div className="flex justify-between items-start gap-2">
             {/* Сортировка - выровнена по левому краю */}
             <div className="flex-shrink-0 -ml-2">
               <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
