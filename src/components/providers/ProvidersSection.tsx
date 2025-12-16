@@ -404,12 +404,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       {/* Верхняя строка - адаптивная */}
       <div className="mb-4">
         {/* Для мобильных: вертикальное расположение */}
-        <div className="flex flex-col sm:hidden gap-2">
+        <div className="flex flex-col sm:hidden">
           {/* 1. Счетчик провайдеров */}
           <ProvidersCounter
             currentCount={Math.min(providersToShow, filteredProviders.length)}
             totalCount={filteredProviders.length}
-            className="w-full"
+            className="w-full mb-1"
           />
 
           {/* 2. Поиск */}
@@ -417,13 +417,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Поиск..."
-            className="w-full"
+            className="w-full mb-1"
           />
 
           {/* 3. Сортировка и Конфигуратор на одной строке */}
-          <div className="flex justify-between items-start gap-2">
-            {/* Сортировка - выровнена по левому краю, убираем -ml-2 */}
-            <div className="flex-shrink-0">
+          <div className="flex justify-between items-start gap-2 mb-0">
+            {/* Сортировка - выровнена по левому краю */}
+            <div className="flex-shrink-0 -ml-2">
               <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
             </div>
 
