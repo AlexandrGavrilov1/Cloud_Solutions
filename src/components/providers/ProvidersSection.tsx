@@ -404,12 +404,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       {/* Верхняя строка - адаптивная */}
       <div className="mb-4">
         {/* Для мобильных: вертикальное расположение */}
-        <div className="flex flex-col sm:hidden gap-2">
+        <div className="flex flex-col sm:hidden">
           {/* 1. Счетчик провайдеров */}
           <ProvidersCounter
             currentCount={Math.min(providersToShow, filteredProviders.length)}
             totalCount={filteredProviders.length}
-            className="w-full"
+            className="w-full mb-2"
           />
 
           {/* 2. Поиск */}
@@ -417,12 +417,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder="Поиск..."
-            className="w-full"
+            className="w-full mb-2"
           />
 
           {/* 3. Сортировка и Конфигуратор на одной строке */}
-          <div className="flex justify-between items-start gap-2">
-            {/* Сортировка - выровнена по левому краю, убираем -ml-2 */}
+          <div className="flex justify-between items-start gap-2 mb-0">
+            {/* Сортировка - выровнена по левому краю */}
             <div className="flex-shrink-0">
               <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
             </div>
@@ -433,35 +433,39 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
           </div>
 
-          {/* 4. Фильтр */}
-          <FilterPanel
-            filterFZ152={filterFZ152}
-            setFilterFZ152={setFilterFZ152}
-            filterFSTEK={filterFSTEK}
-            setFilterFSTEK={setFilterFSTEK}
-            filterTrialPeriod={filterTrialPeriod}
-            setFilterTrialPeriod={setFilterTrialPeriod}
-            filterLocation={filterLocation}
-            setFilterLocation={setFilterLocation}
-            filterVirtualization={filterVirtualization}
-            setFilterVirtualization={setFilterVirtualization}
-            filterMinDatacenters={filterMinDatacenters}
-            setFilterMinDatacenters={setFilterMinDatacenters}
-            filterDiskType={filterDiskType}
-            setFilterDiskType={setFilterDiskType}
-            filterPaymentMethod={filterPaymentMethod}
-            setFilterPaymentMethod={setFilterPaymentMethod}
-            filterOS={filterOS}
-            setFilterOS={setFilterOS}
-            filterCPU={filterCPU}
-            setFilterCPU={setFilterCPU}
-            allLocations={allLocations}
-            allVirtualizations={allVirtualizations}
-            allDiskTypes={allDiskTypes}
-            allPaymentMethods={allPaymentMethods}
-            allOS={allOS}
-            allCPUs={allCPUs}
-          />
+          {/* 4. Фильтр - прямо под сортировкой с минимальным отступом */}
+          <div className="mt-1">
+            {" "}
+            {/* Минимальный отступ сверху */}
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+            />
+          </div>
         </div>
 
         {/* Для планшетов и десктопов: горизонтальное расположение */}
