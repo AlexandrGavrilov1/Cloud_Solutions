@@ -149,6 +149,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Август", uptime: 99.99, downtime: 3 },
       { month: "Сентябрь", uptime: 99.97, downtime: 15 },
       { month: "Октябрь", uptime: 99.97, downtime: 15 },
+      { month: "Сентябрь", uptime: 99.98, downtime: 9 },
     ];
   } else if (providerId === 13) {
     return [
