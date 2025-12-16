@@ -303,6 +303,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Август", uptime: 99.95, downtime: 24 },
       { month: "Сентябрь", uptime: 99.95, downtime: 21 },
       { month: "Октябрь", uptime: 94.85, downtime: 2280 },
+      { month: "Ноябрь", uptime: 100, downtime: 0 },
     ];
   }
   return [];
