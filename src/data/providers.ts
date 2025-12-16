@@ -1253,7 +1253,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 3,
     },
-    uptime30days: 99.8,
+    uptime30days: 99.79,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
