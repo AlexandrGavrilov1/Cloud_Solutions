@@ -115,11 +115,11 @@ export const FilterPanel = ({
 
   return (
     <div className="relative">
-      {/* Кнопка фильтров - увеличиваем ширину для мобильных */}
-      <div className="w-full max-w-[115px] sm:max-w-[120px] md:max-w-[151px]">
+      {/* Кнопка фильтров - всегда одного размера */}
+      <div className="w-full max-w-[100px] sm:max-w-[120px] md:max-w-[151px]">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full px-3 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-xl bg-card border border-primary/20 shadow-md"
+          className="w-full px-2 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-xl bg-card border border-primary/20 shadow-md"
         >
           <div className="flex items-center gap-1.5 sm:gap-2">
             <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary/20 rounded-lg flex items-center justify-center relative">
