@@ -52,8 +52,10 @@ export const GlobalResourceConfig = ({
               <h3 className="text-sm sm:text-base font-bold text-foreground">
                 Конфигуратор
               </h3>
+              {/* "Диск:" с новой строки на мобильных */}
               <p className="text-[8px] sm:text-[9px] text-muted-foreground mt-0.5 leading-tight">
-                CPU: {config.cpu} • RAM: {config.ram}GB •{" "}
+                CPU: {config.cpu} • RAM: {config.ram}GB
+                <br className="sm:hidden" />
                 {t("resources.storage")}: {config.storage}GB
               </p>
             </div>
