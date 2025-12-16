@@ -545,40 +545,42 @@ export const FilterPanel = ({
               </div>
 
               <div className="space-y-2">
-                <input
-                  type="range"
-                  min="0"
-                  max="15"
-                  step="1"
-                  value={datacentersValue}
-                  onChange={(e) =>
-                    handleDatacentersChange(parseInt(e.target.value))
-                  }
-                  className="w-full h-2 bg-background rounded-lg appearance-none cursor-pointer
-        dark:bg-gray-800
-        [&::-webkit-slider-thumb]:appearance-none 
-        [&::-webkit-slider-thumb]:h-4 
-        [&::-webkit-slider-thumb]:w-4 
-        [&::-webkit-slider-thumb]:rounded-full 
-        [&::-webkit-slider-thumb]:border-2 
-        [&::-webkit-slider-thumb]:border-primary
-        [&::-webkit-slider-thumb]:bg-background
-        dark:[&::-webkit-slider-thumb]:bg-card
-        
-        [&::-moz-range-thumb]:h-4 
-        [&::-moz-range-thumb]:w-4 
-        [&::-moz-range-thumb]:rounded-full 
-        [&::-moz-range-thumb]:border-2 
-        [&::-moz-range-thumb]:border-primary
-        [&::-moz-range-thumb]:bg-background
-        dark:[&::-moz-range-thumb]:bg-card
-        
-        [&::-webkit-slider-runnable-track]:bg-input
-        dark:[&::-webkit-slider-runnable-track]:bg-gray-700
-        
-        [&::-moz-range-track]:bg-input
-        dark:[&::-moz-range-track]:bg-gray-700"
-                />
+                {/* Обертка для ползунка с градиентным фоном */}
+                <div className="relative h-2">
+                  {/* Белая линия фона */}
+                  <div className="absolute top-0 left-0 w-full h-full bg-gray-200 rounded-lg"></div>
+
+                  {/* Оранжевая линия, которая растет */}
+                  <div
+                    className="absolute top-0 left-0 h-full bg-primary rounded-lg transition-all duration-150"
+                    style={{ width: `${(datacentersValue / 15) * 100}%` }}
+                  />
+
+                  {/* Ползунок */}
+                  <input
+                    type="range"
+                    min="0"
+                    max="15"
+                    step="1"
+                    value={datacentersValue}
+                    onChange={(e) =>
+                      handleDatacentersChange(parseInt(e.target.value))
+                    }
+                    className="
+                      w-full h-2 absolute top-0 left-0 opacity-0 cursor-pointer z-10
+                    "
+                  />
+
+                  {/* Кастомный черный ползунок с оранжевой границей */}
+                  <div
+                    className="
+                      absolute top-1/2 h-4 w-4 bg-black rounded-full border-2 border-primary 
+                      shadow-sm cursor-pointer z-20 -translate-y-1/2 -translate-x-1/2
+                      transition-all duration-150
+                    "
+                    style={{ left: `${(datacentersValue / 15) * 100}%` }}
+                  />
+                </div>
 
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>0</span>
