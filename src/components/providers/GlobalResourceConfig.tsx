@@ -118,7 +118,7 @@ export const GlobalResourceConfig = ({
                 min={1}
                 max={16}
                 step={1}
-                className="cursor-pointer h-2 [&>div]:bg-gray-200"
+                className="cursor-pointer h-2 [&>div]:bg-border"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 vCPU</span>
@@ -150,7 +150,7 @@ export const GlobalResourceConfig = ({
                 min={1}
                 max={64}
                 step={1}
-                className="cursor-pointer h-2 [&>div]:bg-gray-200"
+                className="cursor-pointer h-2 [&>div]:bg-border"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>1 GB</span>
@@ -184,7 +184,7 @@ export const GlobalResourceConfig = ({
                 min={10}
                 max={500}
                 step={10}
-                className="cursor-pointer h-2 [&>div]:bg-gray-200"
+                className="cursor-pointer h-2 [&>div]:bg-border"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-1.5 px-0.5">
                 <span>10 GB</span>
