@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider"; // Импортируем Slider
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
@@ -544,17 +545,15 @@ export const FilterPanel = ({
                 ))}
               </div>
 
+              {/* Используем компонент Slider вместо нативного input */}
               <div className="space-y-2">
-                <input
-                  type="range"
-                  min="0"
-                  max="15"
-                  step="1"
-                  value={datacentersValue}
-                  onChange={(e) =>
-                    handleDatacentersChange(parseInt(e.target.value))
-                  }
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background"
+                <Slider
+                  value={[datacentersValue]}
+                  onValueChange={(value) => handleDatacentersChange(value[0])}
+                  min={0}
+                  max={15}
+                  step={1}
+                  className="cursor-pointer"
                 />
 
                 <div className="flex justify-between text-xs text-muted-foreground">
