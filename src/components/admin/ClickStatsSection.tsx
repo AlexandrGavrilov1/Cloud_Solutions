@@ -304,27 +304,38 @@ export const ClickStatsSection = ({
             </Card>
           </div>
 
-          <Card className="border-2 border-primary/20 mb-6">
+          <Card className="border-2 border-primary/20 mb-6 bg-gradient-to-br from-primary/5 via-background to-background">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <Icon name="BarChart3" size={20} className="text-primary" />
-                  Распределение переходов
-                </h3>
-                <div className="flex gap-2">
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground flex items-center gap-3 mb-2">
+                    <div className="bg-gradient-to-br from-primary to-primary/60 p-2 rounded-lg">
+                      <Icon name="BarChart3" size={22} className="text-primary-foreground" />
+                    </div>
+                    Распределение переходов
+                  </h3>
+                  <p className="text-sm text-muted-foreground ml-11">
+                    Статистика по {displayStats.length} провайдер{displayStats.length === 1 ? 'у' : displayStats.length < 5 ? 'ам' : 'ам'}
+                  </p>
+                </div>
+                <div className="flex gap-2 bg-card/50 p-1 rounded-lg border-2 border-primary/20">
                   <Button
-                    variant={chartView === 'bar' ? 'default' : 'outline'}
+                    variant={chartView === 'bar' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setChartView('bar')}
+                    className="gap-2"
                   >
                     <Icon name="BarChart3" size={16} />
+                    <span className="hidden sm:inline">График</span>
                   </Button>
                   <Button
-                    variant={chartView === 'pie' ? 'default' : 'outline'}
+                    variant={chartView === 'pie' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setChartView('pie')}
+                    className="gap-2"
                   >
                     <Icon name="PieChart" size={16} />
+                    <span className="hidden sm:inline">Круговая</span>
                   </Button>
                 </div>
               </div>
@@ -336,48 +347,70 @@ export const ClickStatsSection = ({
               ) : (
                 <>
                   {chartView === 'bar' && (
-                    <ResponsiveContainer width="100%" height={400}>
-                      <BarChart
-                        data={displayStats.map(stat => ({
-                          name: getProviderName(stat.provider_id),
-                          clicks: stat.clicks,
-                          percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0
-                        }))}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                    <div className="bg-card/30 rounded-xl p-6 border border-primary/10">
+                      <ResponsiveContainer width="100%" height={450}>
+                        <BarChart
+                          data={displayStats.map((stat, idx) => ({
+                            name: getProviderName(stat.provider_id),
+                            clicks: stat.clicks,
+                            percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0,
+                            fill: COLORS[idx % COLORS.length]
+                          }))}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                        >
+                      <defs>
+                        {COLORS.map((color, idx) => (
+                          <linearGradient key={idx} id={`barGradient${idx}`} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor={color} stopOpacity={0.9} />
+                            <stop offset="100%" stopColor={color} stopOpacity={0.6} />
+                          </linearGradient>
+                        ))}
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" opacity={0.2} stroke="hsl(var(--border))" />
+                      <XAxis 
+                        dataKey="name" 
+                        angle={-45}
+                        textAnchor="end"
+                        height={120}
+                        style={{ fontSize: '14px', fontWeight: '600', fill: 'hsl(var(--foreground))' }}
+                        interval={0}
+                        tick={{ fill: 'hsl(var(--foreground))' }}
+                      />
+                      <YAxis 
+                        style={{ fontSize: '13px', fontWeight: '500', fill: 'hsl(var(--foreground))' }} 
+                        allowDecimals={false}
+                        tick={{ fill: 'hsl(var(--foreground))' }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'hsl(var(--card))',
+                          border: '2px solid hsl(var(--primary))',
+                          borderRadius: '12px',
+                          padding: '12px',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                        }}
+                        cursor={{ fill: 'hsl(var(--primary) / 0.1)' }}
+                        formatter={(value: number, name: string, props: any) => [
+                          `${value} переходов (${props.payload.percentage}%)`,
+                          'Клики'
+                        ]}
+                      />
+                      <Bar 
+                        dataKey="clicks" 
+                        radius={[8, 8, 0, 0]}
+                        animationDuration={800}
+                        maxBarSize={60}
                       >
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis 
-                      dataKey="name" 
-                      angle={-45}
-                      textAnchor="end"
-                      height={120}
-                      style={{ fontSize: '14px', fontWeight: '500' }}
-                      interval={0}
-                    />
-                    <YAxis 
-                      style={{ fontSize: '13px' }} 
-                      allowDecimals={false}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))',
-                        border: '2px solid hsl(var(--primary))',
-                        borderRadius: '12px',
-                        padding: '12px'
-                      }}
-                      formatter={(value: number, name: string, props: any) => [
-                        `${value} переходов (${props.payload.percentage}%)`,
-                        'Клики'
-                      ]}
-                    />
-                    <Bar 
-                      dataKey="clicks" 
-                      fill="hsl(var(--primary))"
-                      radius={[8, 8, 0, 0]}
-                      animationDuration={800}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+                        {displayStats.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={`url(#barGradient${index % COLORS.length})`}
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               )}
 
                   {chartView === 'pie' && (
