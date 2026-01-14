@@ -452,6 +452,27 @@ export const ClickStatsSection = ({
 
           <Card className="border-2 border-primary/20 mt-6">
             <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+                  <Icon name="Table" size={20} className="text-primary" />
+                  Детальная статистика
+                </h3>
+                <div className="flex gap-2 items-center">
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => handleMonthChange(e.target.value)}
+                    className="px-3 py-1.5 text-sm border-2 border-primary/20 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary/50"
+                    disabled={isLoadingMonth}
+                  >
+                    <option value="all">Все время</option>
+                    {getAvailableMonths().map((month) => (
+                      <option key={month.value} value={month.value}>
+                        {month.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
