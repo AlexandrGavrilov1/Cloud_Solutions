@@ -354,7 +354,10 @@ export const ClickStatsSection = ({
                       style={{ fontSize: '14px', fontWeight: '500' }}
                       interval={0}
                     />
-                    <YAxis style={{ fontSize: '13px' }} />
+                    <YAxis 
+                      style={{ fontSize: '13px' }} 
+                      allowDecimals={false}
+                    />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
@@ -482,7 +485,10 @@ export const ClickStatsSection = ({
                       dataKey="date" 
                       style={{ fontSize: '12px' }}
                     />
-                    <YAxis style={{ fontSize: '12px' }} />
+                    <YAxis 
+                      style={{ fontSize: '12px' }} 
+                      allowDecimals={false}
+                    />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
