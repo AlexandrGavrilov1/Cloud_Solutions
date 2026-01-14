@@ -5763,7 +5763,7 @@ export const providers: Provider[] = [
     features: ["SSD диски", "ISPmanager", "Доступные цены", "DDoS защита"],
     locations: ["Москва", "Санкт-Петербург"],
     trialDays: 3,
-    url: "https://skyhost.ru/",
+    url: "https://cloudcore.ru/sign-up",
     pros: [
       "Низкие цены",
       "Тест 3 дня",
