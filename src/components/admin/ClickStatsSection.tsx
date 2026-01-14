@@ -381,35 +381,85 @@ export const ClickStatsSection = ({
               )}
 
                   {chartView === 'pie' && (
-                    <ResponsiveContainer width="100%" height={350}>
-                      <PieChart>
-                        <Pie
-                          data={displayStats.map(stat => ({
-                            name: getProviderName(stat.provider_id),
-                            value: stat.clicks
-                          }))}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={true}
-                      label={({name, value, percent}) => `${name}: ${value} (${(percent * 100).toFixed(1)}%)`}
-                      outerRadius={120}
-                      fill="#8884d8"
-                      dataKey="value"
-                      animationDuration={800}
-                        >
-                          {displayStats.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: 'hsl(var(--card))',
-                            border: '2px solid hsl(var(--primary))',
-                            borderRadius: '12px'
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <div className="flex items-center justify-center gap-8">
+                      <ResponsiveContainer width="50%" height={400}>
+                        <PieChart>
+                          <Pie
+                            data={displayStats.map(stat => ({
+                              name: getProviderName(stat.provider_id),
+                              value: stat.clicks
+                            }))}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={false}
+                            outerRadius={140}
+                            innerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                            animationDuration={800}
+                            paddingAngle={2}
+                          >
+                            {displayStats.map((entry, index) => (
+                              <Cell 
+                                key={`cell-${index}`} 
+                                fill={COLORS[index % COLORS.length]}
+                                strokeWidth={2}
+                                stroke="hsl(var(--background))"
+                              />
+                            ))}
+                          </Pie>
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'hsl(var(--card))',
+                              border: '2px solid hsl(var(--primary))',
+                              borderRadius: '12px',
+                              padding: '12px'
+                            }}
+                            formatter={(value: number) => [`${value} переходов`, 'Клики']}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      
+                      <div className="flex-1 max-h-[400px] overflow-y-auto pr-4">
+                        <div className="space-y-3">
+                          {displayStats.map((stat, index) => {
+                            const percentage = totalClicks > 0 ? ((stat.clicks / totalClicks) * 100).toFixed(1) : '0';
+                            return (
+                              <div 
+                                key={stat.provider_id}
+                                className="flex items-center gap-3 p-3 rounded-lg bg-card/50 hover:bg-card transition-colors border border-border/50"
+                              >
+                                <div 
+                                  className="w-4 h-4 rounded-full flex-shrink-0" 
+                                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-foreground truncate">
+                                    {getProviderName(stat.provider_id)}
+                                  </div>
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <div className="flex-1 bg-secondary h-2 rounded-full overflow-hidden">
+                                      <div 
+                                        className="h-full rounded-full transition-all duration-500"
+                                        style={{ 
+                                          width: `${percentage}%`,
+                                          backgroundColor: COLORS[index % COLORS.length]
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="text-right flex-shrink-0">
+                                  <div className="font-bold text-lg text-foreground">{stat.clicks}</div>
+                                  <div className="text-xs text-muted-foreground">{percentage}%</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </>
               )}
