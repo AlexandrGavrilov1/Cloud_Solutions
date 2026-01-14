@@ -6154,13 +6154,7 @@ export const providers: Provider[] = [
     },
     popularity: 20000,
     promoText: "Крупнейший европейский хостер с Anti-DDoS",
-    caseStudies: [
-      "Международные проекты",
-      "E-commerce",
-      "Highload системы",
-      "Gaming серверы",
-      "Корпоративные решения",
-    ],
+    caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: [],
   },
 ];
