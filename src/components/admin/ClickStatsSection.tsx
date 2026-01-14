@@ -426,17 +426,24 @@ export const ClickStatsSection = ({
                       activeDot={{ r: 7 }}
                       name="Всего"
                     />
-                    {providers.slice(0, 4).map((provider, idx) => (
-                      <Line
-                        key={provider.id}
-                        type="monotone"
-                        dataKey={provider.name}
-                        stroke={COLORS[idx]}
-                        strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
-                    ))}
+                    {(() => {
+                      const top5Providers = [...displayStats]
+                        .sort((a, b) => b.clicks - a.clicks)
+                        .slice(0, 5)
+                        .map(stat => getProviderName(stat.provider_id));
+                      
+                      return top5Providers.map((providerName, idx) => (
+                        <Line
+                          key={providerName}
+                          type="monotone"
+                          dataKey={providerName}
+                          stroke={COLORS[idx]}
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          activeDot={{ r: 6 }}
+                        />
+                      ));
+                    })()}
                   </LineChart>
                 </ResponsiveContainer>
               )}
