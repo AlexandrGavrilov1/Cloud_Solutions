@@ -40,6 +40,7 @@ export const ClickStatsSection = ({
 }: ClickStatsSectionProps) => {
   const [chartView, setChartView] = useState<'bar' | 'pie' | 'line'>('bar');
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
+  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'custom'>('custom');
   const [filteredStats, setFilteredStats] = useState<ClickStats[]>(clickStats);
   const [isLoadingMonth, setIsLoadingMonth] = useState(false);
 
@@ -62,8 +63,43 @@ export const ClickStatsSection = ({
     }
   }, [clickStats, selectedMonth]);
 
+  const handlePeriodChange = async (period: '1' | '7' | '30' | 'custom') => {
+    setSelectedPeriod(period);
+    
+    if (period === 'custom') {
+      return;
+    }
+
+    setSelectedMonth('all');
+    setIsLoadingMonth(true);
+    
+    try {
+      const now = new Date();
+      const startDate = new Date(now);
+      startDate.setDate(startDate.getDate() - parseInt(period));
+      
+      const month = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}`;
+      
+      const response = await fetch(
+        `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?period=${period}`
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        setFilteredStats(data.stats || []);
+      }
+    } catch (error) {
+      console.error('Error fetching period stats:', error);
+    } finally {
+      setIsLoadingMonth(false);
+    }
+    
+    onPeriodChange(period);
+  };
+
   const handleMonthChange = async (month: string) => {
     setSelectedMonth(month);
+    setSelectedPeriod('custom');
     
     if (month === 'all') {
       setFilteredStats(clickStats);
@@ -141,6 +177,36 @@ export const ClickStatsSection = ({
             Аналитика переходов
           </h2>
           <div className="flex gap-3 items-center">
+            <div className="flex gap-2">
+              <Button
+                variant={selectedPeriod === '1' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => handlePeriodChange('1')}
+                disabled={isLoadingMonth}
+                className="font-semibold"
+              >
+                День
+              </Button>
+              <Button
+                variant={selectedPeriod === '7' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => handlePeriodChange('7')}
+                disabled={isLoadingMonth}
+                className="font-semibold"
+              >
+                Неделя
+              </Button>
+              <Button
+                variant={selectedPeriod === '30' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => handlePeriodChange('30')}
+                disabled={isLoadingMonth}
+                className="font-semibold"
+              >
+                Месяц
+              </Button>
+            </div>
+            <div className="w-px h-8 bg-border" />
             <div className="flex items-center gap-2 px-4 py-2 bg-card border-2 border-primary/20 rounded-lg">
               <Icon name="Calendar" size={18} className="text-primary" />
               <select

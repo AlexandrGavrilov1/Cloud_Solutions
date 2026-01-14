@@ -141,6 +141,20 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                         GROUP BY provider_id
                         ORDER BY clicks DESC
                     """, (month,))
+                elif period and period.isdigit():
+                    days = int(period)
+                    cur.execute("""
+                        SELECT 
+                            provider_id,
+                            COUNT(DISTINCT user_ip) as clicks,
+                            MIN(clicked_at) as first_click,
+                            MAX(clicked_at) as last_click
+                        FROM provider_clicks
+                        WHERE user_ip IS NOT NULL 
+                        AND clicked_at >= CURRENT_DATE - %s
+                        GROUP BY provider_id
+                        ORDER BY clicks DESC
+                    """, (days,))
                 else:
                     cur.execute("""
                         SELECT 
