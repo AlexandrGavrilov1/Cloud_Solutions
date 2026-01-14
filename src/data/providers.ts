@@ -5443,7 +5443,7 @@ export const providers: Provider[] = [
     features: ["SSD диски", "152-ФЗ", "ISPmanager", "DDoS защита"],
     locations: ["Москва", "Санкт-Петербург"],
     trialDays: 3,
-    url: "https://dataru.ru/",
+    url: "https://dataru.ru/cloud",
     pros: ["Тест 3 дня", "Доступные цены", "ISPmanager", "DDoS защита"],
     cons: ["Нет NVMe", "Только 2 локации", "Короткий тестовый период"],
     fz152Compliant: true,
