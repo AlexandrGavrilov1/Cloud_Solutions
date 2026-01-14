@@ -132,13 +132,36 @@ export const ClickStatsSection = ({
 
   return (
     <div className="mb-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-foreground flex items-center gap-3">
-          <div className="bg-primary/10 p-3 rounded-xl">
-            <Icon name="BarChart3" size={28} className="text-primary" />
+      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b-2 border-primary/20 -mx-4 px-4 py-4 mb-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold text-foreground flex items-center gap-3">
+            <div className="bg-primary/10 p-3 rounded-xl">
+              <Icon name="BarChart3" size={28} className="text-primary" />
+            </div>
+            Аналитика переходов
+          </h2>
+          <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-2 px-4 py-2 bg-card border-2 border-primary/20 rounded-lg">
+              <Icon name="Calendar" size={18} className="text-primary" />
+              <select
+                value={selectedMonth}
+                onChange={(e) => handleMonthChange(e.target.value)}
+                className="px-2 py-1 text-sm bg-transparent text-foreground focus:outline-none font-medium cursor-pointer"
+                disabled={isLoadingMonth}
+              >
+                <option value="all">Все время</option>
+                {getAvailableMonths().map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {isLoadingMonth && (
+              <Icon name="Loader2" size={20} className="animate-spin text-primary" />
+            )}
           </div>
-          Аналитика переходов
-        </h2>
+        </div>
       </div>
 
       {isLoadingStats ? (
@@ -223,21 +246,7 @@ export const ClickStatsSection = ({
                   <Icon name="BarChart3" size={20} className="text-primary" />
                   Распределение переходов
                 </h3>
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={selectedMonth}
-                    onChange={(e) => handleMonthChange(e.target.value)}
-                    className="px-3 py-1.5 text-sm border-2 border-primary/20 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary/50"
-                    disabled={isLoadingMonth}
-                  >
-                    <option value="all">Все время</option>
-                    {getAvailableMonths().map((month) => (
-                      <option key={month.value} value={month.value}>
-                        {month.label}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="w-px h-6 bg-border" />
+                <div className="flex gap-2">
                   <Button
                     variant={chartView === 'bar' ? 'default' : 'outline'}
                     size="sm"
@@ -458,21 +467,6 @@ export const ClickStatsSection = ({
                   <Icon name="Table" size={20} className="text-primary" />
                   Детальная статистика
                 </h3>
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={selectedMonth}
-                    onChange={(e) => handleMonthChange(e.target.value)}
-                    className="px-3 py-1.5 text-sm border-2 border-primary/20 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary/50"
-                    disabled={isLoadingMonth}
-                  >
-                    <option value="all">Все время</option>
-                    {getAvailableMonths().map((month) => (
-                      <option key={month.value} value={month.value}>
-                        {month.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
