@@ -313,7 +313,7 @@ export const ClickStatsSection = ({
                       cx="50%"
                       cy="50%"
                       labelLine={true}
-                      label={({name, percent}) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                      label={({name, value}) => `${name}: ${value}`}
                       outerRadius={120}
                       fill="#8884d8"
                       dataKey="value"
