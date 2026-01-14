@@ -58,10 +58,10 @@ export const ClickStatsSection = ({
   };
 
   useEffect(() => {
-    if (selectedMonth === 'all') {
+    if (selectedMonth === 'all' && selectedPeriod === 'custom') {
       setFilteredStats(clickStats);
     }
-  }, [clickStats, selectedMonth]);
+  }, [clickStats, selectedMonth, selectedPeriod]);
 
   const handlePeriodChange = async (period: '1' | '7' | '30' | 'custom') => {
     setSelectedPeriod(period);
@@ -74,12 +74,6 @@ export const ClickStatsSection = ({
     setIsLoadingMonth(true);
     
     try {
-      const now = new Date();
-      const startDate = new Date(now);
-      startDate.setDate(startDate.getDate() - parseInt(period));
-      
-      const month = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}`;
-      
       const response = await fetch(
         `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?period=${period}`
       );
@@ -88,13 +82,13 @@ export const ClickStatsSection = ({
         const data = await response.json();
         setFilteredStats(data.stats || []);
       }
+      
+      onPeriodChange(period);
     } catch (error) {
       console.error('Error fetching period stats:', error);
     } finally {
       setIsLoadingMonth(false);
     }
-    
-    onPeriodChange(period);
   };
 
   const handleMonthChange = async (month: string) => {
@@ -103,6 +97,7 @@ export const ClickStatsSection = ({
     
     if (month === 'all') {
       setFilteredStats(clickStats);
+      onPeriodChange('30');
       return;
     }
 
@@ -115,6 +110,10 @@ export const ClickStatsSection = ({
         const data = await response.json();
         setFilteredStats(data.stats || []);
       }
+      
+      const monthDate = new Date(month + '-01');
+      const daysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+      onPeriodChange(String(daysInMonth) as '1' | '7' | '30');
     } catch (error) {
       console.error('Error fetching month stats:', error);
     } finally {
@@ -144,7 +143,7 @@ export const ClickStatsSection = ({
     return provider?.name || `Provider #${providerId}`;
   };
 
-  const displayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' ? clickStats : filteredStats);
+  const displayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' && selectedPeriod === 'custom' ? clickStats : filteredStats);
   const totalClicks = displayStats.reduce((sum, s) => sum + s.clicks, 0);
   const topProvider = displayStats.length > 0 ? displayStats.reduce((prev, current) => 
     (prev.clicks > current.clicks) ? prev : current
