@@ -262,24 +262,25 @@ export const ClickStatsSection = ({
               ) : (
                 <>
                   {chartView === 'bar' && (
-                    <ResponsiveContainer width="100%" height={350}>
+                    <ResponsiveContainer width="100%" height={400}>
                       <BarChart
                         data={displayStats.map(stat => ({
                           name: getProviderName(stat.provider_id),
                           clicks: stat.clicks,
                           percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0
                         }))}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
                       >
                     <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                     <XAxis 
                       dataKey="name" 
                       angle={-45}
                       textAnchor="end"
-                      height={100}
-                      style={{ fontSize: '12px' }}
+                      height={120}
+                      style={{ fontSize: '14px', fontWeight: '500' }}
+                      interval={0}
                     />
-                    <YAxis style={{ fontSize: '12px' }} />
+                    <YAxis style={{ fontSize: '13px' }} />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: 'hsl(var(--card))',
