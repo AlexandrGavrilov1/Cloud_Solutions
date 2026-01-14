@@ -499,30 +499,37 @@ export const ClickStatsSection = ({
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-primary/20">
+          <Card className="border-2 border-primary/20 bg-gradient-to-br from-purple-500/5 via-background to-background">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <Icon name="LineChart" size={20} className="text-primary" />
-                  Динамика по времени
-                </h3>
-                <div className="flex gap-2">
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground flex items-center gap-3 mb-2">
+                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-2 rounded-lg">
+                      <Icon name="TrendingUp" size={22} className="text-white" />
+                    </div>
+                    Динамика по времени
+                  </h3>
+                  <p className="text-sm text-muted-foreground ml-11">
+                    Топ-5 провайдеров по активности
+                  </p>
+                </div>
+                <div className="flex gap-2 bg-card/50 p-1 rounded-lg border-2 border-purple-500/20">
                   <Button
-                    variant={period === '1' ? 'default' : 'outline'}
+                    variant={period === '1' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => onPeriodChange('1')}
                   >
                     День
                   </Button>
                   <Button
-                    variant={period === '7' ? 'default' : 'outline'}
+                    variant={period === '7' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => onPeriodChange('7')}
                   >
                     Неделя
                   </Button>
                   <Button
-                    variant={period === '30' ? 'default' : 'outline'}
+                    variant={period === '30' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => onPeriodChange('30')}
                   >
@@ -536,59 +543,76 @@ export const ClickStatsSection = ({
                   <Icon name="Loader2" size={32} className="animate-spin text-primary" />
                 </div>
               ) : (
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart
-                    data={(() => {
-                      const dateMap = new Map<string, any>();
-                      
-                      dailyStats.forEach(stat => {
-                        if (!dateMap.has(stat.date)) {
-                          dateMap.set(stat.date, { date: stat.date, total: 0 });
-                        }
-                        const providerName = getProviderName(stat.provider_id);
-                        const entry = dateMap.get(stat.date)!;
-                        entry[providerName] = stat.clicks;
-                        entry.total += stat.clicks;
-                      });
-                      
-                      return Array.from(dateMap.values()).sort((a, b) => 
-                        new Date(a.date).getTime() - new Date(b.date).getTime()
-                      ).map(item => ({
-                        ...item,
-                        date: new Date(item.date).toLocaleDateString('ru-RU', { 
-                          day: '2-digit', 
-                          month: '2-digit' 
-                        })
-                      }));
-                    })()}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis 
-                      dataKey="date" 
-                      style={{ fontSize: '12px' }}
-                    />
-                    <YAxis 
-                      style={{ fontSize: '12px' }} 
-                      allowDecimals={false}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))',
-                        border: '2px solid hsl(var(--primary))',
-                        borderRadius: '12px',
-                        padding: '12px'
-                      }}
-                    />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="total"
-                      stroke="hsl(var(--primary))"
-                      strokeWidth={3}
-                      dot={{ r: 5, fill: 'hsl(var(--primary))' }}
-                      activeDot={{ r: 7 }}
-                      name="Всего"
+                <div className="bg-card/30 rounded-xl p-6 border border-purple-500/10">
+                  <ResponsiveContainer width="100%" height={450}>
+                    <LineChart
+                      data={(() => {
+                        const dateMap = new Map<string, any>();
+                        
+                        dailyStats.forEach(stat => {
+                          if (!dateMap.has(stat.date)) {
+                            dateMap.set(stat.date, { date: stat.date, total: 0 });
+                          }
+                          const providerName = getProviderName(stat.provider_id);
+                          const entry = dateMap.get(stat.date)!;
+                          entry[providerName] = stat.clicks;
+                          entry.total += stat.clicks;
+                        });
+                        
+                        return Array.from(dateMap.values()).sort((a, b) => 
+                          new Date(a.date).getTime() - new Date(b.date).getTime()
+                        ).map(item => ({
+                          ...item,
+                          date: new Date(item.date).toLocaleDateString('ru-RU', { 
+                            day: '2-digit', 
+                            month: '2-digit' 
+                          })
+                        }));
+                      })()}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <defs>
+                        <linearGradient id="totalGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" opacity={0.2} stroke="hsl(var(--border))" />
+                      <XAxis 
+                        dataKey="date" 
+                        style={{ fontSize: '13px', fontWeight: '500', fill: 'hsl(var(--foreground))' }}
+                        tick={{ fill: 'hsl(var(--foreground))' }}
+                      />
+                      <YAxis 
+                        style={{ fontSize: '13px', fontWeight: '500', fill: 'hsl(var(--foreground))' }} 
+                        allowDecimals={false}
+                        tick={{ fill: 'hsl(var(--foreground))' }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'hsl(var(--card))',
+                          border: '2px solid hsl(var(--primary))',
+                          borderRadius: '12px',
+                          padding: '12px',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                        }}
+                      />
+                      <Legend 
+                        wrapperStyle={{ 
+                          paddingTop: '20px',
+                          fontSize: '14px',
+                          fontWeight: '600'
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="total"
+                        stroke="hsl(var(--primary))"
+                        strokeWidth={4}
+                        dot={{ r: 6, fill: 'hsl(var(--primary))', strokeWidth: 2, stroke: '#fff' }}
+                        activeDot={{ r: 8, strokeWidth: 2 }}
+                        name="Всего"
+                        fill="url(#totalGradient)"
                     />
                     {(() => {
                       const top5Providers = [...displayStats]
@@ -602,14 +626,16 @@ export const ClickStatsSection = ({
                           type="monotone"
                           dataKey={providerName}
                           stroke={COLORS[idx]}
-                          strokeWidth={2}
-                          dot={{ r: 4 }}
-                          activeDot={{ r: 6 }}
+                          strokeWidth={3}
+                          dot={{ r: 5, fill: COLORS[idx], strokeWidth: 2, stroke: '#fff' }}
+                          activeDot={{ r: 7, strokeWidth: 2 }}
+                          name={providerName}
                         />
                       ));
                     })()}
                   </LineChart>
                 </ResponsiveContainer>
+              </div>
               )}
             </CardContent>
           </Card>
