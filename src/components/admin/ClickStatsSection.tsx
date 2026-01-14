@@ -154,12 +154,20 @@ export const ClickStatsSection = ({
   const getDailyGrowth = () => {
     if (dailyStats.length < 2) return 0;
     
-    const sortedStats = [...dailyStats].sort((a, b) => 
-      new Date(a.date).getTime() - new Date(b.date).getTime()
+    const dateMap = new Map<string, number>();
+    dailyStats.forEach(stat => {
+      const currentClicks = dateMap.get(stat.date) || 0;
+      dateMap.set(stat.date, currentClicks + stat.clicks);
+    });
+    
+    const sortedDates = Array.from(dateMap.entries()).sort((a, b) => 
+      new Date(a[0]).getTime() - new Date(b[0]).getTime()
     );
     
-    const lastDayClicks = sortedStats[sortedStats.length - 1]?.clicks || 0;
-    const prevDayClicks = sortedStats[sortedStats.length - 2]?.clicks || 0;
+    if (sortedDates.length < 2) return 0;
+    
+    const lastDayClicks = sortedDates[sortedDates.length - 1][1];
+    const prevDayClicks = sortedDates[sortedDates.length - 2][1];
     
     if (prevDayClicks === 0) return 0;
     return Math.round(((lastDayClicks - prevDayClicks) / prevDayClicks) * 100);
