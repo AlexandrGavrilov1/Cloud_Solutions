@@ -6100,7 +6100,7 @@ export const providers: Provider[] = [
   {
     id: 53,
     name: "One Dash",
-    logo: "providers_logo/53_One_Dash.JPG",
+    logo: "providers_logo/53_One_Dash.jpg",
     rating: 8.8,
     basePrice: 0,
     cpuPrice: 100,
