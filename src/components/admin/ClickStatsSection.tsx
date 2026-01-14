@@ -450,60 +450,89 @@ export const ClickStatsSection = ({
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
-            {displayStats.map((stat, index) => {
-              const percentage = totalClicks > 0 ? ((stat.clicks / totalClicks) * 100).toFixed(1) : '0';
-              
-              return (
-                <Card key={stat.provider_id} className="border-2 border-primary/10 hover:border-primary/30 transition-all hover:shadow-lg">
-                  <CardContent className="pt-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-bold text-foreground text-lg">
-                        {getProviderName(stat.provider_id)}
-                      </h3>
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                      />
-                    </div>
-                    
-                    <div className="flex items-baseline gap-2 mb-2">
-                      <span className="text-4xl font-black text-primary">{stat.clicks}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {stat.clicks === 1 ? 'переход' : stat.clicks < 5 ? 'перехода' : 'переходов'}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="flex-1 bg-secondary h-2 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-primary rounded-full transition-all duration-500"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                      <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
-                        {percentage}%
-                      </Badge>
-                    </div>
-
-                    {stat.last_click && (
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground pt-2 border-t border-border">
-                        <Icon name="Clock" size={12} />
-                        <span>
-                          {new Date(stat.last_click).toLocaleString('ru-RU', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+          <Card className="border-2 border-primary/20 mt-6">
+            <CardContent className="pt-6">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b-2 border-border">
+                      <th className="text-left py-3 px-4 font-bold text-foreground">#</th>
+                      <th className="text-left py-3 px-4 font-bold text-foreground">Провайдер</th>
+                      <th className="text-center py-3 px-4 font-bold text-foreground">Переходы</th>
+                      <th className="text-center py-3 px-4 font-bold text-foreground">Доля</th>
+                      <th className="text-left py-3 px-4 font-bold text-foreground">Последний переход</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {displayStats.map((stat, index) => {
+                      const percentage = totalClicks > 0 ? ((stat.clicks / totalClicks) * 100).toFixed(1) : '0';
+                      
+                      return (
+                        <tr 
+                          key={stat.provider_id} 
+                          className="border-b border-border hover:bg-primary/5 transition-colors"
+                        >
+                          <td className="py-4 px-4">
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground font-semibold">{index + 1}</span>
+                              <div 
+                                className="w-3 h-3 rounded-full" 
+                                style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                              />
+                            </div>
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="font-bold text-foreground text-base">
+                              {getProviderName(stat.provider_id)}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-center">
+                            <div className="flex flex-col items-center gap-1">
+                              <span className="text-2xl font-black text-primary">{stat.clicks}</span>
+                              <span className="text-xs text-muted-foreground">
+                                {stat.clicks === 1 ? 'переход' : stat.clicks < 5 ? 'перехода' : 'переходов'}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-4 px-4">
+                            <div className="flex flex-col items-center gap-2">
+                              <Badge className="bg-primary/10 text-primary border-primary/30">
+                                {percentage}%
+                              </Badge>
+                              <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
+                                <div 
+                                  className="h-full bg-primary rounded-full transition-all duration-500"
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-4 px-4">
+                            {stat.last_click ? (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Icon name="Clock" size={14} />
+                                <span>
+                                  {new Date(stat.last_click).toLocaleString('ru-RU', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })}
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-muted-foreground text-sm">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
