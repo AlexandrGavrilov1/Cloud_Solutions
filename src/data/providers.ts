@@ -6094,7 +6094,92 @@ export const providers: Provider[] = [
       "Gaming серверы",
       "Корпоративные решения",
     ],
-
+  }
+ {
+    id: 53,
+    name: "One Dash",
+    logo: "providers_logo/53_One_Dash.JPG",
+    rating: 8.8,
+    basePrice: 0,
+    cpuPrice: 100,
+    ramPrice: 40,
+    storagePrice: 10,
+    features: [
+      "NVMe диски",
+      "Резервное копирование",
+      "GPU"
+    ],
+    locations: [
+      "Россия",
+      "Германия",
+      "Нидерланды",
+      "США",
+    ],
+    trialDays: 0,
+    url: "https://rdp-onedash.ru/r/e63eaa",
+    pros: [
+      "Anti-DDoS защита в базе",
+      "NVMe диски",
+    ],
+    cons: [
+      "Низкая вариативность серверов",
+      
+    ],
+    fz152Compliant: false,
+    fstekCompliant: false,
+    technicalSpecs: {
+      diskType: "NVMe",
+      networkSpeed: "1 Гбит/с",
+      virtualization: ["KVM", "OpenStack"],
+      guaranteedResources: true,
+      ipv4: true,
+      ipv6: true,
+      availableOS: [
+        "Ubuntu",
+        "Debian",
+        "FreeBSD",
+        "AstraLinux",
+        
+      ],
+      controlPanel: "OVH Manager",
+      apiAccess: true,
+      ddosProtection: "Неограниченно",
+      cpuModels: ["Intel E5", "AMD 4.5GHz"],
+      kubernetes: {
+        available: false,
+        managed: false,
+      },
+    },
+    serviceGuarantees: {
+      uptimeSLA: "99.98%",
+      supportResponseTime: "< 20 мин",
+      moneyBackGuarantee: 0,
+    },
+    uptime30days: 99.92,
+    additionalServices: {
+      autoBackups: true,
+      backupPrice: 70,
+      monitoring: true,
+      snapshots: true,
+      customOS: false,
+      privateNetwork: true,
+      firewall: true,
+      loadBalancer: true,
+    },
+    pricingDetails: {
+      discounts: [],
+      paymentMethods: ["Банковская карта"],
+      minPrice: 49,
+    },
+    popularity: 45000,
+    promoText: "Крупнейший европейский хостер с Anti-DDoS",
+    caseStudies: [
+      "Международные проекты",
+      "E-commerce",
+      "Highload системы",
+      "Gaming серверы",
+      "Корпоративные решения",
+    ],
     reviews: [],
   },
 ];
