@@ -89,6 +89,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         params = event.get('queryStringParameters', {}) or {}
         view = params.get('view', 'summary')
         period = params.get('period', '30')
+        month = params.get('month', None)
         
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             if view == 'daily':
@@ -127,17 +128,31 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 }
             
             else:
-                cur.execute("""
-                    SELECT 
-                        provider_id,
-                        COUNT(DISTINCT user_ip) as clicks,
-                        MIN(clicked_at) as first_click,
-                        MAX(clicked_at) as last_click
-                    FROM provider_clicks
-                    WHERE user_ip IS NOT NULL
-                    GROUP BY provider_id
-                    ORDER BY clicks DESC
-                """)
+                if month:
+                    cur.execute("""
+                        SELECT 
+                            provider_id,
+                            COUNT(DISTINCT user_ip) as clicks,
+                            MIN(clicked_at) as first_click,
+                            MAX(clicked_at) as last_click
+                        FROM provider_clicks
+                        WHERE user_ip IS NOT NULL 
+                        AND TO_CHAR(clicked_at, 'YYYY-MM') = %s
+                        GROUP BY provider_id
+                        ORDER BY clicks DESC
+                    """, (month,))
+                else:
+                    cur.execute("""
+                        SELECT 
+                            provider_id,
+                            COUNT(DISTINCT user_ip) as clicks,
+                            MIN(clicked_at) as first_click,
+                            MAX(clicked_at) as last_click
+                        FROM provider_clicks
+                        WHERE user_ip IS NOT NULL
+                        GROUP BY provider_id
+                        ORDER BY clicks DESC
+                    """)
                 
                 stats = cur.fetchall()
         

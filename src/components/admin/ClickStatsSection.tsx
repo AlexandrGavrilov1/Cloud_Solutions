@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { providers } from '@/data/providers';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ClickStats {
   provider_id: number;
@@ -39,6 +39,52 @@ export const ClickStatsSection = ({
   onPeriodChange
 }: ClickStatsSectionProps) => {
   const [chartView, setChartView] = useState<'bar' | 'pie' | 'line'>('bar');
+  const [selectedMonth, setSelectedMonth] = useState<string>('all');
+  const [filteredStats, setFilteredStats] = useState<ClickStats[]>(clickStats);
+  const [isLoadingMonth, setIsLoadingMonth] = useState(false);
+
+  const getAvailableMonths = () => {
+    const months = [];
+    const now = new Date();
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push({
+        value: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+        label: date.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })
+      });
+    }
+    return months;
+  };
+
+  useEffect(() => {
+    if (selectedMonth === 'all') {
+      setFilteredStats(clickStats);
+    }
+  }, [clickStats, selectedMonth]);
+
+  const handleMonthChange = async (month: string) => {
+    setSelectedMonth(month);
+    
+    if (month === 'all') {
+      setFilteredStats(clickStats);
+      return;
+    }
+
+    setIsLoadingMonth(true);
+    try {
+      const response = await fetch(
+        `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?month=${month}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setFilteredStats(data.stats || []);
+      }
+    } catch (error) {
+      console.error('Error fetching month stats:', error);
+    } finally {
+      setIsLoadingMonth(false);
+    }
+  };
 
   const getProviderName = (providerId: number) => {
     const nameMapping: { [key: number]: string } = {
@@ -62,12 +108,13 @@ export const ClickStatsSection = ({
     return provider?.name || `Provider #${providerId}`;
   };
 
-  const totalClicks = clickStats.reduce((sum, s) => sum + s.clicks, 0);
-  const topProvider = clickStats.length > 0 ? clickStats.reduce((prev, current) => 
+  const displayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' ? clickStats : filteredStats);
+  const totalClicks = displayStats.reduce((sum, s) => sum + s.clicks, 0);
+  const topProvider = displayStats.length > 0 ? displayStats.reduce((prev, current) => 
     (prev.clicks > current.clicks) ? prev : current
   ) : null;
 
-  const avgClicksPerProvider = clickStats.length > 0 ? Math.round(totalClicks / clickStats.length) : 0;
+  const avgClicksPerProvider = displayStats.length > 0 ? Math.round(totalClicks / displayStats.length) : 0;
 
   const getDailyGrowth = () => {
     if (dailyStats.length < 2) return 0;
@@ -176,7 +223,21 @@ export const ClickStatsSection = ({
                   <Icon name="BarChart3" size={20} className="text-primary" />
                   Распределение переходов
                 </h3>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => handleMonthChange(e.target.value)}
+                    className="px-3 py-1.5 text-sm border-2 border-primary/20 rounded-lg bg-background text-foreground focus:outline-none focus:border-primary/50"
+                    disabled={isLoadingMonth}
+                  >
+                    <option value="all">Все время</option>
+                    {getAvailableMonths().map((month) => (
+                      <option key={month.value} value={month.value}>
+                        {month.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="w-px h-6 bg-border" />
                   <Button
                     variant={chartView === 'bar' ? 'default' : 'outline'}
                     size="sm"
@@ -194,16 +255,22 @@ export const ClickStatsSection = ({
                 </div>
               </div>
 
-              {chartView === 'bar' && (
-                <ResponsiveContainer width="100%" height={350}>
-                  <BarChart
-                    data={clickStats.map(stat => ({
-                      name: getProviderName(stat.provider_id),
-                      clicks: stat.clicks,
-                      percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0
-                    }))}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-                  >
+              {(isLoadingMonth || isLoadingStats) ? (
+                <div className="flex items-center justify-center py-16">
+                  <Icon name="Loader2" size={32} className="animate-spin text-primary" />
+                </div>
+              ) : (
+                <>
+                  {chartView === 'bar' && (
+                    <ResponsiveContainer width="100%" height={350}>
+                      <BarChart
+                        data={displayStats.map(stat => ({
+                          name: getProviderName(stat.provider_id),
+                          clicks: stat.clicks,
+                          percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0
+                        }))}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                      >
                     <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                     <XAxis 
                       dataKey="name" 
@@ -235,14 +302,14 @@ export const ClickStatsSection = ({
                 </ResponsiveContainer>
               )}
 
-              {chartView === 'pie' && (
-                <ResponsiveContainer width="100%" height={350}>
-                  <PieChart>
-                    <Pie
-                      data={clickStats.map(stat => ({
-                        name: getProviderName(stat.provider_id),
-                        value: stat.clicks
-                      }))}
+                  {chartView === 'pie' && (
+                    <ResponsiveContainer width="100%" height={350}>
+                      <PieChart>
+                        <Pie
+                          data={displayStats.map(stat => ({
+                            name: getProviderName(stat.provider_id),
+                            value: stat.clicks
+                          }))}
                       cx="50%"
                       cy="50%"
                       labelLine={true}
@@ -251,20 +318,22 @@ export const ClickStatsSection = ({
                       fill="#8884d8"
                       dataKey="value"
                       animationDuration={800}
-                    >
-                      {clickStats.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))',
-                        border: '2px solid hsl(var(--primary))',
-                        borderRadius: '12px'
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
+                        >
+                          {displayStats.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'hsl(var(--card))',
+                            border: '2px solid hsl(var(--primary))',
+                            borderRadius: '12px'
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  )}
+                </>
               )}
             </CardContent>
           </Card>
@@ -375,7 +444,7 @@ export const ClickStatsSection = ({
           </Card>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
-            {clickStats.map((stat, index) => {
+            {displayStats.map((stat, index) => {
               const percentage = totalClicks > 0 ? ((stat.clicks / totalClicks) * 100).toFixed(1) : '0';
               
               return (
