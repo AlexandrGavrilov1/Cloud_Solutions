@@ -6113,7 +6113,7 @@ export const providers: Provider[] = [
       "Низкая стоимость",
     ],
     locations: ["Россия", "Германия", "Нидерланды", "США"],
-    trialDays: 0,
+    trialDays: "7 дней за 49 рублей",
     url: "https://rdp-onedash.ru/r/e63eaa",
     pros: ["Низкая цена", "NVMe диски"],
     cons: ["Низкая вариативность серверов", "отсутвие виртуализации"],
@@ -6155,7 +6155,7 @@ export const providers: Provider[] = [
     pricingDetails: {
       discounts: [],
       paymentMethods: ["Банковская карта"],
-      minPrice: 49,
+      minPrice: 149,
     },
     popularity: 20000,
     promoText: "Самыое выгодное соотношение цены и качества",
