@@ -6106,11 +6106,11 @@ export const providers: Provider[] = [
     cpuPrice: 100,
     ramPrice: 40,
     storagePrice: 10,
-    features: ["NVMe диски", "Резервное копирование", "GPU"],
+    features: ["NVMe диски", "Резервное копирование", "GPU", "Низкая стоимость"],
     locations: ["Россия", "Германия", "Нидерланды", "США"],
     trialDays: 0,
     url: "https://rdp-onedash.ru/r/e63eaa",
-    pros: ["Anti-DDoS защита в базе", "NVMe диски"],
+    pros: ["Низкая цена", "NVMe диски"],
     cons: ["Низкая вариативность серверов", "отсутвие виртуализации"],
     fz152Compliant: false,
     fstekCompliant: false,
@@ -6153,14 +6153,14 @@ export const providers: Provider[] = [
       minPrice: 49,
     },
     popularity: 20000,
-    promoText: "Крупнейший европейский хостер с Anti-DDoS",
+    promoText: "Самыое выгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: [
-      {
+      { 
         author: "Lev",
         text: "Отличная цена качество ,в работе все бесперебойно и без проблемно Поддержка работает на высшем уровнем, поможет решить любой непонятный для вас вопрос в работе приложения",
         rating: 5,
-        date: "25 дек 2025",
+        date: "25 дек 2025",        
       },
       {
         author: "Павел Вишневский",
@@ -6168,7 +6168,7 @@ export const providers: Provider[] = [
         rating: 5,
         date: "28 нояб 2025",
       },
-      {
+         {
         author: "Clause",
         text: "Спасибо большое. Очень приятные цены. Ничего не лагает, для ботов, ну просто идеально, отличный сервис. буду постоянным покупателем. Спасибо разработчикам.",
         rating: 5,
@@ -6180,6 +6180,12 @@ export const providers: Provider[] = [
         rating: 4,
         date: "23 окт 2025",
       },
-    ],
+      {
+        author: "wattamey",
+        text: "Дешево и качество Имба,
+        rating: 5,
+        date: "13 окт 2025",
+      },
+      ],
   },
 ];
