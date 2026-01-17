@@ -185,15 +185,12 @@ export const ProviderCardHeader = ({
 
         <div className="flex flex-col items-end gap-2 pr-3">
           <div className="flex flex-col items-end">
-            <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <span className="text-sm text-muted-foreground">
+            <div className="flex items-baseline whitespace-nowrap">
+              <span className="text-sm text-muted-foreground mr-2">
                 {t("common.from")}
               </span>
               <span className="text-2xl font-black text-primary">
-                {calculatedPrice}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {t("common.perMonth")}
+                {calculatedPrice}{t("common.perMonth")}
               </span>
             </div>
           </div>
