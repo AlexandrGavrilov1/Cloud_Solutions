@@ -7,12 +7,8 @@ import { useState } from "react";
 interface FilterPanelProps {
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
-  filterFSTEK: string[]; // Изменено с boolean на string[]
-  setFilterFSTEK: (value: string[]) => void;
-  filterKII: boolean; // Добавлено
-  setFilterKII: (value: boolean) => void; // Добавлено
-  filterMobileApp: boolean; // Добавлено
-  setFilterMobileApp: (value: boolean) => void; // Добавлено
+  filterFSTEK: boolean;
+  setFilterFSTEK: (value: boolean) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
   filterLocation: string[];
@@ -42,10 +38,6 @@ export const FilterPanel = ({
   setFilterFZ152,
   filterFSTEK,
   setFilterFSTEK,
-  filterKII,
-  setFilterKII,
-  filterMobileApp,
-  setFilterMobileApp,
   filterTrialPeriod,
   setFilterTrialPeriod,
   filterLocation,
@@ -78,14 +70,11 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-    fstek: false, // Добавлено для ФСТЭК
   });
 
   const hasActiveFilters =
     filterFZ152 ||
-    filterFSTEK.length > 0 || // Обновлено
-    filterKII || // Добавлено
-    filterMobileApp || // Добавлено
+    filterFSTEK ||
     filterTrialPeriod ||
     filterLocation.length > 0 ||
     filterVirtualization.length > 0 ||
@@ -97,9 +86,7 @@ export const FilterPanel = ({
 
   const activeFiltersCount = [
     filterFZ152,
-    filterFSTEK.length > 0, // Обновлено
-    filterKII, // Добавлено
-    filterMobileApp, // Добавлено
+    filterFSTEK,
     filterTrialPeriod,
     filterLocation.length > 0,
     filterVirtualization.length > 0,
@@ -112,9 +99,7 @@ export const FilterPanel = ({
 
   const clearFilters = () => {
     setFilterFZ152(false);
-    setFilterFSTEK([]); // Обновлено
-    setFilterKII(false); // Добавлено
-    setFilterMobileApp(false); // Добавлено
+    setFilterFSTEK(false);
     setFilterTrialPeriod(false);
     setFilterLocation([]);
     setFilterVirtualization([]);
@@ -259,9 +244,6 @@ export const FilterPanel = ({
     );
   };
 
-  // Опции для ФСТЭК
-  const fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"];
-
   return (
     <div className="relative">
       <div className="w-full max-w-[115px] sm:max-w-[120px] md:max-w-[151px]">
@@ -353,13 +335,13 @@ export const FilterPanel = ({
                 <div className="relative">
                   <input
                     type="checkbox"
-                    id="kii"
-                    checked={filterKII}
-                    onChange={(e) => setFilterKII(e.target.checked)}
+                    id="fstek"
+                    checked={filterFSTEK}
+                    onChange={(e) => setFilterFSTEK(e.target.checked)}
                     className="sr-only peer"
                   />
                   <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterKII && (
+                    {filterFSTEK && (
                       <Icon
                         name="Check"
                         size={8}
@@ -369,50 +351,16 @@ export const FilterPanel = ({
                   </div>
                 </div>
                 <label
-                  htmlFor="kii"
+                  htmlFor="fstek"
                   className="flex items-center gap-1.5 cursor-pointer"
                 >
                   <Icon
-                    name="Building"
+                    name="ShieldAlert"
                     size={10}
                     className="text-primary w-3 h-3"
                   />
                   <span className="text-xs font-medium text-foreground">
-                    Поддержка КИИ
-                  </span>
-                </label>
-              </div>
-
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    id="mobile"
-                    checked={filterMobileApp}
-                    onChange={(e) => setFilterMobileApp(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterMobileApp && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                </div>
-                <label
-                  htmlFor="mobile"
-                  className="flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Icon
-                    name="Smartphone"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs font-medium text-foreground">
-                    Мобильное приложение
+                    ФСТЕК
                   </span>
                 </label>
               </div>
@@ -453,18 +401,6 @@ export const FilterPanel = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <MultiSelect
-                value={filterFSTEK}
-                onChange={(value) =>
-                  handleMultiSelectChange(value, filterFSTEK, setFilterFSTEK)
-                }
-                options={fstekOptions}
-                placeholder="Соответствие ФСТЭК"
-                iconName="ShieldAlert"
-                dropdownKey="fstek"
-                labelText="Соответствие ФСТЭК"
-              />
-
               <MultiSelect
                 value={filterLocation}
                 onChange={(value) =>

@@ -4,13 +4,13 @@ export interface Review {
   rating: number;
   date: string;
   provider_id?: number;
-  category?: "performance" | "support" | "price" | "general";
+  category?: 'performance' | 'support' | 'price' | 'general';
 }
 
 export interface TechnicalSpecs {
-  diskType: "NVMe" | "SSD" | "HDD";
+  diskType: 'NVMe' | 'SSD' | 'HDD';
   networkSpeed: string;
-  virtualization: ("KVM" | "OpenVZ" | "VMware" | "Hyper-V" | "LXC" | "Xen")[];
+  virtualization: ('KVM' | 'OpenVZ' | 'VMware' | 'Hyper-V' | 'LXC' | 'Xen')[];
   guaranteedResources: boolean;
   ipv4: boolean;
   ipv6: boolean;
@@ -83,9 +83,6 @@ export interface Provider {
   caseStudies?: string[];
   uptime30days?: number;
   monthlyUptimeData?: MonthlyUptime[];
-  fstekOrders?: string[]; // Приказы ФСТЭК: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"]
-  kiiPlacement?: boolean; // Размещение объектов КИИ
-  mobileApp?: boolean;
 }
 
 export interface ResourceConfig {
