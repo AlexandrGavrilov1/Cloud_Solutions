@@ -157,6 +157,15 @@ export const FilterPanel = ({
     }));
   };
 
+  // Функция для получения правильного текста для "найдено"
+  const getFoundText = (count: number) => {
+    if (language === "ru") {
+      return `Найдено ${count}`;
+    } else {
+      return `Found ${count}`;
+    }
+  };
+
   const MultiSelect = ({
     value,
     onChange,
@@ -175,28 +184,6 @@ export const FilterPanel = ({
     labelText?: string;
   }) => {
     const isOpen = dropdownsOpen[dropdownKey];
-
-    // Функция для получения правильного текста для "найдено"
-    const getFoundText = (count: number) => {
-      if (language === "ru") {
-        const lastDigit = count % 10;
-        const lastTwoDigits = count % 100;
-
-        if (lastDigit === 1 && lastTwoDigits !== 11) {
-          return `Найден ${count}`;
-        } else if (
-          lastDigit >= 2 &&
-          lastDigit <= 4 &&
-          (lastTwoDigits < 10 || lastTwoDigits >= 20)
-        ) {
-          return `Найдено ${count}`;
-        } else {
-          return `Найдено ${count}`;
-        }
-      } else {
-        return `Found ${count}`;
-      }
-    };
 
     return (
       <div className="group">
@@ -480,97 +467,17 @@ export const FilterPanel = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* ФСТЭК - выпадающий список с мульти-выбором */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="ShieldAlert"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">Соответствие ФСТЭК</span>
-                </label>
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => toggleDropdown("fstek")}
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2 overflow-hidden">
-                      <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <Icon
-                          name="ShieldAlert"
-                          size={10}
-                          className="text-primary w-3 h-3"
-                        />
-                      </div>
-                      <span className="truncate">
-                        {filterFSTEK.length === 0
-                          ? "Соответствие ФСТЭК"
-                          : filterFSTEK.length === 1
-                            ? filterFSTEK[0]
-                            : language === "ru"
-                              ? `Найдено ${filterFSTEK.length}`
-                              : `Found ${filterFSTEK.length}`}
-                      </span>
-                    </div>
-                    <Icon
-                      name={dropdownsOpen.fstek ? "ChevronUp" : "ChevronDown"}
-                      size={10}
-                      className="text-muted-foreground w-3 h-3 flex-shrink-0"
-                    />
-                  </button>
-
-                  {dropdownsOpen.fstek && (
-                    <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                      <div className="p-2">
-                        <button
-                          type="button"
-                          onClick={() => setFilterFSTEK([])}
-                          className={`w-full text-left px-3 py-2 rounded text-sm ${
-                            filterFSTEK.length === 0
-                              ? "bg-primary/10 text-primary font-medium"
-                              : "hover:bg-primary/5"
-                          }`}
-                        >
-                          Соответствие ФСТЭК
-                        </button>
-                        {fstekOptions.map((option) => (
-                          <div
-                            key={option}
-                            className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                            onClick={() => {
-                              if (filterFSTEK.includes(option)) {
-                                setFilterFSTEK(
-                                  filterFSTEK.filter((v) => v !== option),
-                                );
-                              } else {
-                                setFilterFSTEK([...filterFSTEK, option]);
-                              }
-                            }}
-                          >
-                            <div
-                              className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                                filterFSTEK.includes(option)
-                                  ? "bg-primary border-primary"
-                                  : "border-primary/50"
-                              }`}
-                            >
-                              {filterFSTEK.includes(option) && (
-                                <Icon
-                                  name="Check"
-                                  size={8}
-                                  className="text-background w-2.5 h-2.5"
-                                />
-                              )}
-                            </div>
-                            <span className="text-sm">{option}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <MultiSelect
+                value={filterFSTEK}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterFSTEK, setFilterFSTEK)
+                }
+                options={fstekOptions}
+                placeholder="Соответствие ФСТЭК"
+                iconName="ShieldAlert"
+                dropdownKey="fstek"
+                labelText="Соответствие ФСТЭК"
+              />
 
               <MultiSelect
                 value={filterLocation}
