@@ -26,9 +26,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  const [filterFSTEK, setFilterFSTEK] = useState(() => {
+  // Обновлено: теперь массив строк
+  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterFSTEK");
-    return saved ? JSON.parse(saved) : false;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
@@ -107,6 +108,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
 
+  // Варианты ФСТЭК для фильтра
+  const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
+
   // Загрузка отзывов
   useEffect(() => {
     const fetchApprovedReviews = async () => {
@@ -147,7 +151,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, [filterFZ152]);
 
   useEffect(() => {
-    localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
+    if (filterFSTEK.length > 0) {
+      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
+    } else {
+      localStorage.removeItem("filterFSTEK");
+    }
   }, [filterFSTEK]);
 
   useEffect(() => {
@@ -355,8 +363,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           // 152-ФЗ
           if (filterFZ152 && !p.fz152Compliant) return false;
 
-          // ФСТЭК
-          if (filterFSTEK && !p.fstekCompliant) return false;
+          // ФСТЭК (мульти-выбор)
+          if (filterFSTEK.length > 0) {
+            // Проверяем есть ли у провайдера выбранные сертификации ФСТЭК
+            const hasMatchingFSTEK = filterFSTEK.some(
+              (cert) => p.fstekCertifications?.includes(cert) || false,
+            );
+            if (!hasMatchingFSTEK) return false;
+          }
 
           // Тестовый период
           if (filterTrialPeriod && p.trialDays === 0) return false;
@@ -515,6 +529,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
+                  // Передаем варианты ФСТЭК в FilterPanel
+                  fstekOptions={fstekOptions}
                 />
               </div>
             </div>
@@ -584,6 +600,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
+                  // Передаем варианты ФСТЭК в FilterPanel
+                  fstekOptions={fstekOptions}
                 />
               </div>
             </div>

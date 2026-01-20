@@ -4,13 +4,13 @@ export interface Review {
   rating: number;
   date: string;
   provider_id?: number;
-  category?: 'performance' | 'support' | 'price' | 'general';
+  category?: "performance" | "support" | "price" | "general";
 }
 
 export interface TechnicalSpecs {
-  diskType: 'NVMe' | 'SSD' | 'HDD';
+  diskType: "NVMe" | "SSD" | "HDD";
   networkSpeed: string;
-  virtualization: ('KVM' | 'OpenVZ' | 'VMware' | 'Hyper-V' | 'LXC' | 'Xen')[];
+  virtualization: ("KVM" | "OpenVZ" | "VMware" | "Hyper-V" | "LXC" | "Xen")[];
   guaranteedResources: boolean;
   ipv4: boolean;
   ipv6: boolean;
@@ -72,8 +72,12 @@ export interface Provider {
   reviews: Review[];
   fz152Compliant: boolean;
   fz152Level?: string;
-  fstekCompliant: boolean;
+
+  // Обновленные поля для ФСТЭК
+  fstekCompliant: boolean; // для обратной совместимости
+  fstekCertifications: string[]; // массив сертификаций
   fstekLevel?: string;
+
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
   additionalServices: AdditionalServices;

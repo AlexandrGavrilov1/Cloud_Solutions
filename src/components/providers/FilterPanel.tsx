@@ -7,8 +7,8 @@ import { useState } from "react";
 interface FilterPanelProps {
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
-  filterFSTEK: boolean;
-  setFilterFSTEK: (value: boolean) => void;
+  filterFSTEK: string[];
+  setFilterFSTEK: (value: string[]) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
   filterLocation: string[];
@@ -31,6 +31,7 @@ interface FilterPanelProps {
   allPaymentMethods: string[];
   allOS: string[];
   allCPUs: string[];
+  fstekOptions: string[]; // Добавляем этот пропс
 }
 
 export const FilterPanel = ({
@@ -60,10 +61,12 @@ export const FilterPanel = ({
   allPaymentMethods,
   allOS,
   allCPUs,
+  fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], // Значение по умолчанию
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
   const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
+    fstek: false,
     location: false,
     virtualization: false,
     diskType: false,
@@ -74,7 +77,7 @@ export const FilterPanel = ({
 
   const hasActiveFilters =
     filterFZ152 ||
-    filterFSTEK ||
+    filterFSTEK.length > 0 ||
     filterTrialPeriod ||
     filterLocation.length > 0 ||
     filterVirtualization.length > 0 ||
@@ -86,7 +89,7 @@ export const FilterPanel = ({
 
   const activeFiltersCount = [
     filterFZ152,
-    filterFSTEK,
+    filterFSTEK.length > 0,
     filterTrialPeriod,
     filterLocation.length > 0,
     filterVirtualization.length > 0,
@@ -99,7 +102,7 @@ export const FilterPanel = ({
 
   const clearFilters = () => {
     setFilterFZ152(false);
-    setFilterFSTEK(false);
+    setFilterFSTEK([]);
     setFilterTrialPeriod(false);
     setFilterLocation([]);
     setFilterVirtualization([]);
@@ -135,11 +138,100 @@ export const FilterPanel = ({
     }
   };
 
+  // Функция для обработки выбора ФСТЭК
+  const handleFstekChange = (option: string) => {
+    const newValue = filterFSTEK.includes(option)
+      ? filterFSTEK.filter((v) => v !== option)
+      : [...filterFSTEK, option];
+    setFilterFSTEK(newValue);
+  };
+
   const toggleDropdown = (dropdown: string) => {
     setDropdownsOpen((prev) => ({
       ...prev,
       [dropdown]: !prev[dropdown],
     }));
+  };
+
+  // Компонент для выбора ФСТЭК
+  const FstekDropdown = () => {
+    const isOpen = dropdownsOpen.fstek;
+
+    return (
+      <div className="group">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => toggleDropdown("fstek")}
+            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="ShieldAlert"
+                  size={10}
+                  className="text-primary w-3 h-3"
+                />
+              </div>
+              <span className="truncate">
+                {filterFSTEK.length === 0
+                  ? "Любой ФСТЭК"
+                  : filterFSTEK.length === 1
+                    ? filterFSTEK[0]
+                    : `ФСТЭК (${filterFSTEK.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={10}
+              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="p-2">
+                <button
+                  type="button"
+                  onClick={() => setFilterFSTEK([])}
+                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                    filterFSTEK.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любой ФСТЭК
+                </button>
+                {fstekOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleFstekChange(option)}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                        filterFSTEK.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterFSTEK.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={8}
+                          className="text-background w-2.5 h-2.5"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   const MultiSelect = ({
@@ -331,38 +423,9 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    id="fstek"
-                    checked={filterFSTEK}
-                    onChange={(e) => setFilterFSTEK(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterFSTEK && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                </div>
-                <label
-                  htmlFor="fstek"
-                  className="flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Icon
-                    name="ShieldAlert"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs font-medium text-foreground">
-                    ФСТЕК
-                  </span>
-                </label>
+              {/* Дропдаун для ФСТЭК */}
+              <div className="col-span-1 sm:col-span-2">
+                <FstekDropdown />
               </div>
 
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
