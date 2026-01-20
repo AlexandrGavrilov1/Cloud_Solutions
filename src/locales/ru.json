@@ -95,7 +95,7 @@
     "compare": "Сравнить"
   },
   "filters": {
-    "title": "Фильтры и сортировка",
+    "title": "Фильтры",
     "resetAll": "Сбросить всё",
     "searchByName": "Поиск по названию",
     "findProvider": "Найти провайдера...",
@@ -118,6 +118,7 @@
     "byRating": "По рейтингу",
     "byPrice": "По цене",
     "minDatacenters": "Мин. кол-во ЦОД",
-    "anyAmount": "Любое кол-во"
+    "anyAmount": "Любое кол-во",
+    "anyVirtualization": "Любая виртуализация"
   }
 }

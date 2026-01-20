@@ -118,6 +118,7 @@
     "byRating": "By rating",
     "byPrice": "By price",
     "minDatacenters": "Min. DCs count",
-    "anyAmount": "Any amount"
+    "anyAmount": "Any amount",
+    "anyVirtualization": "Any virtualization"
   }
 }

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider"; // Импортируем Slider
+import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
@@ -11,20 +11,20 @@ interface FilterPanelProps {
   setFilterFSTEK: (value: boolean) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
-  filterLocation: string | null;
-  setFilterLocation: (value: string | null) => void;
-  filterVirtualization: string | null;
-  setFilterVirtualization: (value: string | null) => void;
+  filterLocation: string[];
+  setFilterLocation: (value: string[]) => void;
+  filterVirtualization: string[];
+  setFilterVirtualization: (value: string[]) => void;
   filterMinDatacenters: number | null;
   setFilterMinDatacenters: (value: number | null) => void;
-  filterDiskType: string | null;
-  setFilterDiskType: (value: string | null) => void;
-  filterPaymentMethod: string | null;
-  setFilterPaymentMethod: (value: string | null) => void;
-  filterOS: string | null;
-  setFilterOS: (value: string | null) => void;
-  filterCPU: string | null;
-  setFilterCPU: (value: string | null) => void;
+  filterDiskType: string[];
+  setFilterDiskType: (value: string[]) => void;
+  filterPaymentMethod: string[];
+  setFilterPaymentMethod: (value: string[]) => void;
+  filterOS: string[];
+  setFilterOS: (value: string[]) => void;
+  filterCPU: string[];
+  setFilterCPU: (value: string[]) => void;
   allLocations: string[];
   allVirtualizations: string[];
   allDiskTypes: string[];
@@ -63,44 +63,51 @@ export const FilterPanel = ({
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
+    location: false,
+    virtualization: false,
+    diskType: false,
+    paymentMethod: false,
+    os: false,
+    cpu: false,
+  });
 
   const hasActiveFilters =
     filterFZ152 ||
     filterFSTEK ||
     filterTrialPeriod ||
-    filterLocation ||
-    filterVirtualization ||
+    filterLocation.length > 0 ||
+    filterVirtualization.length > 0 ||
     filterMinDatacenters !== null ||
-    filterDiskType ||
-    filterPaymentMethod ||
-    filterOS ||
-    filterCPU;
+    filterDiskType.length > 0 ||
+    filterPaymentMethod.length > 0 ||
+    filterOS.length > 0 ||
+    filterCPU.length > 0;
 
-  // Подсчет количества активных фильтров
   const activeFiltersCount = [
     filterFZ152,
     filterFSTEK,
     filterTrialPeriod,
-    filterLocation,
-    filterVirtualization,
+    filterLocation.length > 0,
+    filterVirtualization.length > 0,
     filterMinDatacenters !== null,
-    filterDiskType,
-    filterPaymentMethod,
-    filterOS,
-    filterCPU,
+    filterDiskType.length > 0,
+    filterPaymentMethod.length > 0,
+    filterOS.length > 0,
+    filterCPU.length > 0,
   ].filter(Boolean).length;
 
   const clearFilters = () => {
     setFilterFZ152(false);
     setFilterFSTEK(false);
     setFilterTrialPeriod(false);
-    setFilterLocation(null);
-    setFilterVirtualization(null);
+    setFilterLocation([]);
+    setFilterVirtualization([]);
     setFilterMinDatacenters(null);
-    setFilterDiskType(null);
-    setFilterPaymentMethod(null);
-    setFilterOS(null);
-    setFilterCPU(null);
+    setFilterDiskType([]);
+    setFilterPaymentMethod([]);
+    setFilterOS([]);
+    setFilterCPU([]);
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -114,9 +121,131 @@ export const FilterPanel = ({
 
   const popularValues = [0, 1, 3, 5, 10, 15];
 
+  const handleMultiSelectChange = (
+    value: string,
+    currentValues: string[],
+    setter: (values: string[]) => void,
+  ) => {
+    if (value === "all") {
+      setter([]);
+    } else if (currentValues.includes(value)) {
+      setter(currentValues.filter((v) => v !== value));
+    } else {
+      setter([...currentValues, value]);
+    }
+  };
+
+  const toggleDropdown = (dropdown: string) => {
+    setDropdownsOpen((prev) => ({
+      ...prev,
+      [dropdown]: !prev[dropdown],
+    }));
+  };
+
+  const MultiSelect = ({
+    value,
+    onChange,
+    options,
+    placeholder,
+    iconName,
+    dropdownKey,
+    labelText,
+  }: {
+    value: string[];
+    onChange: (val: string) => void;
+    options: string[];
+    placeholder: string;
+    iconName: string;
+    dropdownKey: string;
+    labelText?: string;
+  }) => {
+    const isOpen = dropdownsOpen[dropdownKey];
+
+    return (
+      <div className="group">
+        {labelText && (
+          <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+            <Icon name={iconName} size={10} className="text-primary w-3 h-3" />
+            <span className="text-xs">{labelText}</span>
+          </label>
+        )}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => toggleDropdown(dropdownKey)}
+            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name={iconName}
+                  size={10}
+                  className="text-primary w-3 h-3"
+                />
+              </div>
+              <span className="truncate">
+                {value.length === 0
+                  ? placeholder
+                  : value.length === 1
+                    ? value[0]
+                    : `${t("filters.found")} ${value.length}`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={10}
+              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="p-2">
+                <button
+                  type="button"
+                  onClick={() => onChange("all")}
+                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                    value.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  {placeholder}
+                </button>
+                {options.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => onChange(option)}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                        value.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {value.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={8}
+                          className="text-background w-2.5 h-2.5"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="relative">
-      {/* Кнопка фильтров - увеличиваем ширину для мобильных */}
       <div className="w-full max-w-[115px] sm:max-w-[120px] md:max-w-[151px]">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -130,7 +259,6 @@ export const FilterPanel = ({
                 className="text-primary w-3 h-3 sm:w-3.5 sm:h-3.5"
               />
 
-              {/* Бейдж с счетчиком активных фильтров */}
               {activeFiltersCount > 0 && (
                 <div className="absolute -top-1 -right-1 bg-primary text-background text-[8px] sm:text-[9px] font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center border-2 border-card">
                   {activeFiltersCount}
@@ -138,7 +266,7 @@ export const FilterPanel = ({
               )}
             </div>
             <h3 className="text-xs sm:text-sm font-bold text-foreground">
-              Фильтры
+              {t("filters.title")}
             </h3>
           </div>
           <div className="flex items-center gap-1">
@@ -151,7 +279,6 @@ export const FilterPanel = ({
         </button>
       </div>
 
-      {/* Выпадающая панель фильтров - адаптивная ширина */}
       {isExpanded && (
         <div className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-[500px] sm:max-w-[450px] md:max-w-[510px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
           {hasActiveFilters && (
@@ -169,7 +296,6 @@ export const FilterPanel = ({
           )}
 
           <div className="space-y-4 p-3 max-h-[70vh] overflow-y-auto">
-            {/* Чекбоксы для булевых фильтров */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
@@ -274,242 +400,96 @@ export const FilterPanel = ({
               </div>
             </div>
 
-            {/* Выпадающие списки */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Локация */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="MapPin"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">
-                    {t("filters.datacenterLocation")}
-                  </span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Icon
-                      name="Globe"
-                      size={10}
-                      className="text-primary w-3 h-3"
-                    />
-                  </div>
-                  <select
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7"
-                    value={filterLocation || ""}
-                    onChange={(e) => setFilterLocation(e.target.value || null)}
-                  >
-                    <option value="">{t("filters.anyLocation")}</option>
-                    {allLocations.map((loc) => (
-                      <option key={loc} value={loc}>
-                        {loc}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon
-                    name="ChevronDown"
-                    size={10}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground w-3 h-3"
-                  />
-                </div>
-              </div>
+              <MultiSelect
+                value={filterLocation}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterLocation,
+                    setFilterLocation,
+                  )
+                }
+                options={allLocations}
+                placeholder={t("filters.anyLocation")}
+                iconName="Globe"
+                dropdownKey="location"
+                labelText={t("filters.datacenterLocation")}
+              />
 
-              {/* Виртуализация */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="Boxes"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">{t("common.virtualization")}</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Icon
-                      name="Box"
-                      size={10}
-                      className="text-primary w-3 h-3"
-                    />
-                  </div>
-                  <select
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7"
-                    value={filterVirtualization || ""}
-                    onChange={(e) =>
-                      setFilterVirtualization(e.target.value || null)
-                    }
-                  >
-                    <option value="">{t("filters.anyDisk")}</option>
-                    {allVirtualizations.map((virt) => (
-                      <option key={virt} value={virt}>
-                        {virt}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon
-                    name="ChevronDown"
-                    size={10}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground w-3 h-3"
-                  />
-                </div>
-              </div>
+              <MultiSelect
+                value={filterVirtualization}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterVirtualization,
+                    setFilterVirtualization,
+                  )
+                }
+                options={allVirtualizations}
+                placeholder={t("filters.anyVirtualization")}
+                iconName="Box"
+                dropdownKey="virtualization"
+                labelText={t("common.virtualization")}
+              />
 
-              {/* Тип диска */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="HardDrive"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">{t("filters.diskType")}</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Icon
-                      name="Database"
-                      size={10}
-                      className="text-primary w-3 h-3"
-                    />
-                  </div>
-                  <select
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7"
-                    value={filterDiskType || ""}
-                    onChange={(e) => setFilterDiskType(e.target.value || null)}
-                  >
-                    <option value="">{t("filters.anyDisk")}</option>
-                    {allDiskTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon
-                    name="ChevronDown"
-                    size={10}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground w-3 h-3"
-                  />
-                </div>
-              </div>
+              <MultiSelect
+                value={filterDiskType}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterDiskType,
+                    setFilterDiskType,
+                  )
+                }
+                options={allDiskTypes}
+                placeholder={t("filters.anyDisk")}
+                iconName="Database"
+                dropdownKey="diskType"
+                labelText={t("filters.diskType")}
+              />
 
-              {/* Метод оплаты */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="CreditCard"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">{t("filters.paymentMethod")}</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Icon
-                      name="Wallet"
-                      size={10}
-                      className="text-primary w-3 h-3"
-                    />
-                  </div>
-                  <select
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7"
-                    value={filterPaymentMethod || ""}
-                    onChange={(e) =>
-                      setFilterPaymentMethod(e.target.value || null)
-                    }
-                  >
-                    <option value="">{t("filters.anyMethod")}</option>
-                    {allPaymentMethods.map((method) => (
-                      <option key={method} value={method}>
-                        {method}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon
-                    name="ChevronDown"
-                    size={10}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground w-3 h-3"
-                  />
-                </div>
-              </div>
+              <MultiSelect
+                value={filterPaymentMethod}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterPaymentMethod,
+                    setFilterPaymentMethod,
+                  )
+                }
+                options={allPaymentMethods}
+                placeholder={t("filters.anyMethod")}
+                iconName="Wallet"
+                dropdownKey="paymentMethod"
+                labelText={t("filters.paymentMethod")}
+              />
 
-              {/* Операционная система */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="Monitor"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">
-                    {t("filters.operatingSystem")}
-                  </span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Icon
-                      name="Terminal"
-                      size={10}
-                      className="text-primary w-3 h-3"
-                    />
-                  </div>
-                  <select
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7"
-                    value={filterOS || ""}
-                    onChange={(e) => setFilterOS(e.target.value || null)}
-                  >
-                    <option value="">{t("filters.anyOS")}</option>
-                    {allOS.map((os) => (
-                      <option key={os} value={os}>
-                        {os}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon
-                    name="ChevronDown"
-                    size={10}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground w-3 h-3"
-                  />
-                </div>
-              </div>
+              <MultiSelect
+                value={filterOS}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterOS, setFilterOS)
+                }
+                options={allOS}
+                placeholder={t("filters.anyOS")}
+                iconName="Terminal"
+                dropdownKey="os"
+                labelText={t("filters.operatingSystem")}
+              />
 
-              {/* Процессор */}
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
-                  <span className="text-xs">Процессор</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Icon
-                      name="Cpu"
-                      size={10}
-                      className="text-primary w-3 h-3"
-                    />
-                  </div>
-                  <select
-                    className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium appearance-none cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7"
-                    value={filterCPU || ""}
-                    onChange={(e) => setFilterCPU(e.target.value || null)}
-                  >
-                    <option value="">Любой процессор</option>
-                    {allCPUs.map((cpu) => (
-                      <option key={cpu} value={cpu}>
-                        {cpu}
-                      </option>
-                    ))}
-                  </select>
-                  <Icon
-                    name="ChevronDown"
-                    size={10}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground w-3 h-3"
-                  />
-                </div>
-              </div>
+              <MultiSelect
+                value={filterCPU}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterCPU, setFilterCPU)
+                }
+                options={allCPUs}
+                placeholder="Любой процессор"
+                iconName="Cpu"
+                dropdownKey="cpu"
+                labelText="Процессор"
+              />
             </div>
 
-            {/* Ползунок для минимального количества дата-центров */}
             <div className="space-y-3 p-3 bg-background/50 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -529,7 +509,6 @@ export const FilterPanel = ({
                 </span>
               </div>
 
-              {/* Кнопки с популярными значениями */}
               <div className="flex flex-wrap gap-2">
                 {popularValues.map((value) => (
                   <Button
@@ -545,7 +524,6 @@ export const FilterPanel = ({
                 ))}
               </div>
 
-              {/* Используем компонент Slider вместо нативного input */}
               <div className="space-y-2">
                 <Slider
                   value={[datacentersValue]}
