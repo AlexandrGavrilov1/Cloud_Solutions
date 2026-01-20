@@ -32,7 +32,7 @@ export const providers: Provider[] = [
     fz152Level: "УЗ-1",
     fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-21"],
-    fstekLevel: "К-2",
+    fstekLevel: "К-10",
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
