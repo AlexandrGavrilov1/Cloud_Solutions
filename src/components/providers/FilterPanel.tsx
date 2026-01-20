@@ -7,7 +7,7 @@ import { useState } from "react";
 interface FilterPanelProps {
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
-  filterFSTEK: string[]; // Изменено на массив строк
+  filterFSTEK: string[];
   setFilterFSTEK: (value: string[]) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
