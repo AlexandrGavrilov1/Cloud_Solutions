@@ -1,3 +1,4 @@
+// en.json - добавить новые ключи
 {
   "header": {
     "title": "TopCloudHub",
@@ -40,7 +41,10 @@
     "compliant": "Compliant",
     "disks": "Disks",
     "virtualization": "Virtualization",
-    "users": "users"
+    "users": "users",
+    "fstek": "FSTEC Compliance",
+    "kiiPlacement": "CII Placement",
+    "mobileApp": "Mobile App"
   },
   "card": {
     "selected": "Selected",
@@ -53,6 +57,9 @@
     "cons": "Disadvantages",
     "fz152": "Data Protection Compliance",
     "fz152Description": "This provider has certification for compliance with Federal Law 152 on Personal Data. This means all data centers meet Russian Federation requirements for personal data protection, which is especially important for organizations handling confidential client information.",
+    "fstekDescription": "The provider has certificates of compliance with FSTEC (Federal Service for Technical and Export Control) requirements. These certificates confirm that information security systems meet established requirements.",
+    "kiiDescription": "The provider has permission to host critical information infrastructure (CII) facilities. This is important for organizations whose activities are related to CII according to Russian legislation.",
+    "mobileAppDescription": "The provider offers a mobile app for server and service management.",
     "technicalSpecs": "Technical Specifications",
     "serviceGuarantees": "Service Guarantees",
     "additionalServices": "Additional Services",
@@ -119,6 +126,12 @@
     "byPrice": "By price",
     "minDatacenters": "Min. DCs count",
     "anyAmount": "Any amount",
-    "anyVirtualization": "Any virtualization"
+    "anyVirtualization": "Any virtualization",
+    "fstekStandards": "FSTEC Standards",
+    "anyFstek": "Any standard",
+    "kiiPlacement": "CII Placement",
+    "withKII": "With CII placement",
+    "mobileApp": "Mobile App",
+    "withMobileApp": "With mobile app"
   }
 }
