@@ -175,7 +175,7 @@ export const FilterPanel = ({
               </div>
               <span className="truncate">
                 {filterFSTEK.length === 0
-                  ? "Любой ФСТЭК"
+                  ? "ФСТЭК"
                   : filterFSTEK.length === 1
                     ? filterFSTEK[0]
                     : `ФСТЭК (${filterFSTEK.length})`}
