@@ -314,10 +314,6 @@ export const ProviderCard = ({
                             </Badge>
                           )}
                         </div>
-                        <p className="text-sm text-foreground leading-relaxed mb-3">
-                          Сертификация ФСТЭК России для защиты критической
-                          информационной инфраструктуры
-                        </p>
 
                         {/* Отображение конкретных сертификаций */}
                         <div className="space-y-2">
