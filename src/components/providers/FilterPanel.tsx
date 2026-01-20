@@ -1,3 +1,4 @@
+// FilterPanel.tsx - полностью обновленный файл
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
@@ -7,14 +8,8 @@ import { useState } from "react";
 interface FilterPanelProps {
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
-  filterFSTEK: boolean;
-  setFilterFSTEK: (value: boolean) => void;
-  filterFSTEKTypes: string[];
-  setFilterFSTEKTypes: (value: string[]) => void;
-  filterKII: boolean;
-  setFilterKII: (value: boolean) => void;
-  filterMobileApp: boolean;
-  setFilterMobileApp: (value: boolean) => void;
+  filterFSTEK: string[];
+  setFilterFSTEK: (value: string[]) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
   filterLocation: string[];
@@ -31,28 +26,25 @@ interface FilterPanelProps {
   setFilterOS: (value: string[]) => void;
   filterCPU: string[];
   setFilterCPU: (value: string[]) => void;
+  // Новые фильтры
+  filterKII: boolean;
+  setFilterKII: (value: boolean) => void;
+  filterMobileApp: boolean;
+  setFilterMobileApp: (value: boolean) => void;
   allLocations: string[];
   allVirtualizations: string[];
   allDiskTypes: string[];
   allPaymentMethods: string[];
   allOS: string[];
   allCPUs: string[];
+  allFSTEKStandards: string[];
 }
-
-// Константы для типов ФСТЭК
-const FSTEK_TYPES = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"];
 
 export const FilterPanel = ({
   filterFZ152,
   setFilterFZ152,
   filterFSTEK,
   setFilterFSTEK,
-  filterFSTEKTypes,
-  setFilterFSTEKTypes,
-  filterKII,
-  setFilterKII,
-  filterMobileApp,
-  setFilterMobileApp,
   filterTrialPeriod,
   setFilterTrialPeriod,
   filterLocation,
@@ -69,12 +61,17 @@ export const FilterPanel = ({
   setFilterOS,
   filterCPU,
   setFilterCPU,
+  filterKII,
+  setFilterKII,
+  filterMobileApp,
+  setFilterMobileApp,
   allLocations,
   allVirtualizations,
   allDiskTypes,
   allPaymentMethods,
   allOS,
   allCPUs,
+  allFSTEKStandards,
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -85,15 +82,12 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-    fstekTypes: false,
+    fstek: false,
   });
 
   const hasActiveFilters =
     filterFZ152 ||
-    filterFSTEK ||
-    filterFSTEKTypes.length > 0 ||
-    filterKII ||
-    filterMobileApp ||
+    filterFSTEK.length > 0 ||
     filterTrialPeriod ||
     filterLocation.length > 0 ||
     filterVirtualization.length > 0 ||
@@ -101,14 +95,13 @@ export const FilterPanel = ({
     filterDiskType.length > 0 ||
     filterPaymentMethod.length > 0 ||
     filterOS.length > 0 ||
-    filterCPU.length > 0;
+    filterCPU.length > 0 ||
+    filterKII ||
+    filterMobileApp;
 
   const activeFiltersCount = [
     filterFZ152,
-    filterFSTEK,
-    filterFSTEKTypes.length > 0,
-    filterKII,
-    filterMobileApp,
+    filterFSTEK.length > 0,
     filterTrialPeriod,
     filterLocation.length > 0,
     filterVirtualization.length > 0,
@@ -117,14 +110,13 @@ export const FilterPanel = ({
     filterPaymentMethod.length > 0,
     filterOS.length > 0,
     filterCPU.length > 0,
+    filterKII,
+    filterMobileApp,
   ].filter(Boolean).length;
 
   const clearFilters = () => {
     setFilterFZ152(false);
-    setFilterFSTEK(false);
-    setFilterFSTEKTypes([]);
-    setFilterKII(false);
-    setFilterMobileApp(false);
+    setFilterFSTEK([]);
     setFilterTrialPeriod(false);
     setFilterLocation([]);
     setFilterVirtualization([]);
@@ -133,6 +125,8 @@ export const FilterPanel = ({
     setFilterPaymentMethod([]);
     setFilterOS([]);
     setFilterCPU([]);
+    setFilterKII(false);
+    setFilterMobileApp(false);
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -360,74 +354,6 @@ export const FilterPanel = ({
                 <div className="relative">
                   <input
                     type="checkbox"
-                    id="fstek"
-                    checked={filterFSTEK}
-                    onChange={(e) => setFilterFSTEK(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterFSTEK && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                </div>
-                <label
-                  htmlFor="fstek"
-                  className="flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Icon
-                    name="ShieldAlert"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs font-medium text-foreground">
-                    Соответствие ФСТЭК
-                  </span>
-                </label>
-              </div>
-
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    id="trial"
-                    checked={filterTrialPeriod}
-                    onChange={(e) => setFilterTrialPeriod(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterTrialPeriod && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                </div>
-                <label
-                  htmlFor="trial"
-                  className="flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Icon
-                    name="Gift"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs font-medium text-foreground">
-                    {t("filters.trialPeriod")}
-                  </span>
-                </label>
-              </div>
-
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-                <div className="relative">
-                  <input
-                    type="checkbox"
                     id="kii"
                     checked={filterKII}
                     onChange={(e) => setFilterKII(e.target.checked)}
@@ -448,12 +374,12 @@ export const FilterPanel = ({
                   className="flex items-center gap-1.5 cursor-pointer"
                 >
                   <Icon
-                    name="Building"
+                    name="ServerCog"
                     size={10}
                     className="text-primary w-3 h-3"
                   />
                   <span className="text-xs font-medium text-foreground">
-                    КИИ
+                    КИИ размещение
                   </span>
                 </label>
               </div>
@@ -495,6 +421,18 @@ export const FilterPanel = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <MultiSelect
+                value={filterFSTEK}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterFSTEK, setFilterFSTEK)
+                }
+                options={allFSTEKStandards}
+                placeholder="Любой стандарт ФСТЭК"
+                iconName="ShieldAlert"
+                dropdownKey="fstek"
+                labelText="Соответствие ФСТЭК"
+              />
+
+              <MultiSelect
                 value={filterLocation}
                 onChange={(value) =>
                   handleMultiSelectChange(
@@ -524,22 +462,6 @@ export const FilterPanel = ({
                 iconName="Box"
                 dropdownKey="virtualization"
                 labelText={t("common.virtualization")}
-              />
-
-              <MultiSelect
-                value={filterFSTEKTypes}
-                onChange={(value) =>
-                  handleMultiSelectChange(
-                    value,
-                    filterFSTEKTypes,
-                    setFilterFSTEKTypes,
-                  )
-                }
-                options={FSTEK_TYPES}
-                placeholder="Любой приказ ФСТЭК"
-                iconName="FileText"
-                dropdownKey="fstekTypes"
-                labelText="Приказы ФСТЭК"
               />
 
               <MultiSelect
@@ -651,6 +573,42 @@ export const FilterPanel = ({
                   <span>12</span>
                   <span>15</span>
                 </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="trial"
+                    checked={filterTrialPeriod}
+                    onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterTrialPeriod && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="trial"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Gift"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    {t("filters.trialPeriod")}
+                  </span>
+                </label>
               </div>
             </div>
           </div>

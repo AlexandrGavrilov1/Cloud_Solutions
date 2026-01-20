@@ -1,3 +1,4 @@
+// types.ts - полностью обновленный файл
 export interface Review {
   author: string;
   text: string;
@@ -72,11 +73,11 @@ export interface Provider {
   reviews: Review[];
   fz152Compliant: boolean;
   fz152Level?: string;
-  fstekCompliant: boolean;
-  fstekTypes?: string[]; // ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"]
-  fstekLevel?: string;
-  kiiSupport?: boolean; // Размещение объектов КИИ
-  mobileApp?: boolean; // Мобильное приложение
+  // Изменено: заменили fstekCompliant и fstekLevel на массив стандартов
+  fstekStandards: string[]; // Массив стандартов ФСТЭК (например: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"])
+  // Добавлены новые поля
+  kiiPlacement: boolean; // Размещение объектов КИИ
+  mobileApp: boolean; // Мобильное приложение
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
   additionalServices: AdditionalServices;

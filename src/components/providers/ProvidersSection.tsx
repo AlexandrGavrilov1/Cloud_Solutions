@@ -1,3 +1,4 @@
+// ProvidersSection.tsx - обновленный файл
 import { useState, useEffect, useMemo } from "react";
 import { Provider, ResourceConfig, Review } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -26,24 +27,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  const [filterFSTEK, setFilterFSTEK] = useState(() => {
+  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterFSTEK");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterFSTEKTypes, setFilterFSTEKTypes] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterFSTEKTypes");
     return saved ? JSON.parse(saved) : [];
-  });
-
-  const [filterKII, setFilterKII] = useState(() => {
-    const saved = localStorage.getItem("filterKII");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterMobileApp, setFilterMobileApp] = useState(() => {
-    const saved = localStorage.getItem("filterMobileApp");
-    return saved ? JSON.parse(saved) : false;
   });
 
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
@@ -90,6 +76,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [filterCPU, setFilterCPU] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterCPU");
     return saved ? JSON.parse(saved) : [];
+  });
+
+  // Добавлены новые фильтры
+  const [filterKII, setFilterKII] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterKII");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterMobileApp, setFilterMobileApp] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterMobileApp");
+    return saved ? JSON.parse(saved) : false;
   });
 
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
@@ -162,27 +159,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, [filterFZ152]);
 
   useEffect(() => {
-    localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
-  }, [filterFSTEK]);
-
-  useEffect(() => {
-    if (filterFSTEKTypes.length > 0) {
-      localStorage.setItem(
-        "filterFSTEKTypes",
-        JSON.stringify(filterFSTEKTypes),
-      );
+    if (filterFSTEK.length > 0) {
+      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
     } else {
-      localStorage.removeItem("filterFSTEKTypes");
+      localStorage.removeItem("filterFSTEK");
     }
-  }, [filterFSTEKTypes]);
-
-  useEffect(() => {
-    localStorage.setItem("filterKII", JSON.stringify(filterKII));
-  }, [filterKII]);
-
-  useEffect(() => {
-    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
-  }, [filterMobileApp]);
+  }, [filterFSTEK]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -255,6 +237,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterCPU");
     }
   }, [filterCPU]);
+
+  // Сохранение новых фильтров
+  useEffect(() => {
+    localStorage.setItem("filterKII", JSON.stringify(filterKII));
+  }, [filterKII]);
+
+  useEffect(() => {
+    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
+  }, [filterMobileApp]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
@@ -374,6 +365,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providersWithReviews],
   );
 
+  const allFSTEKStandards = useMemo(
+    () =>
+      Array.from(
+        new Set(providersWithReviews.flatMap((p) => p.fstekStandards)),
+      ).sort(),
+    [providersWithReviews],
+  );
+
   // Функция фильтрации провайдеров
   const filteredProviders = useMemo(
     () =>
@@ -389,25 +388,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           // 152-ФЗ
           if (filterFZ152 && !p.fz152Compliant) return false;
 
-          // ФСТЭК
-          if (filterFSTEK && !p.fstekCompliant) return false;
-
-          // Типы ФСТЭК (мульти-выбор)
-          if (filterFSTEKTypes.length > 0) {
-            // Если у провайдера есть информация о типах ФСТЭК, проверяем соответствие
-            // Предполагается, что в типе Provider будет поле fstekTypes: string[]
-            const providerFSTEKTypes = p.fstekTypes || [];
-            const hasMatchingFSTEKType = filterFSTEKTypes.some((type) =>
-              providerFSTEKTypes.includes(type),
+          // ФСТЭК (мульти-выбор)
+          if (filterFSTEK.length > 0) {
+            const hasMatchingFSTEK = filterFSTEK.some((standard) =>
+              p.fstekStandards.includes(standard),
             );
-            if (!hasMatchingFSTEKType) return false;
+            if (!hasMatchingFSTEK) return false;
           }
-
-          // Размещение объектов КИИ
-          if (filterKII && !p.kiiSupport) return false;
-
-          // Мобильное приложение
-          if (filterMobileApp && !p.mobileApp) return false;
 
           // Тестовый период
           if (filterTrialPeriod && p.trialDays === 0) return false;
@@ -466,6 +453,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingCPU) return false;
           }
 
+          // КИИ размещение
+          if (filterKII && !p.kiiPlacement) return false;
+
+          // Мобильное приложение
+          if (filterMobileApp && !p.mobileApp) return false;
+
           return true;
         })
         .sort((a, b) => {
@@ -488,9 +481,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       searchQuery,
       filterFZ152,
       filterFSTEK,
-      filterFSTEKTypes,
-      filterKII,
-      filterMobileApp,
       filterTrialPeriod,
       filterLocation,
       filterVirtualization,
@@ -499,6 +489,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterPaymentMethod,
       filterOS,
       filterCPU,
+      filterKII,
+      filterMobileApp,
       sortBy,
       configs,
     ],
@@ -547,12 +539,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
                   setFilterFSTEK={setFilterFSTEK}
-                  filterFSTEKTypes={filterFSTEKTypes}
-                  setFilterFSTEKTypes={setFilterFSTEKTypes}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
                   filterLocation={filterLocation}
@@ -569,12 +555,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
+                  filterKII={filterKII}
+                  setFilterKII={setFilterKII}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
+                  allFSTEKStandards={allFSTEKStandards}
                 />
               </div>
             </div>
@@ -622,12 +613,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
                   setFilterFSTEK={setFilterFSTEK}
-                  filterFSTEKTypes={filterFSTEKTypes}
-                  setFilterFSTEKTypes={setFilterFSTEKTypes}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
                   filterLocation={filterLocation}
@@ -644,12 +629,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
+                  filterKII={filterKII}
+                  setFilterKII={setFilterKII}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
+                  allFSTEKStandards={allFSTEKStandards}
                 />
               </div>
             </div>
