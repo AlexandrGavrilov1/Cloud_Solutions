@@ -31,6 +31,8 @@ export const providers: Provider[] = [
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: false,
+    fstekCertifications: ["ФСТЭК-21"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
