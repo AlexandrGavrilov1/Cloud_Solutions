@@ -26,13 +26,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  const [filterFSTEK, setFilterFSTEK] = useState(() => {
+  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterFSTEK");
-    return saved ? JSON.parse(saved) : false;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
     const saved = localStorage.getItem("filterTrialPeriod");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterKIIPlacement, setFilterKIIPlacement] = useState(() => {
+    const saved = localStorage.getItem("filterKIIPlacement");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterMobileApp, setFilterMobileApp] = useState(() => {
+    const saved = localStorage.getItem("filterMobileApp");
     return saved ? JSON.parse(saved) : false;
   });
 
@@ -156,6 +166,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       JSON.stringify(filterTrialPeriod),
     );
   }, [filterTrialPeriod]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "filterKIIPlacement",
+      JSON.stringify(filterKIIPlacement),
+    );
+  }, [filterKIIPlacement]);
+
+  useEffect(() => {
+    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
+  }, [filterMobileApp]);
 
   useEffect(() => {
     if (filterLocation.length > 0) {
@@ -355,11 +376,22 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           // 152-ФЗ
           if (filterFZ152 && !p.fz152Compliant) return false;
 
-          // ФСТЭК
-          if (filterFSTEK && !p.fstekCompliant) return false;
+          // ФСТЭК (мульти-выбор)
+          if (filterFSTEK.length > 0) {
+            const hasMatchingFSTEK = filterFSTEK.some((fstek) =>
+              p.fstekCompliant.includes(fstek),
+            );
+            if (!hasMatchingFSTEK) return false;
+          }
 
           // Тестовый период
           if (filterTrialPeriod && p.trialDays === 0) return false;
+
+          // Размещение объектов КИИ
+          if (filterKIIPlacement && !p.kiiPlacement) return false;
+
+          // Мобильное приложение
+          if (filterMobileApp && !p.mobileApp) return false;
 
           // Локации (мульти-выбор)
           if (filterLocation.length > 0) {
@@ -438,6 +470,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterFZ152,
       filterFSTEK,
       filterTrialPeriod,
+      filterKIIPlacement,
+      filterMobileApp,
       filterLocation,
       filterVirtualization,
       filterMinDatacenters,
@@ -495,6 +529,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFSTEK={setFilterFSTEK}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
+                  filterKIIPlacement={filterKIIPlacement}
+                  setFilterKIIPlacement={setFilterKIIPlacement}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
                   filterLocation={filterLocation}
                   setFilterLocation={setFilterLocation}
                   filterVirtualization={filterVirtualization}
@@ -564,6 +602,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFSTEK={setFilterFSTEK}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
+                  filterKIIPlacement={filterKIIPlacement}
+                  setFilterKIIPlacement={setFilterKIIPlacement}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
                   filterLocation={filterLocation}
                   setFilterLocation={setFilterLocation}
                   filterVirtualization={filterVirtualization}

@@ -7,10 +7,14 @@ import { useState } from "react";
 interface FilterPanelProps {
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
-  filterFSTEK: boolean;
-  setFilterFSTEK: (value: boolean) => void;
+  filterFSTEK: string[]; // Изменено на массив строк
+  setFilterFSTEK: (value: string[]) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
+  filterKIIPlacement: boolean; // Новый фильтр КИИ
+  setFilterKIIPlacement: (value: boolean) => void;
+  filterMobileApp: boolean; // Новый фильтр мобильного приложения
+  setFilterMobileApp: (value: boolean) => void;
   filterLocation: string[];
   setFilterLocation: (value: string[]) => void;
   filterVirtualization: string[];
@@ -40,6 +44,10 @@ export const FilterPanel = ({
   setFilterFSTEK,
   filterTrialPeriod,
   setFilterTrialPeriod,
+  filterKIIPlacement, // Новый параметр
+  setFilterKIIPlacement, // Новый параметр
+  filterMobileApp, // Новый параметр
+  setFilterMobileApp, // Новый параметр
   filterLocation,
   setFilterLocation,
   filterVirtualization,
@@ -70,12 +78,15 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
+    fstek: false, // Добавлен выпадающий список для ФСТЭК
   });
 
   const hasActiveFilters =
     filterFZ152 ||
-    filterFSTEK ||
+    filterFSTEK.length > 0 || // Изменено на проверку длины массива
     filterTrialPeriod ||
+    filterKIIPlacement || // Добавлено
+    filterMobileApp || // Добавлено
     filterLocation.length > 0 ||
     filterVirtualization.length > 0 ||
     filterMinDatacenters !== null ||
@@ -86,8 +97,10 @@ export const FilterPanel = ({
 
   const activeFiltersCount = [
     filterFZ152,
-    filterFSTEK,
+    filterFSTEK.length > 0, // Изменено
     filterTrialPeriod,
+    filterKIIPlacement, // Добавлено
+    filterMobileApp, // Добавлено
     filterLocation.length > 0,
     filterVirtualization.length > 0,
     filterMinDatacenters !== null,
@@ -99,8 +112,10 @@ export const FilterPanel = ({
 
   const clearFilters = () => {
     setFilterFZ152(false);
-    setFilterFSTEK(false);
+    setFilterFSTEK([]); // Изменено
     setFilterTrialPeriod(false);
+    setFilterKIIPlacement(false); // Добавлено
+    setFilterMobileApp(false); // Добавлено
     setFilterLocation([]);
     setFilterVirtualization([]);
     setFilterMinDatacenters(null);
@@ -244,6 +259,9 @@ export const FilterPanel = ({
     );
   };
 
+  // Опции для фильтра ФСТЭК
+  const fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"];
+
   return (
     <div className="relative">
       <div className="w-full max-w-[115px] sm:max-w-[120px] md:max-w-[151px]">
@@ -296,7 +314,8 @@ export const FilterPanel = ({
           )}
 
           <div className="space-y-4 p-3 max-h-[70vh] overflow-y-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {/* 152-ФЗ */}
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -331,40 +350,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    id="fstek"
-                    checked={filterFSTEK}
-                    onChange={(e) => setFilterFSTEK(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterFSTEK && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                </div>
-                <label
-                  htmlFor="fstek"
-                  className="flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Icon
-                    name="ShieldAlert"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs font-medium text-foreground">
-                    ФСТЕК
-                  </span>
-                </label>
-              </div>
-
+              {/* Тестовый период */}
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -398,9 +384,92 @@ export const FilterPanel = ({
                   </span>
                 </label>
               </div>
+
+              {/* Размещение объектов КИИ */}
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="kii"
+                    checked={filterKIIPlacement}
+                    onChange={(e) => setFilterKIIPlacement(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterKIIPlacement && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="kii"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Building"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    Размещение КИИ
+                  </span>
+                </label>
+              </div>
+
+              {/* Мобильное приложение */}
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="mobile"
+                    checked={filterMobileApp}
+                    onChange={(e) => setFilterMobileApp(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterMobileApp && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="mobile"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Smartphone"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    Мобильное приложение
+                  </span>
+                </label>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* ФСТЭК - теперь выпадающий список с мульти-выбором */}
+              <MultiSelect
+                value={filterFSTEK}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterFSTEK, setFilterFSTEK)
+                }
+                options={fstekOptions}
+                placeholder="Соответствие ФСТЭК"
+                iconName="ShieldAlert"
+                dropdownKey="fstek"
+                labelText="Соответствие ФСТЭК"
+              />
+
               <MultiSelect
                 value={filterLocation}
                 onChange={(value) =>
