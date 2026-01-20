@@ -99,7 +99,7 @@
     "resetAll": "Reset All",
     "searchByName": "Search by name",
     "findProvider": "Find provider...",
-    "found": "Found", // <-- Добавьте этот ключ
+    "found": "Found",
     "providers": "provider(s)",
     "fz152Compliance": "Data Protection",
     "onlyWithFz152": "Certified only",
