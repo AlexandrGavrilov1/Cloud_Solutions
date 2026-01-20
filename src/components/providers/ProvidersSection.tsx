@@ -31,6 +31,21 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
+  const [filterFSTEKTypes, setFilterFSTEKTypes] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterFSTEKTypes");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterKII, setFilterKII] = useState(() => {
+    const saved = localStorage.getItem("filterKII");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterMobileApp, setFilterMobileApp] = useState(() => {
+    const saved = localStorage.getItem("filterMobileApp");
+    return saved ? JSON.parse(saved) : false;
+  });
+
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
     const saved = localStorage.getItem("filterTrialPeriod");
     return saved ? JSON.parse(saved) : false;
@@ -149,6 +164,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   useEffect(() => {
     localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
   }, [filterFSTEK]);
+
+  useEffect(() => {
+    if (filterFSTEKTypes.length > 0) {
+      localStorage.setItem(
+        "filterFSTEKTypes",
+        JSON.stringify(filterFSTEKTypes),
+      );
+    } else {
+      localStorage.removeItem("filterFSTEKTypes");
+    }
+  }, [filterFSTEKTypes]);
+
+  useEffect(() => {
+    localStorage.setItem("filterKII", JSON.stringify(filterKII));
+  }, [filterKII]);
+
+  useEffect(() => {
+    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
+  }, [filterMobileApp]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -358,6 +392,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           // ФСТЭК
           if (filterFSTEK && !p.fstekCompliant) return false;
 
+          // Типы ФСТЭК (мульти-выбор)
+          if (filterFSTEKTypes.length > 0) {
+            // Если у провайдера есть информация о типах ФСТЭК, проверяем соответствие
+            // Предполагается, что в типе Provider будет поле fstekTypes: string[]
+            const providerFSTEKTypes = p.fstekTypes || [];
+            const hasMatchingFSTEKType = filterFSTEKTypes.some((type) =>
+              providerFSTEKTypes.includes(type),
+            );
+            if (!hasMatchingFSTEKType) return false;
+          }
+
+          // Размещение объектов КИИ
+          if (filterKII && !p.kiiSupport) return false;
+
+          // Мобильное приложение
+          if (filterMobileApp && !p.mobileApp) return false;
+
           // Тестовый период
           if (filterTrialPeriod && p.trialDays === 0) return false;
 
@@ -437,6 +488,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       searchQuery,
       filterFZ152,
       filterFSTEK,
+      filterFSTEKTypes,
+      filterKII,
+      filterMobileApp,
       filterTrialPeriod,
       filterLocation,
       filterVirtualization,
@@ -493,6 +547,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
                   setFilterFSTEK={setFilterFSTEK}
+                  filterFSTEKTypes={filterFSTEKTypes}
+                  setFilterFSTEKTypes={setFilterFSTEKTypes}
+                  filterKII={filterKII}
+                  setFilterKII={setFilterKII}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
                   filterLocation={filterLocation}
@@ -562,6 +622,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
                   setFilterFSTEK={setFilterFSTEK}
+                  filterFSTEKTypes={filterFSTEKTypes}
+                  setFilterFSTEKTypes={setFilterFSTEKTypes}
+                  filterKII={filterKII}
+                  setFilterKII={setFilterKII}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
                   filterLocation={filterLocation}

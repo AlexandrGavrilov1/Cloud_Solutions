@@ -9,6 +9,12 @@ interface FilterPanelProps {
   setFilterFZ152: (value: boolean) => void;
   filterFSTEK: boolean;
   setFilterFSTEK: (value: boolean) => void;
+  filterFSTEKTypes: string[];
+  setFilterFSTEKTypes: (value: string[]) => void;
+  filterKII: boolean;
+  setFilterKII: (value: boolean) => void;
+  filterMobileApp: boolean;
+  setFilterMobileApp: (value: boolean) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
   filterLocation: string[];
@@ -33,11 +39,20 @@ interface FilterPanelProps {
   allCPUs: string[];
 }
 
+// Константы для типов ФСТЭК
+const FSTEK_TYPES = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"];
+
 export const FilterPanel = ({
   filterFZ152,
   setFilterFZ152,
   filterFSTEK,
   setFilterFSTEK,
+  filterFSTEKTypes,
+  setFilterFSTEKTypes,
+  filterKII,
+  setFilterKII,
+  filterMobileApp,
+  setFilterMobileApp,
   filterTrialPeriod,
   setFilterTrialPeriod,
   filterLocation,
@@ -70,11 +85,15 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
+    fstekTypes: false,
   });
 
   const hasActiveFilters =
     filterFZ152 ||
     filterFSTEK ||
+    filterFSTEKTypes.length > 0 ||
+    filterKII ||
+    filterMobileApp ||
     filterTrialPeriod ||
     filterLocation.length > 0 ||
     filterVirtualization.length > 0 ||
@@ -87,6 +106,9 @@ export const FilterPanel = ({
   const activeFiltersCount = [
     filterFZ152,
     filterFSTEK,
+    filterFSTEKTypes.length > 0,
+    filterKII,
+    filterMobileApp,
     filterTrialPeriod,
     filterLocation.length > 0,
     filterVirtualization.length > 0,
@@ -100,6 +122,9 @@ export const FilterPanel = ({
   const clearFilters = () => {
     setFilterFZ152(false);
     setFilterFSTEK(false);
+    setFilterFSTEKTypes([]);
+    setFilterKII(false);
+    setFilterMobileApp(false);
     setFilterTrialPeriod(false);
     setFilterLocation([]);
     setFilterVirtualization([]);
@@ -360,7 +385,7 @@ export const FilterPanel = ({
                     className="text-primary w-3 h-3"
                   />
                   <span className="text-xs font-medium text-foreground">
-                    ФСТЕК
+                    Соответствие ФСТЭК
                   </span>
                 </label>
               </div>
@@ -398,6 +423,74 @@ export const FilterPanel = ({
                   </span>
                 </label>
               </div>
+
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="kii"
+                    checked={filterKII}
+                    onChange={(e) => setFilterKII(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterKII && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="kii"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Building"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    КИИ
+                  </span>
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="mobileApp"
+                    checked={filterMobileApp}
+                    onChange={(e) => setFilterMobileApp(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterMobileApp && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="mobileApp"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Smartphone"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    Мобильное приложение
+                  </span>
+                </label>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -431,6 +524,22 @@ export const FilterPanel = ({
                 iconName="Box"
                 dropdownKey="virtualization"
                 labelText={t("common.virtualization")}
+              />
+
+              <MultiSelect
+                value={filterFSTEKTypes}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterFSTEKTypes,
+                    setFilterFSTEKTypes,
+                  )
+                }
+                options={FSTEK_TYPES}
+                placeholder="Любой приказ ФСТЭК"
+                iconName="FileText"
+                dropdownKey="fstekTypes"
+                labelText="Приказы ФСТЭК"
               />
 
               <MultiSelect
