@@ -1,4 +1,3 @@
-// ProvidersSection.tsx - обновленный файл
 import { useState, useEffect, useMemo } from "react";
 import { Provider, ResourceConfig, Review } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -27,9 +26,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
+  const [filterFSTEK, setFilterFSTEK] = useState(() => {
     const saved = localStorage.getItem("filterFSTEK");
-    return saved ? JSON.parse(saved) : [];
+    return saved ? JSON.parse(saved) : false;
   });
 
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
@@ -76,17 +75,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [filterCPU, setFilterCPU] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterCPU");
     return saved ? JSON.parse(saved) : [];
-  });
-
-  // Добавлены новые фильтры
-  const [filterKII, setFilterKII] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterKII");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterMobileApp, setFilterMobileApp] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterMobileApp");
-    return saved ? JSON.parse(saved) : false;
   });
 
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
@@ -159,11 +147,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, [filterFZ152]);
 
   useEffect(() => {
-    if (filterFSTEK.length > 0) {
-      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
-    } else {
-      localStorage.removeItem("filterFSTEK");
-    }
+    localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
   }, [filterFSTEK]);
 
   useEffect(() => {
@@ -237,15 +221,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterCPU");
     }
   }, [filterCPU]);
-
-  // Сохранение новых фильтров
-  useEffect(() => {
-    localStorage.setItem("filterKII", JSON.stringify(filterKII));
-  }, [filterKII]);
-
-  useEffect(() => {
-    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
-  }, [filterMobileApp]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
@@ -365,14 +340,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providersWithReviews],
   );
 
-  const allFSTEKStandards = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.flatMap((p) => p.fstekStandards)),
-      ).sort(),
-    [providersWithReviews],
-  );
-
   // Функция фильтрации провайдеров
   const filteredProviders = useMemo(
     () =>
@@ -388,13 +355,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           // 152-ФЗ
           if (filterFZ152 && !p.fz152Compliant) return false;
 
-          // ФСТЭК (мульти-выбор)
-          if (filterFSTEK.length > 0) {
-            const hasMatchingFSTEK = filterFSTEK.some((standard) =>
-              p.fstekStandards.includes(standard),
-            );
-            if (!hasMatchingFSTEK) return false;
-          }
+          // ФСТЭК
+          if (filterFSTEK && !p.fstekCompliant) return false;
 
           // Тестовый период
           if (filterTrialPeriod && p.trialDays === 0) return false;
@@ -453,12 +415,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingCPU) return false;
           }
 
-          // КИИ размещение
-          if (filterKII && !p.kiiPlacement) return false;
-
-          // Мобильное приложение
-          if (filterMobileApp && !p.mobileApp) return false;
-
           return true;
         })
         .sort((a, b) => {
@@ -489,8 +445,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterPaymentMethod,
       filterOS,
       filterCPU,
-      filterKII,
-      filterMobileApp,
       sortBy,
       configs,
     ],
@@ -555,17 +509,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  allFSTEKStandards={allFSTEKStandards}
                 />
               </div>
             </div>
@@ -629,17 +578,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  allFSTEKStandards={allFSTEKStandards}
                 />
               </div>
             </div>

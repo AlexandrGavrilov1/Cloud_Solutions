@@ -1,17 +1,16 @@
-// types.ts - полностью обновленный файл
 export interface Review {
   author: string;
   text: string;
   rating: number;
   date: string;
   provider_id?: number;
-  category?: "performance" | "support" | "price" | "general";
+  category?: 'performance' | 'support' | 'price' | 'general';
 }
 
 export interface TechnicalSpecs {
-  diskType: "NVMe" | "SSD" | "HDD";
+  diskType: 'NVMe' | 'SSD' | 'HDD';
   networkSpeed: string;
-  virtualization: ("KVM" | "OpenVZ" | "VMware" | "Hyper-V" | "LXC" | "Xen")[];
+  virtualization: ('KVM' | 'OpenVZ' | 'VMware' | 'Hyper-V' | 'LXC' | 'Xen')[];
   guaranteedResources: boolean;
   ipv4: boolean;
   ipv6: boolean;
@@ -73,11 +72,8 @@ export interface Provider {
   reviews: Review[];
   fz152Compliant: boolean;
   fz152Level?: string;
-  // Изменено: заменили fstekCompliant и fstekLevel на массив стандартов
-  fstekStandards: string[]; // Массив стандартов ФСТЭК (например: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"])
-  // Добавлены новые поля
-  kiiPlacement: boolean; // Размещение объектов КИИ
-  mobileApp: boolean; // Мобильное приложение
+  fstekCompliant: boolean;
+  fstekLevel?: string;
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
   additionalServices: AdditionalServices;

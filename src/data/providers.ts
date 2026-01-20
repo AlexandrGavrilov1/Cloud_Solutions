@@ -22,6 +22,7 @@ export const providers: Provider[] = [
       "Гибкое масштабирование ресурсов",
       "Бесплатный тестовый период",
     ],
+
     cons: [
       "Повышение цен в 2025 году",
       "IPv4 адрес +150₽/мес дополнительно",
@@ -29,11 +30,7 @@ export const providers: Provider[] = [
     ],
     fz152Compliant: true,
     fz152Level: "УЗ-1",
-    // Изменено с fstekCompliant на fstekStandards
-    fstekStandards: ["ФСТЭК-17"], // Пример для Timeweb Cloud
-    // Добавлены новые поля
-    kiiPlacement: true,
-    mobileApp: true,
+    fstekCompliant: false,
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
