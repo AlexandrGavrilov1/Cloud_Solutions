@@ -1,4 +1,3 @@
-// ProvidersSection.tsx - обновленный файл
 import { useState, useEffect, useMemo } from "react";
 import { Provider, ResourceConfig, Review } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -21,74 +20,46 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [configOpen, setConfigOpen] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
-
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
   });
-
-  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
+  const [filterFSTEK, setFilterFSTEK] = useState(() => {
     const saved = localStorage.getItem("filterFSTEK");
-    return saved ? JSON.parse(saved) : [];
+    return saved ? JSON.parse(saved) : false;
   });
-
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
     const saved = localStorage.getItem("filterTrialPeriod");
     return saved ? JSON.parse(saved) : false;
   });
-
-  const [filterLocation, setFilterLocation] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterLocation");
-    return saved ? JSON.parse(saved) : [];
+  const [filterLocation, setFilterLocation] = useState<string | null>(() => {
+    return localStorage.getItem("filterLocation") || null;
   });
-
-  const [filterVirtualization, setFilterVirtualization] = useState<string[]>(
-    () => {
-      const saved = localStorage.getItem("filterVirtualization");
-      return saved ? JSON.parse(saved) : [];
-    },
-  );
-
+  const [filterVirtualization, setFilterVirtualization] = useState<
+    string | null
+  >(() => {
+    return localStorage.getItem("filterVirtualization") || null;
+  });
   const [filterMinDatacenters, setFilterMinDatacenters] = useState<
     number | null
   >(() => {
     const saved = localStorage.getItem("filterMinDatacenters");
     return saved ? parseInt(saved) : null;
   });
-
-  const [filterDiskType, setFilterDiskType] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterDiskType");
-    return saved ? JSON.parse(saved) : [];
+  const [filterDiskType, setFilterDiskType] = useState<string | null>(() => {
+    return localStorage.getItem("filterDiskType") || null;
   });
-
-  const [filterPaymentMethod, setFilterPaymentMethod] = useState<string[]>(
+  const [filterPaymentMethod, setFilterPaymentMethod] = useState<string | null>(
     () => {
-      const saved = localStorage.getItem("filterPaymentMethod");
-      return saved ? JSON.parse(saved) : [];
+      return localStorage.getItem("filterPaymentMethod") || null;
     },
   );
-
-  const [filterOS, setFilterOS] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterOS");
-    return saved ? JSON.parse(saved) : [];
+  const [filterOS, setFilterOS] = useState<string | null>(() => {
+    return localStorage.getItem("filterOS") || null;
   });
-
-  const [filterCPU, setFilterCPU] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterCPU");
-    return saved ? JSON.parse(saved) : [];
+  const [filterCPU, setFilterCPU] = useState<string | null>(() => {
+    return localStorage.getItem("filterCPU") || null;
   });
-
-  // Добавлены новые фильтры
-  const [filterKII, setFilterKII] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterKII");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterMobileApp, setFilterMobileApp] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterMobileApp");
-    return saved ? JSON.parse(saved) : false;
-  });
-
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
     [],
   );
@@ -103,7 +74,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       return initialReviews;
     },
   );
-
   const [configs, setConfigs] = useState<Record<number, ResourceConfig>>(() => {
     const initialConfigs: Record<number, ResourceConfig> = {};
     providers.forEach((provider) => {
@@ -111,15 +81,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     });
     return initialConfigs;
   });
-
   const [loadedReviews, setLoadedReviews] = useState<Record<number, Review[]>>(
     {},
   );
-
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
 
-  // Загрузка отзывов
   useEffect(() => {
     const fetchApprovedReviews = async () => {
       try {
@@ -153,17 +120,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     fetchApprovedReviews();
   }, [providers]);
 
-  // Сохранение фильтров в localStorage
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
 
   useEffect(() => {
-    if (filterFSTEK.length > 0) {
-      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
-    } else {
-      localStorage.removeItem("filterFSTEK");
-    }
+    localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
   }, [filterFSTEK]);
 
   useEffect(() => {
@@ -174,19 +136,16 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, [filterTrialPeriod]);
 
   useEffect(() => {
-    if (filterLocation.length > 0) {
-      localStorage.setItem("filterLocation", JSON.stringify(filterLocation));
+    if (filterLocation) {
+      localStorage.setItem("filterLocation", filterLocation);
     } else {
       localStorage.removeItem("filterLocation");
     }
   }, [filterLocation]);
 
   useEffect(() => {
-    if (filterVirtualization.length > 0) {
-      localStorage.setItem(
-        "filterVirtualization",
-        JSON.stringify(filterVirtualization),
-      );
+    if (filterVirtualization) {
+      localStorage.setItem("filterVirtualization", filterVirtualization);
     } else {
       localStorage.removeItem("filterVirtualization");
     }
@@ -204,48 +163,36 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, [filterMinDatacenters]);
 
   useEffect(() => {
-    if (filterDiskType.length > 0) {
-      localStorage.setItem("filterDiskType", JSON.stringify(filterDiskType));
+    if (filterDiskType) {
+      localStorage.setItem("filterDiskType", filterDiskType);
     } else {
       localStorage.removeItem("filterDiskType");
     }
   }, [filterDiskType]);
 
   useEffect(() => {
-    if (filterPaymentMethod.length > 0) {
-      localStorage.setItem(
-        "filterPaymentMethod",
-        JSON.stringify(filterPaymentMethod),
-      );
+    if (filterPaymentMethod) {
+      localStorage.setItem("filterPaymentMethod", filterPaymentMethod);
     } else {
       localStorage.removeItem("filterPaymentMethod");
     }
   }, [filterPaymentMethod]);
 
   useEffect(() => {
-    if (filterOS.length > 0) {
-      localStorage.setItem("filterOS", JSON.stringify(filterOS));
+    if (filterOS) {
+      localStorage.setItem("filterOS", filterOS);
     } else {
       localStorage.removeItem("filterOS");
     }
   }, [filterOS]);
 
   useEffect(() => {
-    if (filterCPU.length > 0) {
-      localStorage.setItem("filterCPU", JSON.stringify(filterCPU));
+    if (filterCPU) {
+      localStorage.setItem("filterCPU", filterCPU);
     } else {
       localStorage.removeItem("filterCPU");
     }
   }, [filterCPU]);
-
-  // Сохранение новых фильтров
-  useEffect(() => {
-    localStorage.setItem("filterKII", JSON.stringify(filterKII));
-  }, [filterKII]);
-
-  useEffect(() => {
-    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
-  }, [filterMobileApp]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
@@ -308,7 +255,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     setConfigs(updatedConfigs);
   };
 
-  // Получение уникальных значений для фильтров
   const allLocations = useMemo(
     () =>
       Array.from(
@@ -365,100 +311,45 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providersWithReviews],
   );
 
-  const allFSTEKStandards = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.flatMap((p) => p.fstekStandards)),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  // Функция фильтрации провайдеров
   const filteredProviders = useMemo(
     () =>
       providersWithReviews
         .filter((p) => {
-          // Поиск по названию
           if (
             searchQuery &&
             !p.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
             return false;
-
-          // 152-ФЗ
           if (filterFZ152 && !p.fz152Compliant) return false;
-
-          // ФСТЭК (мульти-выбор)
-          if (filterFSTEK.length > 0) {
-            const hasMatchingFSTEK = filterFSTEK.some((standard) =>
-              p.fstekStandards.includes(standard),
-            );
-            if (!hasMatchingFSTEK) return false;
-          }
-
-          // Тестовый период
+          if (filterFSTEK && !p.fstekCompliant) return false;
           if (filterTrialPeriod && p.trialDays === 0) return false;
-
-          // Локации (мульти-выбор)
-          if (filterLocation.length > 0) {
-            const hasMatchingLocation = filterLocation.some((location) =>
-              p.locations.includes(location),
-            );
-            if (!hasMatchingLocation) return false;
-          }
-
-          // Виртуализация (мульти-выбор)
-          if (filterVirtualization.length > 0) {
-            const hasMatchingVirtualization = filterVirtualization.some(
-              (virt) => p.technicalSpecs.virtualization.includes(virt as any),
-            );
-            if (!hasMatchingVirtualization) return false;
-          }
-
-          // Минимальное количество дата-центров
+          if (filterLocation && !p.locations.includes(filterLocation))
+            return false;
+          if (
+            filterVirtualization &&
+            !p.technicalSpecs.virtualization.includes(filterVirtualization)
+          )
+            return false;
           if (
             filterMinDatacenters !== null &&
             p.locations.length < filterMinDatacenters
           )
             return false;
-
-          // Тип диска (мульти-выбор)
-          if (filterDiskType.length > 0) {
-            if (!filterDiskType.includes(p.technicalSpecs.diskType))
-              return false;
-          }
-
-          // Методы оплаты (мульти-выбор)
-          if (filterPaymentMethod.length > 0) {
-            const hasMatchingPaymentMethod = filterPaymentMethod.some(
-              (method) => p.pricingDetails.paymentMethods.includes(method),
-            );
-            if (!hasMatchingPaymentMethod) return false;
-          }
-
-          // Операционные системы (мульти-выбор)
-          if (filterOS.length > 0) {
-            const hasMatchingOS = filterOS.some((os) =>
-              p.technicalSpecs.availableOS.includes(os),
-            );
-            if (!hasMatchingOS) return false;
-          }
-
-          // Процессоры (мульти-выбор)
-          if (filterCPU.length > 0) {
-            const cpuModels = p.technicalSpecs.cpuModels || [];
-            const hasMatchingCPU = filterCPU.some((cpu) =>
-              cpuModels.includes(cpu),
-            );
-            if (!hasMatchingCPU) return false;
-          }
-
-          // КИИ размещение
-          if (filterKII && !p.kiiPlacement) return false;
-
-          // Мобильное приложение
-          if (filterMobileApp && !p.mobileApp) return false;
-
+          if (filterDiskType && p.technicalSpecs.diskType !== filterDiskType)
+            return false;
+          if (
+            filterPaymentMethod &&
+            !p.pricingDetails.paymentMethods.includes(filterPaymentMethod)
+          )
+            return false;
+          if (filterOS && !p.technicalSpecs.availableOS.includes(filterOS))
+            return false;
+          if (
+            filterCPU &&
+            (!p.technicalSpecs.cpuModels ||
+              !p.technicalSpecs.cpuModels.includes(filterCPU))
+          )
+            return false;
           return true;
         })
         .sort((a, b) => {
@@ -489,8 +380,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterPaymentMethod,
       filterOS,
       filterCPU,
-      filterKII,
-      filterMobileApp,
       sortBy,
       configs,
     ],
@@ -512,14 +401,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
+      {/* Верхняя строка - адаптивная */}
       <div className="mb-4">
+        {/* Для мобильных: вертикальное расположение */}
         <div className="flex flex-col sm:hidden gap-2">
+          {/* 1. Счетчик провайдеров */}
           <ProvidersCounter
             currentCount={Math.min(providersToShow, filteredProviders.length)}
             totalCount={filteredProviders.length}
             className="w-full"
           />
 
+          {/* 2. Поиск */}
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
@@ -527,12 +420,16 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             className="w-full"
           />
 
+          {/* 3. Сортировка, Конфигуратор и Фильтр в гриде 2x2 */}
           <div className="grid grid-cols-2 gap-2">
+            {/* Левая колонка */}
             <div className="space-y-2">
+              {/* Сортировка - первая строка, левая колонка */}
               <div className="flex-shrink-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
 
+              {/* Фильтр - вторая строка, левая колонка */}
               <div className="flex-shrink-0">
                 <FilterPanel
                   filterFZ152={filterFZ152}
@@ -555,32 +452,34 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  allFSTEKStandards={allFSTEKStandards}
                 />
               </div>
             </div>
 
+            {/* Правая колонка */}
             <div className="space-y-2">
+              {/* Конфигуратор - первая строка, правая колонка */}
               <div className="flex-shrink-0 h-full flex items-start justify-end">
                 <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
               </div>
+
+              {/* Пустое место - вторая строка, правая колонка */}
               <div className="flex-shrink-0"></div>
             </div>
           </div>
         </div>
 
+        {/* Для планшетов и десктопов: горизонтальное расположение */}
         <div className="hidden sm:grid sm:grid-cols-12">
+          {/* Первая строка: Счетчик провайдеров и Поиск в одной строке */}
           <div className="col-span-12 flex gap-4 mb-0.5">
+            {/* Счетчик провайдеров */}
             <div className="w-2/3">
               <ProvidersCounter
                 currentCount={Math.min(
@@ -592,6 +491,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               />
             </div>
 
+            {/* Поиск - выровнен по правому краю */}
             <div className="w-1/3 flex justify-end">
               <SearchInput
                 value={searchQuery}
@@ -601,12 +501,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               />
             </div>
           </div>
-
+          {/* Вторая строка: Сортировка, Фильтры и Конфигуратор в одной строке */}
           <div className="col-span-12 flex items-center gap-2">
+            {/* Сортировка и Фильтры */}
             <div className="w-2/3 flex items-center">
+              {/* Сортировка - прилегает к левому краю */}
               <div className="flex-shrink-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
+              {/* Фильтры */}
               <div className="flex-grow ml-1">
                 <FilterPanel
                   filterFZ152={filterFZ152}
@@ -629,20 +532,16 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  allFSTEKStandards={allFSTEKStandards}
                 />
               </div>
             </div>
+            {/* Конфигуратор */}
             <div className="w-1/3 flex justify-end">
               <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
             </div>
@@ -650,8 +549,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       </div>
 
+      {/* Отступ между сортировкой и карточками */}
       <div className="mb-4"></div>
 
+      {/* Блок с результатами поиска */}
       {searchQuery && (
         <div className="mb-4 px-2">
           <div className="text-sm text-muted-foreground">
@@ -698,6 +599,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           {(filteredProviders.length > providersToShow ||
             providersToShow > 9) && (
             <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+              {/* Кнопка "Показать ещё 9 провайдеров" - только если не все показаны */}
               {filteredProviders.length > providersToShow && (
                 <button
                   onClick={() => setProvidersToShow((prev) => prev + 9)}
@@ -723,13 +625,16 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 </button>
               )}
 
+              {/* Умная кнопка "Показать всех / Скрыть" */}
               {filteredProviders.length > 0 && (
                 <button
                   onClick={() => {
                     if (providersToShow === filteredProviders.length) {
+                      // Если все показаны - сворачиваем обратно
                       const minToShow = Math.min(9, filteredProviders.length);
                       setProvidersToShow(minToShow);
                     } else {
+                      // Иначе показываем всех
                       setProvidersToShow(filteredProviders.length);
                     }
                   }}

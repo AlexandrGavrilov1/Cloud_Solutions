@@ -30,9 +30,6 @@ export const providers: Provider[] = [
     ],
     fz152Compliant: true,
     fz152Level: "УЗ-1",
-    fstekStandards: ["ФСТЭК-17"],
-    kiiPlacement: true,
-    mobileApp: true,
     fstekCompliant: false,
     technicalSpecs: {
       diskType: "NVMe",
