@@ -88,12 +88,36 @@ export const ProviderCardHeader = ({
           </div>
 
           <div className="flex-1 min-w-0">
-            <h3
-              className=" text-base      sm:text-lg     md:text-xl      lg:text-2xl     font-bold   text-foreground   mb-1.5 
-  truncate"
-            >
-              {provider.name}
-            </h3>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-foreground truncate">
+                {provider.name}
+              </h3>
+
+              {/* Иконки 152-ФЗ и ФСТЭК */}
+              <div className="flex gap-1 flex-shrink-0">
+                {provider.fz152Compliant && (
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon
+                      name="ShieldCheck"
+                      size={10}
+                      className="text-primary"
+                    />
+                  </div>
+                )}
+
+                {provider.fstekCertifications &&
+                  provider.fstekCertifications.length > 0 && (
+                    <div className="w-5 h-5 bg-secondary/20 rounded-md flex items-center justify-center">
+                      <Icon
+                        name="ShieldAlert"
+                        size={10}
+                        className="text-secondary"
+                      />
+                    </div>
+                  )}
+              </div>
+            </div>
+
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -190,7 +214,8 @@ export const ProviderCardHeader = ({
                 {t("common.from")}
               </span>
               <span className="text-2xl font-black text-primary">
-                {calculatedPrice}{t("common.perMonth")}
+                {calculatedPrice}
+                {t("common.perMonth")}
               </span>
             </div>
           </div>
@@ -239,6 +264,18 @@ export const ProviderCardHeader = ({
             152-ФЗ
           </Badge>
         )}
+        {provider.fstekCertifications &&
+          provider.fstekCertifications.length > 0 && (
+            <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
+              <Icon name="ShieldAlert" size={12} className="mr-1" />
+              ФСТЭК
+              {provider.fstekCertifications.length > 0 && (
+                <span className="ml-1 font-normal">
+                  ({provider.fstekCertifications.length})
+                </span>
+              )}
+            </Badge>
+          )}
         {provider.uptime30days && (
           <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
             <Icon name="Activity" size={12} className="mr-1" />
