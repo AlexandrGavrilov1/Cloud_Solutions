@@ -118,6 +118,7 @@
     "byRating": "По рейтингу",
     "byPrice": "По цене",
     "minDatacenters": "Мин. кол-во ЦОД",
-    "anyAmount": "Любое кол-во"
+    "anyAmount": "Любое кол-во",
+    "anyVirtualization": "Любая виртуализация"
   }
 }

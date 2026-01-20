@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface FilterPanelProps {
   filterFZ152: boolean;
@@ -149,6 +149,7 @@ export const FilterPanel = ({
     placeholder,
     iconName,
     dropdownKey,
+    labelText,
   }: {
     value: string[];
     onChange: (val: string) => void;
@@ -156,80 +157,89 @@ export const FilterPanel = ({
     placeholder: string;
     iconName: string;
     dropdownKey: string;
+    labelText?: string;
   }) => {
     const isOpen = dropdownsOpen[dropdownKey];
 
     return (
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => toggleDropdown(dropdownKey)}
-          className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
-        >
-          <div className="flex items-center gap-2 overflow-hidden">
-            <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-              <Icon
-                name={iconName}
-                size={10}
-                className="text-primary w-3 h-3"
-              />
-            </div>
-            <span className="truncate">
-              {value.length === 0
-                ? placeholder
-                : value.length === 1
-                  ? value[0]
-                  : `Выбрано: ${value.length}`}
-            </span>
-          </div>
-          <Icon
-            name={isOpen ? "ChevronUp" : "ChevronDown"}
-            size={10}
-            className="text-muted-foreground w-3 h-3 flex-shrink-0"
-          />
-        </button>
-
-        {isOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-            <div className="p-2">
-              <button
-                type="button"
-                onClick={() => onChange("all")}
-                className={`w-full text-left px-3 py-2 rounded text-sm ${
-                  value.length === 0
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-primary/5"
-                }`}
-              >
-                {placeholder}
-              </button>
-              {options.map((option) => (
-                <div
-                  key={option}
-                  className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                  onClick={() => onChange(option)}
-                >
-                  <div
-                    className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                      value.includes(option)
-                        ? "bg-primary border-primary"
-                        : "border-primary/50"
-                    }`}
-                  >
-                    {value.includes(option) && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                  <span className="text-sm">{option}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="group">
+        {labelText && (
+          <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+            <Icon name={iconName} size={10} className="text-primary w-3 h-3" />
+            <span className="text-xs">{labelText}</span>
+          </label>
         )}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => toggleDropdown(dropdownKey)}
+            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name={iconName}
+                  size={10}
+                  className="text-primary w-3 h-3"
+                />
+              </div>
+              <span className="truncate">
+                {value.length === 0
+                  ? placeholder
+                  : value.length === 1
+                    ? value[0]
+                    : `${t("filters.found")} ${value.length}`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={10}
+              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="p-2">
+                <button
+                  type="button"
+                  onClick={() => onChange("all")}
+                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                    value.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  {placeholder}
+                </button>
+                {options.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => onChange(option)}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                        value.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {value.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={8}
+                          className="text-background w-2.5 h-2.5"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -256,7 +266,7 @@ export const FilterPanel = ({
               )}
             </div>
             <h3 className="text-xs sm:text-sm font-bold text-foreground">
-              Фильтры
+              {t("filters.title")}
             </h3>
           </div>
           <div className="flex items-center gap-1">
@@ -391,147 +401,93 @@ export const FilterPanel = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="MapPin"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">
-                    {t("filters.datacenterLocation")}
-                  </span>
-                </label>
-                <MultiSelect
-                  value={filterLocation}
-                  onChange={(value) =>
-                    handleMultiSelectChange(
-                      value,
-                      filterLocation,
-                      setFilterLocation,
-                    )
-                  }
-                  options={allLocations}
-                  placeholder={t("filters.anyLocation")}
-                  iconName="Globe"
-                  dropdownKey="location"
-                />
-              </div>
+              <MultiSelect
+                value={filterLocation}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterLocation,
+                    setFilterLocation,
+                  )
+                }
+                options={allLocations}
+                placeholder={t("filters.anyLocation")}
+                iconName="Globe"
+                dropdownKey="location"
+                labelText={t("filters.datacenterLocation")}
+              />
 
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="Boxes"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">{t("common.virtualization")}</span>
-                </label>
-                <MultiSelect
-                  value={filterVirtualization}
-                  onChange={(value) =>
-                    handleMultiSelectChange(
-                      value,
-                      filterVirtualization,
-                      setFilterVirtualization,
-                    )
-                  }
-                  options={allVirtualizations}
-                  placeholder={t("filters.anyVirtualization")}
-                  iconName="Box"
-                  dropdownKey="virtualization"
-                />
-              </div>
+              <MultiSelect
+                value={filterVirtualization}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterVirtualization,
+                    setFilterVirtualization,
+                  )
+                }
+                options={allVirtualizations}
+                placeholder={t("filters.anyVirtualization")}
+                iconName="Box"
+                dropdownKey="virtualization"
+                labelText={t("common.virtualization")}
+              />
 
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="HardDrive"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">{t("filters.diskType")}</span>
-                </label>
-                <MultiSelect
-                  value={filterDiskType}
-                  onChange={(value) =>
-                    handleMultiSelectChange(
-                      value,
-                      filterDiskType,
-                      setFilterDiskType,
-                    )
-                  }
-                  options={allDiskTypes}
-                  placeholder={t("filters.anyDisk")}
-                  iconName="Database"
-                  dropdownKey="diskType"
-                />
-              </div>
+              <MultiSelect
+                value={filterDiskType}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterDiskType,
+                    setFilterDiskType,
+                  )
+                }
+                options={allDiskTypes}
+                placeholder={t("filters.anyDisk")}
+                iconName="Database"
+                dropdownKey="diskType"
+                labelText={t("filters.diskType")}
+              />
 
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="CreditCard"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">{t("filters.paymentMethod")}</span>
-                </label>
-                <MultiSelect
-                  value={filterPaymentMethod}
-                  onChange={(value) =>
-                    handleMultiSelectChange(
-                      value,
-                      filterPaymentMethod,
-                      setFilterPaymentMethod,
-                    )
-                  }
-                  options={allPaymentMethods}
-                  placeholder={t("filters.anyMethod")}
-                  iconName="Wallet"
-                  dropdownKey="paymentMethod"
-                />
-              </div>
+              <MultiSelect
+                value={filterPaymentMethod}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterPaymentMethod,
+                    setFilterPaymentMethod,
+                  )
+                }
+                options={allPaymentMethods}
+                placeholder={t("filters.anyMethod")}
+                iconName="Wallet"
+                dropdownKey="paymentMethod"
+                labelText={t("filters.paymentMethod")}
+              />
 
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon
-                    name="Monitor"
-                    size={10}
-                    className="text-primary w-3 h-3"
-                  />
-                  <span className="text-xs">
-                    {t("filters.operatingSystem")}
-                  </span>
-                </label>
-                <MultiSelect
-                  value={filterOS}
-                  onChange={(value) =>
-                    handleMultiSelectChange(value, filterOS, setFilterOS)
-                  }
-                  options={allOS}
-                  placeholder={t("filters.anyOS")}
-                  iconName="Terminal"
-                  dropdownKey="os"
-                />
-              </div>
+              <MultiSelect
+                value={filterOS}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterOS, setFilterOS)
+                }
+                options={allOS}
+                placeholder={t("filters.anyOS")}
+                iconName="Terminal"
+                dropdownKey="os"
+                labelText={t("filters.operatingSystem")}
+              />
 
-              <div className="group">
-                <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-                  <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
-                  <span className="text-xs">Процессор</span>
-                </label>
-                <MultiSelect
-                  value={filterCPU}
-                  onChange={(value) =>
-                    handleMultiSelectChange(value, filterCPU, setFilterCPU)
-                  }
-                  options={allCPUs}
-                  placeholder="Любой процессор"
-                  iconName="Cpu"
-                  dropdownKey="cpu"
-                />
-              </div>
+              <MultiSelect
+                value={filterCPU}
+                onChange={(value) =>
+                  handleMultiSelectChange(value, filterCPU, setFilterCPU)
+                }
+                options={allCPUs}
+                placeholder="Любой процессор"
+                iconName="Cpu"
+                dropdownKey="cpu"
+                labelText="Процессор"
+              />
             </div>
 
             <div className="space-y-3 p-3 bg-background/50 rounded-lg border border-border">
