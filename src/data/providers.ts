@@ -30,7 +30,7 @@ export const providers: Provider[] = [
     ],
     fz152Compliant: true,
     fz152Level: "УЗ-1",
-    fstekCompliant: false,
+    fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-21"],
 
     technicalSpecs: {
