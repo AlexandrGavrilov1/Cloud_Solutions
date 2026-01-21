@@ -7,6 +7,7 @@ import {
   RegistrationDataField,
   ClientType,
 } from "./types";
+import { useEffect } from "react"; // Добавьте этот импорт
 
 interface ComparisonTableProps {
   providers: Provider[];
@@ -21,7 +22,33 @@ export const ComparisonTable = ({
   onClose,
   calculatePrice,
 }: ComparisonTableProps) => {
-  if (providers.length === 0) return null;
+  // Добавьте логирование при монтировании
+  useEffect(() => {
+    console.log("ComparisonTable mounted with providers:", providers.length);
+    console.log("Providers data:", providers);
+  }, [providers]);
+
+  if (providers.length === 0) {
+    console.error("ComparisonTable: No providers provided!");
+    return (
+      <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-[9999] overflow-y-auto flex items-center justify-center">
+        <div className="bg-card p-8 rounded-2xl shadow-xl max-w-md text-center">
+          <Icon
+            name="AlertCircle"
+            size={48}
+            className="text-destructive mx-auto mb-4"
+          />
+          <h2 className="text-2xl font-bold mb-2">Ошибка</h2>
+          <p className="text-muted-foreground mb-4">
+            Нет провайдеров для сравнения
+          </p>
+          <Button onClick={onClose} className="w-full">
+            Закрыть
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const trackClick = async (providerId: number) => {
     try {
@@ -80,91 +107,11 @@ export const ComparisonTable = ({
     { label: "Тип клиента", key: "clientType", icon: "Users" },
   ];
 
-  // Вспомогательная функция для отображения данных регистрации
-  const renderRegistrationData = (provider: Provider) => {
-    const requiredFields = provider.registrationData
-      .filter((d) => d.required)
-      .map((d) => d.field);
-    const optionalFields = provider.registrationData
-      .filter((d) => !d.required)
-      .map((d) => d.field);
-
-    return (
-      <div className="space-y-1">
-        {requiredFields.length > 0 && (
-          <div>
-            <div className="text-xs font-semibold text-foreground">
-              Обязательные:
-            </div>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {requiredFields.slice(0, 3).map((field, idx) => (
-                <Badge
-                  key={idx}
-                  className="bg-red-500/20 text-red-500 border-0 text-[10px]"
-                >
-                  {field}
-                </Badge>
-              ))}
-              {requiredFields.length > 3 && (
-                <Badge className="bg-red-500/20 text-red-500 border-0 text-[10px]">
-                  +{requiredFields.length - 3}
-                </Badge>
-              )}
-            </div>
-          </div>
-        )}
-        {optionalFields.length > 0 && (
-          <div>
-            <div className="text-xs font-semibold text-foreground">
-              Опциональные:
-            </div>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {optionalFields.slice(0, 3).map((field, idx) => (
-                <Badge
-                  key={idx}
-                  className="bg-green-500/20 text-green-500 border-0 text-[10px]"
-                >
-                  {field}
-                </Badge>
-              ))}
-              {optionalFields.length > 3 && (
-                <Badge className="bg-green-500/20 text-green-500 border-0 text-[10px]">
-                  +{optionalFields.length - 3}
-                </Badge>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Вспомогательная функция для отображения типов клиентов
-  const renderClientTypes = (provider: Provider) => {
-    return (
-      <div className="flex flex-wrap gap-1 justify-center">
-        {provider.supportedClientTypes.map((type, idx) => (
-          <Badge
-            key={idx}
-            className={`text-[10px] ${
-              type === "Физлицо"
-                ? "bg-blue-500/20 text-blue-500 border-0"
-                : type === "ИП" || type === "ООО"
-                  ? "bg-purple-500/20 text-purple-500 border-0"
-                  : "bg-amber-500/20 text-amber-500 border-0"
-            }`}
-          >
-            {type}
-          </Badge>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto">
+    <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-[9999] overflow-y-auto">
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="max-w-7xl mx-auto">
+          {/* Заголовок и кнопка закрытия */}
           <div className="flex flex-col gap-4 mb-4 sm:mb-6">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -187,7 +134,10 @@ export const ComparisonTable = ({
               <Button
                 size="sm"
                 variant="outline"
-                onClick={onClose}
+                onClick={() => {
+                  console.log("Close button clicked");
+                  onClose();
+                }}
                 className="h-9 sm:h-12 px-3 sm:px-6 rounded-xl border-2 flex-shrink-0"
               >
                 <Icon name="X" size={16} className="sm:mr-2" />
@@ -195,12 +145,13 @@ export const ComparisonTable = ({
               </Button>
             </div>
 
+            {/* Бейджи выбранных провайдеров */}
             <div className="flex flex-wrap gap-2 sm:gap-3">
               {providers.map((provider) => {
                 const hasFZ152 = provider.fz152Compliant;
-                const hasFSTEK = provider.fstekCompliant;
-
-                if (!hasFZ152 && !hasFSTEK) return null;
+                const hasFSTEK =
+                  provider.fstekCertifications &&
+                  provider.fstekCertifications.length > 0;
 
                 return (
                   <div
@@ -212,6 +163,12 @@ export const ComparisonTable = ({
                         src={provider.logo}
                         alt={provider.name}
                         className="w-4 h-4 object-contain"
+                        onError={(e) => {
+                          console.error(
+                            `Failed to load logo for ${provider.name}`,
+                          );
+                          e.currentTarget.src = "/placeholder-logo.png";
+                        }}
                       />
                     </div>
                     <span className="text-xs font-semibold text-foreground">
@@ -225,7 +182,7 @@ export const ComparisonTable = ({
                       )}
                       {hasFSTEK && (
                         <Badge className="bg-secondary/20 text-secondary border-0 text-[10px] px-1.5 py-0.5">
-                          {provider.fstekLevel || "ФСТЕК"}
+                          ФСТЭК
                         </Badge>
                       )}
                       {provider.kiiPlacement && (
@@ -240,12 +197,13 @@ export const ComparisonTable = ({
             </div>
           </div>
 
+          {/* Таблица сравнения */}
           <div className="bg-card border-2 border-border rounded-2xl overflow-hidden shadow-xl">
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[800px]">
                 <thead>
                   <tr className="border-b-2 border-border bg-accent/50">
-                    <th className="text-left p-3 sm:p-4 md:p-6 font-bold text-foreground sticky left-0 bg-accent/50 z-10 text-xs sm:text-sm md:text-base">
+                    <th className="text-left p-3 sm:p-4 md:p-6 font-bold text-foreground sticky left-0 bg-accent/50 z-10 text-xs sm:text-sm md:text-base min-w-[200px]">
                       Характеристика
                     </th>
                     {providers.map((provider) => (
@@ -259,6 +217,9 @@ export const ComparisonTable = ({
                               src={provider.logo}
                               alt={provider.name}
                               className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain"
+                              onError={(e) => {
+                                e.currentTarget.src = "/placeholder-logo.png";
+                              }}
                             />
                           </div>
                           <div className="text-sm sm:text-base md:text-lg font-bold text-foreground text-center">
@@ -544,10 +505,67 @@ export const ComparisonTable = ({
                             );
                             break;
                           case "registrationData":
-                            content = renderRegistrationData(provider);
+                            const requiredFields =
+                              provider.registrationData
+                                ?.filter((d) => d.required)
+                                .map((d) => d.field) || [];
+                            content =
+                              requiredFields.length > 0 ? (
+                                <div className="space-y-1">
+                                  <div className="text-xs font-semibold text-foreground">
+                                    Обязательные:
+                                  </div>
+                                  <div className="flex flex-wrap gap-1 mt-1 justify-center">
+                                    {requiredFields
+                                      .slice(0, 2)
+                                      .map((field, idx) => (
+                                        <Badge
+                                          key={idx}
+                                          className="bg-red-500/20 text-red-500 border-0 text-[10px]"
+                                        >
+                                          {field}
+                                        </Badge>
+                                      ))}
+                                    {requiredFields.length > 2 && (
+                                      <Badge className="bg-red-500/20 text-red-500 border-0 text-[10px]">
+                                        +{requiredFields.length - 2}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </div>
+                              ) : (
+                                <span className="text-muted-foreground">
+                                  Нет данных
+                                </span>
+                              );
                             break;
                           case "clientType":
-                            content = renderClientTypes(provider);
+                            content =
+                              provider.supportedClientTypes &&
+                              provider.supportedClientTypes.length > 0 ? (
+                                <div className="flex flex-wrap gap-1 justify-center">
+                                  {provider.supportedClientTypes
+                                    .slice(0, 3)
+                                    .map((type, idx) => (
+                                      <Badge
+                                        key={idx}
+                                        className="text-[10px] bg-blue-500/20 text-blue-500 border-0"
+                                      >
+                                        {type}
+                                      </Badge>
+                                    ))}
+                                  {provider.supportedClientTypes.length > 3 && (
+                                    <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px]">
+                                      +
+                                      {provider.supportedClientTypes.length - 3}
+                                    </Badge>
+                                  )}
+                                </div>
+                              ) : (
+                                <span className="text-muted-foreground">
+                                  Нет данных
+                                </span>
+                              );
                             break;
                           default:
                             content = null;
@@ -565,6 +583,7 @@ export const ComparisonTable = ({
                     </tr>
                   ))}
 
+                  {/* Кнопка перехода */}
                   <tr className="bg-accent/30 border-t-2 border-border">
                     <td className="p-3 sm:p-4 md:p-6 font-bold text-foreground sticky left-0 bg-accent/30 z-10 text-xs sm:text-sm md:text-base">
                       Действия
