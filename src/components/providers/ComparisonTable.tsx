@@ -58,7 +58,14 @@ export const ComparisonTable = ({
     { label: "Локации серверов", key: "locations", icon: "MapPin" },
     { label: "152-ФЗ", key: "fz152", icon: "ShieldCheck" },
     { label: "ФСТЕК", key: "fstek", icon: "ShieldAlert" },
-    { label: "Тип клиента", key: "clientTypes", icon: "Users" }, // Новая строка
+    { label: "Размещение КИИ", key: "kii", icon: "Building2" },
+    { label: "Мобильное приложение", key: "mobileApp", icon: "Smartphone" },
+    {
+      label: "Заказ до регистрации",
+      key: "orderBeforeRegistration",
+      icon: "ClipboardCheck",
+    },
+    { label: "IT-консалтинг", key: "itConsulting", icon: "Briefcase" },
     { label: "Техподдержка", key: "support", icon: "Headphones" },
   ];
 
@@ -127,6 +134,11 @@ export const ComparisonTable = ({
                       {hasFSTEK && (
                         <Badge className="bg-secondary/20 text-secondary border-0 text-[10px] px-1.5 py-0.5">
                           {provider.fstekLevel || "ФСТЕК"}
+                        </Badge>
+                      )}
+                      {provider.kiiPlacement && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          КИИ
                         </Badge>
                       )}
                     </div>
@@ -300,66 +312,136 @@ export const ComparisonTable = ({
                             );
                             break;
                           case "fstek":
-                            content = provider.fstekCompliant ? (
+                            content =
+                              provider.fstekCertifications &&
+                              provider.fstekCertifications.length > 0 ? (
+                                <div className="flex flex-col items-center gap-1">
+                                  <Icon
+                                    name="Check"
+                                    size={20}
+                                    className="text-secondary"
+                                  />
+                                  <div className="flex flex-wrap gap-1">
+                                    {provider.fstekCertifications.map(
+                                      (cert, idx) => (
+                                        <Badge
+                                          key={idx}
+                                          className="bg-secondary/20 text-secondary border-0 text-xs"
+                                        >
+                                          {cert}
+                                        </Badge>
+                                      ),
+                                    )}
+                                  </div>
+                                </div>
+                              ) : (
+                                <Icon
+                                  name="X"
+                                  size={20}
+                                  className="text-muted"
+                                />
+                              );
+                            break;
+                          case "kii":
+                            content = provider.kiiPlacement ? (
                               <div className="flex flex-col items-center gap-1">
                                 <Icon
                                   name="Check"
                                   size={20}
-                                  className="text-secondary"
+                                  className="text-blue-500"
                                 />
-                                {provider.fstekLevel && (
-                                  <Badge className="bg-secondary/20 text-secondary border-0 text-xs">
-                                    {provider.fstekLevel}
-                                  </Badge>
-                                )}
+                                <Badge className="bg-blue-500/20 text-blue-500 border-0 text-xs">
+                                  Размещение КИИ
+                                </Badge>
                               </div>
                             ) : (
                               <Icon name="X" size={20} className="text-muted" />
                             );
                             break;
-                          case "clientTypes":
+                          case "mobileApp":
+                            content = provider.mobileApp ? (
+                              <div className="flex flex-col items-center gap-1">
+                                <Icon
+                                  name="Check"
+                                  size={20}
+                                  className="text-green-500"
+                                />
+                                <Badge className="bg-green-500/20 text-green-500 border-0 text-xs">
+                                  Есть
+                                </Badge>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col items-center gap-1">
+                                <Icon
+                                  name="X"
+                                  size={20}
+                                  className="text-red-500"
+                                />
+                                <Badge className="bg-red-500/20 text-red-500 border-0 text-xs">
+                                  Нет
+                                </Badge>
+                              </div>
+                            );
+                            break;
+                          case "orderBeforeRegistration":
+                            content = provider.orderBeforeRegistration ? (
+                              <div className="flex flex-col items-center gap-1">
+                                <Icon
+                                  name="Check"
+                                  size={20}
+                                  className="text-green-500"
+                                />
+                                <Badge className="bg-green-500/20 text-green-500 border-0 text-xs">
+                                  До регистрации
+                                </Badge>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col items-center gap-1">
+                                <Icon
+                                  name="X"
+                                  size={20}
+                                  className="text-orange-500"
+                                />
+                                <Badge className="bg-orange-500/20 text-orange-500 border-0 text-xs">
+                                  После регистрации
+                                </Badge>
+                              </div>
+                            );
+                            break;
+                          case "itConsulting":
                             content =
-                              provider.clientTypes &&
-                              provider.clientTypes.length > 0 ? (
-                                <div className="flex flex-col items-center gap-2">
+                              provider.itConsulting &&
+                              provider.itConsulting.length > 0 ? (
+                                <div className="flex flex-col items-center gap-1">
+                                  <Icon
+                                    name="Check"
+                                    size={20}
+                                    className="text-purple-500"
+                                  />
                                   <div className="flex flex-wrap gap-1 justify-center max-w-[200px]">
-                                    {provider.clientTypes.map((type, idx) => (
-                                      <Badge
-                                        key={idx}
-                                        className={
-                                          type === "Физлицо"
-                                            ? "bg-blue-500/20 text-blue-500 border-blue-500/30 text-[10px]"
-                                            : type === "Самозанятый"
-                                              ? "bg-green-500/20 text-green-500 border-green-500/30 text-[10px]"
-                                              : type === "ИП"
-                                                ? "bg-purple-500/20 text-purple-500 border-purple-500/30 text-[10px]"
-                                                : "bg-orange-500/20 text-orange-500 border-orange-500/30 text-[10px]"
-                                        }
-                                      >
-                                        {type}
+                                    {provider.itConsulting
+                                      .slice(0, 3)
+                                      .map((service, idx) => (
+                                        <Badge
+                                          key={idx}
+                                          className="bg-purple-500/20 text-purple-500 border-0 text-[10px]"
+                                        >
+                                          {service}
+                                        </Badge>
+                                      ))}
+                                    {provider.itConsulting.length > 3 && (
+                                      <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px]">
+                                        +{provider.itConsulting.length - 3}
                                       </Badge>
-                                    ))}
+                                    )}
                                   </div>
-                                  <span className="text-xs text-muted-foreground">
-                                    {provider.clientTypes.length}{" "}
-                                    {provider.clientTypes.length === 1
-                                      ? "тип"
-                                      : provider.clientTypes.length < 5
-                                        ? "типа"
-                                        : "типов"}
-                                  </span>
                                 </div>
                               ) : (
-                                <div className="text-center">
-                                  <Icon
-                                    name="X"
-                                    size={20}
-                                    className="text-muted mx-auto"
-                                  />
-                                  <span className="text-xs text-muted-foreground block mt-1">
-                                    Не указано
-                                  </span>
-                                </div>
+                                <Icon
+                                  name="X"
+                                  size={20}
+                                  className="text-muted"
+                                />
                               );
                             break;
                           case "support":

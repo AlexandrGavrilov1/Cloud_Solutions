@@ -25,6 +25,16 @@ interface FilterPanelProps {
   setFilterOS: (value: string[]) => void;
   filterCPU: string[];
   setFilterCPU: (value: string[]) => void;
+  // Новые фильтры
+  filterKII: boolean;
+  setFilterKII: (value: boolean) => void;
+  filterMobileApp: boolean;
+  setFilterMobileApp: (value: boolean) => void;
+  filterOrderBeforeRegistration: boolean;
+  setFilterOrderBeforeRegistration: (value: boolean) => void;
+  filterITConsulting: string[];
+  setFilterITConsulting: (value: string[]) => void;
+
   allLocations: string[];
   allVirtualizations: string[];
   allDiskTypes: string[];
@@ -32,13 +42,7 @@ interface FilterPanelProps {
   allOS: string[];
   allCPUs: string[];
   fstekOptions: string[];
-
-  // Новые фильтры
-  filterClientTypes: string[];
-  setFilterClientTypes: (value: string[]) => void;
-
-  // Опции для фильтров
-  clientTypeOptions: string[];
+  itConsultingOptions: string[]; // Новый пропс
 }
 
 export const FilterPanel = ({
@@ -62,6 +66,16 @@ export const FilterPanel = ({
   setFilterOS,
   filterCPU,
   setFilterCPU,
+  // Новые фильтры
+  filterKII,
+  setFilterKII,
+  filterMobileApp,
+  setFilterMobileApp,
+  filterOrderBeforeRegistration,
+  setFilterOrderBeforeRegistration,
+  filterITConsulting,
+  setFilterITConsulting,
+
   allLocations,
   allVirtualizations,
   allDiskTypes,
@@ -69,13 +83,16 @@ export const FilterPanel = ({
   allOS,
   allCPUs,
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-
-  // Новые фильтры
-  filterClientTypes,
-  setFilterClientTypes,
-
-  // Опции для фильтров
-  clientTypeOptions = ["Физлицо", "Самозанятый", "ИП", "Юрлицо"],
+  itConsultingOptions = [
+    // Значения по умолчанию
+    "Аудит инфраструктуры",
+    "Проектирование инфраструктуры",
+    "Миграция в облако",
+    "Импортозамещение",
+    "Консультация по ИБ",
+    "Аттестация по ФСТЭК",
+    "Другие гос. лицензии",
+  ],
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -87,7 +104,7 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-    clientTypes: false, // Новый dropdown
+    itConsulting: false, // Новый dropdown
   });
 
   const hasActiveFilters =
@@ -101,7 +118,10 @@ export const FilterPanel = ({
     filterPaymentMethod.length > 0 ||
     filterOS.length > 0 ||
     filterCPU.length > 0 ||
-    filterClientTypes.length > 0; // Добавляем новые фильтры
+    filterKII ||
+    filterMobileApp ||
+    filterOrderBeforeRegistration ||
+    filterITConsulting.length > 0; // Добавляем новые фильтры
 
   const activeFiltersCount = [
     filterFZ152,
@@ -114,7 +134,10 @@ export const FilterPanel = ({
     filterPaymentMethod.length > 0,
     filterOS.length > 0,
     filterCPU.length > 0,
-    filterClientTypes.length > 0,
+    filterKII,
+    filterMobileApp,
+    filterOrderBeforeRegistration,
+    filterITConsulting.length > 0,
   ].filter(Boolean).length;
 
   const clearFilters = () => {
@@ -128,7 +151,11 @@ export const FilterPanel = ({
     setFilterPaymentMethod([]);
     setFilterOS([]);
     setFilterCPU([]);
-    setFilterClientTypes([]); // Очищаем фильтр типов клиентов
+    // Очищаем новые фильтры
+    setFilterKII(false);
+    setFilterMobileApp(false);
+    setFilterOrderBeforeRegistration(false);
+    setFilterITConsulting([]);
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -164,12 +191,12 @@ export const FilterPanel = ({
     setFilterFSTEK(newValue);
   };
 
-  // Функция для обработки выбора типов клиентов
-  const handleClientTypeChange = (option: string) => {
-    const newValue = filterClientTypes.includes(option)
-      ? filterClientTypes.filter((v) => v !== option)
-      : [...filterClientTypes, option];
-    setFilterClientTypes(newValue);
+  // Функция для обработки выбора IT-консалтинга
+  const handleITConsultingChange = (option: string) => {
+    const newValue = filterITConsulting.includes(option)
+      ? filterITConsulting.filter((v) => v !== option)
+      : [...filterITConsulting, option];
+    setFilterITConsulting(newValue);
   };
 
   const toggleDropdown = (dropdown: string) => {
@@ -260,32 +287,36 @@ export const FilterPanel = ({
     );
   };
 
-  // Компонент для выбора типов клиентов
-  const ClientTypesDropdown = () => {
-    const isOpen = dropdownsOpen.clientTypes;
+  // Компонент для выбора IT-консалтинга
+  const ITConsultingDropdown = () => {
+    const isOpen = dropdownsOpen.itConsulting;
 
     return (
       <div className="group">
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-          <Icon name="Users" size={10} className="text-primary w-3 h-3" />
-          <span className="text-xs">Тип клиента</span>
+          <Icon name="Briefcase" size={10} className="text-primary w-3 h-3" />
+          <span className="text-xs">IT-консалтинг</span>
         </label>
         <div className="relative">
           <button
             type="button"
-            onClick={() => toggleDropdown("clientTypes")}
+            onClick={() => toggleDropdown("itConsulting")}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon name="Users" size={10} className="text-primary w-3 h-3" />
+                <Icon
+                  name="Briefcase"
+                  size={10}
+                  className="text-primary w-3 h-3"
+                />
               </div>
               <span className="truncate">
-                {filterClientTypes.length === 0
-                  ? "Любой тип клиента"
-                  : filterClientTypes.length === 1
-                    ? filterClientTypes[0]
-                    : `Тип клиента (${filterClientTypes.length})`}
+                {filterITConsulting.length === 0
+                  ? "Любой IT-консалтинг"
+                  : filterITConsulting.length === 1
+                    ? filterITConsulting[0]
+                    : `IT-консалтинг (${filterITConsulting.length})`}
               </span>
             </div>
             <Icon
@@ -300,29 +331,29 @@ export const FilterPanel = ({
               <div className="p-2">
                 <button
                   type="button"
-                  onClick={() => setFilterClientTypes([])}
+                  onClick={() => setFilterITConsulting([])}
                   className={`w-full text-left px-3 py-2 rounded text-sm ${
-                    filterClientTypes.length === 0
+                    filterITConsulting.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
                   }`}
                 >
-                  Любой тип клиента
+                  Любой IT-консалтинг
                 </button>
-                {clientTypeOptions.map((option) => (
+                {itConsultingOptions.map((option) => (
                   <div
                     key={option}
                     className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                    onClick={() => handleClientTypeChange(option)}
+                    onClick={() => handleITConsultingChange(option)}
                   >
                     <div
                       className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                        filterClientTypes.includes(option)
+                        filterITConsulting.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
                       }`}
                     >
-                      {filterClientTypes.includes(option) && (
+                      {filterITConsulting.includes(option) && (
                         <Icon
                           name="Check"
                           size={8}
@@ -568,6 +599,111 @@ export const FilterPanel = ({
                   </span>
                 </label>
               </div>
+
+              {/* Новые чекбоксы */}
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="kii"
+                    checked={filterKII}
+                    onChange={(e) => setFilterKII(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterKII && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="kii"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Building2"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    КИИ
+                  </span>
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="mobileApp"
+                    checked={filterMobileApp}
+                    onChange={(e) => setFilterMobileApp(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterMobileApp && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="mobileApp"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Smartphone"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    Моб. приложение
+                  </span>
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="orderBeforeReg"
+                    checked={filterOrderBeforeRegistration}
+                    onChange={(e) =>
+                      setFilterOrderBeforeRegistration(e.target.checked)
+                    }
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filterOrderBeforeRegistration && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="orderBeforeReg"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="ClipboardCheck"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    Заказ до регистрации
+                  </span>
+                </label>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -659,9 +795,9 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* Дропдаун для типов клиентов */}
+              {/* Дропдаун для IT-консалтинга */}
               <div className="col-span-1 sm:col-span-2">
-                <ClientTypesDropdown />
+                <ITConsultingDropdown />
               </div>
             </div>
 

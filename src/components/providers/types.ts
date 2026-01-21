@@ -54,20 +54,6 @@ export interface MonthlyUptime {
   downtime_minutes: number;
 }
 
-// Новый интерфейс для данных регистрации
-export interface RegistrationData {
-  fio: boolean; // ФИО
-  email: boolean; // Email
-  phone: boolean; // Телефон
-  country: boolean; // Страна
-  managerRequest: boolean; // По заявке через менеджера
-  inn: boolean; // ИНН
-  corporateEmail: boolean; // корпоративный email
-  organizationName: boolean; // Наименование организации
-  organizationAddress: boolean; // адрес организации
-  thirdPartyRegistration: boolean; // Регистрация в сторонних сервисах
-}
-
 export interface Provider {
   id: number;
   name: string;
@@ -97,12 +83,6 @@ export interface Provider {
   mobileApp: boolean; // Мобильное приложение
   orderBeforeRegistration: boolean; // Заказ до регистрации
   itConsulting: string[]; // IT-консалтинг (массив услуг)
-
-  // Новое поле: данные для регистрации
-  registrationData: RegistrationData;
-
-  // Новое поле: типы клиентов
-  clientTypes: string[]; // Физлицо, Самозанятый, ИП, Юрлицо
 
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
