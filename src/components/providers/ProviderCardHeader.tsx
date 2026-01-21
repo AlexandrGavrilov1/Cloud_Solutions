@@ -10,6 +10,8 @@ interface ProviderCardHeaderProps {
   index: number;
   calculatedPrice: number;
   onProviderClick: () => void;
+  onCompareClick?: () => void;
+  isComparing?: boolean;
 }
 
 export const ProviderCardHeader = ({
@@ -17,8 +19,10 @@ export const ProviderCardHeader = ({
   index,
   calculatedPrice,
   onProviderClick,
+  onCompareClick,
+  isComparing = false,
 }: ProviderCardHeaderProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const avgRating =
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
@@ -282,6 +286,27 @@ export const ProviderCardHeader = ({
             {t("common.uptime")}: {provider.uptime30days}%
           </Badge>
         )}
+      </div>
+
+      {/* Контейнер с кнопками */}
+      <div className="flex flex-col sm:flex-row gap-2 mt-2">
+        <Button
+          onClick={onProviderClick}
+          className="flex-1 bg-primary hover:bg-primary/90"
+          size="lg"
+        >
+          {t("common.viewDetails") || "Подробнее"}
+        </Button>
+
+        <Button
+          onClick={onCompareClick}
+          variant="outline"
+          className="flex-1"
+          size="lg"
+        >
+          <Icon name="Compare" size={16} className="mr-2" />
+          Сравнить
+        </Button>
       </div>
     </div>
   );
