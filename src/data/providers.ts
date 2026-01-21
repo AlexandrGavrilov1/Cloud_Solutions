@@ -33,7 +33,7 @@ export const providers: Provider[] = [
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
     fstekLevel: "",
 
-    // Новые поляя
+    // Новые поля
     kiiPlacement: true, // Размещение КИИ доступно
     mobileApp: true, // Есть мобильное приложение
     orderBeforeRegistration: false, // Заказ до регистрации доступен
@@ -45,6 +45,19 @@ export const providers: Provider[] = [
       "Консультация по ИБ",
       "Аттестация по ФСТЭК",
     ],
+
+    // Новое поле: данные для регистрации
+    registrationData: {
+      fio: true, // ФИО - обязательно
+      email: true, // Email - обязательно
+      phone: true, // Телефон - обязательно
+      country: true, // Страна - обязательно
+      managerRequest: false, // Не через менеджера
+      inn: true, // ИНН для Юрлиц и ИП - опционально
+      corporateEmail: true, // Корпоративный email - опционально
+      organizationName: true, // Наименование организации - опционально
+      organizationAddress: true, // Адрес организации - опционально
+    },
 
     technicalSpecs: {
       diskType: "NVMe",

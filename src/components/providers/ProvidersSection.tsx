@@ -1,841 +1,638 @@
-import { useState, useEffect, useMemo } from "react";
-import { Provider, ResourceConfig, Review } from "./types";
-import { ComparisonTable } from "./ComparisonTable";
-import { FilterPanel } from "./FilterPanel";
-import { ComparisonControls } from "./ComparisonControls";
-import { ProvidersList } from "./ProvidersList";
-import { GlobalResourceConfig } from "./GlobalResourceConfig";
-import { SearchInput } from "./SearchInput";
-import { SortPanel } from "./SortPanel";
-import { ProvidersCounter } from "./ProvidersCounter";
+import { useEffect, useRef, useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
+import { Provider, ResourceConfig } from "./types";
+import {
+  TechnicalSpecsSection,
+  ServiceGuaranteesSection,
+  AdditionalServicesSection,
+  PaymentMethodsSection,
+  CaseStudiesSection,
+} from "./ProviderDetailsSections";
+import { ProviderCardHeader } from "./ProviderCardHeader";
+import { ResourceConfigurator } from "./ResourceConfigurator";
+import { ProviderReviews } from "./ProviderReviews";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-interface ProvidersSectionProps {
-  providers: Provider[];
+interface ProviderCardProps {
+  provider: Provider;
+  index: number;
+  config: ResourceConfig;
+  onUpdateConfig: (key: keyof ResourceConfig, value: number) => void;
+  calculatedPrice: number;
+  configOpen: boolean;
+  onToggleConfig: () => void;
+  showDetails: boolean;
+  onToggleDetails: () => void;
+  reviewsToShow: number;
+  onLoadMoreReviews: () => void;
+  isSelected?: boolean;
+  onToggleCompare?: () => void;
 }
 
-export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
-  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
-    null,
-  );
-  const [configOpen, setConfigOpen] = useState<number | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
+export const ProviderCard = ({
+  provider,
+  index,
+  config,
+  onUpdateConfig,
+  calculatedPrice,
+  configOpen,
+  onToggleConfig,
+  showDetails,
+  onToggleDetails,
+  reviewsToShow,
+  onLoadMoreReviews,
+  isSelected = false,
+  onToggleCompare,
+}: ProviderCardProps) => {
+  const { t } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const avgRating =
+    provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
+    provider.reviews.length;
 
-  const [filterFZ152, setFilterFZ152] = useState(() => {
-    const saved = localStorage.getItem("filterFZ152");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterFSTEK");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
-    const saved = localStorage.getItem("filterTrialPeriod");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterLocation, setFilterLocation] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterLocation");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [filterVirtualization, setFilterVirtualization] = useState<string[]>(
-    () => {
-      const saved = localStorage.getItem("filterVirtualization");
-      return saved ? JSON.parse(saved) : [];
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${provider.name} VPS`,
+    description: provider.pros.join(". ") + ". " + provider.features.join(", "),
+    brand: {
+      "@type": "Brand",
+      name: provider.name,
     },
-  );
-
-  const [filterMinDatacenters, setFilterMinDatacenters] = useState<
-    number | null
-  >(() => {
-    const saved = localStorage.getItem("filterMinDatacenters");
-    return saved ? parseInt(saved) : null;
-  });
-
-  const [filterDiskType, setFilterDiskType] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterDiskType");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [filterPaymentMethod, setFilterPaymentMethod] = useState<string[]>(
-    () => {
-      const saved = localStorage.getItem("filterPaymentMethod");
-      return saved ? JSON.parse(saved) : [];
+    image: provider.logo,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: avgRating.toFixed(1),
+      bestRating: "5",
+      worstRating: "1",
+      ratingCount: provider.reviews.length,
+      reviewCount: provider.reviews.length,
     },
-  );
-
-  const [filterOS, setFilterOS] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterOS");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [filterCPU, setFilterCPU] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterCPU");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // Новые фильтры
-  const [filterKII, setFilterKII] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterKII");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterMobileApp, setFilterMobileApp] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterMobileApp");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const [filterOrderBeforeRegistration, setFilterOrderBeforeRegistration] =
-    useState<boolean>(() => {
-      const saved = localStorage.getItem("filterOrderBeforeRegistration");
-      return saved ? JSON.parse(saved) : false;
-    });
-
-  const [filterITConsulting, setFilterITConsulting] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterITConsulting");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
-    [],
-  );
-  const [showComparison, setShowComparison] = useState(false);
-  const [providersToShow, setProvidersToShow] = useState(9);
-  const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(
-    () => {
-      const initialReviews: Record<number, number> = {};
-      providers.forEach((provider) => {
-        initialReviews[provider.id] = 5;
-      });
-      return initialReviews;
+    offers: {
+      "@type": "Offer",
+      price: calculatedPrice,
+      priceCurrency: "RUB",
+      availability: "https://schema.org/InStock",
+      url: provider.url,
+      priceValidUntil: "2025-12-31",
+      seller: {
+        "@type": "Organization",
+        name: provider.name,
+      },
     },
-  );
-
-  const [configs, setConfigs] = useState<Record<number, ResourceConfig>>(() => {
-    const initialConfigs: Record<number, ResourceConfig> = {};
-    providers.forEach((provider) => {
-      initialConfigs[provider.id] = { cpu: 1, ram: 1, storage: 10 };
-    });
-    return initialConfigs;
-  });
-
-  const [loadedReviews, setLoadedReviews] = useState<Record<number, Review[]>>(
-    {},
-  );
-
-  const [providersWithReviews, setProvidersWithReviews] =
-    useState<Provider[]>(providers);
-
-  // Варианты ФСТЭК для фильтра
-  const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
-
-  // Варианты IT-консалтинга для фильтра
-  const itConsultingOptions = useMemo(
-    () => [
-      "Аудит инфраструктуры",
-      "Проектирование инфраструктуры",
-      "Миграция в облако",
-      "Импортозамещение",
-      "Консультация по ИБ",
-      "Аттестация по ФСТЭК",
-      "Другие гос. лицензии",
+    review: provider.reviews.slice(0, 5).map((review) => ({
+      "@type": "Review",
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: review.rating,
+        bestRating: "5",
+        worstRating: "1",
+      },
+      author: {
+        "@type": "Person",
+        name: review.author,
+      },
+      datePublished: review.date,
+      reviewBody: review.text,
+    })),
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Disk Type",
+        value: provider.technicalSpecs.diskType,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Network Speed",
+        value: provider.technicalSpecs.networkSpeed,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Virtualization",
+        value: provider.technicalSpecs.virtualization.join(", "),
+      },
+      {
+        "@type": "PropertyValue",
+        name: "SLA Uptime",
+        value: provider.serviceGuarantees.uptimeSLA,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "152-ФЗ Compliant",
+        value: provider.fz152Compliant ? "Yes" : "No",
+      },
     ],
-    [],
-  );
+  };
 
-  // Загрузка отзывов
-  useEffect(() => {
-    const fetchApprovedReviews = async () => {
-      try {
-        const response = await fetch(
-          "https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8?status=approved",
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const reviewsByProvider: Record<number, Review[]> = {};
-
-          data.reviews.forEach((review: Review) => {
-            if (!reviewsByProvider[review.provider_id]) {
-              reviewsByProvider[review.provider_id] = [];
-            }
-            reviewsByProvider[review.provider_id].push(review);
-          });
-
-          setLoadedReviews(reviewsByProvider);
-
-          const updatedProviders = providers.map((provider) => ({
-            ...provider,
-            reviews: reviewsByProvider[provider.id] || provider.reviews,
-          }));
-          setProvidersWithReviews(updatedProviders);
-        }
-      } catch (error) {
-        console.error("Error fetching approved reviews:", error);
-      }
-    };
-
-    fetchApprovedReviews();
-  }, [providers]);
-
-  // Сохранение фильтров в localStorage
-  useEffect(() => {
-    localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
-  }, [filterFZ152]);
-
-  useEffect(() => {
-    if (filterFSTEK.length > 0) {
-      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
-    } else {
-      localStorage.removeItem("filterFSTEK");
-    }
-  }, [filterFSTEK]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      "filterTrialPeriod",
-      JSON.stringify(filterTrialPeriod),
-    );
-  }, [filterTrialPeriod]);
-
-  useEffect(() => {
-    if (filterLocation.length > 0) {
-      localStorage.setItem("filterLocation", JSON.stringify(filterLocation));
-    } else {
-      localStorage.removeItem("filterLocation");
-    }
-  }, [filterLocation]);
-
-  useEffect(() => {
-    if (filterVirtualization.length > 0) {
-      localStorage.setItem(
-        "filterVirtualization",
-        JSON.stringify(filterVirtualization),
+  const trackClick = async () => {
+    try {
+      await fetch(
+        "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            provider_id: provider.id,
+          }),
+        },
       );
-    } else {
-      localStorage.removeItem("filterVirtualization");
+    } catch (error) {
+      console.error("Error tracking click:", error);
     }
-  }, [filterVirtualization]);
+  };
 
-  useEffect(() => {
-    if (filterMinDatacenters !== null) {
-      localStorage.setItem(
-        "filterMinDatacenters",
-        filterMinDatacenters.toString(),
-      );
-    } else {
-      localStorage.removeItem("filterMinDatacenters");
+  const handleProviderClick = async () => {
+    if (provider.url) {
+      trackClick();
+      window.location.href = provider.url;
     }
-  }, [filterMinDatacenters]);
+  };
 
-  useEffect(() => {
-    if (filterDiskType.length > 0) {
-      localStorage.setItem("filterDiskType", JSON.stringify(filterDiskType));
-    } else {
-      localStorage.removeItem("filterDiskType");
-    }
-  }, [filterDiskType]);
-
-  useEffect(() => {
-    if (filterPaymentMethod.length > 0) {
-      localStorage.setItem(
-        "filterPaymentMethod",
-        JSON.stringify(filterPaymentMethod),
-      );
-    } else {
-      localStorage.removeItem("filterPaymentMethod");
-    }
-  }, [filterPaymentMethod]);
-
-  useEffect(() => {
-    if (filterOS.length > 0) {
-      localStorage.setItem("filterOS", JSON.stringify(filterOS));
-    } else {
-      localStorage.removeItem("filterOS");
-    }
-  }, [filterOS]);
-
-  useEffect(() => {
-    if (filterCPU.length > 0) {
-      localStorage.setItem("filterCPU", JSON.stringify(filterCPU));
-    } else {
-      localStorage.removeItem("filterCPU");
-    }
-  }, [filterCPU]);
-
-  // Сохранение новых фильтров
-  useEffect(() => {
-    localStorage.setItem("filterKII", JSON.stringify(filterKII));
-  }, [filterKII]);
-
-  useEffect(() => {
-    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
-  }, [filterMobileApp]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      "filterOrderBeforeRegistration",
-      JSON.stringify(filterOrderBeforeRegistration),
-    );
-  }, [filterOrderBeforeRegistration]);
-
-  useEffect(() => {
-    if (filterITConsulting.length > 0) {
-      localStorage.setItem(
-        "filterITConsulting",
-        JSON.stringify(filterITConsulting),
-      );
-    } else {
-      localStorage.removeItem("filterITConsulting");
-    }
-  }, [filterITConsulting]);
-
-  useEffect(() => {
-    localStorage.setItem("sortBy", sortBy);
-  }, [sortBy]);
-
-  const calculatePrice = (provider: Provider, config?: ResourceConfig) => {
-    if (!config) {
-      config = { cpu: 1, ram: 1, storage: 10 };
-    }
-
-    const calculatedPrice = Math.round(
-      provider.basePrice +
-        config.cpu * provider.cpuPrice +
-        config.ram * provider.ramPrice +
-        config.storage * provider.storagePrice,
-    );
-
+  // Функция для отображения сертификаций ФСТЭК
+  const renderFstekCertifications = () => {
     if (
-      config.cpu === 1 &&
-      config.ram === 1 &&
-      config.storage === 10 &&
-      provider.pricingDetails.minPrice
+      !provider.fstekCertifications ||
+      provider.fstekCertifications.length === 0
     ) {
-      return Math.min(calculatedPrice, provider.pricingDetails.minPrice);
+      return null;
     }
 
-    return calculatedPrice;
-  };
-
-  const toggleComparison = (providerId: number) => {
-    setSelectedForComparison((prev) =>
-      prev.includes(providerId)
-        ? prev.filter((id) => id !== providerId)
-        : [...prev, providerId],
-    );
-  };
-
-  const compareProviders = () => {
-    if (selectedForComparison.length >= 2) {
-      setShowComparison(true);
-    }
-  };
-
-  const updateConfig = (
-    providerId: number,
-    key: keyof ResourceConfig,
-    value: number,
-  ) => {
-    setConfigs((prev) => ({
-      ...prev,
-      [providerId]: { ...prev[providerId], [key]: value },
-    }));
-  };
-
-  const applyGlobalConfig = (config: ResourceConfig) => {
-    const updatedConfigs: Record<number, ResourceConfig> = {};
-    providersWithReviews.forEach((provider) => {
-      updatedConfigs[provider.id] = { ...config };
-    });
-    setConfigs(updatedConfigs);
-  };
-
-  // Получение уникальных значений для фильтров
-  const allLocations = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.flatMap((p) => p.locations)),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allVirtualizations = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.virtualization),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allDiskTypes = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.map((p) => p.technicalSpecs.diskType)),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allPaymentMethods = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.pricingDetails.paymentMethods),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allOS = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.availableOS),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  const allCPUs = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.cpuModels || []),
-        ),
-      ).sort(),
-    [providersWithReviews],
-  );
-
-  // Функция фильтрации провайдеров
-  const filteredProviders = useMemo(
-    () =>
-      providersWithReviews
-        .filter((p) => {
-          // Поиск по названию
-          if (
-            searchQuery &&
-            !p.name.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-            return false;
-
-          // 152-ФЗ
-          if (filterFZ152 && !p.fz152Compliant) return false;
-
-          // ФСТЭК (мульти-выбор)
-          if (filterFSTEK.length > 0) {
-            const hasMatchingFSTEK = filterFSTEK.some(
-              (cert) => p.fstekCertifications?.includes(cert) || false,
-            );
-            if (!hasMatchingFSTEK) return false;
-          }
-
-          // Тестовый период
-          if (filterTrialPeriod && p.trialDays === 0) return false;
-
-          // Локации (мульти-выбор)
-          if (filterLocation.length > 0) {
-            const hasMatchingLocation = filterLocation.some((location) =>
-              p.locations.includes(location),
-            );
-            if (!hasMatchingLocation) return false;
-          }
-
-          // Виртуализация (мульти-выбор)
-          if (filterVirtualization.length > 0) {
-            const hasMatchingVirtualization = filterVirtualization.some(
-              (virt) => p.technicalSpecs.virtualization.includes(virt as any),
-            );
-            if (!hasMatchingVirtualization) return false;
-          }
-
-          // Минимальное количество дата-центров
-          if (
-            filterMinDatacenters !== null &&
-            p.locations.length < filterMinDatacenters
-          )
-            return false;
-
-          // Тип диска (мульти-выбор)
-          if (filterDiskType.length > 0) {
-            if (!filterDiskType.includes(p.technicalSpecs.diskType))
-              return false;
-          }
-
-          // Методы оплаты (мульти-выбор)
-          if (filterPaymentMethod.length > 0) {
-            const hasMatchingPaymentMethod = filterPaymentMethod.some(
-              (method) => p.pricingDetails.paymentMethods.includes(method),
-            );
-            if (!hasMatchingPaymentMethod) return false;
-          }
-
-          // Операционные системы (мульти-выбор)
-          if (filterOS.length > 0) {
-            const hasMatchingOS = filterOS.some((os) =>
-              p.technicalSpecs.availableOS.includes(os),
-            );
-            if (!hasMatchingOS) return false;
-          }
-
-          // Процессоры (мульти-выбор)
-          if (filterCPU.length > 0) {
-            const cpuModels = p.technicalSpecs.cpuModels || [];
-            const hasMatchingCPU = filterCPU.some((cpu) =>
-              cpuModels.includes(cpu),
-            );
-            if (!hasMatchingCPU) return false;
-          }
-
-          // Размещение КИИ
-          if (filterKII && !p.kiiPlacement) return false;
-
-          // Мобильное приложение
-          if (filterMobileApp && !p.mobileApp) return false;
-
-          // Заказ до регистрации
-          if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
-            return false;
-
-          // IT-консалтинг (мульти-выбор)
-          if (filterITConsulting.length > 0) {
-            const hasMatchingConsulting = filterITConsulting.some(
-              (service) => p.itConsulting?.includes(service) || false,
-            );
-            if (!hasMatchingConsulting) return false;
-          }
-
-          return true;
-        })
-        .sort((a, b) => {
-          if (sortBy === "rating") {
-            const avgRatingA =
-              a.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              a.reviews.length;
-            const avgRatingB =
-              b.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              b.reviews.length;
-            return avgRatingB - avgRatingA;
-          } else {
-            const priceA = calculatePrice(a, configs[a.id]);
-            const priceB = calculatePrice(b, configs[b.id]);
-            return priceA - priceB;
-          }
-        }),
-    [
-      providersWithReviews,
-      searchQuery,
-      filterFZ152,
-      filterFSTEK,
-      filterTrialPeriod,
-      filterLocation,
-      filterVirtualization,
-      filterMinDatacenters,
-      filterDiskType,
-      filterPaymentMethod,
-      filterOS,
-      filterCPU,
-      filterKII,
-      filterMobileApp,
-      filterOrderBeforeRegistration,
-      filterITConsulting,
-      sortBy,
-      configs,
-    ],
-  );
-
-  if (showComparison) {
-    const selectedProviders = providersWithReviews.filter((p) =>
-      selectedForComparison.includes(p.id),
-    );
     return (
-      <ComparisonTable
-        providers={selectedProviders}
-        configs={configs}
-        calculatePrice={calculatePrice}
-        onClose={() => setShowComparison(false)}
-      />
-    );
-  }
-
-  return (
-    <section id="providers" className="container mx-auto px-4 py-8">
-      <div className="mb-4">
-        <div className="flex flex-col sm:hidden gap-2">
-          <ProvidersCounter
-            currentCount={Math.min(providersToShow, filteredProviders.length)}
-            totalCount={filteredProviders.length}
-            className="w-full"
-          />
-
-          <SearchInput
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Поиск..."
-            className="w-full"
-          />
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-2">
-              <div className="flex-shrink-0">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
-
-              <div className="flex-shrink-0">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  // Новые пропсы
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
-                  filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-                  setFilterOrderBeforeRegistration={
-                    setFilterOrderBeforeRegistration
-                  }
-                  filterITConsulting={filterITConsulting}
-                  setFilterITConsulting={setFilterITConsulting}
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                  fstekOptions={fstekOptions}
-                  itConsultingOptions={itConsultingOptions}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex-shrink-0 h-full flex items-start justify-end">
-                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-              </div>
-              <div className="flex-shrink-0"></div>
-            </div>
-          </div>
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-foreground">
+          Сертификации ФСТЭК:
         </div>
-
-        <div className="hidden sm:grid sm:grid-cols-12">
-          <div className="col-span-12 flex gap-4 mb-0.5">
-            <div className="w-2/3">
-              <ProvidersCounter
-                currentCount={Math.min(
-                  providersToShow,
-                  filteredProviders.length,
-                )}
-                totalCount={filteredProviders.length}
-                className="w-full"
-              />
-            </div>
-
-            <div className="w-1/3 flex justify-end">
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Поиск..."
-                className="ml-auto"
-              />
-            </div>
-          </div>
-
-          <div className="col-span-12 flex items-center gap-2">
-            <div className="w-2/3 flex items-center">
-              <div className="flex-shrink-0">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+        <div className="space-y-2">
+          {provider.fstekCertifications.map((cert, idx) => (
+            <div key={idx} className="flex items-start gap-2">
+              <div className="w-5 h-5 bg-secondary/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Icon name="ShieldCheck" size={12} className="text-secondary" />
               </div>
-              <div className="flex-grow ml-1">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  // Новые пропсы
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
-                  filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-                  setFilterOrderBeforeRegistration={
-                    setFilterOrderBeforeRegistration
-                  }
-                  filterITConsulting={filterITConsulting}
-                  setFilterITConsulting={setFilterITConsulting}
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                  fstekOptions={fstekOptions}
-                  itConsultingOptions={itConsultingOptions}
-                />
+              <div>
+                <Badge className="bg-secondary/10 text-secondary border-secondary/30 mb-1">
+                  {cert}
+                </Badge>
+                <p className="text-xs text-muted-foreground">
+                  {cert === "ФСТЭК-17" &&
+                    "Требования о защите информации, не составляющей государственную тайну, содержащейся в государственных информационных системах"}
+                  {cert === "ФСТЭК-21" &&
+                    "Состав и содержание организационных и технических мер по обеспечению безопасности персональных данных"}
+                  {cert === "ФСТЭК-239" &&
+                    "Требования по обеспечению безопасности значимых объектов критической информационной инфраструктуры"}
+                </p>
               </div>
             </div>
-            <div className="w-1/3 flex justify-end">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
+    );
+  };
 
-      <div className="mb-4"></div>
+  // Функция для отображения данных для регистрации
+  const renderRegistrationData = () => {
+    if (!provider.registrationData) return null;
 
-      {searchQuery && (
-        <div className="mb-4 px-2">
-          <div className="text-sm text-muted-foreground">
-            Поиск:{" "}
-            <span className="font-semibold text-foreground">
-              "{searchQuery}"
-            </span>
-            {filteredProviders.length > 0 && (
-              <span className="ml-2">
-                ({filteredProviders.length} провайдер
-                {filteredProviders.length === 1 ? "" : "ов"})
-              </span>
-            )}
+    const regData = provider.registrationData;
+    const requiredFields = [];
+    const optionalFields = [];
+
+    // Разделяем поля на обязательные и опциональные
+    if (regData.fio) requiredFields.push("ФИО");
+    if (regData.email) requiredFields.push("Email");
+    if (regData.phone) requiredFields.push("Телефон");
+    if (regData.country) requiredFields.push("Страна");
+    if (regData.inn) optionalFields.push("ИНН (для Юрлиц и ИП)");
+    if (regData.corporateEmail) optionalFields.push("Корпоративный email");
+    if (regData.organizationName)
+      optionalFields.push("Наименование организации");
+    if (regData.organizationAddress) optionalFields.push("Адрес организации");
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-9 h-9 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="UserPlus" size={18} className="text-indigo-500" />
           </div>
+          <h4 className="text-base font-bold text-foreground">
+            Данные для регистрации
+          </h4>
         </div>
-      )}
 
-      {searchQuery && filteredProviders.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-muted-foreground text-lg mb-2">
-            По запросу "{searchQuery}" ничего не найдено
-          </div>
-          <div className="text-sm text-muted-foreground">
-            Попробуйте изменить поисковый запрос или сбросить фильтры
-          </div>
-        </div>
-      ) : (
-        <>
-          <ProvidersList
-            filteredProviders={filteredProviders.slice(0, providersToShow)}
-            configs={configs}
-            calculatePrice={calculatePrice}
-            configOpen={configOpen}
-            setConfigOpen={setConfigOpen}
-            updateConfig={updateConfig}
-            selectedProvider={selectedProvider}
-            setSelectedProvider={setSelectedProvider}
-            reviewsToShow={reviewsToShow}
-            setReviewsToShow={setReviewsToShow}
-            selectedForComparison={selectedForComparison}
-            toggleComparison={toggleComparison}
-          />
-
-          {(filteredProviders.length > providersToShow ||
-            providersToShow > 9) && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
-              {filteredProviders.length > providersToShow && (
-                <button
-                  onClick={() => setProvidersToShow((prev) => prev + 9)}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center justify-center gap-2">
-                    Показать ещё 9
-                    <svg
-                      className="w-5 h-5 group-hover:translate-y-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              )}
-
-              {filteredProviders.length > 0 && (
-                <button
-                  onClick={() => {
-                    if (providersToShow === filteredProviders.length) {
-                      const minToShow = Math.min(9, filteredProviders.length);
-                      setProvidersToShow(minToShow);
-                    } else {
-                      setProvidersToShow(filteredProviders.length);
-                    }
-                  }}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center justify-center gap-2">
-                    {providersToShow === filteredProviders.length
-                      ? "Скрыть"
-                      : "Показать всех "}
-                    <svg
-                      className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d={
-                          providersToShow === filteredProviders.length
-                            ? "M5 15l7-7 7 7"
-                            : "M19 9l-7 7-7-7"
-                        }
-                      />
-                    </svg>
-                  </span>
-                </button>
-              )}
+        <div className="space-y-4">
+          {regData.managerRequest && (
+            <div className="flex items-start gap-2 mb-3">
+              <div className="w-5 h-5 bg-indigo-500/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Icon name="Users" size={12} className="text-indigo-500" />
+              </div>
+              <div>
+                <span className="text-sm font-medium text-foreground">
+                  Регистрация через менеджера
+                </span>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Регистрация осуществляется по заявке через менеджера компании
+                </p>
+              </div>
             </div>
           )}
-        </>
-      )}
 
-      <ComparisonControls
-        selectedForComparison={selectedForComparison}
-        compareProviders={compareProviders}
-      />
-    </section>
+          <div className="space-y-3">
+            {requiredFields.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-red-500/10 text-red-500 border-red-500/30 text-xs">
+                    Обязательные
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {requiredFields.length} полей
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {requiredFields.map((field, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-red-500/20 rounded flex items-center justify-center">
+                        <Icon
+                          name="AlertCircle"
+                          size={10}
+                          className="text-red-500"
+                        />
+                      </div>
+                      <span className="text-sm text-foreground">{field}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {optionalFields.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/30 text-xs">
+                    Опциональные
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {optionalFields.length} полей
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {optionalFields.map((field, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-blue-500/20 rounded flex items-center justify-center">
+                        <Icon name="Info" size={10} className="text-blue-500" />
+                      </div>
+                      <span className="text-sm text-foreground">{field}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {requiredFields.length === 0 &&
+            optionalFields.length === 0 &&
+            !regData.managerRequest && (
+              <div className="text-center py-4">
+                <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Icon
+                    name="FileQuestion"
+                    size={20}
+                    className="text-muted-foreground"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Информация о необходимых данных для регистрации отсутствует
+                </p>
+              </div>
+            )}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <script type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </script>
+      <div
+        ref={containerRef}
+        className={`relative flex flex-col group ${showDetails ? "col-span-full z-10" : ""}`}
+      >
+        <Card
+          className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift
+          ${isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : ""} transition-all`}
+        >
+          <CardHeader className="p-5">
+            <ProviderCardHeader
+              provider={provider}
+              index={index}
+              calculatedPrice={calculatedPrice}
+              onProviderClick={handleProviderClick}
+              onCompareClick={onToggleCompare}
+              isComparing={isSelected}
+              showDetails={showDetails}
+            />
+          </CardHeader>
+
+          <CardContent className="px-5 pb-5">
+            <div className="space-y-3">
+              <Button
+                variant="ghost"
+                className="w-full text-sm font-semibold hover:bg-accent/50 hover:text-primary justify-between"
+                onClick={onToggleDetails}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon name={showDetails ? "EyeOff" : "Eye"} size={18} />
+                  <span>
+                    {showDetails ? "Скрыть детали" : "Показать детали"}
+                  </span>
+                </div>
+                <Icon
+                  name={showDetails ? "ChevronUp" : "ChevronDown"}
+                  size={18}
+                />
+              </Button>
+            </div>
+
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out -mx-5 ${
+                showDetails
+                  ? "max-h-[10000px] opacity-100"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
+              <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {provider.fz152Compliant && (
+                    <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                          <Icon
+                            name="ShieldCheck"
+                            size={18}
+                            className="text-primary"
+                          />
+                        </div>
+                        <h4 className="text-base font-bold text-foreground">
+                          {t("card.fz152")}
+                        </h4>
+                        {provider.fz152Level && (
+                          <Badge className="bg-primary/20 text-primary border-0 ml-auto">
+                            {provider.fz152Level}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-foreground leading-relaxed">
+                        {t("card.fz152Description")}
+                      </p>
+                    </div>
+                  )}
+
+                  {provider.fstekCertifications &&
+                    provider.fstekCertifications.length > 0 && (
+                      <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-9 h-9 bg-secondary/20 rounded-xl flex items-center justify-center">
+                            <Icon
+                              name="ShieldAlert"
+                              size={18}
+                              className="text-secondary"
+                            />
+                          </div>
+                          <h4 className="text-base font-bold text-foreground">
+                            ФСТЭК
+                          </h4>
+                          {provider.fstekLevel && (
+                            <Badge className="bg-secondary/20 text-secondary border-0 ml-auto">
+                              {provider.fstekLevel}
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Отображение конкретных сертификаций */}
+                        {renderFstekCertifications()}
+                      </div>
+                    )}
+                </div>
+
+                {/* Новые секции для дополнительных свойств */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {provider.kiiPlacement && (
+                    <div className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                          <Icon
+                            name="Building2"
+                            size={18}
+                            className="text-blue-500"
+                          />
+                        </div>
+                        <h4 className="text-base font-bold text-foreground">
+                          Размещение КИИ
+                        </h4>
+                      </div>
+                      <p className="text-sm text-foreground leading-relaxed">
+                        Провайдер допускает размещение объектов КИИ на своей
+                        инфраструктуре. Объекты критической информационной
+                        инфраструктуры (КИИ) — это системы, сети и базы данных,
+                        от функционирования которых зависит безопасность
+                        государства, национальная экономика и благосостояние
+                        граждан. Защита КИИ — ключевой элемент информационной
+                        безопасности страны, поскольку любые нарушения в их
+                        работе могут привести к серьёзным последствиям для всего
+                        общества.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="bg-card border border-border rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Icon
+                          name={
+                            provider.mobileApp ? "Smartphone" : "SmartphoneOff"
+                          }
+                          size={18}
+                          className={
+                            provider.mobileApp
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }
+                        />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">
+                        Мобильное приложение
+                      </h4>
+                      <Badge
+                        className={
+                          provider.mobileApp
+                            ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                            : "bg-red-500/20 text-red-500 border-red-500/30 ml-auto"
+                        }
+                      >
+                        {provider.mobileApp ? "Доступно" : "Отсутствует"}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-foreground">
+                      {provider.mobileApp
+                        ? "Провайдер предоставляет мобильное приложение для управления серверами и мониторинга"
+                        : "Провайдер не предоставляет мобильное приложение"}
+                    </p>
+                  </div>
+
+                  <div className="bg-card border border-border rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Icon
+                          name="ClipboardCheck"
+                          size={18}
+                          className="text-primary"
+                        />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">
+                        Заказ услуг
+                      </h4>
+                      <Badge
+                        className={
+                          provider.orderBeforeRegistration
+                            ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                            : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
+                        }
+                      >
+                        {provider.orderBeforeRegistration
+                          ? "До регистрации"
+                          : "После регистрации"}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-foreground">
+                      {provider.orderBeforeRegistration
+                        ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
+                        : "Требуется регистрация и создание учетной записи перед заказом услуг"}
+                    </p>
+                  </div>
+
+                  {provider.itConsulting &&
+                    provider.itConsulting.length > 0 && (
+                      <div className="bg-card border border-border rounded-2xl p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                            <Icon
+                              name="Briefcase"
+                              size={18}
+                              className="text-purple-500"
+                            />
+                          </div>
+                          <h4 className="text-base font-bold text-foreground">
+                            IT-консалтинг
+                          </h4>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground mb-2">
+                            Предоставляемые услуги консалтинга:
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {provider.itConsulting.map((service, idx) => (
+                              <Badge
+                                key={idx}
+                                variant="outline"
+                                className="bg-purple-500/10 text-purple-500 border-purple-500/30"
+                              >
+                                {service}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                </div>
+
+                {/* Секция с данными для регистрации */}
+                {renderRegistrationData()}
+
+                <TechnicalSpecsSection provider={provider} />
+                <ServiceGuaranteesSection provider={provider} />
+                <AdditionalServicesSection provider={provider} />
+                <PaymentMethodsSection provider={provider} />
+                <CaseStudiesSection provider={provider} />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="bg-accent border border-secondary/30 rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-9 h-9 bg-secondary rounded-xl flex items-center justify-center shadow-lg">
+                        <Icon
+                          name="Check"
+                          size={18}
+                          className="text-background"
+                        />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">
+                        {t("card.pros")}
+                      </h4>
+                    </div>
+                    <ul className="space-y-2.5">
+                      {provider.pros.map((pro, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <div className="w-5 h-5 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Icon
+                              name="Plus"
+                              size={12}
+                              className="text-background"
+                            />
+                          </div>
+                          <span className="text-sm text-foreground font-medium">
+                            {pro}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-accent border border-destructive/30 rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-9 h-9 bg-destructive rounded-xl flex items-center justify-center shadow-lg">
+                        <Icon
+                          name="AlertCircle"
+                          size={18}
+                          className="text-destructive-foreground"
+                        />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">
+                        {t("card.cons")}
+                      </h4>
+                    </div>
+                    <ul className="space-y-2.5">
+                      {provider.cons.map((con, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <div className="w-5 h-5 bg-destructive rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Icon
+                              name="Minus"
+                              size={12}
+                              className="text-destructive-foreground"
+                            />
+                          </div>
+                          <span className="text-sm text-foreground font-medium">
+                            {con}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <ProviderReviews
+                  provider={provider}
+                  reviewsToShow={reviewsToShow}
+                  onLoadMoreReviews={onLoadMoreReviews}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
