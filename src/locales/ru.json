@@ -76,7 +76,7 @@
     "snapshots": "Снапшоты",
     "customOS": "Свои ISO образы",
     "yes": "Да",
-    "no": "Нет"
+    "no": "Нет",
     "registrationData": "Данные для регистрации",
     "clientType": "Тип клиента",
     "requiredData": "Обязательные данные",
@@ -124,7 +124,7 @@
     "byPrice": "По цене",
     "minDatacenters": "Мин. кол-во ЦОД",
     "anyAmount": "Любое кол-во",
-    "anyVirtualization": "Любая виртуализация"
+    "anyVirtualization": "Любая виртуализация",
     "registrationData": "Данные для регистрации",
     "clientType": "Тип клиента",
     "anyRegistrationData": "Любые данные",

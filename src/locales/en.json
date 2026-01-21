@@ -76,7 +76,7 @@
     "snapshots": "Snapshots",
     "customOS": "Custom ISO Images",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
     "registrationData": "Registration Data",
     "clientType": "Client Type",
     "requiredData": "Required Data",
@@ -124,7 +124,7 @@
     "byPrice": "By price",
     "minDatacenters": "Min. DCs count",
     "anyAmount": "Any amount",
-    "anyVirtualization": "Any virtualization"
+    "anyVirtualization": "Any virtualization",
     "registrationData": "Registration Data",
     "clientType": "Client Type",
     "anyRegistrationData": "Any data",
