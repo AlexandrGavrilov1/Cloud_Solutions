@@ -3,6 +3,7 @@ import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
+import { RegistrationDataField, ClientType } from "./types";
 
 interface FilterPanelProps {
   filterFZ152: boolean;
@@ -25,7 +26,6 @@ interface FilterPanelProps {
   setFilterOS: (value: string[]) => void;
   filterCPU: string[];
   setFilterCPU: (value: string[]) => void;
-  // Новые фильтры
   filterKII: boolean;
   setFilterKII: (value: boolean) => void;
   filterMobileApp: boolean;
@@ -35,6 +35,12 @@ interface FilterPanelProps {
   filterITConsulting: string[];
   setFilterITConsulting: (value: string[]) => void;
 
+  // Новые фильтры
+  filterRegistrationData: string[];
+  setFilterRegistrationData: (value: string[]) => void;
+  filterClientType: string[];
+  setFilterClientType: (value: string[]) => void;
+
   allLocations: string[];
   allVirtualizations: string[];
   allDiskTypes: string[];
@@ -42,7 +48,9 @@ interface FilterPanelProps {
   allOS: string[];
   allCPUs: string[];
   fstekOptions: string[];
-  itConsultingOptions: string[]; // Новый пропс
+  itConsultingOptions: string[];
+  registrationDataOptions: string[]; // Новый пропс
+  clientTypeOptions: string[]; // Новый пропс
 }
 
 export const FilterPanel = ({
@@ -66,7 +74,6 @@ export const FilterPanel = ({
   setFilterOS,
   filterCPU,
   setFilterCPU,
-  // Новые фильтры
   filterKII,
   setFilterKII,
   filterMobileApp,
@@ -75,6 +82,10 @@ export const FilterPanel = ({
   setFilterOrderBeforeRegistration,
   filterITConsulting,
   setFilterITConsulting,
+  filterRegistrationData,
+  setFilterRegistrationData,
+  filterClientType,
+  setFilterClientType,
 
   allLocations,
   allVirtualizations,
@@ -84,7 +95,6 @@ export const FilterPanel = ({
   allCPUs,
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
   itConsultingOptions = [
-    // Значения по умолчанию
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
     "Миграция в облако",
@@ -92,6 +102,30 @@ export const FilterPanel = ({
     "Консультация по ИБ",
     "Аттестация по ФСТЭК",
     "Другие гос. лицензии",
+  ],
+  registrationDataOptions = [
+    "ФИО",
+    "Email",
+    "Телефон",
+    "Страна",
+    "По заявке через менеджера",
+    "ИНН",
+    "Корпоративный email",
+    "Наименование организации",
+    "Адрес организации",
+    "Паспортные данные",
+    "Реквизиты банка",
+    "Регистрация в сторонних сервисах",
+    "Скан удостоверения личности",
+  ],
+  clientTypeOptions = [
+    "Физлицо",
+    "Самозанятый",
+    "ИП",
+    "ООО",
+    "НКО",
+    "Госучреждение",
+    "Иностранная компания",
   ],
 }: FilterPanelProps) => {
   const { t } = useLanguage();
@@ -104,7 +138,9 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-    itConsulting: false, // Новый dropdown
+    itConsulting: false,
+    registrationData: false,
+    clientType: false,
   });
 
   const hasActiveFilters =
@@ -121,7 +157,9 @@ export const FilterPanel = ({
     filterKII ||
     filterMobileApp ||
     filterOrderBeforeRegistration ||
-    filterITConsulting.length > 0; // Добавляем новые фильтры
+    filterITConsulting.length > 0 ||
+    filterRegistrationData.length > 0 ||
+    filterClientType.length > 0;
 
   const activeFiltersCount = [
     filterFZ152,
@@ -138,6 +176,8 @@ export const FilterPanel = ({
     filterMobileApp,
     filterOrderBeforeRegistration,
     filterITConsulting.length > 0,
+    filterRegistrationData.length > 0,
+    filterClientType.length > 0,
   ].filter(Boolean).length;
 
   const clearFilters = () => {
@@ -151,11 +191,12 @@ export const FilterPanel = ({
     setFilterPaymentMethod([]);
     setFilterOS([]);
     setFilterCPU([]);
-    // Очищаем новые фильтры
     setFilterKII(false);
     setFilterMobileApp(false);
     setFilterOrderBeforeRegistration(false);
     setFilterITConsulting([]);
+    setFilterRegistrationData([]);
+    setFilterClientType([]);
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -183,7 +224,6 @@ export const FilterPanel = ({
     }
   };
 
-  // Функция для обработки выбора ФСТЭК
   const handleFstekChange = (option: string) => {
     const newValue = filterFSTEK.includes(option)
       ? filterFSTEK.filter((v) => v !== option)
@@ -191,12 +231,25 @@ export const FilterPanel = ({
     setFilterFSTEK(newValue);
   };
 
-  // Функция для обработки выбора IT-консалтинга
   const handleITConsultingChange = (option: string) => {
     const newValue = filterITConsulting.includes(option)
       ? filterITConsulting.filter((v) => v !== option)
       : [...filterITConsulting, option];
     setFilterITConsulting(newValue);
+  };
+
+  const handleRegistrationDataChange = (option: string) => {
+    const newValue = filterRegistrationData.includes(option)
+      ? filterRegistrationData.filter((v) => v !== option)
+      : [...filterRegistrationData, option];
+    setFilterRegistrationData(newValue);
+  };
+
+  const handleClientTypeChange = (option: string) => {
+    const newValue = filterClientType.includes(option)
+      ? filterClientType.filter((v) => v !== option)
+      : [...filterClientType, option];
+    setFilterClientType(newValue);
   };
 
   const toggleDropdown = (dropdown: string) => {
@@ -206,7 +259,6 @@ export const FilterPanel = ({
     }));
   };
 
-  // Компонент для выбора ФСТЭК
   const FstekDropdown = () => {
     const isOpen = dropdownsOpen.fstek;
 
@@ -287,7 +339,6 @@ export const FilterPanel = ({
     );
   };
 
-  // Компонент для выбора IT-консалтинга
   const ITConsultingDropdown = () => {
     const isOpen = dropdownsOpen.itConsulting;
 
@@ -354,6 +405,170 @@ export const FilterPanel = ({
                       }`}
                     >
                       {filterITConsulting.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={8}
+                          className="text-background w-2.5 h-2.5"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const RegistrationDataDropdown = () => {
+    const isOpen = dropdownsOpen.registrationData;
+
+    return (
+      <div className="group">
+        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+          <Icon name="UserPlus" size={10} className="text-primary w-3 h-3" />
+          <span className="text-xs">Данные для регистрации</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => toggleDropdown("registrationData")}
+            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="UserPlus"
+                  size={10}
+                  className="text-primary w-3 h-3"
+                />
+              </div>
+              <span className="truncate">
+                {filterRegistrationData.length === 0
+                  ? "Любые данные"
+                  : filterRegistrationData.length === 1
+                    ? filterRegistrationData[0]
+                    : `Данные (${filterRegistrationData.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={10}
+              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="p-2">
+                <button
+                  type="button"
+                  onClick={() => setFilterRegistrationData([])}
+                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                    filterRegistrationData.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любые данные
+                </button>
+                {registrationDataOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleRegistrationDataChange(option)}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                        filterRegistrationData.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterRegistrationData.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={8}
+                          className="text-background w-2.5 h-2.5"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const ClientTypeDropdown = () => {
+    const isOpen = dropdownsOpen.clientType;
+
+    return (
+      <div className="group">
+        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+          <Icon name="Users" size={10} className="text-primary w-3 h-3" />
+          <span className="text-xs">Тип клиента</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => toggleDropdown("clientType")}
+            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon name="Users" size={10} className="text-primary w-3 h-3" />
+              </div>
+              <span className="truncate">
+                {filterClientType.length === 0
+                  ? "Любой тип"
+                  : filterClientType.length === 1
+                    ? filterClientType[0]
+                    : `Тип (${filterClientType.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={10}
+              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="p-2">
+                <button
+                  type="button"
+                  onClick={() => setFilterClientType([])}
+                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                    filterClientType.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любой тип
+                </button>
+                {clientTypeOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleClientTypeChange(option)}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                        filterClientType.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterClientType.includes(option) && (
                         <Icon
                           name="Check"
                           size={8}
@@ -561,7 +776,6 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              {/* Дропдаун для ФСТЭК */}
               <div className="col-span-1 sm:col-span-2">
                 <FstekDropdown />
               </div>
@@ -600,7 +814,6 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              {/* Новые чекбоксы */}
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -798,6 +1011,15 @@ export const FilterPanel = ({
               {/* Дропдаун для IT-консалтинга */}
               <div className="col-span-1 sm:col-span-2">
                 <ITConsultingDropdown />
+              </div>
+
+              {/* Новые дропдауны */}
+              <div className="col-span-1 sm:col-span-2">
+                <RegistrationDataDropdown />
+              </div>
+
+              <div className="col-span-1 sm:col-span-2">
+                <ClientTypeDropdown />
               </div>
             </div>
 

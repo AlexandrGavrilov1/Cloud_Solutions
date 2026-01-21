@@ -54,6 +54,37 @@ export interface MonthlyUptime {
   downtime_minutes: number;
 }
 
+// Новые типы для данных регистрации
+export type RegistrationDataField =
+  | "ФИО"
+  | "Email"
+  | "Телефон"
+  | "Страна"
+  | "По заявке через менеджера"
+  | "ИНН"
+  | "Корпоративный email"
+  | "Наименование организации"
+  | "Адрес организации"
+  | "Паспортные данные"
+  | "Реквизиты банка"
+  | "Регистрация в сторонних сервисах"
+  | "Скан удостоверения личности";
+
+export interface RegistrationData {
+  field: RegistrationDataField;
+  required: boolean;
+  description?: string;
+}
+
+export type ClientType =
+  | "Физлицо"
+  | "Самозанятый"
+  | "ИП"
+  | "ООО"
+  | "НКО"
+  | "Госучреждение"
+  | "Иностранная компания";
+
 export interface Provider {
   id: number;
   name: string;
@@ -74,15 +105,19 @@ export interface Provider {
   fz152Level?: string;
 
   // Обновленные поля для ФСТЭК
-  fstekCompliant: boolean; // для обратной совместимости
-  fstekCertifications: string[]; // массив сертификаций
+  fstekCompliant: boolean;
+  fstekCertifications: string[];
   fstekLevel?: string;
 
   // Новые поля
-  kiiPlacement: boolean; // Размещение КИИ
-  mobileApp: boolean; // Мобильное приложение
-  orderBeforeRegistration: boolean; // Заказ до регистрации
-  itConsulting: string[]; // IT-консалтинг (массив услуг)
+  kiiPlacement: boolean;
+  mobileApp: boolean;
+  orderBeforeRegistration: boolean;
+  itConsulting: string[];
+
+  // Новые поля для данных регистрации и типа клиента
+  registrationData: RegistrationData[];
+  supportedClientTypes: ClientType[];
 
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;

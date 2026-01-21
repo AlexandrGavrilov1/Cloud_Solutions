@@ -153,7 +153,6 @@ export const ProviderCard = ({
     }
   };
 
-  // Функция для отображения сертификаций ФСТЭК
   const renderFstekCertifications = () => {
     if (
       !provider.fstekCertifications ||
@@ -189,6 +188,139 @@ export const ProviderCard = ({
             </div>
           ))}
         </div>
+      </div>
+    );
+  };
+
+  // Функция для отображения данных регистрации
+  const renderRegistrationData = () => {
+    if (!provider.registrationData || provider.registrationData.length === 0) {
+      return null;
+    }
+
+    const requiredData = provider.registrationData.filter((d) => d.required);
+    const optionalData = provider.registrationData.filter((d) => !d.required);
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="UserPlus" size={18} className="text-indigo-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">
+            Данные для регистрации
+          </h4>
+        </div>
+
+        <div className="space-y-3">
+          {requiredData.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="AlertCircle" size={14} className="text-red-500" />
+                <h5 className="text-sm font-semibold text-foreground">
+                  Обязательные данные
+                </h5>
+              </div>
+              <div className="space-y-1.5">
+                {requiredData.map((data, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-sm">
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <span className="text-foreground font-medium">
+                      {data.field}
+                    </span>
+                    {data.description && (
+                      <span className="text-muted-foreground text-xs ml-auto">
+                        {data.description}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {optionalData.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Info" size={14} className="text-green-500" />
+                <h5 className="text-sm font-semibold text-foreground">
+                  Опциональные данные
+                </h5>
+              </div>
+              <div className="space-y-1.5">
+                {optionalData.map((data, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-sm">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-foreground font-medium">
+                      {data.field}
+                    </span>
+                    {data.description && (
+                      <span className="text-muted-foreground text-xs ml-auto">
+                        {data.description}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Функция для отображения типов клиентов
+  const renderClientTypes = () => {
+    if (
+      !provider.supportedClientTypes ||
+      provider.supportedClientTypes.length === 0
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-teal-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Users" size={18} className="text-teal-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">
+            Поддерживаемые типы клиентов
+          </h4>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {provider.supportedClientTypes.map((type, idx) => (
+            <Badge
+              key={idx}
+              className={`text-sm ${
+                type === "Физлицо"
+                  ? "bg-blue-500/20 text-blue-500 border-blue-500/30"
+                  : type === "Самозанятый"
+                    ? "bg-amber-500/20 text-amber-500 border-amber-500/30"
+                    : type === "ИП" || type === "ООО"
+                      ? "bg-purple-500/20 text-purple-500 border-purple-500/30"
+                      : type === "Госучреждение"
+                        ? "bg-red-500/20 text-red-500 border-red-500/30"
+                        : "bg-green-500/20 text-green-500 border-green-500/30"
+              }`}
+            >
+              {type}
+            </Badge>
+          ))}
+        </div>
+
+        <p className="text-sm text-muted-foreground mt-3">
+          Провайдер работает со следующими типами клиентов:
+          {provider.supportedClientTypes.includes("Физлицо") &&
+            " физическими лицами,"}
+          {provider.supportedClientTypes.includes("ИП") &&
+            " индивидуальными предпринимателями,"}
+          {provider.supportedClientTypes.includes("ООО") &&
+            " юридическими лицами,"}
+          {provider.supportedClientTypes.includes("Госучреждение") &&
+            " государственными учреждениями."}
+        </p>
       </div>
     );
   };
@@ -293,7 +425,6 @@ export const ProviderCard = ({
                           )}
                         </div>
 
-                        {/* Отображение конкретных сертификаций */}
                         {renderFstekCertifications()}
                       </div>
                     )}
@@ -428,6 +559,12 @@ export const ProviderCard = ({
                         </div>
                       </div>
                     )}
+                </div>
+
+                {/* Новые секции для данных регистрации и типа клиента */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {renderRegistrationData()}
+                  {renderClientTypes()}
                 </div>
 
                 <TechnicalSpecsSection provider={provider} />

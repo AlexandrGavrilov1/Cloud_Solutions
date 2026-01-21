@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import { Provider, ResourceConfig } from "./types";
+import {
+  Provider,
+  ResourceConfig,
+  RegistrationDataField,
+  ClientType,
+} from "./types";
 
 interface ComparisonTableProps {
   providers: Provider[];
@@ -67,7 +72,94 @@ export const ComparisonTable = ({
     },
     { label: "IT-консалтинг", key: "itConsulting", icon: "Briefcase" },
     { label: "Техподдержка", key: "support", icon: "Headphones" },
+    {
+      label: "Данные для регистрации",
+      key: "registrationData",
+      icon: "UserPlus",
+    },
+    { label: "Тип клиента", key: "clientType", icon: "Users" },
   ];
+
+  // Вспомогательная функция для отображения данных регистрации
+  const renderRegistrationData = (provider: Provider) => {
+    const requiredFields = provider.registrationData
+      .filter((d) => d.required)
+      .map((d) => d.field);
+    const optionalFields = provider.registrationData
+      .filter((d) => !d.required)
+      .map((d) => d.field);
+
+    return (
+      <div className="space-y-1">
+        {requiredFields.length > 0 && (
+          <div>
+            <div className="text-xs font-semibold text-foreground">
+              Обязательные:
+            </div>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {requiredFields.slice(0, 3).map((field, idx) => (
+                <Badge
+                  key={idx}
+                  className="bg-red-500/20 text-red-500 border-0 text-[10px]"
+                >
+                  {field}
+                </Badge>
+              ))}
+              {requiredFields.length > 3 && (
+                <Badge className="bg-red-500/20 text-red-500 border-0 text-[10px]">
+                  +{requiredFields.length - 3}
+                </Badge>
+              )}
+            </div>
+          </div>
+        )}
+        {optionalFields.length > 0 && (
+          <div>
+            <div className="text-xs font-semibold text-foreground">
+              Опциональные:
+            </div>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {optionalFields.slice(0, 3).map((field, idx) => (
+                <Badge
+                  key={idx}
+                  className="bg-green-500/20 text-green-500 border-0 text-[10px]"
+                >
+                  {field}
+                </Badge>
+              ))}
+              {optionalFields.length > 3 && (
+                <Badge className="bg-green-500/20 text-green-500 border-0 text-[10px]">
+                  +{optionalFields.length - 3}
+                </Badge>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Вспомогательная функция для отображения типов клиентов
+  const renderClientTypes = (provider: Provider) => {
+    return (
+      <div className="flex flex-wrap gap-1 justify-center">
+        {provider.supportedClientTypes.map((type, idx) => (
+          <Badge
+            key={idx}
+            className={`text-[10px] ${
+              type === "Физлицо"
+                ? "bg-blue-500/20 text-blue-500 border-0"
+                : type === "ИП" || type === "ООО"
+                  ? "bg-purple-500/20 text-purple-500 border-0"
+                  : "bg-amber-500/20 text-amber-500 border-0"
+            }`}
+          >
+            {type}
+          </Badge>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto">
@@ -450,6 +542,12 @@ export const ComparisonTable = ({
                                 24/7
                               </Badge>
                             );
+                            break;
+                          case "registrationData":
+                            content = renderRegistrationData(provider);
+                            break;
+                          case "clientType":
+                            content = renderClientTypes(provider);
                             break;
                           default:
                             content = null;

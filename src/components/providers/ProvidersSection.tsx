@@ -77,7 +77,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Новые фильтры
   const [filterKII, setFilterKII] = useState<boolean>(() => {
     const saved = localStorage.getItem("filterKII");
     return saved ? JSON.parse(saved) : false;
@@ -96,6 +95,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const [filterITConsulting, setFilterITConsulting] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterITConsulting");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Новые фильтры
+  const [filterRegistrationData, setFilterRegistrationData] = useState<
+    string[]
+  >(() => {
+    const saved = localStorage.getItem("filterRegistrationData");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterClientType, setFilterClientType] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterClientType");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -129,10 +141,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
 
-  // Варианты ФСТЭК для фильтра
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
 
-  // Варианты IT-консалтинга для фильтра
   const itConsultingOptions = useMemo(
     () => [
       "Аудит инфраструктуры",
@@ -146,7 +156,38 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [],
   );
 
-  // Загрузка отзывов
+  const registrationDataOptions = useMemo(
+    () => [
+      "ФИО",
+      "Email",
+      "Телефон",
+      "Страна",
+      "По заявке через менеджера",
+      "ИНН",
+      "Корпоративный email",
+      "Наименование организации",
+      "Адрес организации",
+      "Паспортные данные",
+      "Реквизиты банка",
+      "Регистрация в сторонних сервисах",
+      "Скан удостоверения личности",
+    ],
+    [],
+  );
+
+  const clientTypeOptions = useMemo(
+    () => [
+      "Физлицо",
+      "Самозанятый",
+      "ИП",
+      "ООО",
+      "НКО",
+      "Госучреждение",
+      "Иностранная компания",
+    ],
+    [],
+  );
+
   useEffect(() => {
     const fetchApprovedReviews = async () => {
       try {
@@ -265,7 +306,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterCPU]);
 
-  // Сохранение новых фильтров
   useEffect(() => {
     localStorage.setItem("filterKII", JSON.stringify(filterKII));
   }, [filterKII]);
@@ -291,6 +331,29 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterITConsulting");
     }
   }, [filterITConsulting]);
+
+  // Сохранение новых фильтров
+  useEffect(() => {
+    if (filterRegistrationData.length > 0) {
+      localStorage.setItem(
+        "filterRegistrationData",
+        JSON.stringify(filterRegistrationData),
+      );
+    } else {
+      localStorage.removeItem("filterRegistrationData");
+    }
+  }, [filterRegistrationData]);
+
+  useEffect(() => {
+    if (filterClientType.length > 0) {
+      localStorage.setItem(
+        "filterClientType",
+        JSON.stringify(filterClientType),
+      );
+    } else {
+      localStorage.removeItem("filterClientType");
+    }
+  }, [filterClientType]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
@@ -353,7 +416,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     setConfigs(updatedConfigs);
   };
 
-  // Получение уникальных значений для фильтров
   const allLocations = useMemo(
     () =>
       Array.from(
@@ -410,22 +472,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providersWithReviews],
   );
 
-  // Функция фильтрации провайдеров
   const filteredProviders = useMemo(
     () =>
       providersWithReviews
         .filter((p) => {
-          // Поиск по названию
           if (
             searchQuery &&
             !p.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
             return false;
 
-          // 152-ФЗ
           if (filterFZ152 && !p.fz152Compliant) return false;
 
-          // ФСТЭК (мульти-выбор)
           if (filterFSTEK.length > 0) {
             const hasMatchingFSTEK = filterFSTEK.some(
               (cert) => p.fstekCertifications?.includes(cert) || false,
@@ -433,10 +491,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingFSTEK) return false;
           }
 
-          // Тестовый период
           if (filterTrialPeriod && p.trialDays === 0) return false;
 
-          // Локации (мульти-выбор)
           if (filterLocation.length > 0) {
             const hasMatchingLocation = filterLocation.some((location) =>
               p.locations.includes(location),
@@ -444,7 +500,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingLocation) return false;
           }
 
-          // Виртуализация (мульти-выбор)
           if (filterVirtualization.length > 0) {
             const hasMatchingVirtualization = filterVirtualization.some(
               (virt) => p.technicalSpecs.virtualization.includes(virt as any),
@@ -452,20 +507,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingVirtualization) return false;
           }
 
-          // Минимальное количество дата-центров
           if (
             filterMinDatacenters !== null &&
             p.locations.length < filterMinDatacenters
           )
             return false;
 
-          // Тип диска (мульти-выбор)
           if (filterDiskType.length > 0) {
             if (!filterDiskType.includes(p.technicalSpecs.diskType))
               return false;
           }
 
-          // Методы оплаты (мульти-выбор)
           if (filterPaymentMethod.length > 0) {
             const hasMatchingPaymentMethod = filterPaymentMethod.some(
               (method) => p.pricingDetails.paymentMethods.includes(method),
@@ -473,7 +525,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingPaymentMethod) return false;
           }
 
-          // Операционные системы (мульти-выбор)
           if (filterOS.length > 0) {
             const hasMatchingOS = filterOS.some((os) =>
               p.technicalSpecs.availableOS.includes(os),
@@ -481,7 +532,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingOS) return false;
           }
 
-          // Процессоры (мульти-выбор)
           if (filterCPU.length > 0) {
             const cpuModels = p.technicalSpecs.cpuModels || [];
             const hasMatchingCPU = filterCPU.some((cpu) =>
@@ -490,22 +540,34 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingCPU) return false;
           }
 
-          // Размещение КИИ
           if (filterKII && !p.kiiPlacement) return false;
 
-          // Мобильное приложение
           if (filterMobileApp && !p.mobileApp) return false;
 
-          // Заказ до регистрации
           if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
             return false;
 
-          // IT-консалтинг (мульти-выбор)
           if (filterITConsulting.length > 0) {
             const hasMatchingConsulting = filterITConsulting.some(
               (service) => p.itConsulting?.includes(service) || false,
             );
             if (!hasMatchingConsulting) return false;
+          }
+
+          // Новые фильтры
+          if (filterRegistrationData.length > 0) {
+            const hasMatchingRegistrationData = filterRegistrationData.some(
+              (field) =>
+                p.registrationData?.some((rd) => rd.field === field) || false,
+            );
+            if (!hasMatchingRegistrationData) return false;
+          }
+
+          if (filterClientType.length > 0) {
+            const hasMatchingClientType = filterClientType.some(
+              (type) => p.supportedClientTypes?.includes(type as any) || false,
+            );
+            if (!hasMatchingClientType) return false;
           }
 
           return true;
@@ -542,6 +604,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterMobileApp,
       filterOrderBeforeRegistration,
       filterITConsulting,
+      filterRegistrationData,
+      filterClientType,
       sortBy,
       configs,
     ],
@@ -606,7 +670,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
-                  // Новые пропсы
                   filterKII={filterKII}
                   setFilterKII={setFilterKII}
                   filterMobileApp={filterMobileApp}
@@ -617,6 +680,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   }
                   filterITConsulting={filterITConsulting}
                   setFilterITConsulting={setFilterITConsulting}
+                  filterRegistrationData={filterRegistrationData}
+                  setFilterRegistrationData={setFilterRegistrationData}
+                  filterClientType={filterClientType}
+                  setFilterClientType={setFilterClientType}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
@@ -625,6 +692,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
                   itConsultingOptions={itConsultingOptions}
+                  registrationDataOptions={registrationDataOptions}
+                  clientTypeOptions={clientTypeOptions}
                 />
               </div>
             </div>
@@ -688,7 +757,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
-                  // Новые пропсы
                   filterKII={filterKII}
                   setFilterKII={setFilterKII}
                   filterMobileApp={filterMobileApp}
@@ -699,6 +767,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   }
                   filterITConsulting={filterITConsulting}
                   setFilterITConsulting={setFilterITConsulting}
+                  filterRegistrationData={filterRegistrationData}
+                  setFilterRegistrationData={setFilterRegistrationData}
+                  filterClientType={filterClientType}
+                  setFilterClientType={setFilterClientType}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
@@ -707,6 +779,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
                   itConsultingOptions={itConsultingOptions}
+                  registrationDataOptions={registrationDataOptions}
+                  clientTypeOptions={clientTypeOptions}
                 />
               </div>
             </div>

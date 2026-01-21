@@ -77,6 +77,11 @@
     "customOS": "Custom ISO Images",
     "yes": "Yes",
     "no": "No"
+    "registrationData": "Registration Data",
+    "clientType": "Client Type",
+    "requiredData": "Required Data",
+    "optionalData": "Optional Data",
+    "supportedClients": "Supported Client Types"
   },
   "resources": {
     "cpu": "vCPU",
@@ -120,5 +125,9 @@
     "minDatacenters": "Min. DCs count",
     "anyAmount": "Any amount",
     "anyVirtualization": "Any virtualization"
+    "registrationData": "Registration Data",
+    "clientType": "Client Type",
+    "anyRegistrationData": "Any data",
+    "anyClientType": "Any type"
   }
 }

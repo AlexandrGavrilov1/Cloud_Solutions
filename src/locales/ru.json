@@ -77,6 +77,11 @@
     "customOS": "Свои ISO образы",
     "yes": "Да",
     "no": "Нет"
+    "registrationData": "Данные для регистрации",
+    "clientType": "Тип клиента",
+    "requiredData": "Обязательные данные",
+    "optionalData": "Опциональные данные",
+    "supportedClients": "Поддерживаемые типы клиентов"
   },
   "resources": {
     "cpu": "vCPU",
@@ -120,5 +125,9 @@
     "minDatacenters": "Мин. кол-во ЦОД",
     "anyAmount": "Любое кол-во",
     "anyVirtualization": "Любая виртуализация"
+    "registrationData": "Данные для регистрации",
+    "clientType": "Тип клиента",
+    "anyRegistrationData": "Любые данные",
+    "anyClientType": "Любой тип"
   }
 }
