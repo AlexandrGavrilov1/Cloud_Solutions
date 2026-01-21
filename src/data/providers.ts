@@ -33,7 +33,7 @@ export const providers: Provider[] = [
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
     fstekLevel: "УЗ-2",
 
-    // Новые поля
+    // Новые поляя
     kiiPlacement: true, // Размещение КИИ доступно
     mobileApp: true, // Есть мобильное приложение
     orderBeforeRegistration: true, // Заказ до регистрации доступен
