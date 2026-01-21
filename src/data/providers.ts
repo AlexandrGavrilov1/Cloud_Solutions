@@ -56,7 +56,7 @@ export const providers: Provider[] = [
       corporateEmail: true, // Корпоративный email - опционально
       organizationName: true, // Наименование организации - опционально
       organizationAddress: true, // Адрес организации - опционально
-      thirdPartyRegistration: true, // Регистрация в сторонних сервисах - опционально
+      thirdPartyRegistration: true, // Регистрация в сторонних сервисах - опциональноо
     },
 
     // Типы клиентов
