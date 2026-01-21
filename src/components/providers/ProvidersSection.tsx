@@ -397,6 +397,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   };
 
+  // Функция для отмены сравнения (очистки выбранных провайдеров)
+  const cancelComparison = () => {
+    console.log("Отмена сравнения, очистка выбранных провайдеров");
+    setSelectedForComparison([]);
+  };
+
   const updateConfig = (
     providerId: number,
     key: keyof ResourceConfig,
@@ -620,7 +626,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         providers={selectedProviders}
         configs={configs}
         calculatePrice={calculatePrice}
-        onClose={() => setShowComparison(false)}
+        onClose={() => {
+          console.log("Закрытие таблицы сравнения");
+          setShowComparison(false);
+        }}
       />
     );
   }
@@ -906,9 +915,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </>
       )}
 
+      {/* Компонент управления сравнением с кнопкой отмены */}
       <ComparisonControls
         selectedForComparison={selectedForComparison}
         compareProviders={compareProviders}
+        onCancelComparison={cancelComparison} // Передаем функцию отмены
       />
     </section>
   );
