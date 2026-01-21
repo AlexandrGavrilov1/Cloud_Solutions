@@ -10,7 +10,6 @@ interface ProviderCardHeaderProps {
   index: number;
   calculatedPrice: number;
   onProviderClick: () => void;
-  // Добавляем проп для кнопки сравнения
   onCompareClick?: () => void;
   isComparing?: boolean;
 }
@@ -23,7 +22,7 @@ export const ProviderCardHeader = ({
   onCompareClick,
   isComparing = false,
 }: ProviderCardHeaderProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const avgRating =
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
@@ -289,28 +288,26 @@ export const ProviderCardHeader = ({
         )}
       </div>
 
-      {/* Контейнер с кнопками - ссылка сверху, сравнение снизу */}
-      <div className="flex flex-col gap-2 mt-2">
-        {/* Кнопка ссылки (основная кнопка) */}
+      {/* Контейнер с кнопками */}
+      <div className="flex flex-col sm:flex-row gap-2 mt-2">
         <Button
           onClick={onProviderClick}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-lg active:scale-95"
+          className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-lg active:scale-95"
           size="lg"
         >
           {t("common.viewDetails") || "Подробнее"}
         </Button>
 
-        {/* Кнопка сравнения (второстепенная) */}
         {onCompareClick && (
           <Button
             onClick={onCompareClick}
             variant="outline"
-            className={`w-full border font-medium py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-md active:scale-95 ${
+            className={`flex-1 border font-medium py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-md active:scale-95 ${
               isComparing
                 ? "border-primary text-primary bg-primary/5"
                 : "border-muted-foreground/30 text-muted-foreground hover:border-primary/50 hover:text-primary"
             }`}
-            size="sm"
+            size="lg"
           >
             <Icon
               name={isComparing ? "Check" : "Compare"}
