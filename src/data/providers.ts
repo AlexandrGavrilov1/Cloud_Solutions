@@ -28,15 +28,14 @@ export const providers: Provider[] = [
       "Сложная панель для новичков",
     ],
     fz152Compliant: true,
-    fz152Level: "",
+    fz152Level: "УЗ-1",
     fstekCompliant: true,
-    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-    fstekLevel: "",
+    fstekCertifications: ["ФСТЭК-21"],
 
-    // Новые поляя
-    kiiPlacement: true, // Размещение КИИ доступно
-    mobileApp: true, // Есть мобильное приложение
-    orderBeforeRegistration: false, // Заказ до регистрации доступен
+    // Новые поля
+    kiiPlacement: true,
+    mobileApp: true,
+    orderBeforeRegistration: false,
     itConsulting: [
       "Аудит инфраструктуры",
       "Проектирование инфраструктуры",
@@ -45,6 +44,23 @@ export const providers: Provider[] = [
       "Консультация по ИБ",
       "Аттестация по ФСТЭК",
     ],
+
+    // Данные для регистрации
+    registrationData: {
+      fio: true, // ФИО - обязательно
+      email: true, // Email - обязательно
+      phone: true, // Телефон - обязательно
+      country: true, // Страна - обязательно
+      managerRequest: false, // Не через менеджера
+      inn: true, // ИНН - опционально
+      corporateEmail: true, // Корпоративный email - опционально
+      organizationName: true, // Наименование организации - опционально
+      organizationAddress: true, // Адрес организации - опционально
+      thirdPartyRegistration: true, // Регистрация в сторонних сервисах - опционально
+    },
+
+    // Типы клиентов
+    clientTypes: ["Физлицо", "Самозанятый", "ИП", "Юрлицо"],
 
     technicalSpecs: {
       diskType: "NVMe",
