@@ -28,10 +28,10 @@ export const providers: Provider[] = [
       "Сложная панель для новичков",
     ],
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-    fstekLevel: "УЗ-2",
+    fstekLevel: "",
 
     // Новые поляя
     kiiPlacement: true, // Размещение КИИ доступно
