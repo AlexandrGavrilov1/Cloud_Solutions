@@ -36,7 +36,7 @@ export const providers: Provider[] = [
     // Новые поляя
     kiiPlacement: true, // Размещение КИИ доступно
     mobileApp: true, // Есть мобильное приложение
-    orderBeforeRegistration: true, // Заказ до регистрации доступен
+    orderBeforeRegistration: false, // Заказ до регистрации доступен
     itConsulting: [
       "Аудит инфраструктуры",
       "Проектирование инфраструктуры",
