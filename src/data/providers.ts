@@ -45,7 +45,7 @@ export const providers: Provider[] = [
       "Аттестация по ФСТЭК",
     ],
 
-    // Новые поля
+    // Новые поляя
     registrationData: [
       {
         field: "Email",
