@@ -29,6 +29,8 @@ export const ProviderCardHeader = ({
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
   const [showAllLocations, setShowAllLocations] = useState(false);
+  const [showLinkTooltip, setShowLinkTooltip] = useState(false);
+  const [showCompareTooltip, setShowCompareTooltip] = useState(false);
 
   const getSupportSpeedColor = (responseTime: string) => {
     const time = responseTime.toLowerCase();
@@ -146,32 +148,61 @@ export const ProviderCardHeader = ({
           </div>
         </div>
 
-        {/* Кнопки перенесены сюда */}
+        {/* Кнопки с тултипами */}
         <div
           className={`flex gap-2 pointer-events-auto ${showDetails ? "lg:gap-3" : ""} xl:flex-col xl:gap-3`}
         >
           {onCompareClick && (
-            <button
-              onClick={onCompareClick}
-              className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
-                isComparing
-                  ? "border-primary/50 shadow-lg shadow-primary/30"
-                  : "border-border hover:border-primary/50"
-              } xl:order-2`}
-            >
-              <Icon
-                name={isComparing ? "Check" : "GitCompare"}
-                size={17}
-                className="text-foreground"
-              />
-            </button>
+            <div className="relative">
+              <button
+                onClick={onCompareClick}
+                onMouseEnter={() => setShowCompareTooltip(true)}
+                onMouseLeave={() => setShowCompareTooltip(false)}
+                className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
+                  isComparing
+                    ? "border-primary/50 shadow-lg shadow-primary/30"
+                    : "border-border hover:border-primary/50"
+                } xl:order-2`}
+              >
+                <Icon
+                  name={isComparing ? "Check" : "GitCompare"}
+                  size={17}
+                  className="text-foreground"
+                />
+              </button>
+
+              {/* Тултип для кнопки сравнения */}
+              {showCompareTooltip && (
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
+                  <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                    {isComparing ? "В сравнении" : "Сравнить"}
+                  </div>
+                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45"></div>
+                </div>
+              )}
+            </div>
           )}
-          <button
-            onClick={onProviderClick}
-            className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
-          >
-            <Icon name="ArrowUpRight" size={17} className="text-primary" />
-          </button>
+
+          <div className="relative">
+            <button
+              onClick={onProviderClick}
+              onMouseEnter={() => setShowLinkTooltip(true)}
+              onMouseLeave={() => setShowLinkTooltip(false)}
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
+            >
+              <Icon name="ArrowUpRight" size={17} className="text-primary" />
+            </button>
+
+            {/* Тултип для кнопки ссылки */}
+            {showLinkTooltip && (
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
+                <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                  Перейти на сайт
+                </div>
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45"></div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
