@@ -10,6 +10,9 @@ interface ProviderCardHeaderProps {
   index: number;
   calculatedPrice: number;
   onProviderClick: () => void;
+  // Добавляем проп для кнопки сравнения
+  onCompareClick?: () => void;
+  isComparing?: boolean;
 }
 
 export const ProviderCardHeader = ({
@@ -17,6 +20,8 @@ export const ProviderCardHeader = ({
   index,
   calculatedPrice,
   onProviderClick,
+  onCompareClick,
+  isComparing = false,
 }: ProviderCardHeaderProps) => {
   const { t, language } = useLanguage();
   const avgRating =
@@ -281,6 +286,39 @@ export const ProviderCardHeader = ({
             <Icon name="Activity" size={12} className="mr-1" />
             {t("common.uptime")}: {provider.uptime30days}%
           </Badge>
+        )}
+      </div>
+
+      {/* Контейнер с кнопками - ссылка сверху, сравнение снизу */}
+      <div className="flex flex-col gap-2 mt-2">
+        {/* Кнопка ссылки (основная кнопка) */}
+        <Button
+          onClick={onProviderClick}
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-lg active:scale-95"
+          size="lg"
+        >
+          {t("common.viewDetails") || "Подробнее"}
+        </Button>
+
+        {/* Кнопка сравнения (второстепенная) */}
+        {onCompareClick && (
+          <Button
+            onClick={onCompareClick}
+            variant="outline"
+            className={`w-full border font-medium py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-md active:scale-95 ${
+              isComparing
+                ? "border-primary text-primary bg-primary/5"
+                : "border-muted-foreground/30 text-muted-foreground hover:border-primary/50 hover:text-primary"
+            }`}
+            size="sm"
+          >
+            <Icon
+              name={isComparing ? "Check" : "Compare"}
+              size={16}
+              className="mr-2"
+            />
+            {isComparing ? "В сравнении" : "Сравнить"}
+          </Button>
         )}
       </div>
     </div>
