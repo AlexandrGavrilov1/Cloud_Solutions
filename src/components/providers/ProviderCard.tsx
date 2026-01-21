@@ -163,16 +163,30 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="mt-2 space-y-1">
-        <div className="flex flex-wrap gap-1">
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-foreground">
+          Сертификации ФСТЭК:
+        </div>
+        <div className="space-y-2">
           {provider.fstekCertifications.map((cert, idx) => (
-            <Badge
-              key={idx}
-              variant="outline"
-              className="bg-secondary/10 text-secondary border-secondary/30 text-xs"
-            >
-              {cert}
-            </Badge>
+            <div key={idx} className="flex items-start gap-2">
+              <div className="w-5 h-5 bg-secondary/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Icon name="ShieldCheck" size={12} className="text-secondary" />
+              </div>
+              <div>
+                <Badge className="bg-secondary/10 text-secondary border-secondary/30 mb-1">
+                  {cert}
+                </Badge>
+                <p className="text-xs text-muted-foreground">
+                  {cert === "ФСТЭК-17" &&
+                    "Требования о защите информации, не составляющей государственную тайну, содержащейся в государственных информационных системах"}
+                  {cert === "ФСТЭК-21" &&
+                    "Состав и содержание организационных и технических мер по обеспечению безопасности персональных данных"}
+                  {cert === "ФСТЭК-239" &&
+                    "Требования по обеспечению безопасности значимых объектов критической информационной инфраструктуры"}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -280,18 +294,134 @@ export const ProviderCard = ({
                         </div>
 
                         {/* Отображение конкретных сертификаций */}
-                        <div className="space-y-2">
-                          <div className="text-sm font-medium text-foreground">
-                            Сертификации:
+                        {renderFstekCertifications()}
+                      </div>
+                    )}
+                </div>
+
+                {/* Новые секции для дополнительных свойств */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {provider.kiiPlacement && (
+                    <div className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                          <Icon
+                            name="Building2"
+                            size={18}
+                            className="text-blue-500"
+                          />
+                        </div>
+                        <h4 className="text-base font-bold text-foreground">
+                          Размещение КИИ
+                        </h4>
+                      </div>
+                      <p className="text-sm text-foreground leading-relaxed">
+                        Провайдер допускает размещение объектов КИИ на своей
+                        инфраструктуре. Объекты критической информационной
+                        инфраструктуры (КИИ) — это системы, сети и базы данных,
+                        от функционирования которых зависит безопасность
+                        государства, национальная экономика и благосостояние
+                        граждан. Защита КИИ — ключевой элемент информационной
+                        безопасности страны, поскольку любые нарушения в их
+                        работе могут привести к серьёзным последствиям для всего
+                        общества.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="bg-card border border-border rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Icon
+                          name={
+                            provider.mobileApp ? "Smartphone" : "SmartphoneOff"
+                          }
+                          size={18}
+                          className={
+                            provider.mobileApp
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }
+                        />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">
+                        Мобильное приложение
+                      </h4>
+                      <Badge
+                        className={
+                          provider.mobileApp
+                            ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                            : "bg-red-500/20 text-red-500 border-red-500/30 ml-auto"
+                        }
+                      >
+                        {provider.mobileApp ? "Доступно" : "Отсутствует"}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-foreground">
+                      {provider.mobileApp
+                        ? "Провайдер предоставляет мобильное приложение для управления серверами и мониторинга"
+                        : "Провайдер не предоставляет мобильное приложение"}
+                    </p>
+                  </div>
+
+                  <div className="bg-card border border-border rounded-2xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Icon
+                          name="ClipboardCheck"
+                          size={18}
+                          className="text-primary"
+                        />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">
+                        Заказ услуг
+                      </h4>
+                      <Badge
+                        className={
+                          provider.orderBeforeRegistration
+                            ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                            : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
+                        }
+                      >
+                        {provider.orderBeforeRegistration
+                          ? "До регистрации"
+                          : "После регистрации"}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-foreground">
+                      {provider.orderBeforeRegistration
+                        ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
+                        : "Требуется регистрация и создание учетной записи перед заказом услуг"}
+                    </p>
+                  </div>
+
+                  {provider.itConsulting &&
+                    provider.itConsulting.length > 0 && (
+                      <div className="bg-card border border-border rounded-2xl p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                            <Icon
+                              name="Briefcase"
+                              size={18}
+                              className="text-purple-500"
+                            />
                           </div>
-                          <div className="flex flex-wrap gap-1">
-                            {provider.fstekCertifications.map((cert, idx) => (
+                          <h4 className="text-base font-bold text-foreground">
+                            IT-консалтинг
+                          </h4>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground mb-2">
+                            Предоставляемые услуги консалтинга:
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {provider.itConsulting.map((service, idx) => (
                               <Badge
                                 key={idx}
                                 variant="outline"
-                                className="bg-secondary/10 text-secondary border-secondary/30 text-xs px-2 py-1"
+                                className="bg-purple-500/10 text-purple-500 border-purple-500/30"
                               >
-                                {cert}
+                                {service}
                               </Badge>
                             ))}
                           </div>

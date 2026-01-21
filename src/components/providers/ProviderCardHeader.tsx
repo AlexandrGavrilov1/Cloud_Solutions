@@ -123,6 +123,17 @@ export const ProviderCardHeader = ({
                       />
                     </div>
                   )}
+
+                {/* Иконка КИИ */}
+                {provider.kiiPlacement && (
+                  <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
+                    <Icon
+                      name="Building2"
+                      size={10}
+                      className="text-blue-500"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -340,6 +351,12 @@ export const ProviderCardHeader = ({
               )}
             </Badge>
           )}
+        {provider.kiiPlacement && (
+          <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-500 border font-semibold text-xs px-2 py-1">
+            <Icon name="Building2" size={12} className="mr-1" />
+            КИИ
+          </Badge>
+        )}
         {provider.uptime30days && (
           <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
             <Icon name="Activity" size={12} className="mr-1" />

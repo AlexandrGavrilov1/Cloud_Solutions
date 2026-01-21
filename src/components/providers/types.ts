@@ -78,6 +78,12 @@ export interface Provider {
   fstekCertifications: string[]; // массив сертификаций
   fstekLevel?: string;
 
+  // Новые поля
+  kiiPlacement: boolean; // Размещение КИИ
+  mobileApp: boolean; // Мобильное приложение
+  orderBeforeRegistration: boolean; // Заказ до регистрации
+  itConsulting: string[]; // IT-консалтинг (массив услуг)
+
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
   additionalServices: AdditionalServices;

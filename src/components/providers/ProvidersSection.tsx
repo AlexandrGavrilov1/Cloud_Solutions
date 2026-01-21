@@ -26,7 +26,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  // Обновлено: теперь массив строк
   const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterFSTEK");
     return saved ? JSON.parse(saved) : [];
@@ -78,6 +77,28 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Новые фильтры
+  const [filterKII, setFilterKII] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterKII");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterMobileApp, setFilterMobileApp] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterMobileApp");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterOrderBeforeRegistration, setFilterOrderBeforeRegistration] =
+    useState<boolean>(() => {
+      const saved = localStorage.getItem("filterOrderBeforeRegistration");
+      return saved ? JSON.parse(saved) : false;
+    });
+
+  const [filterITConsulting, setFilterITConsulting] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterITConsulting");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
     [],
   );
@@ -110,6 +131,20 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   // Варианты ФСТЭК для фильтра
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
+
+  // Варианты IT-консалтинга для фильтра
+  const itConsultingOptions = useMemo(
+    () => [
+      "Аудит инфраструктуры",
+      "Проектирование инфраструктуры",
+      "Миграция в облако",
+      "Импортозамещение",
+      "Консультация по ИБ",
+      "Аттестация по ФСТЭК",
+      "Другие гос. лицензии",
+    ],
+    [],
+  );
 
   // Загрузка отзывов
   useEffect(() => {
@@ -229,6 +264,33 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterCPU");
     }
   }, [filterCPU]);
+
+  // Сохранение новых фильтров
+  useEffect(() => {
+    localStorage.setItem("filterKII", JSON.stringify(filterKII));
+  }, [filterKII]);
+
+  useEffect(() => {
+    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
+  }, [filterMobileApp]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "filterOrderBeforeRegistration",
+      JSON.stringify(filterOrderBeforeRegistration),
+    );
+  }, [filterOrderBeforeRegistration]);
+
+  useEffect(() => {
+    if (filterITConsulting.length > 0) {
+      localStorage.setItem(
+        "filterITConsulting",
+        JSON.stringify(filterITConsulting),
+      );
+    } else {
+      localStorage.removeItem("filterITConsulting");
+    }
+  }, [filterITConsulting]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
@@ -365,7 +427,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
           // ФСТЭК (мульти-выбор)
           if (filterFSTEK.length > 0) {
-            // Проверяем есть ли у провайдера выбранные сертификации ФСТЭК
             const hasMatchingFSTEK = filterFSTEK.some(
               (cert) => p.fstekCertifications?.includes(cert) || false,
             );
@@ -429,6 +490,24 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingCPU) return false;
           }
 
+          // Размещение КИИ
+          if (filterKII && !p.kiiPlacement) return false;
+
+          // Мобильное приложение
+          if (filterMobileApp && !p.mobileApp) return false;
+
+          // Заказ до регистрации
+          if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
+            return false;
+
+          // IT-консалтинг (мульти-выбор)
+          if (filterITConsulting.length > 0) {
+            const hasMatchingConsulting = filterITConsulting.some(
+              (service) => p.itConsulting?.includes(service) || false,
+            );
+            if (!hasMatchingConsulting) return false;
+          }
+
           return true;
         })
         .sort((a, b) => {
@@ -459,6 +538,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterPaymentMethod,
       filterOS,
       filterCPU,
+      filterKII,
+      filterMobileApp,
+      filterOrderBeforeRegistration,
+      filterITConsulting,
       sortBy,
       configs,
     ],
@@ -523,14 +606,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
+                  // Новые пропсы
+                  filterKII={filterKII}
+                  setFilterKII={setFilterKII}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
+                  filterOrderBeforeRegistration={filterOrderBeforeRegistration}
+                  setFilterOrderBeforeRegistration={
+                    setFilterOrderBeforeRegistration
+                  }
+                  filterITConsulting={filterITConsulting}
+                  setFilterITConsulting={setFilterITConsulting}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  // Передаем варианты ФСТЭК в FilterPanel
                   fstekOptions={fstekOptions}
+                  itConsultingOptions={itConsultingOptions}
                 />
               </div>
             </div>
@@ -594,14 +688,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOS={setFilterOS}
                   filterCPU={filterCPU}
                   setFilterCPU={setFilterCPU}
+                  // Новые пропсы
+                  filterKII={filterKII}
+                  setFilterKII={setFilterKII}
+                  filterMobileApp={filterMobileApp}
+                  setFilterMobileApp={setFilterMobileApp}
+                  filterOrderBeforeRegistration={filterOrderBeforeRegistration}
+                  setFilterOrderBeforeRegistration={
+                    setFilterOrderBeforeRegistration
+                  }
+                  filterITConsulting={filterITConsulting}
+                  setFilterITConsulting={setFilterITConsulting}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  // Передаем варианты ФСТЭК в FilterPanel
                   fstekOptions={fstekOptions}
+                  itConsultingOptions={itConsultingOptions}
                 />
               </div>
             </div>

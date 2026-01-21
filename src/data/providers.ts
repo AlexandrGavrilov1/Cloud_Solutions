@@ -22,7 +22,6 @@ export const providers: Provider[] = [
       "Гибкое масштабирование ресурсов",
       "Бесплатный тестовый период",
     ],
-
     cons: [
       "Повышение цен в 2025 году",
       "IPv4 адрес +150₽/мес дополнительно",
@@ -31,7 +30,21 @@ export const providers: Provider[] = [
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
-    fstekCertifications: ["ФСТЭК-21"],
+    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekLevel: "УЗ-2",
+
+    // Новые поля
+    kiiPlacement: true, // Размещение КИИ доступно
+    mobileApp: true, // Есть мобильное приложение
+    orderBeforeRegistration: true, // Заказ до регистрации доступен
+    itConsulting: [
+      "Аудит инфраструктуры",
+      "Проектирование инфраструктуры",
+      "Миграция в облако",
+      "Импортозамещение",
+      "Консультация по ИБ",
+      "Аттестация по ФСТЭК",
+    ],
 
     technicalSpecs: {
       diskType: "NVMe",
