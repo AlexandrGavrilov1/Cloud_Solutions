@@ -10,6 +10,9 @@ interface ProviderCardHeaderProps {
   index: number;
   calculatedPrice: number;
   onProviderClick: () => void;
+  onCompareClick?: () => void;
+  isComparing?: boolean;
+  showDetails?: boolean;
 }
 
 export const ProviderCardHeader = ({
@@ -17,6 +20,9 @@ export const ProviderCardHeader = ({
   index,
   calculatedPrice,
   onProviderClick,
+  onCompareClick,
+  isComparing = false,
+  showDetails = false,
 }: ProviderCardHeaderProps) => {
   const { t, language } = useLanguage();
   const avgRating =
@@ -138,6 +144,34 @@ export const ProviderCardHeader = ({
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Кнопки перенесены сюда */}
+        <div
+          className={`flex gap-2 pointer-events-auto ${showDetails ? "lg:gap-3" : ""} xl:flex-col xl:gap-3`}
+        >
+          {onCompareClick && (
+            <button
+              onClick={onCompareClick}
+              className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
+                isComparing
+                  ? "border-primary/50 shadow-lg shadow-primary/30"
+                  : "border-border hover:border-primary/50"
+              } xl:order-2`}
+            >
+              <Icon
+                name={isComparing ? "Check" : "GitCompare"}
+                size={17}
+                className="text-foreground"
+              />
+            </button>
+          )}
+          <button
+            onClick={onProviderClick}
+            className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
+          >
+            <Icon name="ArrowUpRight" size={17} className="text-primary" />
+          </button>
         </div>
       </div>
 
