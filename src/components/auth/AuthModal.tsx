@@ -14,33 +14,15 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const handleOAuthLogin = async (provider: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch('https://functions.poehali.dev/auth-oauth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ provider }),
-      });
-
-      const data = await response.json();
-      
-      if (data.authUrl) {
-        window.location.href = data.authUrl;
-      }
+      const authUrl = `https://functions.poehali.dev/b41c80f0-ea03-4690-aeed-e4161955b6f9?action=${provider}`;
+      window.location.href = authUrl;
     } catch (error) {
       console.error('OAuth login error:', error);
-    } finally {
       setIsLoading(false);
     }
   };
 
   const providers = [
-    {
-      id: 'vk',
-      name: 'ВКонтакте',
-      icon: 'Circle',
-      color: 'bg-[#0077FF] hover:bg-[#0066DD]',
-    },
     {
       id: 'yandex',
       name: 'Яндекс',
@@ -48,22 +30,10 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       color: 'bg-[#FC3F1D] hover:bg-[#E63619]',
     },
     {
-      id: 'google',
-      name: 'Google',
-      icon: 'Chrome',
-      color: 'bg-[#4285F4] hover:bg-[#3367D6]',
-    },
-    {
-      id: 'github',
-      name: 'GitHub',
-      icon: 'Github',
-      color: 'bg-[#24292e] hover:bg-[#1a1e22]',
-    },
-    {
-      id: 'telegram',
-      name: 'Telegram',
-      icon: 'Send',
-      color: 'bg-[#0088cc] hover:bg-[#0077b5]',
+      id: 'vk',
+      name: 'ВКонтакте',
+      icon: 'Circle',
+      color: 'bg-[#0077FF] hover:bg-[#0066DD]',
     },
   ];
 
