@@ -474,8 +474,78 @@ export const providers: Provider[] = [
       "Нет выделенных IP в базе",
     ],
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
-    fstekCompliant: false,
+    fz152Level: "",
+    fstekCompliant: true,
+    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekLevel: "",
+
+    kiiPlacement: true,
+    mobileApp: true,
+    orderBeforeRegistration: false,
+    itConsulting: [
+      "Аудит инфраструктуры",
+      "Проектирование инфраструктуры",
+      "Миграция в облако",
+      "Импортозамещение",
+      "Консультация по ИБ",
+      "Аттестация по ФСТЭК",
+    ],
+
+    // Новые поляя
+    registrationData: [
+      {
+        field: "Email",
+        required: true,
+        description: "Для входа и уведомлений",
+      },
+      {
+        field: "Телефон",
+        required: true,
+        description: "Для двухфакторной аутентификации",
+      },
+      { field: "ФИО", required: true, description: "Для договора" },
+      {
+        field: "Страна",
+        required: true,
+        description: "Для соответствия законодательству",
+      },
+      { field: "ИНН", required: true, description: "Для юридических лиц" },
+      {
+        field: "Наименование организации",
+        required: true,
+        description: "Для юридических лиц",
+      },
+      {
+        field: "Адрес организации",
+        required: true,
+        description: "Для юридических лиц",
+      },
+      {
+        field: "Корпоративный email",
+        required: false,
+        description: "Для дополнительной проверки",
+      },
+      {
+        field: "Реквизиты банка",
+        required: false,
+        description: "Для безналичной оплаты",
+      },
+      {
+        field: "Регистрация в сторонних сервисах",
+        required: false,
+        description: "Google, Yandex и др.",
+      },
+    ],
+
+    supportedClientTypes: [
+      "Физлицо",
+      "Самозанятый",
+      "ИП",
+      "ООО",
+      "НКО",
+      "Госучреждение",
+      "Иностранная компания",
+    ],
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
