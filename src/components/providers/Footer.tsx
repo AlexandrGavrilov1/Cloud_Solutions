@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import Icon from '@/components/ui/icon';
-import { ContactForm } from '@/components/contact/ContactForm';
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
+import { ContactForm } from "@/components/contact/ContactForm";
 
 export const Footer = () => {
   return (
@@ -17,78 +17,114 @@ export const Footer = () => {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-primary">TopCloudHub</h3>
-                  <p className="text-xs text-muted-foreground font-medium">Топ хостингов</p>
+                  <h3 className="text-xl font-bold text-primary">
+                    TopCloudHub
+                  </h3>
+                  <p className="text-xs text-muted-foreground font-medium">
+                    Топ хостингов
+                  </p>
                 </div>
               </div>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Независимая платформа для сравнения VDS провайдеров. Помогаем найти идеальное решение для вашего проекта.
+                Независимая платформа для сравнения облачных провайдеров.
+                Помогаем найти идеальное решение для вашего проекта.
               </p>
               <div className="flex gap-3">
                 <ContactForm />
-                <Button 
-                  size="icon" 
-                  variant="outline" 
+                <Button
+                  size="icon"
+                  variant="outline"
                   className="rounded-xl hover:border-primary hover:bg-primary/10 hover:text-primary transition-all"
                   asChild
                 >
-                  <a href="https://t.me/topcloudhub" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://t.me/topcloudhub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Icon name="Send" size={18} />
                   </a>
                 </Button>
               </div>
             </div>
-            
+
             <div>
-              <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">Провайдеры</h4>
+              <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
+                Провайдеры
+              </h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="/" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+                  <a
+                    href="/"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                  >
                     Рейтинг
                   </a>
                 </li>
 
                 <li>
-                  <a href="#providers" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+                  <a
+                    href="#providers"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                  >
                     Отзывы
                   </a>
                 </li>
                 <li>
-                  <a href="/promo" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+                  <a
+                    href="/promo"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                  >
                     Акции
                   </a>
                 </li>
               </ul>
             </div>
-            
+
             <div>
-              <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">Помощь</h4>
+              <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
+                Помощь
+              </h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="/blog" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+                  <a
+                    href="/blog"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                  >
                     Блог
                   </a>
                 </li>
                 <li>
-                  <a href="/faq" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+                  <a
+                    href="/faq"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                  >
                     FAQ
                   </a>
                 </li>
                 <li>
-                  <a href="/about" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+                  <a
+                    href="/about"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                  >
                     О нас
                   </a>
                 </li>
               </ul>
             </div>
           </div>
-          
+
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground font-medium">
-              © 2025 TopCloudHub. Все права защищены.
+              © TopCloudHub. Все права защищены.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground font-medium">
-              <a href="/privacy" className="hover:text-primary transition-colors">Политика конфиденциальности</a>
+              <a
+                href="/privacy"
+                className="hover:text-primary transition-colors"
+              >
+                Политика конфиденциальности
+              </a>
             </div>
           </div>
         </div>
