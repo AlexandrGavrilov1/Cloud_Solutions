@@ -1201,7 +1201,7 @@ export const providers: Provider[] = [
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: [],
-    registrationData: ["Email"],
+    registrationData: ["Email", "ФИО"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
@@ -1255,7 +1255,7 @@ export const providers: Provider[] = [
     name: "Макхост",
     logo: "/providers_logo/14_Макхост.jpg",
     rating: 9.2,
-    basePrice: 220,
+    basePrice: 473,
     cpuPrice: 160,
     ramPrice: 90,
     storagePrice: 8,
@@ -1266,7 +1266,7 @@ export const providers: Provider[] = [
       "Бесплатная миграция",
     ],
     locations: ["Россия", "Нидерланды"],
-    trialDays: 0,
+    trialDays: 3,
     url: "https://mchost.ru",
     pros: [
       "20 лет на рынке",
@@ -1274,10 +1274,20 @@ export const providers: Provider[] = [
       "Бесплатный ISPmanager 6",
       "60 000+ клиентов",
     ],
-    cons: ["Нет тестового периода", "Всего 2 локации", "Средняя цена"],
+    cons: ["Средняя цена"],
+
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
-    fstekCompliant: false,
+    fz152Level: "",
+    fstekCompliant: true,
+    fstekCertifications: ["В зависимости от требований"],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["Email"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
