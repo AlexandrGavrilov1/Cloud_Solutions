@@ -72,12 +72,8 @@ export type RegistrationDataField =
 
 export type ClientType =
   | "Физлицо"
-  | "Самозанятый"
-  | "ИП"
-  | "ООО"
-  | "НКО"
-  | "Госучреждение"
-  | "Иностранная компания";
+  | "Юрлицо"
+  | ;
 
 export interface Provider {
   id: number;
