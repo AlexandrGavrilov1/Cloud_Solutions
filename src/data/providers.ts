@@ -28,6 +28,7 @@ export const providers: Provider[] = [
       "IPv4 адрес +150₽/мес дополнительно",
       "Сложная панель для новичков",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -36,12 +37,8 @@ export const providers: Provider[] = [
     kiiPlacement: true,
     mobileApp: true,
     orderBeforeRegistration: false,
-
     additionalServicesList: ["Миграция в облако"],
-
     registrationData: ["Email", "Телефон", "ФИО"],
-
-    // Упрощенные типы клиентов
     supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
@@ -823,7 +820,7 @@ export const providers: Provider[] = [
       "DDoS защита",
     ],
     locations: ["Москва"],
-    trialDays: 14,
+    trialDays: 30,
     url: "https://my.rusonyx.ru/#/login/reg?partner=34042924",
     pros: [
       "Длительный тестовый период",
@@ -832,9 +829,19 @@ export const providers: Provider[] = [
       "Низкие цены",
     ],
     cons: ["Только одна локация", "Интерфейс может показаться сложным"],
+
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: true,
+    additionalServicesList: [],
+    registrationData: ["Email"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
