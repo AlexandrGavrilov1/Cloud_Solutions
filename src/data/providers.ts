@@ -40,11 +40,7 @@ export const providers: Provider[] = [
     itConsulting: ["Миграция в облако"],
 
     // Новые поляяz
-    registrationData: [
-      "Email",
-      "Телефон", 
-      "ФИО"         
-    ],
+    registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -163,11 +159,7 @@ export const providers: Provider[] = [
     orderBeforeRegistration: true,
     itConsulting: ["Миграция в облако"],
 
-    registrationData: [
-      "Email",
-      "Телефон", 
-      "ФИО"  
-    ],
+    registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -227,6 +219,7 @@ export const providers: Provider[] = [
       "Блоги и форумы",
     ],
     reviews: reviewsData[2] || [],
+  },
   {
     id: 3,
     name: "рег.ру",
@@ -270,9 +263,7 @@ export const providers: Provider[] = [
     itConsulting: [],
 
     // Новые поляя
-    registrationData: [
-      "Email"     
-    ],
+    registrationData: ["Email"],
 
     supportedClientTypes: [
       "Физлицо",
