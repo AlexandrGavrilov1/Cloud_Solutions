@@ -475,7 +475,7 @@ export const providers: Provider[] = [
 
     kiiPlacement: false,
     mobileApp: true,
-    orderBeforeRegistration: false,
+    orderBeforeRegistration: true,
     itConsulting: ["Миграция в облако"],
 
     registrationData: [
@@ -887,7 +887,7 @@ export const providers: Provider[] = [
       "Поддержка 24/7",
     ],
     locations: ["Москва", "Санкт-Петербург", "Казань"],
-    trialDays: 30,
+    trialDays: 14,
     url: "https://www.reg.ru/?rlink=reflink-30906203",
     pros: [
       "Крупнейший регистратор доменов",
@@ -901,9 +901,74 @@ export const providers: Provider[] = [
       "Интерфейс устарел визуально",
       "Меньше дата-центров",
     ],
+    // Начало вставки
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    itConsulting: [],
+
+    // Новые поляя
+    registrationData: [
+      {
+        field: "Email",
+        required: true,
+        description: "Для входа и уведомлений",
+      },
+      {
+        field: "Телефон",
+        required: false,
+        description: "Для двухфакторной аутентификации",
+      },
+      { field: "ФИО", required: false, description: "Для договора" },
+      {
+        field: "Страна",
+        required: false,
+        description: "Для соответствия законодательству",
+      },
+      { field: "ИНН", required: false, description: "Для юридических лиц" },
+      {
+        field: "Наименование организации",
+        required: false,
+        description: "Для юридических лиц",
+      },
+      {
+        field: "Адрес организации",
+        required: false,
+        description: "Для юридических лиц",
+      },
+      {
+        field: "Корпоративный email",
+        required: false,
+        description: "Для дополнительной проверки",
+      },
+      {
+        field: "Реквизиты банка",
+        required: false,
+        description: "Для безналичной оплаты",
+      },
+      {
+        field: "Регистрация в сторонних сервисах",
+        required: false,
+        description: "Google, Yandex и др.",
+      },
+    ],
+
+    supportedClientTypes: [
+      "Физлицо",
+      "Самозанятый",
+      "ИП",
+      "ООО",
+      "НКО",
+      "Госучреждение",
+      "Иностранная компания",
+    ],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
