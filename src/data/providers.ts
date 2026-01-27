@@ -14,7 +14,7 @@ export const providers: Provider[] = [
     storagePrice: 15,
     features: ["DDoS защита", "NVMe диски", "99.98% SLA", "Поддержка 24/7"],
     locations: ["Москва", "Санкт-Петербург", "Амстердам", "Казахстан"],
-    trialDays: 7,
+    trialDays: 3,
     url: "https://timeweb.cloud/?i=123689",
     pros: [
       "Самая быстрая техподдержка на рынке",
@@ -23,27 +23,20 @@ export const providers: Provider[] = [
       "Бесплатный тестовый период",
     ],
     cons: [
-      "Повышение цен в 2025 году",
+      "Повышение цен в 2026 году",
       "IPv4 адрес +150₽/мес дополнительно",
       "Сложная панель для новичков",
     ],
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
-    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekCertifications: ["ФСТЭК-21"],
     fstekLevel: "",
 
     kiiPlacement: true,
     mobileApp: true,
     orderBeforeRegistration: false,
-    itConsulting: [
-      "Аудит инфраструктуры",
-      "Проектирование инфраструктуры",
-      "Миграция в облако",
-      "Импортозамещение",
-      "Консультация по ИБ",
-      "Аттестация по ФСТЭК",
-    ],
+    itConsulting: ["Миграция в облако"],
 
     // Новые поляя
     registrationData: [
@@ -60,18 +53,18 @@ export const providers: Provider[] = [
       { field: "ФИО", required: true, description: "Для договора" },
       {
         field: "Страна",
-        required: true,
+        required: false,
         description: "Для соответствия законодательству",
       },
-      { field: "ИНН", required: true, description: "Для юридических лиц" },
+      { field: "ИНН", required: false, description: "Для юридических лиц" },
       {
         field: "Наименование организации",
-        required: true,
+        required: false,
         description: "Для юридических лиц",
       },
       {
         field: "Адрес организации",
-        required: true,
+        required: false,
         description: "Для юридических лиц",
       },
       {
@@ -459,7 +452,7 @@ export const providers: Provider[] = [
       "24/7 поддержка",
     ],
     locations: ["Москва", "Санкт-Петербург"],
-    trialDays: 14,
+    trialDays: 30,
     url: "https://beget.com/ru",
     pros: [
       "Самые низкие цены на рынке",
@@ -473,25 +466,18 @@ export const providers: Provider[] = [
       "Медленная работа техподдержки",
       "Нет выделенных IP в базе",
     ],
-    fz152Compliant: true,
+    // Начало вставки
+    fz152Compliant: false,
     fz152Level: "",
-    fstekCompliant: true,
-    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekCompliant: false,
+    fstekCertifications: [],
     fstekLevel: "",
 
-    kiiPlacement: true,
+    kiiPlacement: false,
     mobileApp: true,
     orderBeforeRegistration: false,
-    itConsulting: [
-      "Аудит инфраструктуры",
-      "Проектирование инфраструктуры",
-      "Миграция в облако",
-      "Импортозамещение",
-      "Консультация по ИБ",
-      "Аттестация по ФСТЭК",
-    ],
+    itConsulting: ["Миграция в облако"],
 
-    // Новые поляя
     registrationData: [
       {
         field: "Email",
@@ -506,18 +492,18 @@ export const providers: Provider[] = [
       { field: "ФИО", required: true, description: "Для договора" },
       {
         field: "Страна",
-        required: true,
+        required: false,
         description: "Для соответствия законодательству",
       },
-      { field: "ИНН", required: true, description: "Для юридических лиц" },
+      { field: "ИНН", required: false, description: "Для юридических лиц" },
       {
         field: "Наименование организации",
-        required: true,
+        required: false,
         description: "Для юридических лиц",
       },
       {
         field: "Адрес организации",
-        required: true,
+        required: false,
         description: "Для юридических лиц",
       },
       {
@@ -546,6 +532,7 @@ export const providers: Provider[] = [
       "Госучреждение",
       "Иностранная компания",
     ],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
