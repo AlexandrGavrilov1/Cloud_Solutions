@@ -1006,7 +1006,7 @@ export const providers: Provider[] = [
       "Ежедневные бэкапы",
     ],
     locations: ["Москва"],
-    trialDays: 7,
+    trialDays: 30,
     url: "https://www.hostland.ru/?r=cf78346c",
     pros: ["Антивирус в комплекте", "Бесплатный домен .RU/.РФ"],
     cons: ["Базовая производительность", "Мало ЦОДов"],
@@ -1017,10 +1017,10 @@ export const providers: Provider[] = [
     fstekCertifications: [],
     fstekLevel: "",
     kiiPlacement: false,
-    mobileApp: true,
-    orderBeforeRegistration: false,
+    mobileApp: false,
+    orderBeforeRegistration: true,
     additionalServicesList: [],
-    registrationData: ["Email", "ФИО", "Телефон", "Страна"],
+    registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
