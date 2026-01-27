@@ -38,12 +38,8 @@ export const providers: Provider[] = [
     mobileApp: true,
     orderBeforeRegistration: false,
     itConsulting: ["Миграция в облако"],
-    
-    registrationData: [
-      "Email",
-      "Телефон", 
-      "ФИО"         
-    ],
+
+    registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -162,11 +158,7 @@ export const providers: Provider[] = [
     orderBeforeRegistration: true,
     itConsulting: ["Миграция в облако"],
 
-    registrationData: [
-      "Email",
-      "Телефон", 
-      "ФИО"  
-    ],
+    registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -270,9 +262,7 @@ export const providers: Provider[] = [
     itConsulting: [],
 
     // Новые поляя
-    registrationData: [
-      "Email"     
-    ],
+    registrationData: ["Email"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -355,7 +345,7 @@ export const providers: Provider[] = [
     locations: ["Москва", "Санкт-Петербург", "Нижний Новгород"],
     trialDays: 14,
     url: "https://nubes.ru/",
-    pros: ["Тест 7 дней", "NVMe диски", "Managed услуги", "ISPmanager"],
+    pros: ["Тест 14 дней", "NVMe диски", "Managed услуги", "ISPmanager"],
     cons: ["Мало локаций", "Средняя известность", "Нет IPv6"],
     // Начало вставки
     fz152Compliant: true,
@@ -426,7 +416,7 @@ export const providers: Provider[] = [
       "1C на облаке",
     ],
 
-        reviews: reviewsData[4] || [],
+    reviews: reviewsData[4] || [],
   },
   {
     id: 5,
@@ -458,7 +448,7 @@ export const providers: Provider[] = [
       "Цены выше среднего",
     ],
     // Начало вставки
-    fz152Compliant: ,
+    fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
@@ -469,9 +459,7 @@ export const providers: Provider[] = [
     orderBeforeRegistration: false,
     itConsulting: ["Миграция в облако", "Консультация по ИБ"],
 
-    registrationData: [
-      "Email",        
-    ],
+    registrationData: ["Email"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -542,7 +530,7 @@ export const providers: Provider[] = [
       "Базы данных",
     ],
 
-   reviews: reviewsData[5] || [],
+    reviews: reviewsData[5] || [],
   },
   {
     id: 6,
@@ -631,7 +619,7 @@ export const providers: Provider[] = [
       "Базы данных",
     ],
 
-     reviews: reviewsData[6] || [],
+    reviews: reviewsData[6] || [],
   },
   {
     id: 7,
@@ -808,7 +796,7 @@ export const providers: Provider[] = [
       "Разработка",
     ],
 
-   reviews: reviewsData[8] || [],
+    reviews: reviewsData[8] || [],
   },
   {
     id: 9,
@@ -1063,7 +1051,7 @@ export const providers: Provider[] = [
       "Корпоративные порталы",
     ],
 
-   reviews: reviewsData[11] || [],
+    reviews: reviewsData[11] || [],
   },
   {
     id: 12,
@@ -1313,7 +1301,7 @@ export const providers: Provider[] = [
       "Малый бизнес",
     ],
 
-   reviews: reviewsData[14] || [],
+    reviews: reviewsData[14] || [],
   },
   {
     id: 15,
@@ -1895,7 +1883,7 @@ export const providers: Provider[] = [
       "Веб-разработка",
     ],
 
-   reviews: reviewsData[21] || [],
+    reviews: reviewsData[21] || [],
   },
   {
     id: 22,
@@ -2054,7 +2042,7 @@ export const providers: Provider[] = [
       "Малый бизнес",
     ],
 
-   reviews: reviewsData[23] || [],
+    reviews: reviewsData[23] || [],
   },
   {
     id: 24,
@@ -2240,7 +2228,7 @@ export const providers: Provider[] = [
       "Корпоративные решения",
       "Финтех",
     ],
-   reviews: reviewsData[25] || [],
+    reviews: reviewsData[25] || [],
   },
   {
     id: 26,
@@ -2516,7 +2504,7 @@ export const providers: Provider[] = [
       "Стартапы",
     ],
 
-   reviews: reviewsData[28] || [],
+    reviews: reviewsData[28] || [],
   },
   {
     id: 29,
@@ -2975,7 +2963,7 @@ export const providers: Provider[] = [
 
     reviews: reviewsData[33] || [],
   },
-    {
+  {
     id: 34,
     name: "MWS",
     logo: "providers_logo/34_MWS.jpg",
@@ -3096,7 +3084,7 @@ export const providers: Provider[] = [
       "E-commerce",
     ],
 
-   reviews: reviewsData[35] || [],
+    reviews: reviewsData[35] || [],
   },
   {
     id: 36,
@@ -3158,7 +3146,7 @@ export const providers: Provider[] = [
     promoText: "14 дней тест + корпоративная техподдержка",
     caseStudies: ["Банки", "Корпоративные системы", "SAP", "1C на облаке"],
 
-   reviews: reviewsData[36] || [],
+    reviews: reviewsData[36] || [],
   },
   {
     id: 37,
@@ -4003,7 +3991,7 @@ export const providers: Provider[] = [
     promoText: "Недорогие VPS от 165₽/мес с DDoS защитой",
     caseStudies: ["Личные проекты", "Тестовые среды", "Небольшие сайты"],
 
-   reviews: reviewsData[49] || [],
+    reviews: reviewsData[49] || [],
   },
   {
     id: 50,
@@ -4193,7 +4181,7 @@ export const providers: Provider[] = [
       "Боты",
     ],
 
-   reviews: reviewsData[51] || [],
+    reviews: reviewsData[51] || [],
   },
   {
     id: 52,
