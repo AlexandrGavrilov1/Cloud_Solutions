@@ -1327,14 +1327,27 @@ export const providers: Provider[] = [
     storagePrice: 10,
     features: ["NVMe диски", "152-ФЗ", "Managed услуги", "ISPmanager"],
     locations: ["Москва", "Санкт-Петербург", "Нижний Новгород"],
-    trialDays: 7,
+    trialDays: 14,
     url: "https://nubes.ru/",
     pros: ["Тест 7 дней", "NVMe диски", "Managed услуги", "ISPmanager"],
     cons: ["Мало локаций", "Средняя известность", "Нет IPv6"],
+    // Начало вставки
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
-    fstekCompliant: false,
+    fz152Level: "",
+    fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekLevel: "",
+
+    kiiPlacement: true,
+    mobileApp: false,
+    orderBeforeRegistration: true,
+    itConsulting: [],
+
+    // Новые поляя
+    registrationData: ["По заявке через менеджера"],
+
+    supportedClientTypes: [],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
