@@ -49,8 +49,8 @@ interface FilterPanelProps {
   allCPUs: string[];
   fstekOptions: string[];
   itConsultingOptions: string[];
-  registrationDataOptions: string[]; // Новый пропс
-  clientTypeOptions: string[]; // Новый пропс
+  registrationDataOptions: RegistrationDataField[];
+  clientTypeOptions: ClientType[];
 }
 
 export const FilterPanel = ({

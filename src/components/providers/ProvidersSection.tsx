@@ -560,18 +560,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             if (!hasMatchingConsulting) return false;
           }
 
-          // Новые фильтры
+          // Новые фильтры - обновлена логика для массивов строк
           if (filterRegistrationData.length > 0) {
             const hasMatchingRegistrationData = filterRegistrationData.some(
-              (field) =>
-                p.registrationData?.some((rd) => rd.field === field) || false,
+              (field) => p.registrationData?.includes(field) || false,
             );
             if (!hasMatchingRegistrationData) return false;
           }
 
           if (filterClientType.length > 0) {
             const hasMatchingClientType = filterClientType.some(
-              (type) => p.supportedClientTypes?.includes(type as any) || false,
+              (type) => p.supportedClientTypes?.includes(type) || false,
             );
             if (!hasMatchingClientType) return false;
           }

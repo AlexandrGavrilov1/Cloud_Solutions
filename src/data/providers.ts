@@ -39,50 +39,7 @@ export const providers: Provider[] = [
     itConsulting: ["Миграция в облако"],
 
     // Новые поляя
-    registrationData: [
-      {
-        field: "Email",
-        required: true,
-        description: "Для входа и уведомлений",
-      },
-      {
-        field: "Телефон",
-        required: true,
-        description: "Для двухфакторной аутентификации",
-      },
-      { field: "ФИО", required: true, description: "Для договора" },
-      {
-        field: "Страна",
-        required: false,
-        description: "Для соответствия законодательству",
-      },
-      { field: "ИНН", required: false, description: "Для юридических лиц" },
-      {
-        field: "Наименование организации",
-        required: false,
-        description: "Для юридических лиц",
-      },
-      {
-        field: "Адрес организации",
-        required: false,
-        description: "Для юридических лиц",
-      },
-      {
-        field: "Корпоративный email",
-        required: false,
-        description: "Для дополнительной проверки",
-      },
-      {
-        field: "Реквизиты банка",
-        required: false,
-        description: "Для безналичной оплаты",
-      },
-      {
-        field: "Регистрация в сторонних сервисах",
-        required: false,
-        description: "Google, Yandex и др.",
-      },
-    ],
+    registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -478,50 +435,7 @@ export const providers: Provider[] = [
     orderBeforeRegistration: true,
     itConsulting: ["Миграция в облако"],
 
-    registrationData: [
-      {
-        field: "Email",
-        required: true,
-        description: "Для входа и уведомлений",
-      },
-      {
-        field: "Телефон",
-        required: true,
-        description: "Для двухфакторной аутентификации",
-      },
-      { field: "ФИО", required: true, description: "Для договора" },
-      {
-        field: "Страна",
-        required: false,
-        description: "Для соответствия законодательству",
-      },
-      { field: "ИНН", required: false, description: "Для юридических лиц" },
-      {
-        field: "Наименование организации",
-        required: false,
-        description: "Для юридических лиц",
-      },
-      {
-        field: "Адрес организации",
-        required: false,
-        description: "Для юридических лиц",
-      },
-      {
-        field: "Корпоративный email",
-        required: false,
-        description: "Для дополнительной проверки",
-      },
-      {
-        field: "Реквизиты банка",
-        required: false,
-        description: "Для безналичной оплаты",
-      },
-      {
-        field: "Регистрация в сторонних сервисах",
-        required: false,
-        description: "Google, Yandex и др.",
-      },
-    ],
+    registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
       "Физлицо",
@@ -914,50 +828,7 @@ export const providers: Provider[] = [
     itConsulting: [],
 
     // Новые поляя
-    registrationData: [
-      {
-        field: "Email",
-        required: true,
-        description: "Для входа и уведомлений",
-      },
-      {
-        field: "Телефон",
-        required: false,
-        description: "Для двухфакторной аутентификации",
-      },
-      { field: "ФИО", required: false, description: "Для договора" },
-      {
-        field: "Страна",
-        required: false,
-        description: "Для соответствия законодательству",
-      },
-      { field: "ИНН", required: false, description: "Для юридических лиц" },
-      {
-        field: "Наименование организации",
-        required: false,
-        description: "Для юридических лиц",
-      },
-      {
-        field: "Адрес организации",
-        required: false,
-        description: "Для юридических лиц",
-      },
-      {
-        field: "Корпоративный email",
-        required: false,
-        description: "Для дополнительной проверки",
-      },
-      {
-        field: "Реквизиты банка",
-        required: false,
-        description: "Для безналичной оплаты",
-      },
-      {
-        field: "Регистрация в сторонних сервисах",
-        required: false,
-        description: "Google, Yandex и др.",
-      },
-    ],
+    registrationData: ["Email"],
 
     supportedClientTypes: [
       "Физлицо",

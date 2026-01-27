@@ -192,14 +192,11 @@ export const ProviderCard = ({
     );
   };
 
-  // Функция для отображения данных регистрации
+  // Обновленная функция для отображения данных регистрации (теперь просто массив)
   const renderRegistrationData = () => {
     if (!provider.registrationData || provider.registrationData.length === 0) {
       return null;
     }
-
-    const requiredData = provider.registrationData.filter((d) => d.required);
-    const optionalData = provider.registrationData.filter((d) => !d.required);
 
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
@@ -212,58 +209,27 @@ export const ProviderCard = ({
           </h4>
         </div>
 
-        <div className="space-y-3">
-          {requiredData.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Icon name="AlertCircle" size={14} className="text-red-500" />
-                <h5 className="text-sm font-semibold text-foreground">
-                  Обязательные данные
-                </h5>
-              </div>
-              <div className="space-y-1.5">
-                {requiredData.map((data, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-sm">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="text-foreground font-medium">
-                      {data.field}
-                    </span>
-                    {data.description && (
-                      <span className="text-muted-foreground text-xs ml-auto">
-                        {data.description}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="space-y-2">
+          <div className="flex flex-wrap gap-2">
+            {provider.registrationData.map((dataField, idx) => (
+              <Badge
+                key={idx}
+                className="bg-indigo-500/20 text-indigo-500 border-indigo-500/30 text-sm"
+              >
+                {dataField}
+              </Badge>
+            ))}
+          </div>
 
-          {optionalData.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Icon name="Info" size={14} className="text-green-500" />
-                <h5 className="text-sm font-semibold text-foreground">
-                  Опциональные данные
-                </h5>
-              </div>
-              <div className="space-y-1.5">
-                {optionalData.map((data, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-sm">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-foreground font-medium">
-                      {data.field}
-                    </span>
-                    {data.description && (
-                      <span className="text-muted-foreground text-xs ml-auto">
-                        {data.description}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <p className="text-sm text-muted-foreground mt-2">
+            Для регистрации у этого провайдера требуется предоставить указанные
+            данные.
+            {provider.registrationData.includes("ФИО") && " ФИО обязательно."}
+            {provider.registrationData.includes("Email") &&
+              " Email для связи обязателен."}
+            {provider.registrationData.includes("ИНН") &&
+              " ИНН требуется для юридических лиц."}
+          </p>
         </div>
       </div>
     );

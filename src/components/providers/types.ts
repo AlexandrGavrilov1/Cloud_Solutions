@@ -54,7 +54,7 @@ export interface MonthlyUptime {
   downtime_minutes: number;
 }
 
-// Новые типы для данных регистрации
+// Новые типы для данных регистрации (теперь просто массив строк)
 export type RegistrationDataField =
   | "ФИО"
   | "Email"
@@ -69,12 +69,6 @@ export type RegistrationDataField =
   | "Реквизиты банка"
   | "Регистрация в сторонних сервисах"
   | "Скан удостоверения личности";
-
-export interface RegistrationData {
-  field: RegistrationDataField;
-  required: boolean;
-  description?: string;
-}
 
 export type ClientType =
   | "Физлицо"
@@ -115,8 +109,8 @@ export interface Provider {
   orderBeforeRegistration: boolean;
   itConsulting: string[];
 
-  // Новые поля для данных регистрации и типа клиента
-  registrationData: RegistrationData[];
+  // Обновленные поля для данных регистрации и типа клиента (теперь массивы строк)
+  registrationData: RegistrationDataField[];
   supportedClientTypes: ClientType[];
 
   technicalSpecs: TechnicalSpecs;
