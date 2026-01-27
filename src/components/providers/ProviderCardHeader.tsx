@@ -289,7 +289,7 @@ export const ProviderCardHeader = ({
                 {t("common.from")}
               </span>
               <span className="text-2xl font-black text-primary">
-                {calculatedPrice}
+                {provider.basePrice}
                 {t("common.perMonth")}
               </span>
             </div>
