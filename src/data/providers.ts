@@ -1090,7 +1090,7 @@ export const providers: Provider[] = [
     storagePrice: 9,
     features: ["SSD диски", "DDoS защита", "Snapshot бэкапы", "API управление"],
     locations: ["Москва", "Санкт-Петербург", "Нидерланды"],
-    trialDays: 0,
+    trialDays: "По запросу",
     url: "https://fornex.com/c/ftefrn/",
     pros: [
       "Стабильная работа",
@@ -1098,14 +1098,20 @@ export const providers: Provider[] = [
       "Гибкая конфигурация",
       "Хорошая поддержка",
     ],
-    cons: [
-      "Нет тестового периода",
-      "Мало локаций",
-      "Базовая панель управления",
-    ],
+    cons: ["Мало локаций", "Базовая панель управления"],
+
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
-    fstekCompliant: false,
+    fz152Level: "",
+    fstekCompliant: true,
+    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21"],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: true,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["Email", "ФИО", "Телефон", "ИНН"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
