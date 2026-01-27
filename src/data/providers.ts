@@ -2304,7 +2304,7 @@ export const providers: Provider[] = [
     mobileApp: true,
     orderBeforeRegistration: false,
     additionalServicesList: [],
-    registrationData: ["Яндекс ID"],
+    registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
