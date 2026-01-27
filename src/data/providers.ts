@@ -38,7 +38,7 @@ export const providers: Provider[] = [
     orderBeforeRegistration: false,
     itConsulting: ["Миграция в облако"],
 
-    // Новые поляя
+    // Новые поляяz
     registrationData: ["Email", "Телефон", "ФИО"],
 
     supportedClientTypes: [
