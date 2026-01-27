@@ -37,7 +37,6 @@ export const providers: Provider[] = [
     mobileApp: true,
     orderBeforeRegistration: false,
 
-    // Переименовано и обновлено
     additionalServicesList: ["Миграция в облако"],
 
     registrationData: ["Email", "Телефон", "ФИО"],
