@@ -220,6 +220,11 @@ export const ProviderCard = ({
               </Badge>
             ))}
           </div>
+
+          <p className="text-sm text-muted-foreground mt-2">
+            Для регистрации у этого провайдера требуется предоставить указанные
+            данные.
+          </p>
         </div>
       </div>
     );
