@@ -543,7 +543,7 @@ export const providers: Provider[] = [
     storagePrice: 8,
     features: ["SSD диски", "Панель ISPmanager", "DDoS защита", "IPv6"],
     locations: ["Москва", "Санкт-Петербург", "Казань", "Франкфурт"],
-    trialDays: 7,
+    trialDays: "По запросу",
     url: "https://firstvds.ru/?from=1197983",
     pros: [
       "Стабильная работа",
@@ -556,9 +556,30 @@ export const providers: Provider[] = [
       "Мало дата-центров за границей",
       "Нет криптовалютных платежей",
     ],
+    // Начало вставки
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    itConsulting: ["Миграция в облако", "Консультация по ИБ"],
+
+    registrationData: ["ФИО", "Email", "Телефон"],
+
+    supportedClientTypes: [
+      "Физлицо",
+      "Юр",
+      "ИП",
+      "ООО",
+      "НКО",
+      "Госучреждение",
+      "Иностранная компания",
+    ],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
