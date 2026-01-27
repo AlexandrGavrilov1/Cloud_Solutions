@@ -680,7 +680,7 @@ export const providers: Provider[] = [
 
     kiiPlacement: false,
     mobileApp: false,
-    orderBeforeRegistration: true,
+    orderBeforeRegistration: false,
     itConsulting: [],
 
     registrationData: ["Email"],
@@ -761,7 +761,7 @@ export const providers: Provider[] = [
       "Бесплатные бэкапы",
     ],
     locations: ["Москва", "Санкт-Петербург", "Германия", "США"],
-    trialDays: 0,
+    trialDays: 30,
     url: "https://fastvps.ru/c_611bab9849d09f9f63c0d41f9d82cc22",
     pros: [
       "Широкий выбор локаций",
@@ -770,9 +770,22 @@ export const providers: Provider[] = [
       "Стабильная работа",
     ],
     cons: ["Средние цены", "Нет тестового периода", "Интерфейс сайта устарел"],
+    // Начало вставки
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: true,
+    itConsulting: [],
+
+    registrationData: ["Email"],
+
+    supportedClientTypes: ["Физлицо", "Юр"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
