@@ -2764,7 +2764,7 @@ export const providers: Provider[] = [
     ],
     reviews: reviewsData[29] || [],
   },
-  {
+  /* {
     id: 30,
     name: "Hetzner",
     logo: "providers_logo/30_Hetzner.jpg",
@@ -2846,7 +2846,7 @@ export const providers: Provider[] = [
 
     reviews: reviewsData[30] || [],
   },
-
+*/
   {
     id: 31,
     name: "Aeza",
