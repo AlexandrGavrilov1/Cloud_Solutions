@@ -93,8 +93,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       return saved ? JSON.parse(saved) : false;
     });
 
-  const [filterITConsulting, setFilterITConsulting] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterITConsulting");
+  // Переименовано с filterITConsulting
+  const [filterAdditionalServices, setFilterAdditionalServices] = useState<
+    string[]
+  >(() => {
+    const saved = localStorage.getItem("filterAdditionalServices");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -143,7 +146,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
 
-  const itConsultingOptions = useMemo(
+  // Переименовано и обновлены опции
+  const additionalServicesOptions = useMemo(
     () => [
       "Аудит инфраструктуры",
       "Проектирование инфраструктуры",
@@ -175,18 +179,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [],
   );
 
-  const clientTypeOptions = useMemo(
-    () => [
-      "Физлицо",
-      "Самозанятый",
-      "ИП",
-      "ООО",
-      "НКО",
-      "Госучреждение",
-      "Иностранная компания",
-    ],
-    [],
-  );
+  // Упрощенные опции для типа клиента
+  const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
   useEffect(() => {
     const fetchApprovedReviews = async () => {
@@ -321,16 +315,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     );
   }, [filterOrderBeforeRegistration]);
 
+  // Переименовано и обновлено сохранение
   useEffect(() => {
-    if (filterITConsulting.length > 0) {
+    if (filterAdditionalServices.length > 0) {
       localStorage.setItem(
-        "filterITConsulting",
-        JSON.stringify(filterITConsulting),
+        "filterAdditionalServices",
+        JSON.stringify(filterAdditionalServices),
       );
     } else {
-      localStorage.removeItem("filterITConsulting");
+      localStorage.removeItem("filterAdditionalServices");
     }
-  }, [filterITConsulting]);
+  }, [filterAdditionalServices]);
 
   // Сохранение новых фильтров
   useEffect(() => {
@@ -553,14 +548,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
             return false;
 
-          if (filterITConsulting.length > 0) {
-            const hasMatchingConsulting = filterITConsulting.some(
-              (service) => p.itConsulting?.includes(service) || false,
+          // Переименовано и обновлено
+          if (filterAdditionalServices.length > 0) {
+            const hasMatchingService = filterAdditionalServices.some(
+              (service) => p.additionalServicesList?.includes(service) || false,
             );
-            if (!hasMatchingConsulting) return false;
+            if (!hasMatchingService) return false;
           }
 
-          // Новые фильтры - обновлена логика для массивов строк
+          // Новые фильтры
           if (filterRegistrationData.length > 0) {
             const hasMatchingRegistrationData = filterRegistrationData.some(
               (field) => p.registrationData?.includes(field) || false,
@@ -608,7 +604,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterKII,
       filterMobileApp,
       filterOrderBeforeRegistration,
-      filterITConsulting,
+      filterAdditionalServices,
       filterRegistrationData,
       filterClientType,
       sortBy,
@@ -686,8 +682,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOrderBeforeRegistration={
                     setFilterOrderBeforeRegistration
                   }
-                  filterITConsulting={filterITConsulting}
-                  setFilterITConsulting={setFilterITConsulting}
+                  // Переименовано
+                  filterAdditionalServices={filterAdditionalServices}
+                  setFilterAdditionalServices={setFilterAdditionalServices}
                   filterRegistrationData={filterRegistrationData}
                   setFilterRegistrationData={setFilterRegistrationData}
                   filterClientType={filterClientType}
@@ -699,7 +696,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allOS={allOS}
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
-                  itConsultingOptions={itConsultingOptions}
+                  // Переименовано
+                  additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
                   clientTypeOptions={clientTypeOptions}
                 />
@@ -773,8 +771,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOrderBeforeRegistration={
                     setFilterOrderBeforeRegistration
                   }
-                  filterITConsulting={filterITConsulting}
-                  setFilterITConsulting={setFilterITConsulting}
+                  // Переименовано
+                  filterAdditionalServices={filterAdditionalServices}
+                  setFilterAdditionalServices={setFilterAdditionalServices}
                   filterRegistrationData={filterRegistrationData}
                   setFilterRegistrationData={setFilterRegistrationData}
                   filterClientType={filterClientType}
@@ -786,7 +785,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allOS={allOS}
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
-                  itConsultingOptions={itConsultingOptions}
+                  // Переименовано
+                  additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
                   clientTypeOptions={clientTypeOptions}
                 />
@@ -918,7 +918,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       <ComparisonControls
         selectedForComparison={selectedForComparison}
         compareProviders={compareProviders}
-        onCancelComparison={cancelComparison} // Передаем функцию отмены
+        onCancelComparison={cancelComparison}
       />
     </section>
   );

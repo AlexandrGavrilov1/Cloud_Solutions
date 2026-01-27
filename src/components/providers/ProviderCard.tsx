@@ -192,7 +192,7 @@ export const ProviderCard = ({
     );
   };
 
-  // Обновленная функция для отображения данных регистрации (теперь просто массив)
+  // Обновленная функция для отображения данных регистрации
   const renderRegistrationData = () => {
     if (!provider.registrationData || provider.registrationData.length === 0) {
       return null;
@@ -230,7 +230,46 @@ export const ProviderCard = ({
     );
   };
 
-  // Функция для отображения типов клиентов
+  // Переименована и обновлена функция для отображения дополнительных услуг
+  const renderAdditionalServices = () => {
+    if (
+      !provider.additionalServicesList ||
+      provider.additionalServicesList.length === 0
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Briefcase" size={18} className="text-purple-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">
+            Дополнительные услуги
+          </h4>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm text-foreground mb-2">
+            Предоставляемые дополнительные услуги:
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {provider.additionalServicesList.map((service, idx) => (
+              <Badge
+                key={idx}
+                variant="outline"
+                className="bg-purple-500/10 text-purple-500 border-purple-500/30"
+              >
+                {service}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Обновленная функция для отображения типов клиентов
   const renderClientTypes = () => {
     if (
       !provider.supportedClientTypes ||
@@ -257,13 +296,7 @@ export const ProviderCard = ({
               className={`text-sm ${
                 type === "Физлицо"
                   ? "bg-blue-500/20 text-blue-500 border-blue-500/30"
-                  : type === "Самозанятый"
-                    ? "bg-amber-500/20 text-amber-500 border-amber-500/30"
-                    : type === "ИП" || type === "ООО"
-                      ? "bg-purple-500/20 text-purple-500 border-purple-500/30"
-                      : type === "Госучреждение"
-                        ? "bg-red-500/20 text-red-500 border-red-500/30"
-                        : "bg-green-500/20 text-green-500 border-green-500/30"
+                  : "bg-purple-500/20 text-purple-500 border-purple-500/30"
               }`}
             >
               {type}
@@ -272,15 +305,12 @@ export const ProviderCard = ({
         </div>
 
         <p className="text-sm text-muted-foreground mt-3">
-          Провайдер работает со следующими типами клиентов:
-          {provider.supportedClientTypes.includes("Физлицо") &&
-            " физическими лицами,"}
-          {provider.supportedClientTypes.includes("ИП") &&
-            " индивидуальными предпринимателями,"}
-          {provider.supportedClientTypes.includes("ООО") &&
-            " юридическими лицами,"}
-          {provider.supportedClientTypes.includes("Госучреждение") &&
-            " государственными учреждениями."}
+          Провайдер работает{" "}
+          {provider.supportedClientTypes.length === 2
+            ? "как с физическими, так и с юридическими лицами"
+            : provider.supportedClientTypes.includes("Физлицо")
+              ? "только с физическими лицами"
+              : "только с юридическими лицами"}
         </p>
       </div>
     );
@@ -391,7 +421,7 @@ export const ProviderCard = ({
                     )}
                 </div>
 
-                {/* Новые секции для дополнительных свойств */}
+                {/* Обновленные секции для дополнительных свойств */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {provider.kiiPlacement && (
                     <div className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-4">
@@ -487,42 +517,11 @@ export const ProviderCard = ({
                     </p>
                   </div>
 
-                  {provider.itConsulting &&
-                    provider.itConsulting.length > 0 && (
-                      <div className="bg-card border border-border rounded-2xl p-4">
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                            <Icon
-                              name="Briefcase"
-                              size={18}
-                              className="text-purple-500"
-                            />
-                          </div>
-                          <h4 className="text-base font-bold text-foreground">
-                            IT-консалтинг
-                          </h4>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm text-foreground mb-2">
-                            Предоставляемые услуги консалтинга:
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {provider.itConsulting.map((service, idx) => (
-                              <Badge
-                                key={idx}
-                                variant="outline"
-                                className="bg-purple-500/10 text-purple-500 border-purple-500/30"
-                              >
-                                {service}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                  {/* Переименованный блок для дополнительных услуг */}
+                  {renderAdditionalServices()}
                 </div>
 
-                {/* Новые секции для данных регистрации и типа клиента */}
+                {/* Обновленные секции для данных регистрации и типа клиента */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {renderRegistrationData()}
                   {renderClientTypes()}

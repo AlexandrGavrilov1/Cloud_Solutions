@@ -54,7 +54,7 @@ export interface MonthlyUptime {
   downtime_minutes: number;
 }
 
-// Новые типы для данных регистрации (теперь просто массив строк)
+// Обновленный тип для данных регистрации
 export type RegistrationDataField =
   | "ФИО"
   | "Email"
@@ -70,14 +70,18 @@ export type RegistrationDataField =
   | "Регистрация в сторонних сервисах"
   | "Скан удостоверения личности";
 
-export type ClientType =
-  | "Физлицо"
-  | "Самозанятый"
-  | "ИП"
-  | "ООО"
-  | "НКО"
-  | "Госучреждение"
-  | "Иностранная компания";
+// Упрощенный тип для клиента - только два варианта
+export type ClientType = "Физлицо" | "Юрлицо";
+
+// Новый тип для дополнительных услуг (бывший IT-консалтинг)
+export type AdditionalServiceType =
+  | "Аудит инфраструктуры"
+  | "Проектирование инфраструктуры"
+  | "Миграция в облако"
+  | "Импортозамещение"
+  | "Консультация по ИБ"
+  | "Аттестация по ФСТЭК"
+  | "Другие гос. лицензии";
 
 export interface Provider {
   id: number;
@@ -97,19 +101,17 @@ export interface Provider {
   reviews: Review[];
   fz152Compliant: boolean;
   fz152Level?: string;
-
-  // Обновленные поля для ФСТЭК
   fstekCompliant: boolean;
   fstekCertifications: string[];
   fstekLevel?: string;
-
-  // Новые поля
   kiiPlacement: boolean;
   mobileApp: boolean;
   orderBeforeRegistration: boolean;
-  itConsulting: string[];
 
-  // Обновленные поля для данных регистрации и типа клиента (теперь массивы строк)
+  // Переименовано с itConsulting на additionalServicesList
+  additionalServicesList: AdditionalServiceType[];
+
+  // Обновлено: теперь только два типа клиентов
   registrationData: RegistrationDataField[];
   supportedClientTypes: ClientType[];
 

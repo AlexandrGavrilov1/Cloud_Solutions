@@ -3,7 +3,11 @@ import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
-import { RegistrationDataField, ClientType } from "./types";
+import {
+  RegistrationDataField,
+  ClientType,
+  AdditionalServiceType,
+} from "./types";
 
 interface FilterPanelProps {
   filterFZ152: boolean;
@@ -32,10 +36,11 @@ interface FilterPanelProps {
   setFilterMobileApp: (value: boolean) => void;
   filterOrderBeforeRegistration: boolean;
   setFilterOrderBeforeRegistration: (value: boolean) => void;
-  filterITConsulting: string[];
-  setFilterITConsulting: (value: string[]) => void;
 
-  // Новые фильтры
+  // Переименовано с filterITConsulting
+  filterAdditionalServices: string[];
+  setFilterAdditionalServices: (value: string[]) => void;
+
   filterRegistrationData: string[];
   setFilterRegistrationData: (value: string[]) => void;
   filterClientType: string[];
@@ -48,8 +53,12 @@ interface FilterPanelProps {
   allOS: string[];
   allCPUs: string[];
   fstekOptions: string[];
-  itConsultingOptions: string[];
+
+  // Переименовано и обновлены опции
+  additionalServicesOptions: AdditionalServiceType[];
   registrationDataOptions: RegistrationDataField[];
+
+  // Упрощенные опции для типа клиента
   clientTypeOptions: ClientType[];
 }
 
@@ -80,8 +89,11 @@ export const FilterPanel = ({
   setFilterMobileApp,
   filterOrderBeforeRegistration,
   setFilterOrderBeforeRegistration,
-  filterITConsulting,
-  setFilterITConsulting,
+
+  // Переименовано
+  filterAdditionalServices,
+  setFilterAdditionalServices,
+
   filterRegistrationData,
   setFilterRegistrationData,
   filterClientType,
@@ -94,7 +106,9 @@ export const FilterPanel = ({
   allOS,
   allCPUs,
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-  itConsultingOptions = [
+
+  // Переименовано и обновлены опции
+  additionalServicesOptions = [
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
     "Миграция в облако",
@@ -103,6 +117,7 @@ export const FilterPanel = ({
     "Аттестация по ФСТЭК",
     "Другие гос. лицензии",
   ],
+
   registrationDataOptions = [
     "ФИО",
     "Email",
@@ -118,15 +133,9 @@ export const FilterPanel = ({
     "Регистрация в сторонних сервисах",
     "Скан удостоверения личности",
   ],
-  clientTypeOptions = [
-    "Физлицо",
-    "Самозанятый",
-    "ИП",
-    "ООО",
-    "НКО",
-    "Госучреждение",
-    "Иностранная компания",
-  ],
+
+  // Упрощенные опции для типа клиента
+  clientTypeOptions = ["Физлицо", "Юрлицо"],
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -138,7 +147,10 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-    itConsulting: false,
+
+    // Переименовано
+    additionalServices: false,
+
     registrationData: false,
     clientType: false,
   });
@@ -157,7 +169,8 @@ export const FilterPanel = ({
     filterKII ||
     filterMobileApp ||
     filterOrderBeforeRegistration ||
-    filterITConsulting.length > 0 ||
+    // Переименовано
+    filterAdditionalServices.length > 0 ||
     filterRegistrationData.length > 0 ||
     filterClientType.length > 0;
 
@@ -175,7 +188,10 @@ export const FilterPanel = ({
     filterKII,
     filterMobileApp,
     filterOrderBeforeRegistration,
-    filterITConsulting.length > 0,
+
+    // Переименовано
+    filterAdditionalServices.length > 0,
+
     filterRegistrationData.length > 0,
     filterClientType.length > 0,
   ].filter(Boolean).length;
@@ -194,7 +210,10 @@ export const FilterPanel = ({
     setFilterKII(false);
     setFilterMobileApp(false);
     setFilterOrderBeforeRegistration(false);
-    setFilterITConsulting([]);
+
+    // Переименовано
+    setFilterAdditionalServices([]);
+
     setFilterRegistrationData([]);
     setFilterClientType([]);
   };
@@ -231,11 +250,12 @@ export const FilterPanel = ({
     setFilterFSTEK(newValue);
   };
 
-  const handleITConsultingChange = (option: string) => {
-    const newValue = filterITConsulting.includes(option)
-      ? filterITConsulting.filter((v) => v !== option)
-      : [...filterITConsulting, option];
-    setFilterITConsulting(newValue);
+  // Переименовано
+  const handleAdditionalServicesChange = (option: string) => {
+    const newValue = filterAdditionalServices.includes(option)
+      ? filterAdditionalServices.filter((v) => v !== option)
+      : [...filterAdditionalServices, option];
+    setFilterAdditionalServices(newValue);
   };
 
   const handleRegistrationDataChange = (option: string) => {
@@ -339,19 +359,20 @@ export const FilterPanel = ({
     );
   };
 
-  const ITConsultingDropdown = () => {
-    const isOpen = dropdownsOpen.itConsulting;
+  // Переименовано с ITConsultingDropdown на AdditionalServicesDropdown
+  const AdditionalServicesDropdown = () => {
+    const isOpen = dropdownsOpen.additionalServices;
 
     return (
       <div className="group">
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <Icon name="Briefcase" size={10} className="text-primary w-3 h-3" />
-          <span className="text-xs">IT-консалтинг</span>
+          <span className="text-xs">Дополнительные услуги</span>
         </label>
         <div className="relative">
           <button
             type="button"
-            onClick={() => toggleDropdown("itConsulting")}
+            onClick={() => toggleDropdown("additionalServices")}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -363,11 +384,11 @@ export const FilterPanel = ({
                 />
               </div>
               <span className="truncate">
-                {filterITConsulting.length === 0
-                  ? "Любой IT-консалтинг"
-                  : filterITConsulting.length === 1
-                    ? filterITConsulting[0]
-                    : `IT-консалтинг (${filterITConsulting.length})`}
+                {filterAdditionalServices.length === 0
+                  ? "Любые услуги"
+                  : filterAdditionalServices.length === 1
+                    ? filterAdditionalServices[0]
+                    : `Услуги (${filterAdditionalServices.length})`}
               </span>
             </div>
             <Icon
@@ -382,29 +403,29 @@ export const FilterPanel = ({
               <div className="p-2">
                 <button
                   type="button"
-                  onClick={() => setFilterITConsulting([])}
+                  onClick={() => setFilterAdditionalServices([])}
                   className={`w-full text-left px-3 py-2 rounded text-sm ${
-                    filterITConsulting.length === 0
+                    filterAdditionalServices.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
                   }`}
                 >
-                  Любой IT-консалтинг
+                  Любые услуги
                 </button>
-                {itConsultingOptions.map((option) => (
+                {additionalServicesOptions.map((option) => (
                   <div
                     key={option}
                     className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                    onClick={() => handleITConsultingChange(option)}
+                    onClick={() => handleAdditionalServicesChange(option)}
                   >
                     <div
                       className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                        filterITConsulting.includes(option)
+                        filterAdditionalServices.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
                       }`}
                     >
-                      {filterITConsulting.includes(option) && (
+                      {filterAdditionalServices.includes(option) && (
                         <Icon
                           name="Check"
                           size={8}
@@ -1008,9 +1029,9 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* Дропдаун для IT-консалтинга */}
+              {/* Переименованный дропдаун для дополнительных услуг */}
               <div className="col-span-1 sm:col-span-2">
-                <ITConsultingDropdown />
+                <AdditionalServicesDropdown />
               </div>
 
               {/* Новые дропдауны */}

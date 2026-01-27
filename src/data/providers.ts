@@ -1,5 +1,5 @@
 import { Provider } from "@/components/providers/types";
-import { reviewsData } from "@/components/providers/Reviews"; // Импортируем отзывы
+import { reviewsData } from "@/components/providers/Reviews";
 
 export const lastUpdateDate = "12.11.2025";
 
@@ -33,23 +33,17 @@ export const providers: Provider[] = [
     fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-21"],
     fstekLevel: "",
-
     kiiPlacement: true,
     mobileApp: true,
     orderBeforeRegistration: false,
-    itConsulting: ["Миграция в облако"],
+
+    // Переименовано и обновлено
+    additionalServicesList: ["Миграция в облако"],
 
     registrationData: ["Email", "Телефон", "ФИО"],
 
-    supportedClientTypes: [
-      "Физлицо",
-      "Самозанятый",
-      "ИП",
-      "ООО",
-      "НКО",
-      "Госучреждение",
-      "Иностранная компания",
-    ],
+    // Упрощенные типы клиентов
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
       diskType: "NVMe",
@@ -113,8 +107,7 @@ export const providers: Provider[] = [
       "Финтех приложения",
       "Игровые серверы",
     ],
-
-    reviews: reviewsData[1] || [], // ВОТ ТУТ ИМПОРТИРУЕМ ОТЗЫВЫ ДЛЯ ID 1
+    reviews: reviewsData[1] || [],
   },
   {
     id: 2,
@@ -156,19 +149,13 @@ export const providers: Provider[] = [
     kiiPlacement: false,
     mobileApp: true,
     orderBeforeRegistration: true,
-    itConsulting: ["Миграция в облако"],
+    additionalServicesList: ["Миграция в облако"],
 
     registrationData: ["Email", "Телефон", "ФИО"],
 
-    supportedClientTypes: [
-      "Физлицо",
-      "Самозанятый",
-      "ИП",
-      "ООО",
-      "НКО",
-      "Госучреждение",
-      "Иностранная компания",
-    ],
+    // Упрощенные типы клиентов
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
@@ -259,20 +246,12 @@ export const providers: Provider[] = [
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
-    itConsulting: [],
+    additionalServicesList: ["Миграция в облако"],
 
-    // Новые поляя
     registrationData: ["Email"],
 
-    supportedClientTypes: [
-      "Физлицо",
-      "Самозанятый",
-      "ИП",
-      "ООО",
-      "НКО",
-      "Госучреждение",
-      "Иностранная компания",
-    ],
+    // Упрощенные типы клиентов
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
     // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
@@ -357,12 +336,12 @@ export const providers: Provider[] = [
     kiiPlacement: true,
     mobileApp: false,
     orderBeforeRegistration: true,
-    itConsulting: [],
+    additionalServicesList: ["Миграция в облако"],
 
-    // Новые поляя
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     registrationData: ["По заявке через менеджера"],
 
-    supportedClientTypes: [],
     // Конец Вставки
     technicalSpecs: {
       diskType: "NVMe",
@@ -457,19 +436,11 @@ export const providers: Provider[] = [
     kiiPlacement: true,
     mobileApp: false,
     orderBeforeRegistration: false,
-    itConsulting: ["Миграция в облако", "Консультация по ИБ"],
+    additionalServicesList: ["Миграция в облако", "Консультация по ИБ"],
 
     registrationData: ["Email"],
 
-    supportedClientTypes: [
-      "Физлицо",
-      "Юр",
-      "ИП",
-      "ООО",
-      "НКО",
-      "Госучреждение",
-      "Иностранная компания",
-    ],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
     // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
@@ -566,19 +537,11 @@ export const providers: Provider[] = [
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
-    itConsulting: ["Миграция в облако", "Консультация по ИБ"],
+    additionalServicesList: ["Миграция в облако", "Консультация по ИБ"],
 
     registrationData: ["ФИО", "Email", "Телефон"],
 
-    supportedClientTypes: [
-      "Физлицо",
-      "Юр",
-      "ИП",
-      "ООО",
-      "НКО",
-      "Госучреждение",
-      "Иностранная компания",
-    ],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
     // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
@@ -681,11 +644,11 @@ export const providers: Provider[] = [
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
-    itConsulting: [],
+    additionalServicesList: [],
 
     registrationData: ["Email"],
 
-    supportedClientTypes: ["Физлицо", "Юр", "ИП"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
     // Конец Вставки
     technicalSpecs: {
       diskType: "NVMe",
@@ -780,11 +743,11 @@ export const providers: Provider[] = [
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: true,
-    itConsulting: [],
+    additionalServicesList: [],
 
     registrationData: ["Email"],
 
-    supportedClientTypes: ["Физлицо", "Юр"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
     // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
