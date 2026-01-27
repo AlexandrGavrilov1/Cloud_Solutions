@@ -658,7 +658,7 @@ export const providers: Provider[] = [
       "SprintBot управление",
     ],
     locations: ["Москва", "Санкт-Петербург"],
-    trialDays: 0,
+    trialDays: 30,
     url: "https://sprinthost.ru/s43965",
     pros: [
       "Доступная цена",
@@ -671,9 +671,22 @@ export const providers: Provider[] = [
       "Ограниченный выбор локаций",
       "Молодая компания",
     ],
+    // Начало вставки
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: true,
+    itConsulting: [],
+
+    registrationData: ["Email"],
+
+    supportedClientTypes: ["Физлицо", "Юр", "ИП"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
