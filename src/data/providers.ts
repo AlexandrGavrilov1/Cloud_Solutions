@@ -2576,7 +2576,7 @@ export const providers: Provider[] = [
     storagePrice: 13,
     features: ["NVMe диски", "Kubernetes", "ML Platform", "CDN"],
     locations: ["Москва", "Санкт-Петербург", "Казахстан"],
-    trialDays: 30,
+    trialDays: "По запросу",
     url: "https://cloud.vk.com/",
     pros: [
       "Экосистема VK",
@@ -2589,10 +2589,19 @@ export const providers: Provider[] = [
       "Мало локаций за рубежом",
       "Привязка к экосистеме VK",
     ],
+
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: true,
-    fstekLevel: "K2",
+    fstekCertifications: ["ФСТЭК-17"],
+    fstekLevel: "К4",
+    kiiPlacement: false,
+    mobileApp: true,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["Email"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
