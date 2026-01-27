@@ -1079,13 +1079,13 @@ export const providers: Provider[] = [
     name: "Fornex",
     logo: "providers_logo/12_Fornex.jpg",
     rating: 9.1,
-    basePrice: 250,
+    basePrice: 536,
     cpuPrice: 155,
     ramPrice: 95,
     storagePrice: 9,
     features: ["SSD диски", "DDoS защита", "Snapshot бэкапы", "API управление"],
     locations: ["Москва", "Санкт-Петербург", "Нидерланды"],
-    trialDays: "По запросу",
+    trialDays: 7,
     url: "https://fornex.com/c/ftefrn/",
     pros: [
       "Стабильная работа",
@@ -1104,7 +1104,7 @@ export const providers: Provider[] = [
     mobileApp: true,
     orderBeforeRegistration: false,
     additionalServicesList: [],
-    registrationData: ["Email", "ФИО", "Телефон", "ИНН"],
+    registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
