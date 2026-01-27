@@ -118,7 +118,15 @@ export const FilterPanel = ({
     "Регистрация в сторонних сервисах",
     "Скан удостоверения личности",
   ],
-  clientTypeOptions = ["Физлицо", "Юрлицо"],
+  clientTypeOptions = [
+    "Физлицо",
+    "Самозанятый",
+    "ИП",
+    "ООО",
+    "НКО",
+    "Госучреждение",
+    "Иностранная компания",
+  ],
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -338,7 +346,7 @@ export const FilterPanel = ({
       <div className="group">
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <Icon name="Briefcase" size={10} className="text-primary w-3 h-3" />
-          <span className="text-xs">Дополнительные услуги</span>
+          <span className="text-xs">IT-консалтинг</span>
         </label>
         <div className="relative">
           <button
@@ -381,7 +389,7 @@ export const FilterPanel = ({
                       : "hover:bg-primary/5"
                   }`}
                 >
-                  Любые услуги
+                  Любой IT-консалтинг
                 </button>
                 {itConsultingOptions.map((option) => (
                   <div
