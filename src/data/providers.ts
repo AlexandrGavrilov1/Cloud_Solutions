@@ -3245,7 +3245,13 @@ export const providers: Provider[] = [
     kiiPlacement: true,
     mobileApp: false,
     orderBeforeRegistration: false,
-    additionalServicesList: [],
+    additionalServicesList: [
+      "Аудит инфраструктуры",
+      "Проектирование инфраструктуры",
+      "Миграция в облако",
+      "Импортозамещение",
+      "Косультация по ИБ",
+    ],
     registrationData: ["По заявке через менеджера"],
     supportedClientTypes: ["Юрлицо"],
 
