@@ -32,6 +32,25 @@ export const ProviderCardHeader = ({
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showCompareTooltip, setShowCompareTooltip] = useState(false);
 
+  // Функция для проверки, является ли базовая цена числом
+  const isNumericPrice = () => {
+    const price = provider.basePrice;
+    return typeof price === "number" || !isNaN(parseFloat(String(price)));
+  };
+
+  // Функция для получения текста цены
+  const getPriceText = () => {
+    const price = provider.basePrice;
+
+    // Если цена не является числом или равна 0, показываем "цена по запросу"
+    if (!isNumericPrice() || price === 0) {
+      return t("common.priceOnRequest") || "Цена по запросу";
+    }
+
+    // Если цена число, форматируем её
+    return `${price}${t("common.perMonth")}`;
+  };
+
   const getSupportSpeedColor = (responseTime: string) => {
     const time = responseTime.toLowerCase();
     if (
@@ -285,13 +304,22 @@ export const ProviderCardHeader = ({
         <div className="flex flex-col items-end gap-2 pr-3">
           <div className="flex flex-col items-end">
             <div className="flex items-baseline whitespace-nowrap">
-              <span className="text-2xl font-black text-primary mr-2">
-                {t("common.from")}
-              </span>
-              <span className="text-2xl font-black text-primary">
-                {provider.basePrice}
-                {t("common.perMonth")}
-              </span>
+              {isNumericPrice() && provider.basePrice !== 0 ? (
+                <>
+                  <span className="text-2xl font-black text-primary mr-2">
+                    {t("common.from")}
+                  </span>
+                  <span className="text-2xl font-black text-primary">
+                    {getPriceText()}
+                  </span>
+                </>
+              ) : (
+                <div className="text-right">
+                  <span className="text-xl font-bold text-muted-foreground">
+                    {getPriceText()}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-1.5 text-sm">

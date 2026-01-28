@@ -40,7 +40,8 @@
     "compliant": "Соответствует",
     "disks": "Диски",
     "virtualization": "Виртуализация",
-    "users": "пользователей"
+    "users": "пользователей",
+    "priceOnRequest": "Цена по запросу"
   },
   "card": {
     "selected": "Выбрано",

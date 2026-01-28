@@ -40,7 +40,8 @@
     "compliant": "Compliant",
     "disks": "Disks",
     "virtualization": "Virtualization",
-    "users": "users"
+    "users": "users",
+    "priceOnRequest": "priceOnRequest"
   },
   "card": {
     "selected": "Selected",

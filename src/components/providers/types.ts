@@ -88,7 +88,7 @@ export interface Provider {
   name: string;
   logo: string;
   rating: number;
-  basePrice: string;
+  basePrice: number | string;
   cpuPrice: number;
   ramPrice: number;
   storagePrice: number;
