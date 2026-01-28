@@ -32,39 +32,6 @@ export const ProviderCardHeader = ({
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showCompareTooltip, setShowCompareTooltip] = useState(false);
 
-  // Функция проверки с учетом языка
-  const isNumericPrice = (price: string): boolean => {
-    // Слова, которые означают "цена по запросу" на разных языках
-    const requestPhrases = [
-      "запрос",
-      "по запросу",
-      "индивидуально",
-      "custom",
-      "individual",
-      "request",
-      "on request",
-      "цена по запросу",
-      "стоимость по запросу",
-      "персональная",
-      "personal",
-      "quote",
-      "quotation",
-    ];
-
-    const lowerPrice = price.toLowerCase();
-
-    // Проверяем, содержит ли цена любую из фраз "по запросу"
-    const isOnRequest = requestPhrases.some((phrase) =>
-      lowerPrice.includes(phrase),
-    );
-
-    // Проверяем, есть ли в цене числа (цифры)
-    const hasNumbers = /\d/.test(price);
-
-    // Если есть цифры И не содержит фраз "по запросу" - это числовая цена
-    return hasNumbers && !isOnRequest;
-  };
-
   const getSupportSpeedColor = (responseTime: string) => {
     const time = responseTime.toLowerCase();
     if (
@@ -317,24 +284,15 @@ export const ProviderCardHeader = ({
 
         <div className="flex flex-col items-end gap-2 pr-3">
           <div className="flex flex-col items-end">
-            {/* Используем функцию isNumericPrice для определения типа цены */}
-            {isNumericPrice(provider.basePrice) ? (
-              // Если это числовая цена - показываем с "от" и "р/мес"
-              <div className="flex items-baseline whitespace-nowrap">
-                <span className="text-2xl font-black text-primary mr-2">
-                  {t("common.from")}
-                </span>
-                <span className="text-2xl font-black text-primary">
-                  {provider.basePrice}
-                  {t("common.perMonth")}
-                </span>
-              </div>
-            ) : (
-              // Если цена "по запросу" или текстовая - показываем только текст
-              <span className="text-2xl font-black text-primary text-center leading-tight">
-                {provider.basePrice}
+            <div className="flex items-baseline whitespace-nowrap">
+              <span className="text-2xl font-black text-primary mr-2">
+                {t("common.from")}
               </span>
-            )}
+              <span className="text-2xl font-black text-primary">
+                {provider.basePrice}
+                {t("common.perMonth")}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-1.5 text-sm">
             <Icon
