@@ -3645,12 +3645,7 @@ export const providers: Provider[] = [
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: [],
-    registrationData: [
-      "ФИО",
-      "Корпоративный Email",
-      "Наименование организации",
-      "Телефон",
-    ],
+    registrationData: [, "Email", "Страна"],
     supportedClientTypes: ["Юрлицо"],
 
     technicalSpecs: {
