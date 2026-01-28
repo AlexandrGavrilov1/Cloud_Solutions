@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { Provider } from "./types";
 import { useLanguage } from "@/contexts/LanguageContext";
+// Импортируем Яндекс.Метрику только для кликов на провайдера
+import { trackProviderClick } from "@/lib/yandex-metrika";
 
 interface ProviderCardHeaderProps {
   provider: Provider;
@@ -24,7 +25,7 @@ export const ProviderCardHeader = ({
   isComparing = false,
   showDetails = false,
 }: ProviderCardHeaderProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const avgRating =
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
@@ -32,22 +33,35 @@ export const ProviderCardHeader = ({
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showCompareTooltip, setShowCompareTooltip] = useState(false);
 
-  // Функция для проверки, является ли базовая цена числом
+  // ============================================
+  // ОБРАБОТЧИК ДЛЯ КНОПКИ "ПЕРЕЙТИ НА САЙТ"
+  // ============================================
+
+  const handleProviderClick = () => {
+    // 1. Отправляем событие в Яндекс.Метрику
+    // position - позиция провайдера (начиная с 1)
+    // provider.name - название провайдера
+    const position = index + 1;
+    trackProviderClick(position, provider.name);
+
+    // 2. Вызываем оригинальный обработчик
+    onProviderClick();
+  };
+
+  // ============================================
+  // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+  // ============================================
+
   const isNumericPrice = () => {
     const price = provider.basePrice;
     return typeof price === "number" || !isNaN(parseFloat(String(price)));
   };
 
-  // Функция для получения текста цены
   const getPriceText = () => {
     const price = provider.basePrice;
-
-    // Если цена не является числом или равна 0, показываем "цена по запросу"
     if (!isNumericPrice() || price === 0) {
       return t("common.priceOnRequest") || "Цена по запросу";
     }
-
-    // Если цена число, форматируем её
     return `${price}${t("common.perMonth")}`;
   };
 
@@ -120,7 +134,6 @@ export const ProviderCardHeader = ({
                 {provider.name}
               </h3>
 
-              {/* Иконки 152-ФЗ и ФСТЭК */}
               <div className="flex gap-1 flex-shrink-0">
                 {provider.fz152Compliant && (
                   <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
@@ -143,7 +156,6 @@ export const ProviderCardHeader = ({
                     </div>
                   )}
 
-                {/* Иконка КИИ */}
                 {provider.kiiPlacement && (
                   <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
                     <Icon
@@ -178,13 +190,13 @@ export const ProviderCardHeader = ({
           </div>
         </div>
 
-        {/* Кнопки с тултипами */}
         <div
           className={`flex gap-2 pointer-events-auto ${showDetails ? "lg:gap-3" : ""} xl:flex-col xl:gap-3`}
         >
+          {/* КНОПКА "ПЕРЕЙТИ НА САЙТ" С ЯНДЕКС.МЕТРИКОЙ */}
           <div className="relative">
             <button
-              onClick={onProviderClick}
+              onClick={handleProviderClick} // Обработчик с Яндекс.Метрикой
               onMouseEnter={() => setShowLinkTooltip(true)}
               onMouseLeave={() => setShowLinkTooltip(false)}
               className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
@@ -192,7 +204,6 @@ export const ProviderCardHeader = ({
               <Icon name="ArrowUpRight" size={17} className="text-primary" />
             </button>
 
-            {/* Тултип для кнопки ссылки */}
             {showLinkTooltip && (
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
                 <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
@@ -202,10 +213,12 @@ export const ProviderCardHeader = ({
               </div>
             )}
           </div>
+
+          {/* Кнопка сравнения (без Яндекс.Метрики) */}
           {onCompareClick && (
             <div className="relative">
               <button
-                onClick={onCompareClick}
+                onClick={onCompareClick} // Оригинальный обработчик без Яндекс.Метрики
                 onMouseEnter={() => setShowCompareTooltip(true)}
                 onMouseLeave={() => setShowCompareTooltip(false)}
                 className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
@@ -221,7 +234,6 @@ export const ProviderCardHeader = ({
                 />
               </button>
 
-              {/* Тултип для кнопки сравнения */}
               {showCompareTooltip && (
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
                   <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
