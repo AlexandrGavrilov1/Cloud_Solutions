@@ -2879,7 +2879,7 @@ export const providers: Provider[] = [
       "США",
       "Англия",
     ],
-    trialDays: 0,
+    trialDays: 7,
     url: "https://aeza.net/?ref=766003",
     pros: [
       "10 локаций по всему миру",
@@ -2893,9 +2893,19 @@ export const providers: Provider[] = [
       "Нет официального SLA",
       "Техподдержка не 24/7",
     ],
+
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["Email"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
