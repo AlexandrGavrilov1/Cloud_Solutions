@@ -4,7 +4,7 @@ import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanel } from "./FilterPanel";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
-import { GlobalResourceConfig } from "./GlobalResourceConfig";
+//import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
 import { ProvidersCounter } from "./ProvidersCounter";
