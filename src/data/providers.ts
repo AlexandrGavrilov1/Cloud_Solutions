@@ -3008,7 +3008,7 @@ export const providers: Provider[] = [
     fstekLevel: "",
     kiiPlacement: false,
     mobileApp: true,
-    orderBeforeRegistration: false,
+    orderBeforeRegistration: true,
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
