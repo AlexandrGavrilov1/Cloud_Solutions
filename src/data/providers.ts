@@ -2976,7 +2976,7 @@ export const providers: Provider[] = [
     name: "SpaceWeb",
     logo: "providers_logo/32_SpaceWeb.JPG",
     rating: 9.0,
-    basePrice: 199,
+    basePrice: 99,
     cpuPrice: 150,
     ramPrice: 90,
     storagePrice: 8,
@@ -2987,7 +2987,7 @@ export const providers: Provider[] = [
       "24/7 поддержка",
     ],
     locations: ["Москва", "Санкт-Петербург", "Амстердам"],
-    trialDays: 7,
+    trialDays: 30,
     url: "https://sweb.ru/?utm_term=nekebaze",
     pros: [
       "Тестовый период 7 дней",
@@ -3000,9 +3000,19 @@ export const providers: Provider[] = [
       "Средние цены",
       "Нет зарубежных ЦОД кроме Амстердама",
     ],
+
     fz152Compliant: true,
-    fz152Level: "УЗ-1",
+    fz152Level: "",
     fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: true,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["Email"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
