@@ -4293,7 +4293,7 @@ export const providers: Provider[] = [
 
     reviews: reviewsData[48] || [],
   },
-  {
+  /* {
     id: 49,
     name: "Skyhost",
     logo: "providers_logo/49_Skyhost.JPG",
@@ -4352,6 +4352,7 @@ export const providers: Provider[] = [
 
     reviews: reviewsData[49] || [],
   },
+  */
   {
     id: 50,
     name: "Gcore",
