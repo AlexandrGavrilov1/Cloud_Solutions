@@ -3235,10 +3235,20 @@ export const providers: Provider[] = [
       "DDoS защита",
       "Российская компания",
     ],
-    cons: ["Нет NVMe", "Нет тестового периода", "Только российские ЦОД"],
+    cons: ["Нет NVMe", "Только российские ЦОД"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: false,
+    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekLevel: "К1",
+    kiiPlacement: true,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["По заявке через менеджера"],
+    supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
