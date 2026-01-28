@@ -3646,7 +3646,7 @@ export const providers: Provider[] = [
     orderBeforeRegistration: false,
     additionalServicesList: [],
     registrationData: [, "Email", "Страна"],
-    supportedClientTypes: ["Юрлицо"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
       diskType: "NVMe",
@@ -3701,18 +3701,17 @@ export const providers: Provider[] = [
     name: "Cloud4Y",
     logo: "providers_logo/41_Cloud4Y.JPG",
     rating: 8.9,
-    basePrice: 0,
+    basePrice: 860,
     cpuPrice: 280,
     ramPrice: 140,
     storagePrice: 12,
     features: ["SSD диски", "152-ФЗ", "ФСТЕК K2", "Поддержка 24/7"],
     locations: ["Москва", "Санкт-Петербург", "Новосибирск"],
-    trialDays: 14,
+    trialDays: 30,
     url: "https://cloud4y.ru/",
     pros: [
       "Первый облачный провайдер в России",
       "Сертификация ФСТЕК K2",
-      "Тестовый период 14 дней",
       "Поддержка 24/7 на русском языке",
     ],
     cons: [
@@ -3720,10 +3719,19 @@ export const providers: Provider[] = [
       "Нет NVMe дисков",
       "Меньше локаций чем у конкурентов",
     ],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
-    fstekCompliant: true,
-    fstekLevel: "K2",
+    fstekCompliant: false,
+    fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["ФИО", "Email", "Адрес организации"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "10 Гбит/с",
