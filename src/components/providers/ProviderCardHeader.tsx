@@ -315,7 +315,10 @@ export const ProviderCardHeader = ({
                 </>
               ) : (
                 <div className="text-right">
-                  <span className="text-xl font-bold text-muted-foreground">
+                  <span
+                    className="text-xl font-bold"
+                    style={{ color: "rgb(255, 143, 51)" }}
+                  >
                     {getPriceText()}
                   </span>
                 </div>
