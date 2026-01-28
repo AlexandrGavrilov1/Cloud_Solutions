@@ -3157,7 +3157,7 @@ export const providers: Provider[] = [
     name: "MWS",
     logo: "providers_logo/34_MWS.jpg",
     rating: 8.5,
-    basePrice: 0,
+    basePrice: "По запросу",
     cpuPrice: 200,
     ramPrice: 95,
     storagePrice: 10,
