@@ -1,4 +1,3 @@
-// ProviderCardHeader.tsx
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,29 +8,48 @@ import { useLanguage } from "@/contexts/LanguageContext";
 interface ProviderCardHeaderProps {
   provider: Provider;
   index: number;
+  calculatedPrice: number;
   onProviderClick: () => void;
   onCompareClick?: () => void;
   isComparing?: boolean;
   showDetails?: boolean;
-  priceText: string; // Текстовое представление цены
 }
 
 export const ProviderCardHeader = ({
   provider,
   index,
+  calculatedPrice,
   onProviderClick,
   onCompareClick,
   isComparing = false,
   showDetails = false,
-  priceText,
 }: ProviderCardHeaderProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const avgRating =
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
   const [showAllLocations, setShowAllLocations] = useState(false);
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showCompareTooltip, setShowCompareTooltip] = useState(false);
+
+  // Функция для проверки, является ли базовая цена числом
+  const isNumericPrice = () => {
+    const price = provider.basePrice;
+    return typeof price === "number" || !isNaN(parseFloat(String(price)));
+  };
+
+  // Функция для получения текста цены
+  const getPriceText = () => {
+    const price = provider.basePrice;
+
+    // Если цена не является числом или равна 0, показываем "цена по запросу"
+    if (!isNumericPrice() || price === 0) {
+      return t("common.priceOnRequest") || "Цена по запросу";
+    }
+
+    // Если цена число, форматируем её
+    return `${price}${t("common.perMonth")}`;
+  };
 
   const getSupportSpeedColor = (responseTime: string) => {
     const time = responseTime.toLowerCase();
@@ -102,6 +120,7 @@ export const ProviderCardHeader = ({
                 {provider.name}
               </h3>
 
+              {/* Иконки 152-ФЗ и ФСТЭК */}
               <div className="flex gap-1 flex-shrink-0">
                 {provider.fz152Compliant && (
                   <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
@@ -124,6 +143,7 @@ export const ProviderCardHeader = ({
                     </div>
                   )}
 
+                {/* Иконка КИИ */}
                 {provider.kiiPlacement && (
                   <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
                     <Icon
@@ -158,10 +178,9 @@ export const ProviderCardHeader = ({
           </div>
         </div>
 
+        {/* Кнопки с тултипами */}
         <div
-          className={`flex gap-2 pointer-events-auto ${
-            showDetails ? "lg:gap-3" : ""
-          } xl:flex-col xl:gap-3`}
+          className={`flex gap-2 pointer-events-auto ${showDetails ? "lg:gap-3" : ""} xl:flex-col xl:gap-3`}
         >
           <div className="relative">
             <button
@@ -173,6 +192,7 @@ export const ProviderCardHeader = ({
               <Icon name="ArrowUpRight" size={17} className="text-primary" />
             </button>
 
+            {/* Тултип для кнопки ссылки */}
             {showLinkTooltip && (
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
                 <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
@@ -201,6 +221,7 @@ export const ProviderCardHeader = ({
                 />
               </button>
 
+              {/* Тултип для кнопки сравнения */}
               {showCompareTooltip && (
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
                   <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
@@ -283,13 +304,13 @@ export const ProviderCardHeader = ({
         <div className="flex flex-col items-end gap-2 pr-3">
           <div className="flex flex-col items-end">
             <div className="flex items-baseline whitespace-nowrap">
-              {provider.basePrice !== 0 ? (
+              {isNumericPrice() && provider.basePrice !== 0 ? (
                 <>
                   <span className="text-2xl font-black text-primary mr-2">
                     {t("common.from")}
                   </span>
                   <span className="text-2xl font-black text-primary">
-                    {priceText}
+                    {getPriceText()}
                   </span>
                 </>
               ) : (
@@ -298,7 +319,7 @@ export const ProviderCardHeader = ({
                     className="text-xl font-bold"
                     style={{ color: "rgb(255, 143, 51)" }}
                   >
-                    {priceText}
+                    {getPriceText()}
                   </span>
                 </div>
               )}

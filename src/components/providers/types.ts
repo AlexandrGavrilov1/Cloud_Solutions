@@ -1,4 +1,3 @@
-// types.ts
 export interface Review {
   author: string;
   text: string;
@@ -46,7 +45,7 @@ export interface PricingDetails {
     percent: number;
   }[];
   paymentMethods: string[];
-  minPrice?: number;
+  minPrice: number;
 }
 
 export interface MonthlyUptime {
@@ -55,6 +54,7 @@ export interface MonthlyUptime {
   downtime_minutes: number;
 }
 
+// Обновленный тип для данных регистрации
 export type RegistrationDataField =
   | "ФИО"
   | "Email"
@@ -70,8 +70,10 @@ export type RegistrationDataField =
   | "Регистрация в сторонних сервисах"
   | "Скан удостоверения личности";
 
+// Упрощенный тип для клиента - только два варианта
 export type ClientType = "Физлицо" | "Юрлицо";
 
+// Новый тип для дополнительных услуг (бывший IT-консалтинг)
 export type AdditionalServiceType =
   | "Аудит инфраструктуры"
   | "Проектирование инфраструктуры"
@@ -86,7 +88,10 @@ export interface Provider {
   name: string;
   logo: string;
   rating: number;
-  basePrice: number; // Только число, 0 = "цена по запросу"
+  basePrice: number | string;
+  cpuPrice: number;
+  ramPrice: number;
+  storagePrice: number;
   features: string[];
   locations: string[];
   trialDays?: number;
@@ -102,9 +107,14 @@ export interface Provider {
   kiiPlacement: boolean;
   mobileApp: boolean;
   orderBeforeRegistration: boolean;
+
+  // Переименовано с itConsulting на additionalServicesList
   additionalServicesList: AdditionalServiceType[];
+
+  // Обновлено: теперь только два типа клиентов
   registrationData: RegistrationDataField[];
   supportedClientTypes: ClientType[];
+
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
   additionalServices: AdditionalServices;
@@ -116,9 +126,8 @@ export interface Provider {
   monthlyUptimeData?: MonthlyUptime[];
 }
 
-// УДАЛЯЕМ интерфейс ResourceConfig
-// export interface ResourceConfig {
-//   cpu: number;
-//   ram: number;
-//   storage: number;
-// }
+export interface ResourceConfig {
+  cpu: number;
+  ram: number;
+  storage: number;
+}
