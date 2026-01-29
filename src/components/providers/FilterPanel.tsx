@@ -36,11 +36,8 @@ interface FilterPanelProps {
   setFilterMobileApp: (value: boolean) => void;
   filterOrderBeforeRegistration: boolean;
   setFilterOrderBeforeRegistration: (value: boolean) => void;
-
-  // Переименовано с filterITConsulting
   filterAdditionalServices: string[];
   setFilterAdditionalServices: (value: string[]) => void;
-
   filterRegistrationData: string[];
   setFilterRegistrationData: (value: string[]) => void;
   filterClientType: string[];
@@ -53,12 +50,8 @@ interface FilterPanelProps {
   allOS: string[];
   allCPUs: string[];
   fstekOptions: string[];
-
-  // Переименовано и обновлены опции
   additionalServicesOptions: AdditionalServiceType[];
   registrationDataOptions: RegistrationDataField[];
-
-  // Упрощенные опции для типа клиента
   clientTypeOptions: ClientType[];
 }
 
@@ -89,11 +82,8 @@ export const FilterPanel = ({
   setFilterMobileApp,
   filterOrderBeforeRegistration,
   setFilterOrderBeforeRegistration,
-
-  // Переименовано
   filterAdditionalServices,
   setFilterAdditionalServices,
-
   filterRegistrationData,
   setFilterRegistrationData,
   filterClientType,
@@ -107,7 +97,6 @@ export const FilterPanel = ({
   allCPUs,
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
 
-  // Переименовано и обновлены опции
   additionalServicesOptions = [
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
@@ -134,7 +123,6 @@ export const FilterPanel = ({
     "Скан удостоверения личности",
   ],
 
-  // Упрощенные опции для типа клиента
   clientTypeOptions = ["Физлицо", "Юрлицо"],
 }: FilterPanelProps) => {
   const { t } = useLanguage();
@@ -147,10 +135,7 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-
-    // Переименовано
     additionalServices: false,
-
     registrationData: false,
     clientType: false,
   });
@@ -169,7 +154,6 @@ export const FilterPanel = ({
     filterKII ||
     filterMobileApp ||
     filterOrderBeforeRegistration ||
-    // Переименовано
     filterAdditionalServices.length > 0 ||
     filterRegistrationData.length > 0 ||
     filterClientType.length > 0;
@@ -188,10 +172,7 @@ export const FilterPanel = ({
     filterKII,
     filterMobileApp,
     filterOrderBeforeRegistration,
-
-    // Переименовано
     filterAdditionalServices.length > 0,
-
     filterRegistrationData.length > 0,
     filterClientType.length > 0,
   ].filter(Boolean).length;
@@ -210,10 +191,7 @@ export const FilterPanel = ({
     setFilterKII(false);
     setFilterMobileApp(false);
     setFilterOrderBeforeRegistration(false);
-
-    // Переименовано
     setFilterAdditionalServices([]);
-
     setFilterRegistrationData([]);
     setFilterClientType([]);
   };
@@ -250,7 +228,6 @@ export const FilterPanel = ({
     setFilterFSTEK(newValue);
   };
 
-  // Переименовано
   const handleAdditionalServicesChange = (option: string) => {
     const newValue = filterAdditionalServices.includes(option)
       ? filterAdditionalServices.filter((v) => v !== option)
@@ -359,7 +336,6 @@ export const FilterPanel = ({
     );
   };
 
-  // Переименовано с ITConsultingDropdown на AdditionalServicesDropdown
   const AdditionalServicesDropdown = () => {
     const isOpen = dropdownsOpen.additionalServices;
 
@@ -746,7 +722,15 @@ export const FilterPanel = ({
       </div>
 
       {isExpanded && (
-        <div className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-[500px] sm:max-w-[450px] md:max-w-[510px] bg-card border border-primary/20 rounded-xl shadow-md z-50">
+        <div
+          className="absolute top-full left-0 mt-2 
+                      /* ОСНОВНОЕ ИЗМЕНЕНИЕ: Занимает всю доступную ширину до кнопки поиска */
+                      w-[calc(100vw-32px)] sm:w-[calc(100vw-48px)] md:w-[calc(100vw-64px)]
+                      max-w-[900px] 
+                      bg-card border border-primary/20 rounded-xl shadow-md z-50
+                      /* Центрируем на больших экранах */
+                      sm:left-auto sm:right-0"
+        >
           {hasActiveFilters && (
             <div className="flex items-center justify-end px-3 pt-3 pb-2">
               <Button
@@ -1029,12 +1013,10 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* Переименованный дропдаун для дополнительных услуг */}
               <div className="col-span-1 sm:col-span-2">
                 <AdditionalServicesDropdown />
               </div>
 
-              {/* Новые дропдауны */}
               <div className="col-span-1 sm:col-span-2">
                 <RegistrationDataDropdown />
               </div>
