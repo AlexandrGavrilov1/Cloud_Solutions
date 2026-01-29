@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Provider } from "./types";
 import { UptimeChartHeader } from "./UptimeChartHeader";
-import { UptimeProviderCard, calculateTotalDowntime } from "./UptimeProviderCard";
+import {
+  UptimeProviderCard,
+  calculateTotalDowntime,
+} from "./UptimeProviderCard";
 
 interface MonthlyDowntime {
   provider_id: number;
@@ -73,13 +76,14 @@ export const UptimeChart = ({
   };
 
   const handleProviderClick = async () => {
-  // Простая проверка Яндекс.Метрики
-  if (typeof window !== 'undefined' && (window as any).ym) {
-    (window as any).ym(105466349, 'reachGoal', 'ClickOnUptime', {
-      provider_id: provider.id,
-      provider_name: provider.name
-    });
-  }
+    // Простая проверка Яндекс.Метрики
+    if (typeof window !== "undefined" && (window as any).ym) {
+      (window as any).ym(105466349, "reachGoal", "ClickOnUptime", {
+        provider_id: provider.id,
+        provider_name: provider.name,
+      });
+    }
+  };
 
   const handleToggleExpand = (providerId: number) => {
     const newExpanded = new Set(expandedProviders);
@@ -127,7 +131,9 @@ export const UptimeChart = ({
                     ≥ 99.95%
                   </span>
                 </div>
-                <div className="text-xs md:text-sm text-foreground">Отличный</div>
+                <div className="text-xs md:text-sm text-foreground">
+                  Отличный
+                </div>
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
@@ -136,7 +142,9 @@ export const UptimeChart = ({
                     ≥ 99.9%
                   </span>
                 </div>
-                <div className="text-xs md:text-sm text-foreground">Хороший</div>
+                <div className="text-xs md:text-sm text-foreground">
+                  Хороший
+                </div>
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
@@ -145,7 +153,9 @@ export const UptimeChart = ({
                     ≥ 99.5%
                   </span>
                 </div>
-                <div className="text-xs md:text-sm text-foreground">Средний</div>
+                <div className="text-xs md:text-sm text-foreground">
+                  Средний
+                </div>
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
