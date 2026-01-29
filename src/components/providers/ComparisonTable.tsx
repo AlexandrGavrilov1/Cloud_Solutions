@@ -1,28 +1,19 @@
+// ComparisonTable.tsx
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import {
-  Provider,
-  ResourceConfig,
-  RegistrationDataField,
-  ClientType,
-} from "./types";
-import { useEffect } from "react"; // Добавьте этот импорт
+import { Provider } from "./types";
+import { useEffect } from "react";
 
 interface ComparisonTableProps {
   providers: Provider[];
-  configs: Record<number, ResourceConfig>;
   onClose: () => void;
-  calculatePrice: (provider: Provider, config: ResourceConfig) => number;
 }
 
 export const ComparisonTable = ({
   providers,
-  configs,
   onClose,
-  calculatePrice,
 }: ComparisonTableProps) => {
-  // Добавьте логирование при монтировании
   useEffect(() => {
     console.log("ComparisonTable mounted with providers:", providers.length);
     console.log("Providers data:", providers);
@@ -50,26 +41,7 @@ export const ComparisonTable = ({
     );
   }
 
-  const trackClick = async (providerId: number) => {
-    try {
-      await fetch(
-        "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            provider_id: providerId,
-          }),
-        },
-      );
-    } catch (error) {
-      console.error("Error tracking click:", error);
-    }
-  };
-
-  const handleProviderClick = async () => {
+  const handleProviderClick = async (provider: Provider) => {
     // Простая проверка Яндекс.Метрики
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "ClickOnComparisonTable", {
@@ -77,22 +49,39 @@ export const ComparisonTable = ({
         provider_name: provider.name,
       });
     }
+
+    if (provider.url) {
+      // Трекинг клика
+      try {
+        await fetch(
+          "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              provider_id: provider.id,
+            }),
+          },
+        );
+      } catch (error) {
+        console.error("Error tracking click:", error);
+      }
+
+      window.location.href = provider.url;
+    }
   };
 
   const rows = [
     { label: "Рейтинг", key: "rating", icon: "Star" },
-    {
-      label: "Цена (с текущей конфигурацией)",
-      key: "price",
-      icon: "DollarSign",
-    },
-    { label: "CPU цена за 1 vCPU", key: "cpuPrice", icon: "Cpu" },
-    { label: "RAM цена за 1 GB", key: "ramPrice", icon: "MemoryStick" },
-    { label: "Диск цена за 1 GB", key: "storagePrice", icon: "HardDrive" },
+    { label: "Цена в месяц", key: "price", icon: "DollarSign" },
     { label: "Тестовый период", key: "trialDays", icon: "Gift" },
     { label: "Локации серверов", key: "locations", icon: "MapPin" },
+    { label: "Тип диска", key: "diskType", icon: "HardDrive" },
+    { label: "Виртуализация", key: "virtualization", icon: "Box" },
     { label: "152-ФЗ", key: "fz152", icon: "ShieldCheck" },
-    { label: "ФСТЕК", key: "fstek", icon: "ShieldAlert" },
+    { label: "ФСТЭК", key: "fstek", icon: "ShieldAlert" },
     { label: "Размещение КИИ", key: "kii", icon: "Building2" },
     { label: "Мобильное приложение", key: "mobileApp", icon: "Smartphone" },
     {
@@ -100,7 +89,11 @@ export const ComparisonTable = ({
       key: "orderBeforeRegistration",
       icon: "ClipboardCheck",
     },
-    { label: "IT-консалтинг", key: "itConsulting", icon: "Briefcase" },
+    {
+      label: "Дополнительные услуги",
+      key: "additionalServices",
+      icon: "Briefcase",
+    },
     { label: "Техподдержка", key: "support", icon: "Headphones" },
     {
       label: "Данные для регистрации",
@@ -109,6 +102,14 @@ export const ComparisonTable = ({
     },
     { label: "Тип клиента", key: "clientType", icon: "Users" },
   ];
+
+  // Функция для получения текста цены
+  const getPriceText = (provider: Provider) => {
+    if (provider.basePrice === 0) {
+      return "Цена по запросу";
+    }
+    return `${provider.basePrice} ₽/мес`;
+  };
 
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-[9999] overflow-y-auto">
@@ -282,42 +283,13 @@ export const ComparisonTable = ({
                             );
                             break;
                           case "price":
-                            const config = configs[provider.id] || {
-                              cpu: 1,
-                              ram: 1,
-                              storage: 10,
-                            };
-                            const price = calculatePrice(provider, config);
+                            const priceText = getPriceText(provider);
                             content = (
                               <div className="text-center">
                                 <span className="text-2xl font-black text-primary">
-                                  {price}₽
-                                </span>
-                                <span className="text-sm text-muted-foreground block">
-                                  /месяц
+                                  {priceText}
                                 </span>
                               </div>
-                            );
-                            break;
-                          case "cpuPrice":
-                            content = (
-                              <span className="font-semibold text-foreground">
-                                {provider.cpuPrice}₽
-                              </span>
-                            );
-                            break;
-                          case "ramPrice":
-                            content = (
-                              <span className="font-semibold text-foreground">
-                                {provider.ramPrice}₽
-                              </span>
-                            );
-                            break;
-                          case "storagePrice":
-                            content = (
-                              <span className="font-semibold text-foreground">
-                                {provider.storagePrice}₽
-                              </span>
                             );
                             break;
                           case "trialDays":
@@ -346,6 +318,30 @@ export const ComparisonTable = ({
                                     {loc}
                                   </Badge>
                                 ))}
+                              </div>
+                            );
+                            break;
+                          case "diskType":
+                            content = (
+                              <Badge className="bg-primary/20 text-primary border-0">
+                                {provider.technicalSpecs.diskType}
+                              </Badge>
+                            );
+                            break;
+                          case "virtualization":
+                            content = (
+                              <div className="flex flex-wrap gap-1 justify-center">
+                                {provider.technicalSpecs.virtualization.map(
+                                  (virt, i) => (
+                                    <Badge
+                                      key={i}
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      {virt}
+                                    </Badge>
+                                  ),
+                                )}
                               </div>
                             );
                             break;
@@ -464,10 +460,10 @@ export const ComparisonTable = ({
                               </div>
                             );
                             break;
-                          case "itConsulting":
+                          case "additionalServices":
                             content =
-                              provider.itConsulting &&
-                              provider.itConsulting.length > 0 ? (
+                              provider.additionalServicesList &&
+                              provider.additionalServicesList.length > 0 ? (
                                 <div className="flex flex-col items-center gap-1">
                                   <Icon
                                     name="Check"
@@ -475,7 +471,7 @@ export const ComparisonTable = ({
                                     className="text-purple-500"
                                   />
                                   <div className="flex flex-wrap gap-1 justify-center max-w-[200px]">
-                                    {provider.itConsulting
+                                    {provider.additionalServicesList
                                       .slice(0, 3)
                                       .map((service, idx) => (
                                         <Badge
@@ -485,9 +481,12 @@ export const ComparisonTable = ({
                                           {service}
                                         </Badge>
                                       ))}
-                                    {provider.itConsulting.length > 3 && (
+                                    {provider.additionalServicesList.length >
+                                      3 && (
                                       <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px]">
-                                        +{provider.itConsulting.length - 3}
+                                        +
+                                        {provider.additionalServicesList
+                                          .length - 3}
                                       </Badge>
                                     )}
                                   </div>
@@ -501,37 +500,37 @@ export const ComparisonTable = ({
                               );
                             break;
                           case "support":
+                            const supportTime =
+                              provider.serviceGuarantees?.supportResponseTime ||
+                              "24/7";
                             content = (
                               <Badge className="bg-accent border border-primary/20 text-foreground">
-                                24/7
+                                {supportTime}
                               </Badge>
                             );
                             break;
                           case "registrationData":
-                            const requiredFields =
-                              provider.registrationData
-                                ?.filter((d) => d.required)
-                                .map((d) => d.field) || [];
                             content =
-                              requiredFields.length > 0 ? (
+                              provider.registrationData &&
+                              provider.registrationData.length > 0 ? (
                                 <div className="space-y-1">
                                   <div className="text-xs font-semibold text-foreground">
-                                    Обязательные:
+                                    Требуются:
                                   </div>
                                   <div className="flex flex-wrap gap-1 mt-1 justify-center">
-                                    {requiredFields
+                                    {provider.registrationData
                                       .slice(0, 2)
                                       .map((field, idx) => (
                                         <Badge
                                           key={idx}
-                                          className="bg-red-500/20 text-red-500 border-0 text-[10px]"
+                                          className="bg-indigo-500/20 text-indigo-500 border-0 text-[10px]"
                                         >
                                           {field}
                                         </Badge>
                                       ))}
-                                    {requiredFields.length > 2 && (
-                                      <Badge className="bg-red-500/20 text-red-500 border-0 text-[10px]">
-                                        +{requiredFields.length - 2}
+                                    {provider.registrationData.length > 2 && (
+                                      <Badge className="bg-indigo-500/20 text-indigo-500 border-0 text-[10px]">
+                                        +{provider.registrationData.length - 2}
                                       </Badge>
                                     )}
                                   </div>
@@ -552,7 +551,11 @@ export const ComparisonTable = ({
                                     .map((type, idx) => (
                                       <Badge
                                         key={idx}
-                                        className="text-[10px] bg-blue-500/20 text-blue-500 border-0"
+                                        className={`text-[10px] ${
+                                          type === "Физлицо"
+                                            ? "bg-blue-500/20 text-blue-500 border-0"
+                                            : "bg-purple-500/20 text-purple-500 border-0"
+                                        }`}
                                       >
                                         {type}
                                       </Badge>

@@ -13,7 +13,7 @@ interface ProviderCardHeaderProps {
   onCompareClick?: () => void;
   isComparing?: boolean;
   showDetails?: boolean;
-  priceText: string; // Текстовое представление цены
+  priceText: string; // Текстовое представление цен
 }
 
 export const ProviderCardHeader = ({
