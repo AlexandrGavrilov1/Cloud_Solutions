@@ -147,6 +147,14 @@ export const ProviderCard = ({
   };
 
   const handleProviderClick = async () => {
+    // Простая проверка Яндекс.Метрики
+    if (typeof window !== "undefined" && (window as any).ym) {
+      (window as any).ym(105466349, "reachGoal", "ClickOnProviderCard", {
+        provider_id: provider.id,
+        provider_name: provider.name,
+      });
+    }
+
     if (provider.url) {
       trackClick();
       window.location.href = provider.url;

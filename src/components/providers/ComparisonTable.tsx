@@ -69,12 +69,14 @@ export const ComparisonTable = ({
     }
   };
 
-  const handleProviderClick = async (provider: Provider) => {
-    if (provider.url) {
-      trackClick(provider.id);
-      window.location.href = provider.url;
-    }
-  };
+  const handleProviderClick = async () => {
+  // Простая проверка Яндекс.Метрики
+  if (typeof window !== 'undefined' && (window as any).ym) {
+    (window as any).ym(105466349, 'reachGoal', 'ClickOnComparisonTable', {
+      provider_id: provider.id,
+      provider_name: provider.name
+    });
+  }
 
   const rows = [
     { label: "Рейтинг", key: "rating", icon: "Star" },
