@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   RegistrationDataField,
   ClientType,
@@ -10,6 +10,12 @@ import {
 } from "./types";
 
 interface FilterPanelProps {
+  // Новые пропсы для фильтра по цене
+  filterMinPrice: number | null;
+  setFilterMinPrice: (value: number | null) => void;
+  filterMaxPrice: number | null;
+  setFilterMaxPrice: (value: number | null) => void;
+
   filterFZ152: boolean;
   setFilterFZ152: (value: boolean) => void;
   filterFSTEK: string[];
@@ -36,11 +42,8 @@ interface FilterPanelProps {
   setFilterMobileApp: (value: boolean) => void;
   filterOrderBeforeRegistration: boolean;
   setFilterOrderBeforeRegistration: (value: boolean) => void;
-
-  // Переименовано с filterITConsulting
   filterAdditionalServices: string[];
   setFilterAdditionalServices: (value: string[]) => void;
-
   filterRegistrationData: string[];
   setFilterRegistrationData: (value: string[]) => void;
   filterClientType: string[];
@@ -53,16 +56,19 @@ interface FilterPanelProps {
   allOS: string[];
   allCPUs: string[];
   fstekOptions: string[];
-
-  // Переименовано и обновлены опции
   additionalServicesOptions: AdditionalServiceType[];
   registrationDataOptions: RegistrationDataField[];
-
-  // Упрощенные опции для типа клиента
   clientTypeOptions: ClientType[];
+
+  // Для определения максимальной цены среди провайдеров
+  maxProviderPrice: number;
 }
 
 export const FilterPanel = ({
+  filterMinPrice,
+  setFilterMinPrice,
+  filterMaxPrice,
+  setFilterMaxPrice,
   filterFZ152,
   setFilterFZ152,
   filterFSTEK,
@@ -89,16 +95,12 @@ export const FilterPanel = ({
   setFilterMobileApp,
   filterOrderBeforeRegistration,
   setFilterOrderBeforeRegistration,
-
-  // Переименовано
   filterAdditionalServices,
   setFilterAdditionalServices,
-
   filterRegistrationData,
   setFilterRegistrationData,
   filterClientType,
   setFilterClientType,
-
   allLocations,
   allVirtualizations,
   allDiskTypes,
@@ -106,8 +108,6 @@ export const FilterPanel = ({
   allOS,
   allCPUs,
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-
-  // Переименовано и обновлены опции
   additionalServicesOptions = [
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
@@ -117,7 +117,6 @@ export const FilterPanel = ({
     "Аттестация по ФСТЭК",
     "Другие гос. лицензии",
   ],
-
   registrationDataOptions = [
     "ФИО",
     "Email",
@@ -133,9 +132,8 @@ export const FilterPanel = ({
     "Регистрация в сторонних сервисах",
     "Скан удостоверения личности",
   ],
-
-  // Упрощенные опции для типа клиента
   clientTypeOptions = ["Физлицо", "Юрлицо"],
+  maxProviderPrice = 5000,
 }: FilterPanelProps) => {
   const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -147,13 +145,28 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-
-    // Переименовано
     additionalServices: false,
-
     registrationData: false,
     clientType: false,
   });
+
+  // Состояния для ползунков цены
+  const [minPriceValue, setMinPriceValue] = useState(filterMinPrice || 0);
+  const [maxPriceValue, setMaxPriceValue] = useState(
+    filterMaxPrice || maxProviderPrice,
+  );
+
+  // Популярные значения цен
+  const popularPriceValues = [0, 500, 1000, 2000, 3000, maxProviderPrice];
+
+  // Обновляем внутренние состояния при изменении внешних фильтров
+  useEffect(() => {
+    setMinPriceValue(filterMinPrice || 0);
+  }, [filterMinPrice]);
+
+  useEffect(() => {
+    setMaxPriceValue(filterMaxPrice || maxProviderPrice);
+  }, [filterMaxPrice]);
 
   const hasActiveFilters =
     filterFZ152 ||
@@ -169,10 +182,12 @@ export const FilterPanel = ({
     filterKII ||
     filterMobileApp ||
     filterOrderBeforeRegistration ||
-    // Переименовано
     filterAdditionalServices.length > 0 ||
     filterRegistrationData.length > 0 ||
-    filterClientType.length > 0;
+    filterClientType.length > 0 ||
+    // Добавляем проверку цены
+    filterMinPrice !== null ||
+    filterMaxPrice !== null;
 
   const activeFiltersCount = [
     filterFZ152,
@@ -188,12 +203,12 @@ export const FilterPanel = ({
     filterKII,
     filterMobileApp,
     filterOrderBeforeRegistration,
-
-    // Переименовано
     filterAdditionalServices.length > 0,
-
     filterRegistrationData.length > 0,
     filterClientType.length > 0,
+    // Добавляем счетчик для цены
+    filterMinPrice !== null,
+    filterMaxPrice !== null,
   ].filter(Boolean).length;
 
   const clearFilters = () => {
@@ -210,12 +225,14 @@ export const FilterPanel = ({
     setFilterKII(false);
     setFilterMobileApp(false);
     setFilterOrderBeforeRegistration(false);
-
-    // Переименовано
     setFilterAdditionalServices([]);
-
     setFilterRegistrationData([]);
     setFilterClientType([]);
+    // Очищаем фильтр по цене
+    setFilterMinPrice(null);
+    setFilterMaxPrice(null);
+    setMinPriceValue(0);
+    setMaxPriceValue(maxProviderPrice);
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -250,7 +267,6 @@ export const FilterPanel = ({
     setFilterFSTEK(newValue);
   };
 
-  // Переименовано
   const handleAdditionalServicesChange = (option: string) => {
     const newValue = filterAdditionalServices.includes(option)
       ? filterAdditionalServices.filter((v) => v !== option)
@@ -277,6 +293,164 @@ export const FilterPanel = ({
       ...prev,
       [dropdown]: !prev[dropdown],
     }));
+  };
+
+  // Обработчик изменения минимальной цены
+  const handleMinPriceChange = (value: number) => {
+    setMinPriceValue(value);
+    // Если значение больше текущего максимума, увеличиваем максимум
+    if (value > maxPriceValue) {
+      setMaxPriceValue(value);
+      setFilterMaxPrice(value);
+    }
+    setFilterMinPrice(value > 0 ? value : null);
+  };
+
+  // Обработчик изменения максимальной цены
+  const handleMaxPriceChange = (value: number) => {
+    setMaxPriceValue(value);
+    // Если значение меньше текущего минимума, уменьшаем минимум
+    if (value < minPriceValue) {
+      setMinPriceValue(value);
+      setFilterMinPrice(value > 0 ? value : null);
+    }
+    setFilterMaxPrice(value < maxProviderPrice ? value : null);
+  };
+
+  // Сброс фильтра по цене
+  const resetPriceFilter = () => {
+    setMinPriceValue(0);
+    setMaxPriceValue(maxProviderPrice);
+    setFilterMinPrice(null);
+    setFilterMaxPrice(null);
+  };
+
+  // Компонент фильтра по цене
+  const PriceFilter = () => {
+    return (
+      <div className="space-y-3 p-3 bg-background/50 rounded-lg border border-border mb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Icon
+              name="CreditCard"
+              size={10}
+              className="text-primary w-3 h-3"
+            />
+            <h4 className="text-sm font-bold text-foreground">
+              Диапазон цены (₽/мес)
+            </h4>
+          </div>
+
+          {(filterMinPrice !== null || filterMaxPrice !== null) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={resetPriceFilter}
+              className="text-[9px] h-5 px-2 hover:bg-destructive/10 hover:text-destructive"
+            >
+              <Icon name="X" size={8} className="w-2 h-2" />
+              <span className="ml-1">Сбросить</span>
+            </Button>
+          )}
+        </div>
+
+        <div className="flex justify-between mb-2">
+          <div className="text-xs font-medium text-foreground">
+            {filterMinPrice !== null ? `От: ${filterMinPrice}₽` : "Любая цена"}
+          </div>
+          <div className="text-xs font-medium text-foreground">
+            {filterMaxPrice !== null ? `До: ${filterMaxPrice}₽` : "Любая цена"}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          {/* Слайдер для минимальной цены */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Мин: {minPriceValue}₽</span>
+              <span className="text-foreground font-medium">
+                Минимальная цена
+              </span>
+            </div>
+            <Slider
+              value={[minPriceValue]}
+              onValueChange={(value) => handleMinPriceChange(value[0])}
+              min={0}
+              max={maxProviderPrice}
+              step={10}
+              className="cursor-pointer"
+            />
+          </div>
+
+          {/* Слайдер для максимальной цены */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span className="text-foreground font-medium">
+                Максимальная цена
+              </span>
+              <span>Макс: {maxPriceValue}₽</span>
+            </div>
+            <Slider
+              value={[maxPriceValue]}
+              onValueChange={(value) => handleMaxPriceChange(value[0])}
+              min={0}
+              max={maxProviderPrice}
+              step={10}
+              className="cursor-pointer"
+            />
+          </div>
+
+          {/* Популярные значения цен */}
+          <div className="flex flex-wrap gap-2">
+            {popularPriceValues.map((value) => (
+              <Button
+                key={value}
+                type="button"
+                variant={
+                  (value === 0 && filterMinPrice === null) ||
+                  (value === maxProviderPrice && filterMaxPrice === null) ||
+                  minPriceValue === value ||
+                  maxPriceValue === value
+                    ? "default"
+                    : "outline"
+                }
+                size="sm"
+                onClick={() => {
+                  if (value <= maxProviderPrice / 2) {
+                    // Если значение в первой половине диапазона - устанавливаем как минимум
+                    handleMinPriceChange(value);
+                  } else {
+                    // Если значение во второй половине - устанавливаем как максимум
+                    handleMaxPriceChange(value);
+                  }
+                }}
+                className="text-xs h-7 px-2 min-w-[60px]"
+              >
+                {value === 0
+                  ? "Любая"
+                  : value === maxProviderPrice
+                    ? "Любая"
+                    : `${value}₽`}
+              </Button>
+            ))}
+          </div>
+
+          {/* Шкала значений */}
+          <div className="flex justify-between text-xs text-muted-foreground pt-2">
+            <span>0₽</span>
+            <span>{Math.round(maxProviderPrice * 0.25)}₽</span>
+            <span>{Math.round(maxProviderPrice * 0.5)}₽</span>
+            <span>{Math.round(maxProviderPrice * 0.75)}₽</span>
+            <span>{maxProviderPrice}₽</span>
+          </div>
+        </div>
+
+        <div className="text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
+          Фильтр срабатывает при указании хотя бы одного значения
+        </div>
+      </div>
+    );
   };
 
   const FstekDropdown = () => {
@@ -359,7 +533,6 @@ export const FilterPanel = ({
     );
   };
 
-  // Переименовано с ITConsultingDropdown на AdditionalServicesDropdown
   const AdditionalServicesDropdown = () => {
     const isOpen = dropdownsOpen.additionalServices;
 
@@ -762,6 +935,9 @@ export const FilterPanel = ({
           )}
 
           <div className="space-y-4 p-3 max-h-[70vh] overflow-y-auto">
+            {/* Фильтр по цене - размещаем в самом верху */}
+            <PriceFilter />
+
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
@@ -1029,12 +1205,10 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* Переименованный дропдаун для дополнительных услуг */}
               <div className="col-span-1 sm:col-span-2">
                 <AdditionalServicesDropdown />
               </div>
 
-              {/* Новые дропдауны */}
               <div className="col-span-1 sm:col-span-2">
                 <RegistrationDataDropdown />
               </div>

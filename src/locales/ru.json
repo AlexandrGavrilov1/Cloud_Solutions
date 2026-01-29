@@ -129,6 +129,10 @@
     "registrationData": "Данные для регистрации",
     "clientType": "Тип клиента",
     "anyRegistrationData": "Любые данные",
-    "anyClientType": "Любой тип"
+    "anyClientType": "Любой тип",
+    "priceRange": "Диапазон цены",
+    "minPrice": "Мин. цена",
+    "maxPrice": "Макс. цена",
+    "anyPrice": "Любая цена"
   }
 }

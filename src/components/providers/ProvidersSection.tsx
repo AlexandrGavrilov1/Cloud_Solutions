@@ -1,4 +1,3 @@
-// ProvidersSection.tsx
 import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -112,6 +111,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Новые фильтры по цене
+  const [filterMinPrice, setFilterMinPrice] = useState<number | null>(() => {
+    const saved = localStorage.getItem("filterMinPrice");
+    return saved ? parseInt(saved) : null;
+  });
+
+  const [filterMaxPrice, setFilterMaxPrice] = useState<number | null>(() => {
+    const saved = localStorage.getItem("filterMaxPrice");
+    return saved ? parseInt(saved) : null;
+  });
+
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
     [],
   );
@@ -163,6 +173,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
 
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
+
+  // Вычисляем максимальную цену среди провайдеров (исключая 0 - "цена по запросу")
+  const maxProviderPrice = useMemo(() => {
+    const realPrices = providers
+      .filter((p) => p.basePrice > 0)
+      .map((p) => p.basePrice);
+
+    if (realPrices.length === 0) return 5000; // Значение по умолчанию
+
+    const max = Math.max(...realPrices);
+    // Округляем до ближайших 1000 для удобства
+    return Math.ceil(max / 1000) * 1000;
+  }, [providers]);
 
   // Сохранение фильтров в localStorage
   useEffect(() => {
@@ -296,6 +319,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterClientType");
     }
   }, [filterClientType]);
+
+  // Сохранение фильтров по цене
+  useEffect(() => {
+    if (filterMinPrice !== null) {
+      localStorage.setItem("filterMinPrice", filterMinPrice.toString());
+    } else {
+      localStorage.removeItem("filterMinPrice");
+    }
+  }, [filterMinPrice]);
+
+  useEffect(() => {
+    if (filterMaxPrice !== null) {
+      localStorage.setItem("filterMaxPrice", filterMaxPrice.toString());
+    } else {
+      localStorage.removeItem("filterMaxPrice");
+    }
+  }, [filterMaxPrice]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
@@ -457,6 +497,22 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingClientType) return false;
       }
 
+      // Фильтр по минимальной цене (если указан)
+      if (filterMinPrice !== null) {
+        // Если цена по запросу (0) и указан минимальный фильтр > 0 - исключаем
+        if (p.basePrice === 0 && filterMinPrice > 0) return false;
+        // Если реальная цена меньше минимальной - исключаем
+        if (p.basePrice > 0 && p.basePrice < filterMinPrice) return false;
+      }
+
+      // Фильтр по максимальной цене (если указан)
+      if (filterMaxPrice !== null) {
+        // Если цена по запросу (0) и указан максимальный фильтр - пропускаем
+        if (p.basePrice === 0) return true;
+        // Если реальная цена больше максимальной - исключаем
+        if (p.basePrice > filterMaxPrice) return false;
+      }
+
       return true;
     });
 
@@ -504,6 +560,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterAdditionalServices,
     filterRegistrationData,
     filterClientType,
+    filterMinPrice,
+    filterMaxPrice,
     sortBy,
   ]);
 
@@ -546,6 +604,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
               <div className="flex-shrink-0">
                 <FilterPanel
+                  // Новые пропсы для цены
+                  filterMinPrice={filterMinPrice}
+                  setFilterMinPrice={setFilterMinPrice}
+                  filterMaxPrice={filterMaxPrice}
+                  setFilterMaxPrice={setFilterMaxPrice}
+                  maxProviderPrice={maxProviderPrice}
+                  // Существующие пропсы
                   filterFZ152={filterFZ152}
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
@@ -630,6 +695,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               </div>
               <div className="flex-grow ml-1">
                 <FilterPanel
+                  // Новые пропсы для цены
+                  filterMinPrice={filterMinPrice}
+                  setFilterMinPrice={setFilterMinPrice}
+                  filterMaxPrice={filterMaxPrice}
+                  setFilterMaxPrice={setFilterMaxPrice}
+                  maxProviderPrice={maxProviderPrice}
+                  // Существующие пропсы
                   filterFZ152={filterFZ152}
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}

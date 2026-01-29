@@ -129,6 +129,10 @@
     "registrationData": "Registration Data",
     "clientType": "Client Type",
     "anyRegistrationData": "Any data",
-    "anyClientType": "Any type"
+    "anyClientType": "Any type",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "anyPrice": "Any price"
   }
 }
