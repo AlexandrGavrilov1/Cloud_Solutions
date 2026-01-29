@@ -1,10 +1,10 @@
+// ProvidersSection.tsx
 import { useState, useEffect, useMemo } from "react";
-import { Provider, ResourceConfig, Review } from "./types";
+import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanel } from "./FilterPanel";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
-import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
 import { ProvidersCounter } from "./ProvidersCounter";
@@ -17,10 +17,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null,
   );
-  const [configOpen, setConfigOpen] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
+  // Фильтры
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -93,7 +93,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       return saved ? JSON.parse(saved) : false;
     });
 
-  // Переименовано с filterITConsulting
   const [filterAdditionalServices, setFilterAdditionalServices] = useState<
     string[]
   >(() => {
@@ -101,7 +100,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Новые фильтры
   const [filterRegistrationData, setFilterRegistrationData] = useState<
     string[]
   >(() => {
@@ -129,24 +127,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     },
   );
 
-  const [configs, setConfigs] = useState<Record<number, ResourceConfig>>(() => {
-    const initialConfigs: Record<number, ResourceConfig> = {};
-    providers.forEach((provider) => {
-      initialConfigs[provider.id] = { cpu: 1, ram: 1, storage: 10 };
-    });
-    return initialConfigs;
-  });
-
-  const [loadedReviews, setLoadedReviews] = useState<Record<number, Review[]>>(
-    {},
-  );
-
-  const [providersWithReviews, setProvidersWithReviews] =
-    useState<Provider[]>(providers);
-
+  // Опции для фильтров
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
 
-  // Переименовано и обновлены опции
   const additionalServicesOptions = useMemo(
     () => [
       "Аудит инфраструктуры",
@@ -179,41 +162,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [],
   );
 
-  // Упрощенные опции для типа клиента
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
-
-  useEffect(() => {
-    const fetchApprovedReviews = async () => {
-      try {
-        const response = await fetch(
-          "https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8?status=approved",
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const reviewsByProvider: Record<number, Review[]> = {};
-
-          data.reviews.forEach((review: Review) => {
-            if (!reviewsByProvider[review.provider_id]) {
-              reviewsByProvider[review.provider_id] = [];
-            }
-            reviewsByProvider[review.provider_id].push(review);
-          });
-
-          setLoadedReviews(reviewsByProvider);
-
-          const updatedProviders = providers.map((provider) => ({
-            ...provider,
-            reviews: reviewsByProvider[provider.id] || provider.reviews,
-          }));
-          setProvidersWithReviews(updatedProviders);
-        }
-      } catch (error) {
-        console.error("Error fetching approved reviews:", error);
-      }
-    };
-
-    fetchApprovedReviews();
-  }, [providers]);
 
   // Сохранение фильтров в localStorage
   useEffect(() => {
@@ -315,7 +264,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     );
   }, [filterOrderBeforeRegistration]);
 
-  // Переименовано и обновлено сохранение
   useEffect(() => {
     if (filterAdditionalServices.length > 0) {
       localStorage.setItem(
@@ -327,7 +275,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterAdditionalServices]);
 
-  // Сохранение новых фильтров
   useEffect(() => {
     if (filterRegistrationData.length > 0) {
       localStorage.setItem(
@@ -354,30 +301,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-  const calculatePrice = (provider: Provider, config?: ResourceConfig) => {
-    if (!config) {
-      config = { cpu: 1, ram: 1, storage: 10 };
-    }
-
-    const calculatedPrice = Math.round(
-      provider.basePrice +
-        config.cpu * provider.cpuPrice +
-        config.ram * provider.ramPrice +
-        config.storage * provider.storagePrice,
-    );
-
-    if (
-      config.cpu === 1 &&
-      config.ram === 1 &&
-      config.storage === 10 &&
-      provider.pricingDetails.minPrice
-    ) {
-      return Math.min(calculatedPrice, provider.pricingDetails.minPrice);
-    }
-
-    return calculatedPrice;
-  };
-
   const toggleComparison = (providerId: number) => {
     setSelectedForComparison((prev) =>
       prev.includes(providerId)
@@ -392,90 +315,59 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   };
 
-  // Функция для отмены сравнения (очистки выбранных провайдеров)
   const cancelComparison = () => {
-    console.log("Отмена сравнения, очистка выбранных провайдеров");
     setSelectedForComparison([]);
   };
 
-  const updateConfig = (
-    providerId: number,
-    key: keyof ResourceConfig,
-    value: number,
-  ) => {
-    setConfigs((prev) => ({
-      ...prev,
-      [providerId]: { ...prev[providerId], [key]: value },
-    }));
-  };
-
-  const applyGlobalConfig = (config: ResourceConfig) => {
-    const updatedConfigs: Record<number, ResourceConfig> = {};
-    providersWithReviews.forEach((provider) => {
-      updatedConfigs[provider.id] = { ...config };
-    });
-    setConfigs(updatedConfigs);
-  };
-
   const allLocations = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.flatMap((p) => p.locations)),
-      ).sort(),
-    [providersWithReviews],
+    () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
+    [providers],
   );
 
   const allVirtualizations = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.virtualization),
-        ),
+        new Set(providers.flatMap((p) => p.technicalSpecs.virtualization)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allDiskTypes = useMemo(
     () =>
       Array.from(
-        new Set(providersWithReviews.map((p) => p.technicalSpecs.diskType)),
+        new Set(providers.map((p) => p.technicalSpecs.diskType)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allPaymentMethods = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.pricingDetails.paymentMethods),
-        ),
+        new Set(providers.flatMap((p) => p.pricingDetails.paymentMethods)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allOS = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.availableOS),
-        ),
+        new Set(providers.flatMap((p) => p.technicalSpecs.availableOS)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allCPUs = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.cpuModels || []),
-        ),
+        new Set(providers.flatMap((p) => p.technicalSpecs.cpuModels || [])),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
+  // Правильная сортировка по цене
   const filteredProviders = useMemo(
     () =>
-      providersWithReviews
+      providers
         .filter((p) => {
           if (
             searchQuery &&
@@ -548,25 +440,24 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
             return false;
 
-          // Переименовано и обновлено
           if (filterAdditionalServices.length > 0) {
             const hasMatchingService = filterAdditionalServices.some(
-              (service) => p.additionalServicesList?.includes(service) || false,
+              (service) =>
+                p.additionalServicesList?.includes(service as any) || false,
             );
             if (!hasMatchingService) return false;
           }
 
-          // Новые фильтры
           if (filterRegistrationData.length > 0) {
             const hasMatchingRegistrationData = filterRegistrationData.some(
-              (field) => p.registrationData?.includes(field) || false,
+              (field) => p.registrationData?.includes(field as any) || false,
             );
             if (!hasMatchingRegistrationData) return false;
           }
 
           if (filterClientType.length > 0) {
             const hasMatchingClientType = filterClientType.some(
-              (type) => p.supportedClientTypes?.includes(type) || false,
+              (type) => p.supportedClientTypes?.includes(type as any) || false,
             );
             if (!hasMatchingClientType) return false;
           }
@@ -581,15 +472,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             const avgRatingB =
               b.reviews.reduce((sum, r) => sum + r.rating, 0) /
               b.reviews.length;
-            return avgRatingB - avgRatingA;
+            return avgRatingB - avgRatingA; // По убыванию рейтинга
           } else {
-            const priceA = calculatePrice(a, configs[a.id]);
-            const priceB = calculatePrice(b, configs[b.id]);
-            return priceA - priceB;
+            // Правильная сортировка по цене
+            return a.basePrice - b.basePrice; // По возрастанию цены
           }
         }),
     [
-      providersWithReviews,
+      providers,
       searchQuery,
       filterFZ152,
       filterFSTEK,
@@ -608,21 +498,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       filterRegistrationData,
       filterClientType,
       sortBy,
-      configs,
     ],
   );
 
   if (showComparison) {
-    const selectedProviders = providersWithReviews.filter((p) =>
+    const selectedProviders = providers.filter((p) =>
       selectedForComparison.includes(p.id),
     );
     return (
       <ComparisonTable
         providers={selectedProviders}
-        configs={configs}
-        calculatePrice={calculatePrice}
         onClose={() => {
-          console.log("Закрытие таблицы сравнения");
           setShowComparison(false);
         }}
       />
@@ -682,7 +568,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOrderBeforeRegistration={
                     setFilterOrderBeforeRegistration
                   }
-                  // Переименовано
                   filterAdditionalServices={filterAdditionalServices}
                   setFilterAdditionalServices={setFilterAdditionalServices}
                   filterRegistrationData={filterRegistrationData}
@@ -696,7 +581,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allOS={allOS}
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
-                  // Переименовано
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
                   clientTypeOptions={clientTypeOptions}
@@ -705,9 +589,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex-shrink-0 h-full flex items-start justify-end">
-                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-              </div>
+              {/* Удален GlobalResourceConfig */}
               <div className="flex-shrink-0"></div>
             </div>
           </div>
@@ -771,7 +653,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOrderBeforeRegistration={
                     setFilterOrderBeforeRegistration
                   }
-                  // Переименовано
                   filterAdditionalServices={filterAdditionalServices}
                   setFilterAdditionalServices={setFilterAdditionalServices}
                   filterRegistrationData={filterRegistrationData}
@@ -785,7 +666,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allOS={allOS}
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
-                  // Переименовано
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
                   clientTypeOptions={clientTypeOptions}
@@ -793,13 +673,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               </div>
             </div>
             <div className="w-1/3 flex justify-end">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+              {/* Удален GlobalResourceConfig */}
             </div>
           </div>
         </div>
       </div>
-
-      <div className="mb-4"></div>
 
       {searchQuery && (
         <div className="mb-4 px-2">
@@ -831,15 +709,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         <>
           <ProvidersList
             filteredProviders={filteredProviders.slice(0, providersToShow)}
-            configs={configs}
-            calculatePrice={calculatePrice}
-            configOpen={configOpen}
-            setConfigOpen={setConfigOpen}
-            updateConfig={updateConfig}
-            selectedProvider={selectedProvider}
-            setSelectedProvider={setSelectedProvider}
             reviewsToShow={reviewsToShow}
             setReviewsToShow={setReviewsToShow}
+            selectedProvider={selectedProvider}
+            setSelectedProvider={setSelectedProvider}
             selectedForComparison={selectedForComparison}
             toggleComparison={toggleComparison}
           />
@@ -914,7 +787,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </>
       )}
 
-      {/* Компонент управления сравнением с кнопкой отмены */}
       <ComparisonControls
         selectedForComparison={selectedForComparison}
         compareProviders={compareProviders}
