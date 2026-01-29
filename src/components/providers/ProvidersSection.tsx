@@ -364,142 +364,148 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // Правильная сортировка по цене
-  const filteredProviders = useMemo(
-    () =>
-      providers
-        .filter((p) => {
-          if (
-            searchQuery &&
-            !p.name.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-            return false;
+  // Правильная сортировка по цене с учетом "цены по запросу"
+  const filteredProviders = useMemo(() => {
+    const filtered = providers.filter((p) => {
+      if (
+        searchQuery &&
+        !p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+        return false;
 
-          if (filterFZ152 && !p.fz152Compliant) return false;
+      if (filterFZ152 && !p.fz152Compliant) return false;
 
-          if (filterFSTEK.length > 0) {
-            const hasMatchingFSTEK = filterFSTEK.some(
-              (cert) => p.fstekCertifications?.includes(cert) || false,
-            );
-            if (!hasMatchingFSTEK) return false;
-          }
+      if (filterFSTEK.length > 0) {
+        const hasMatchingFSTEK = filterFSTEK.some(
+          (cert) => p.fstekCertifications?.includes(cert) || false,
+        );
+        if (!hasMatchingFSTEK) return false;
+      }
 
-          if (filterTrialPeriod && p.trialDays === 0) return false;
+      if (filterTrialPeriod && p.trialDays === 0) return false;
 
-          if (filterLocation.length > 0) {
-            const hasMatchingLocation = filterLocation.some((location) =>
-              p.locations.includes(location),
-            );
-            if (!hasMatchingLocation) return false;
-          }
+      if (filterLocation.length > 0) {
+        const hasMatchingLocation = filterLocation.some((location) =>
+          p.locations.includes(location),
+        );
+        if (!hasMatchingLocation) return false;
+      }
 
-          if (filterVirtualization.length > 0) {
-            const hasMatchingVirtualization = filterVirtualization.some(
-              (virt) => p.technicalSpecs.virtualization.includes(virt as any),
-            );
-            if (!hasMatchingVirtualization) return false;
-          }
+      if (filterVirtualization.length > 0) {
+        const hasMatchingVirtualization = filterVirtualization.some((virt) =>
+          p.technicalSpecs.virtualization.includes(virt as any),
+        );
+        if (!hasMatchingVirtualization) return false;
+      }
 
-          if (
-            filterMinDatacenters !== null &&
-            p.locations.length < filterMinDatacenters
-          )
-            return false;
+      if (
+        filterMinDatacenters !== null &&
+        p.locations.length < filterMinDatacenters
+      )
+        return false;
 
-          if (filterDiskType.length > 0) {
-            if (!filterDiskType.includes(p.technicalSpecs.diskType))
-              return false;
-          }
+      if (filterDiskType.length > 0) {
+        if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
+      }
 
-          if (filterPaymentMethod.length > 0) {
-            const hasMatchingPaymentMethod = filterPaymentMethod.some(
-              (method) => p.pricingDetails.paymentMethods.includes(method),
-            );
-            if (!hasMatchingPaymentMethod) return false;
-          }
+      if (filterPaymentMethod.length > 0) {
+        const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
+          p.pricingDetails.paymentMethods.includes(method),
+        );
+        if (!hasMatchingPaymentMethod) return false;
+      }
 
-          if (filterOS.length > 0) {
-            const hasMatchingOS = filterOS.some((os) =>
-              p.technicalSpecs.availableOS.includes(os),
-            );
-            if (!hasMatchingOS) return false;
-          }
+      if (filterOS.length > 0) {
+        const hasMatchingOS = filterOS.some((os) =>
+          p.technicalSpecs.availableOS.includes(os),
+        );
+        if (!hasMatchingOS) return false;
+      }
 
-          if (filterCPU.length > 0) {
-            const cpuModels = p.technicalSpecs.cpuModels || [];
-            const hasMatchingCPU = filterCPU.some((cpu) =>
-              cpuModels.includes(cpu),
-            );
-            if (!hasMatchingCPU) return false;
-          }
+      if (filterCPU.length > 0) {
+        const cpuModels = p.technicalSpecs.cpuModels || [];
+        const hasMatchingCPU = filterCPU.some((cpu) => cpuModels.includes(cpu));
+        if (!hasMatchingCPU) return false;
+      }
 
-          if (filterKII && !p.kiiPlacement) return false;
+      if (filterKII && !p.kiiPlacement) return false;
 
-          if (filterMobileApp && !p.mobileApp) return false;
+      if (filterMobileApp && !p.mobileApp) return false;
 
-          if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
-            return false;
+      if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
+        return false;
 
-          if (filterAdditionalServices.length > 0) {
-            const hasMatchingService = filterAdditionalServices.some(
-              (service) =>
-                p.additionalServicesList?.includes(service as any) || false,
-            );
-            if (!hasMatchingService) return false;
-          }
+      if (filterAdditionalServices.length > 0) {
+        const hasMatchingService = filterAdditionalServices.some(
+          (service) =>
+            p.additionalServicesList?.includes(service as any) || false,
+        );
+        if (!hasMatchingService) return false;
+      }
 
-          if (filterRegistrationData.length > 0) {
-            const hasMatchingRegistrationData = filterRegistrationData.some(
-              (field) => p.registrationData?.includes(field as any) || false,
-            );
-            if (!hasMatchingRegistrationData) return false;
-          }
+      if (filterRegistrationData.length > 0) {
+        const hasMatchingRegistrationData = filterRegistrationData.some(
+          (field) => p.registrationData?.includes(field as any) || false,
+        );
+        if (!hasMatchingRegistrationData) return false;
+      }
 
-          if (filterClientType.length > 0) {
-            const hasMatchingClientType = filterClientType.some(
-              (type) => p.supportedClientTypes?.includes(type as any) || false,
-            );
-            if (!hasMatchingClientType) return false;
-          }
+      if (filterClientType.length > 0) {
+        const hasMatchingClientType = filterClientType.some(
+          (type) => p.supportedClientTypes?.includes(type as any) || false,
+        );
+        if (!hasMatchingClientType) return false;
+      }
 
-          return true;
-        })
-        .sort((a, b) => {
-          if (sortBy === "rating") {
-            const avgRatingA =
-              a.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              a.reviews.length;
-            const avgRatingB =
-              b.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              b.reviews.length;
-            return avgRatingB - avgRatingA; // По убыванию рейтинга
-          } else {
-            // Правильная сортировка по цене
-            return a.basePrice - b.basePrice; // По возрастанию цены
-          }
-        }),
-    [
-      providers,
-      searchQuery,
-      filterFZ152,
-      filterFSTEK,
-      filterTrialPeriod,
-      filterLocation,
-      filterVirtualization,
-      filterMinDatacenters,
-      filterDiskType,
-      filterPaymentMethod,
-      filterOS,
-      filterCPU,
-      filterKII,
-      filterMobileApp,
-      filterOrderBeforeRegistration,
-      filterAdditionalServices,
-      filterRegistrationData,
-      filterClientType,
-      sortBy,
-    ],
-  );
+      return true;
+    });
+
+    return filtered.sort((a, b) => {
+      if (sortBy === "rating") {
+        const avgRatingA =
+          a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length;
+        const avgRatingB =
+          b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length;
+        return avgRatingB - avgRatingA; // По убыванию рейтинга
+      } else {
+        // Сортировка по цене с учетом "цены по запросу"
+        const priceA = a.basePrice;
+        const priceB = b.basePrice;
+
+        // Обе цены "по запросу" - равны
+        if (priceA === 0 && priceB === 0) return 0;
+
+        // A - цена по запросу, B - реальная цена: B должен быть выше (раньше)
+        if (priceA === 0 && priceB > 0) return 1;
+
+        // A - реальная цена, B - цена по запросу: A должен быть выше (раньше)
+        if (priceA > 0 && priceB === 0) return -1;
+
+        // Обе реальные цены: сортируем по возрастанию
+        return priceA - priceB;
+      }
+    });
+  }, [
+    providers,
+    searchQuery,
+    filterFZ152,
+    filterFSTEK,
+    filterTrialPeriod,
+    filterLocation,
+    filterVirtualization,
+    filterMinDatacenters,
+    filterDiskType,
+    filterPaymentMethod,
+    filterOS,
+    filterCPU,
+    filterKII,
+    filterMobileApp,
+    filterOrderBeforeRegistration,
+    filterAdditionalServices,
+    filterRegistrationData,
+    filterClientType,
+    sortBy,
+  ]);
 
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
@@ -589,7 +595,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
 
             <div className="space-y-2">
-              {/* Удален GlobalResourceConfig */}
               <div className="flex-shrink-0"></div>
             </div>
           </div>
@@ -673,7 +678,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               </div>
             </div>
             <div className="w-1/3 flex justify-end">
-              {/* Удален GlobalResourceConfig */}
+              {/* Конфигуратор ресурсов удален */}
             </div>
           </div>
         </div>
