@@ -59,7 +59,26 @@ export const ProviderCard = ({
     }
 
     if (provider.url) {
-      window.location.href = provider.url;
+      // Трекинг клика
+      try {
+        await fetch(
+          "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              provider_id: provider.id,
+            }),
+          },
+        );
+      } catch (error) {
+        console.error("Error tracking click:", error);
+      }
+
+      // Открываем в новом окне
+      window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
 

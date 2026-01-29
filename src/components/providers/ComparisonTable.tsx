@@ -69,7 +69,8 @@ export const ComparisonTable = ({
         console.error("Error tracking click:", error);
       }
 
-      window.location.href = provider.url;
+      // ОТКРЫВАЕМ В НОВОМ ОКНЕ
+      window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -603,6 +604,7 @@ export const ComparisonTable = ({
                           className="w-full h-9 sm:h-10 md:h-11 font-bold bg-primary text-background text-xs sm:text-sm"
                           onClick={() => handleProviderClick(provider)}
                           disabled={!provider.url}
+                          aria-label={`Перейти на сайт ${provider.name}`}
                         >
                           <span className="hidden sm:inline">Перейти</span>
                           <Icon
