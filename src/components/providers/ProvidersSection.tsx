@@ -1,10 +1,10 @@
+// ProvidersSection.tsx
 import { useState, useEffect, useMemo } from "react";
-import { Provider, ResourceConfig, Review } from "./types";
+import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanel } from "./FilterPanel";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
-import { GlobalResourceConfig } from "./GlobalResourceConfig";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
 import { ProvidersCounter } from "./ProvidersCounter";
@@ -17,10 +17,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
     null,
   );
-  const [configOpen, setConfigOpen] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
+  // Фильтры
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -93,7 +93,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       return saved ? JSON.parse(saved) : false;
     });
 
-  // Переименовано с filterITConsulting
   const [filterAdditionalServices, setFilterAdditionalServices] = useState<
     string[]
   >(() => {
@@ -101,7 +100,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Новые фильтры
   const [filterRegistrationData, setFilterRegistrationData] = useState<
     string[]
   >(() => {
@@ -129,24 +127,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     },
   );
 
-  const [configs, setConfigs] = useState<Record<number, ResourceConfig>>(() => {
-    const initialConfigs: Record<number, ResourceConfig> = {};
-    providers.forEach((provider) => {
-      initialConfigs[provider.id] = { cpu: 1, ram: 1, storage: 10 };
-    });
-    return initialConfigs;
-  });
-
-  const [loadedReviews, setLoadedReviews] = useState<Record<number, Review[]>>(
-    {},
-  );
-
-  const [providersWithReviews, setProvidersWithReviews] =
-    useState<Provider[]>(providers);
-
+  // Опции для фильтров
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
 
-  // Переименовано и обновлены опции
   const additionalServicesOptions = useMemo(
     () => [
       "Аудит инфраструктуры",
@@ -179,41 +162,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [],
   );
 
-  // Упрощенные опции для типа клиента
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
-
-  useEffect(() => {
-    const fetchApprovedReviews = async () => {
-      try {
-        const response = await fetch(
-          "https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8?status=approved",
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const reviewsByProvider: Record<number, Review[]> = {};
-
-          data.reviews.forEach((review: Review) => {
-            if (!reviewsByProvider[review.provider_id]) {
-              reviewsByProvider[review.provider_id] = [];
-            }
-            reviewsByProvider[review.provider_id].push(review);
-          });
-
-          setLoadedReviews(reviewsByProvider);
-
-          const updatedProviders = providers.map((provider) => ({
-            ...provider,
-            reviews: reviewsByProvider[provider.id] || provider.reviews,
-          }));
-          setProvidersWithReviews(updatedProviders);
-        }
-      } catch (error) {
-        console.error("Error fetching approved reviews:", error);
-      }
-    };
-
-    fetchApprovedReviews();
-  }, [providers]);
 
   // Сохранение фильтров в localStorage
   useEffect(() => {
@@ -315,7 +264,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     );
   }, [filterOrderBeforeRegistration]);
 
-  // Переименовано и обновлено сохранение
   useEffect(() => {
     if (filterAdditionalServices.length > 0) {
       localStorage.setItem(
@@ -327,7 +275,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterAdditionalServices]);
 
-  // Сохранение новых фильтров
   useEffect(() => {
     if (filterRegistrationData.length > 0) {
       localStorage.setItem(
@@ -354,30 +301,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-  const calculatePrice = (provider: Provider, config?: ResourceConfig) => {
-    if (!config) {
-      config = { cpu: 1, ram: 1, storage: 10 };
-    }
-
-    const calculatedPrice = Math.round(
-      provider.basePrice +
-        config.cpu * provider.cpuPrice +
-        config.ram * provider.ramPrice +
-        config.storage * provider.storagePrice,
-    );
-
-    if (
-      config.cpu === 1 &&
-      config.ram === 1 &&
-      config.storage === 10 &&
-      provider.pricingDetails.minPrice
-    ) {
-      return Math.min(calculatedPrice, provider.pricingDetails.minPrice);
-    }
-
-    return calculatedPrice;
-  };
-
   const toggleComparison = (providerId: number) => {
     setSelectedForComparison((prev) =>
       prev.includes(providerId)
@@ -392,237 +315,206 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   };
 
-  // Функция для отмены сравнения (очистки выбранных провайдеров)
   const cancelComparison = () => {
-    console.log("Отмена сравнения, очистка выбранных провайдеров");
     setSelectedForComparison([]);
   };
 
-  const updateConfig = (
-    providerId: number,
-    key: keyof ResourceConfig,
-    value: number,
-  ) => {
-    setConfigs((prev) => ({
-      ...prev,
-      [providerId]: { ...prev[providerId], [key]: value },
-    }));
-  };
-
-  const applyGlobalConfig = (config: ResourceConfig) => {
-    const updatedConfigs: Record<number, ResourceConfig> = {};
-    providersWithReviews.forEach((provider) => {
-      updatedConfigs[provider.id] = { ...config };
-    });
-    setConfigs(updatedConfigs);
-  };
-
   const allLocations = useMemo(
-    () =>
-      Array.from(
-        new Set(providersWithReviews.flatMap((p) => p.locations)),
-      ).sort(),
-    [providersWithReviews],
+    () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
+    [providers],
   );
 
   const allVirtualizations = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.virtualization),
-        ),
+        new Set(providers.flatMap((p) => p.technicalSpecs.virtualization)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allDiskTypes = useMemo(
     () =>
       Array.from(
-        new Set(providersWithReviews.map((p) => p.technicalSpecs.diskType)),
+        new Set(providers.map((p) => p.technicalSpecs.diskType)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allPaymentMethods = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.pricingDetails.paymentMethods),
-        ),
+        new Set(providers.flatMap((p) => p.pricingDetails.paymentMethods)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allOS = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.availableOS),
-        ),
+        new Set(providers.flatMap((p) => p.technicalSpecs.availableOS)),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
   const allCPUs = useMemo(
     () =>
       Array.from(
-        new Set(
-          providersWithReviews.flatMap((p) => p.technicalSpecs.cpuModels || []),
-        ),
+        new Set(providers.flatMap((p) => p.technicalSpecs.cpuModels || [])),
       ).sort(),
-    [providersWithReviews],
+    [providers],
   );
 
-  const filteredProviders = useMemo(
-    () =>
-      providersWithReviews
-        .filter((p) => {
-          if (
-            searchQuery &&
-            !p.name.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-            return false;
+  // Правильная сортировка по цене с учетом "цены по запросу"
+  const filteredProviders = useMemo(() => {
+    const filtered = providers.filter((p) => {
+      if (
+        searchQuery &&
+        !p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+        return false;
 
-          if (filterFZ152 && !p.fz152Compliant) return false;
+      if (filterFZ152 && !p.fz152Compliant) return false;
 
-          if (filterFSTEK.length > 0) {
-            const hasMatchingFSTEK = filterFSTEK.some(
-              (cert) => p.fstekCertifications?.includes(cert) || false,
-            );
-            if (!hasMatchingFSTEK) return false;
-          }
+      if (filterFSTEK.length > 0) {
+        const hasMatchingFSTEK = filterFSTEK.some(
+          (cert) => p.fstekCertifications?.includes(cert) || false,
+        );
+        if (!hasMatchingFSTEK) return false;
+      }
 
-          if (filterTrialPeriod && p.trialDays === 0) return false;
+      if (filterTrialPeriod && p.trialDays === 0) return false;
 
-          if (filterLocation.length > 0) {
-            const hasMatchingLocation = filterLocation.some((location) =>
-              p.locations.includes(location),
-            );
-            if (!hasMatchingLocation) return false;
-          }
+      if (filterLocation.length > 0) {
+        const hasMatchingLocation = filterLocation.some((location) =>
+          p.locations.includes(location),
+        );
+        if (!hasMatchingLocation) return false;
+      }
 
-          if (filterVirtualization.length > 0) {
-            const hasMatchingVirtualization = filterVirtualization.some(
-              (virt) => p.technicalSpecs.virtualization.includes(virt as any),
-            );
-            if (!hasMatchingVirtualization) return false;
-          }
+      if (filterVirtualization.length > 0) {
+        const hasMatchingVirtualization = filterVirtualization.some((virt) =>
+          p.technicalSpecs.virtualization.includes(virt as any),
+        );
+        if (!hasMatchingVirtualization) return false;
+      }
 
-          if (
-            filterMinDatacenters !== null &&
-            p.locations.length < filterMinDatacenters
-          )
-            return false;
+      if (
+        filterMinDatacenters !== null &&
+        p.locations.length < filterMinDatacenters
+      )
+        return false;
 
-          if (filterDiskType.length > 0) {
-            if (!filterDiskType.includes(p.technicalSpecs.diskType))
-              return false;
-          }
+      if (filterDiskType.length > 0) {
+        if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
+      }
 
-          if (filterPaymentMethod.length > 0) {
-            const hasMatchingPaymentMethod = filterPaymentMethod.some(
-              (method) => p.pricingDetails.paymentMethods.includes(method),
-            );
-            if (!hasMatchingPaymentMethod) return false;
-          }
+      if (filterPaymentMethod.length > 0) {
+        const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
+          p.pricingDetails.paymentMethods.includes(method),
+        );
+        if (!hasMatchingPaymentMethod) return false;
+      }
 
-          if (filterOS.length > 0) {
-            const hasMatchingOS = filterOS.some((os) =>
-              p.technicalSpecs.availableOS.includes(os),
-            );
-            if (!hasMatchingOS) return false;
-          }
+      if (filterOS.length > 0) {
+        const hasMatchingOS = filterOS.some((os) =>
+          p.technicalSpecs.availableOS.includes(os),
+        );
+        if (!hasMatchingOS) return false;
+      }
 
-          if (filterCPU.length > 0) {
-            const cpuModels = p.technicalSpecs.cpuModels || [];
-            const hasMatchingCPU = filterCPU.some((cpu) =>
-              cpuModels.includes(cpu),
-            );
-            if (!hasMatchingCPU) return false;
-          }
+      if (filterCPU.length > 0) {
+        const cpuModels = p.technicalSpecs.cpuModels || [];
+        const hasMatchingCPU = filterCPU.some((cpu) => cpuModels.includes(cpu));
+        if (!hasMatchingCPU) return false;
+      }
 
-          if (filterKII && !p.kiiPlacement) return false;
+      if (filterKII && !p.kiiPlacement) return false;
 
-          if (filterMobileApp && !p.mobileApp) return false;
+      if (filterMobileApp && !p.mobileApp) return false;
 
-          if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
-            return false;
+      if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
+        return false;
 
-          // Переименовано и обновлено
-          if (filterAdditionalServices.length > 0) {
-            const hasMatchingService = filterAdditionalServices.some(
-              (service) => p.additionalServicesList?.includes(service) || false,
-            );
-            if (!hasMatchingService) return false;
-          }
+      if (filterAdditionalServices.length > 0) {
+        const hasMatchingService = filterAdditionalServices.some(
+          (service) =>
+            p.additionalServicesList?.includes(service as any) || false,
+        );
+        if (!hasMatchingService) return false;
+      }
 
-          // Новые фильтры
-          if (filterRegistrationData.length > 0) {
-            const hasMatchingRegistrationData = filterRegistrationData.some(
-              (field) => p.registrationData?.includes(field) || false,
-            );
-            if (!hasMatchingRegistrationData) return false;
-          }
+      if (filterRegistrationData.length > 0) {
+        const hasMatchingRegistrationData = filterRegistrationData.some(
+          (field) => p.registrationData?.includes(field as any) || false,
+        );
+        if (!hasMatchingRegistrationData) return false;
+      }
 
-          if (filterClientType.length > 0) {
-            const hasMatchingClientType = filterClientType.some(
-              (type) => p.supportedClientTypes?.includes(type) || false,
-            );
-            if (!hasMatchingClientType) return false;
-          }
+      if (filterClientType.length > 0) {
+        const hasMatchingClientType = filterClientType.some(
+          (type) => p.supportedClientTypes?.includes(type as any) || false,
+        );
+        if (!hasMatchingClientType) return false;
+      }
 
-          return true;
-        })
-        .sort((a, b) => {
-          if (sortBy === "rating") {
-            const avgRatingA =
-              a.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              a.reviews.length;
-            const avgRatingB =
-              b.reviews.reduce((sum, r) => sum + r.rating, 0) /
-              b.reviews.length;
-            return avgRatingB - avgRatingA;
-          } else {
-            const priceA = calculatePrice(a, configs[a.id]);
-            const priceB = calculatePrice(b, configs[b.id]);
-            return priceA - priceB;
-          }
-        }),
-    [
-      providersWithReviews,
-      searchQuery,
-      filterFZ152,
-      filterFSTEK,
-      filterTrialPeriod,
-      filterLocation,
-      filterVirtualization,
-      filterMinDatacenters,
-      filterDiskType,
-      filterPaymentMethod,
-      filterOS,
-      filterCPU,
-      filterKII,
-      filterMobileApp,
-      filterOrderBeforeRegistration,
-      filterAdditionalServices,
-      filterRegistrationData,
-      filterClientType,
-      sortBy,
-      configs,
-    ],
-  );
+      return true;
+    });
+
+    return filtered.sort((a, b) => {
+      if (sortBy === "rating") {
+        const avgRatingA =
+          a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length;
+        const avgRatingB =
+          b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length;
+        return avgRatingB - avgRatingA; // По убыванию рейтинга
+      } else {
+        // Сортировка по цене с учетом "цены по запросу"
+        const priceA = a.basePrice;
+        const priceB = b.basePrice;
+
+        // Обе цены "по запросу" - равны
+        if (priceA === 0 && priceB === 0) return 0;
+
+        // A - цена по запросу, B - реальная цена: B должен быть выше (раньше)
+        if (priceA === 0 && priceB > 0) return 1;
+
+        // A - реальная цена, B - цена по запросу: A должен быть выше (раньше)
+        if (priceA > 0 && priceB === 0) return -1;
+
+        // Обе реальные цены: сортируем по возрастанию
+        return priceA - priceB;
+      }
+    });
+  }, [
+    providers,
+    searchQuery,
+    filterFZ152,
+    filterFSTEK,
+    filterTrialPeriod,
+    filterLocation,
+    filterVirtualization,
+    filterMinDatacenters,
+    filterDiskType,
+    filterPaymentMethod,
+    filterOS,
+    filterCPU,
+    filterKII,
+    filterMobileApp,
+    filterOrderBeforeRegistration,
+    filterAdditionalServices,
+    filterRegistrationData,
+    filterClientType,
+    sortBy,
+  ]);
 
   if (showComparison) {
-    const selectedProviders = providersWithReviews.filter((p) =>
+    const selectedProviders = providers.filter((p) =>
       selectedForComparison.includes(p.id),
     );
     return (
       <ComparisonTable
         providers={selectedProviders}
-        configs={configs}
-        calculatePrice={calculatePrice}
         onClose={() => {
-          console.log("Закрытие таблицы сравнения");
           setShowComparison(false);
         }}
       />
@@ -682,7 +574,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOrderBeforeRegistration={
                     setFilterOrderBeforeRegistration
                   }
-                  // Переименовано
                   filterAdditionalServices={filterAdditionalServices}
                   setFilterAdditionalServices={setFilterAdditionalServices}
                   filterRegistrationData={filterRegistrationData}
@@ -696,7 +587,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allOS={allOS}
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
-                  // Переименовано
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
                   clientTypeOptions={clientTypeOptions}
@@ -705,9 +595,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex-shrink-0 h-full flex items-start justify-end">
-                <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
-              </div>
               <div className="flex-shrink-0"></div>
             </div>
           </div>
@@ -771,7 +658,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterOrderBeforeRegistration={
                     setFilterOrderBeforeRegistration
                   }
-                  // Переименовано
                   filterAdditionalServices={filterAdditionalServices}
                   setFilterAdditionalServices={setFilterAdditionalServices}
                   filterRegistrationData={filterRegistrationData}
@@ -785,7 +671,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allOS={allOS}
                   allCPUs={allCPUs}
                   fstekOptions={fstekOptions}
-                  // Переименовано
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
                   clientTypeOptions={clientTypeOptions}
@@ -793,13 +678,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               </div>
             </div>
             <div className="w-1/3 flex justify-end">
-              <GlobalResourceConfig onApplyConfig={applyGlobalConfig} />
+              {/* Конфигуратор ресурсов удален */}
             </div>
           </div>
         </div>
       </div>
-
-      <div className="mb-4"></div>
 
       {searchQuery && (
         <div className="mb-4 px-2">
@@ -831,15 +714,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         <>
           <ProvidersList
             filteredProviders={filteredProviders.slice(0, providersToShow)}
-            configs={configs}
-            calculatePrice={calculatePrice}
-            configOpen={configOpen}
-            setConfigOpen={setConfigOpen}
-            updateConfig={updateConfig}
-            selectedProvider={selectedProvider}
-            setSelectedProvider={setSelectedProvider}
             reviewsToShow={reviewsToShow}
             setReviewsToShow={setReviewsToShow}
+            selectedProvider={selectedProvider}
+            setSelectedProvider={setSelectedProvider}
             selectedForComparison={selectedForComparison}
             toggleComparison={toggleComparison}
           />
@@ -914,7 +792,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </>
       )}
 
-      {/* Компонент управления сравнением с кнопкой отмены */}
       <ComparisonControls
         selectedForComparison={selectedForComparison}
         compareProviders={compareProviders}
