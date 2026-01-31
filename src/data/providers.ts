@@ -2292,7 +2292,7 @@ export const providers: Provider[] = [
     name: "Яндекс Облако",
     logo: "providers_logo/25_Yandex.jpg",
     rating: 9.7,
-    basePrice: 199,
+    basePrice: 950,
     cpuPrice: 230,
     ramPrice: 150,
     storagePrice: 16,
