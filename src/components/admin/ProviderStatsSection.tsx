@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Provider } from '@/components/providers/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
@@ -11,12 +12,51 @@ interface ProviderStats {
 }
 
 export const ProviderStatsSection = () => {
-  const providerStats: ProviderStats[] = providers.map((provider: Provider) => ({
-    id: provider.id,
-    name: provider.name,
-    registrations: Math.floor(Math.random() * 1000) + 100,
-    balance: Math.floor(Math.random() * 100000) + 10000,
-  }));
+  const [providerStats, setProviderStats] = useState<ProviderStats[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8?type=stats');
+        if (response.ok) {
+          const data = await response.json();
+          const statsMap = new Map(data.stats?.map((s: any) => [s.provider_id, s]) || []);
+          
+          const stats = providers.map((provider: Provider) => {
+            const apiStats = statsMap.get(provider.id);
+            return {
+              id: provider.id,
+              name: provider.name,
+              registrations: apiStats?.registrations || 0,
+              balance: apiStats?.balance || 0,
+            };
+          });
+          
+          setProviderStats(stats);
+        } else {
+          setProviderStats(providers.map((provider: Provider) => ({
+            id: provider.id,
+            name: provider.name,
+            registrations: 0,
+            balance: 0,
+          })));
+        }
+      } catch (error) {
+        console.error('Error fetching provider stats:', error);
+        setProviderStats(providers.map((provider: Provider) => ({
+          id: provider.id,
+          name: provider.name,
+          registrations: 0,
+          balance: 0,
+        })));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const totalRegistrations = providerStats.reduce((sum, p) => sum + p.registrations, 0);
   const totalBalance = providerStats.reduce((sum, p) => sum + p.balance, 0);
@@ -29,6 +69,17 @@ export const ProviderStatsSection = () => {
       maximumFractionDigits: 0,
     }).format(amount);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <p className="text-muted-foreground">Загрузка статистики...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-8">

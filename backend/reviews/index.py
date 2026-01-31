@@ -100,6 +100,43 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     if method == 'GET':
         params = event.get('queryStringParameters') or {}
+        request_type = params.get('type')
+        
+        if request_type == 'stats':
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT 
+                    provider_id,
+                    COUNT(*) as registrations,
+                    COALESCE(SUM(balance), 0) as total_balance
+                FROM provider_registrations
+                GROUP BY provider_id
+                ORDER BY total_balance DESC
+                """
+            )
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            
+            stats = []
+            for row in results:
+                stats.append({
+                    'provider_id': row[0],
+                    'registrations': row[1],
+                    'balance': float(row[2])
+                })
+            
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({'stats': stats}),
+                'isBase64Encoded': False
+            }
+        
         provider_id = params.get('provider_id')
         status = params.get('status', 'approved')
         
