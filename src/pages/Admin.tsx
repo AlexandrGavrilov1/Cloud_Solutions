@@ -211,10 +211,12 @@ const Admin = () => {
   const testOneDashAPI = async () => {
     setOnedashLoading(true);
     setOnedashError('');
+    setOnedashApiData(null);
     
     try {
       const response = await fetch(`https://rdp-onedash.ru/web-api/${onedashEndpoint}`, {
         method: 'POST',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -224,16 +226,40 @@ const Admin = () => {
       });
       
       const contentType = response.headers.get('content-type');
+      const text = await response.text();
       
       if (contentType?.includes('application/json')) {
-        const data = await response.json();
-        setOnedashApiData(data);
+        try {
+          const data = JSON.parse(text);
+          setOnedashApiData({ 
+            success: true,
+            endpoint: onedashEndpoint, 
+            data 
+          });
+        } catch {
+          setOnedashApiData({ 
+            success: false,
+            endpoint: onedashEndpoint, 
+            message: 'Невалидный JSON',
+            raw: text.substring(0, 500) 
+          });
+        }
       } else {
-        const text = await response.text();
-        setOnedashApiData({ raw_response: text.substring(0, 1000), endpoint: onedashEndpoint });
+        setOnedashApiData({ 
+          success: false,
+          endpoint: onedashEndpoint,
+          message: 'API вернул HTML вместо JSON. Защита от прямых запросов активна.',
+          hint: 'Для получения данных используйте официальный веб-интерфейс OneDash или свяжитесь с поддержкой для получения документации API.',
+          response_type: contentType || 'text/html',
+          raw_preview: text.substring(0, 300)
+        });
       }
     } catch (error: any) {
-      setOnedashError(error.message || 'Ошибка подключения');
+      if (error.message.includes('Failed to fetch')) {
+        setOnedashError('CORS: API OneDash блокирует прямые запросы из браузера. Нужен серверный прокси или использование официального интерфейса.');
+      } else {
+        setOnedashError(error.message || 'Ошибка подключения');
+      }
     } finally {
       setOnedashLoading(false);
     }
