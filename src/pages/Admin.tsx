@@ -43,7 +43,10 @@ const Admin = () => {
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [isLoadingDaily, setIsLoadingDaily] = useState(true);
   const [period, setPeriod] = useState<'1' | '7' | '30'>('30');
-  const [activeTab, setActiveTab] = useState<'stats' | 'providers' | 'reviews'>('stats');
+  const [activeTab, setActiveTab] = useState<'stats' | 'providers' | 'reviews' | 'onedash'>('stats');
+  const [onedashApiData, setOnedashApiData] = useState<any>(null);
+  const [onedashLoading, setOnedashLoading] = useState(false);
+  const [onedashError, setOnedashError] = useState('');
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -204,6 +207,37 @@ const Admin = () => {
     fetchDailyStats(newPeriod);
   };
 
+  const testOneDashAPI = async () => {
+    setOnedashLoading(true);
+    setOnedashError('');
+    
+    try {
+      const response = await fetch('https://rdp-onedash.ru/web-api/stats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: '79b2457a7346187f969c053b571eb45e71df1b02'
+        }),
+      });
+      
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType?.includes('application/json')) {
+        const data = await response.json();
+        setOnedashApiData(data);
+      } else {
+        const text = await response.text();
+        setOnedashApiData({ raw_response: text.substring(0, 1000) });
+      }
+    } catch (error: any) {
+      setOnedashError(error.message || 'Ошибка подключения');
+    } finally {
+      setOnedashLoading(false);
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <AdminLogin
@@ -293,6 +327,17 @@ const Admin = () => {
               </span>
             )}
           </button>
+          <button
+            onClick={() => setActiveTab('onedash')}
+            className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
+              activeTab === 'onedash'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Icon name="Activity" size={18} />
+            OneDash API
+          </button>
         </div>
 
         {activeTab === 'stats' && (
@@ -315,6 +360,56 @@ const Admin = () => {
             processingId={processingId}
             onReviewAction={handleReviewAction}
           />
+        )}
+
+        {activeTab === 'onedash' && (
+          <div className="bg-card rounded-lg shadow-md p-6 border border-border">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground mb-1">OneDash API Test</h2>
+                <p className="text-sm text-muted-foreground">Тестирование интеграции с API OneDash</p>
+              </div>
+              <Button
+                onClick={testOneDashAPI}
+                disabled={onedashLoading}
+                className="flex items-center gap-2"
+              >
+                {onedashLoading ? (
+                  <>
+                    <Icon name="Loader2" size={18} className="animate-spin" />
+                    Загрузка...
+                  </>
+                ) : (
+                  <>
+                    <Icon name="RefreshCw" size={18} />
+                    Проверить API
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {onedashError && (
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-4">
+                <p className="text-destructive font-medium">Ошибка: {onedashError}</p>
+              </div>
+            )}
+
+            {onedashApiData && (
+              <div className="bg-muted/50 rounded-lg p-4 border border-border">
+                <h3 className="font-semibold text-foreground mb-3">Ответ API:</h3>
+                <pre className="text-xs overflow-auto bg-background p-4 rounded border border-border">
+                  {JSON.stringify(onedashApiData, null, 2)}
+                </pre>
+              </div>
+            )}
+
+            {!onedashApiData && !onedashLoading && !onedashError && (
+              <div className="text-center py-12 text-muted-foreground">
+                <Icon name="Activity" size={48} className="mx-auto mb-4 opacity-50" />
+                <p>Нажмите "Проверить API" для тестирования</p>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
