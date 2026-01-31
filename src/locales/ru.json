@@ -41,7 +41,10 @@
     "disks": "Диски",
     "virtualization": "Виртуализация",
     "users": "пользователей",
-    "priceOnRequest": "цена по запросу"
+    "priceOnRequest": "цена по запросу",
+    "rating": "Рейтинг",
+    "gpu": "GPU",
+    "supports1C": "1С"
   },
   "card": {
     "selected": "Выбрано",
@@ -82,7 +85,11 @@
     "clientType": "Тип клиента",
     "requiredData": "Обязательные данные",
     "optionalData": "Опциональные данные",
-    "supportedClients": "Поддерживаемые типы клиентов"
+    "supportedClients": "Поддерживаемые типы клиентов",
+    "gpu": "Графические процессоры",
+    "gpuDescription": "Провайдер предоставляет серверы с графическими процессорами для машинного обучения, визуализации и вычислений",
+    "supports1C": "Поддержка 1С",
+    "supports1CDescription": "Провайдер специализируется на размещении решений 1С и предоставляет оптимизированные серверы"
   },
   "resources": {
     "cpu": "vCPU",
@@ -129,6 +136,10 @@
     "registrationData": "Данные для регистрации",
     "clientType": "Тип клиента",
     "anyRegistrationData": "Любые данные",
-    "anyClientType": "Любой тип"
+    "anyClientType": "Любой тип",
+    "gpu": "GPU",
+    "anyGpu": "Любой GPU",
+    "supports1C": "1С",
+    "with1C": "С поддержкой 1С"
   }
 }

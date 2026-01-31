@@ -41,7 +41,10 @@
     "disks": "Disks",
     "virtualization": "Virtualization",
     "users": "users",
-    "priceOnRequest": "priceOnRequest"
+    "priceOnRequest": "priceOnRequest",
+    "rating": "Rating",
+    "gpu": "GPU",
+    "supports1C": "1C"
   },
   "card": {
     "selected": "Selected",
@@ -82,7 +85,11 @@
     "clientType": "Client Type",
     "requiredData": "Required Data",
     "optionalData": "Optional Data",
-    "supportedClients": "Supported Client Types"
+    "supportedClients": "Supported Client Types",
+    "gpu": "Graphics Processors",
+    "gpuDescription": "Provider offers servers with GPUs for machine learning, visualization and computations",
+    "supports1C": "1C Support",
+    "supports1CDescription": "Provider specializes in hosting 1C solutions and provides optimized servers"
   },
   "resources": {
     "cpu": "vCPU",
@@ -129,6 +136,10 @@
     "registrationData": "Registration Data",
     "clientType": "Client Type",
     "anyRegistrationData": "Any data",
-    "anyClientType": "Any type"
+    "anyClientType": "Any type",
+    "gpu": "GPU",
+    "anyGpu": "Any GPU",
+    "supports1C": "1C",
+    "with1C": "With 1C support"
   }
 }

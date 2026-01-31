@@ -41,6 +41,15 @@ export const ProviderCard = ({
   const avgRating =
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
+  const [gpuTooltip, setGpuTooltip] = useState<{
+    show: boolean;
+    model: string;
+    description: string;
+  }>({
+    show: false,
+    model: "",
+    description: "",
+  });
 
   // Получаем текстовое представление цены
   const getPriceText = () => {
@@ -80,6 +89,46 @@ export const ProviderCard = ({
       // Открываем в новом окне
       window.open(provider.url, "_blank", "noopener,noreferrer");
     }
+  };
+
+  // Функция для получения описания GPU
+  const getGpuDescription = (model: string): string => {
+    const descriptions: Record<string, string> = {
+      "GTX 1080": "Игровая GPU NVIDIA, 8GB GDDR5X, 2560 ядер CUDA",
+      "GTX 1080 Ti": "Игровая GPU NVIDIA, 11GB GDDR5X, 3584 ядер CUDA",
+      "RTX 2080 Ti":
+        "Игровая/рабочая GPU NVIDIA, 11GB GDDR6, 4352 ядра CUDA, поддержка RTX",
+      "RTX 3080": "Игровая GPU NVIDIA, 10GB GDDR6X, 8704 ядра CUDA",
+      "RTX 3090": "Игровая/рабочая GPU NVIDIA, 24GB GDDR6X, 10496 ядер CUDA",
+      "RTX 4090": "Игровая GPU NVIDIA, 24GB GDDR6X, 16384 ядра CUDA",
+      A2: "Серверная GPU NVIDIA, 16GB память, для инференса и AI",
+      A30: "Серверная GPU NVIDIA, 24GB HBM2, для AI и HPC",
+      A2000: "Рабочая GPU NVIDIA, 6GB GDDR6, для рабочих станций",
+      A4000: "Рабочая GPU NVIDIA, 16GB GDDR6, для рабочих станций и рендеринга",
+      A5000:
+        "Рабочая GPU NVIDIA, 24GB GDDR6, для профессионального использования",
+      A6000:
+        "Рабочая GPU NVIDIA, 48GB GDDR6, для профессиональных рабочих станций",
+      "Tesla T4": "Серверная GPU NVIDIA, 16GB GDDR6, для инференса в ЦОД",
+      V100: "Серверная GPU NVIDIA, 16-32GB HBM2, для машинного обучения",
+      A100: "Серверная GPU NVIDIA, 40-80GB HBM2, для AI и HPC",
+      H100: "Серверная GPU NVIDIA, 80GB HBM3, для AI и высокопроизводительных вычислений",
+    };
+
+    return descriptions[model] || "Графический процессор для вычислений";
+  };
+
+  // Функция для показа тултипа GPU
+  const showGpuTooltip = (model: string) => {
+    setGpuTooltip({
+      show: true,
+      model,
+      description: getGpuDescription(model),
+    });
+  };
+
+  const hideGpuTooltip = () => {
+    setGpuTooltip({ show: false, model: "", description: "" });
   };
 
   const renderFstekCertifications = () => {
@@ -242,6 +291,121 @@ export const ProviderCard = ({
     );
   };
 
+  // Рендерим раздел GPU
+  const renderGpuSection = () => {
+    if (
+      !provider.technicalSpecs.gpuModels ||
+      provider.technicalSpecs.gpuModels.length === 0
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Cpu" size={18} className="text-purple-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">Поддержка GPU</h4>
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-sm text-foreground">
+            Провайдер предоставляет серверы с графическими процессорами для:
+          </p>
+          <ul className="list-disc pl-5 text-sm text-foreground space-y-1">
+            <li>Машинного обучения и искусственного интеллекта</li>
+            <li>Визуализации и рендеринга</li>
+            <li>Научных вычислений и моделирования</li>
+            <li>Игровых серверов и стриминга</li>
+          </ul>
+
+          <div className="mt-4">
+            <div className="text-sm font-medium text-foreground mb-2">
+              Доступные модели GPU:
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {provider.technicalSpecs.gpuModels.map((gpuModel, idx) => (
+                <div
+                  key={idx}
+                  className="relative"
+                  onMouseEnter={() => showGpuTooltip(gpuModel)}
+                  onMouseLeave={hideGpuTooltip}
+                >
+                  <Badge className="bg-purple-500/10 text-purple-500 border-purple-500/30 cursor-help">
+                    {gpuModel}
+                  </Badge>
+
+                  {gpuTooltip.show && gpuTooltip.model === gpuModel && (
+                    <div className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
+                      <div className="text-xs font-semibold text-foreground mb-1">
+                        {gpuTooltip.model}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {gpuTooltip.description}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Рендерим раздел 1С
+  const render1CSection = () => {
+    if (!provider.technicalSpecs.supports1C) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Database" size={18} className="text-purple-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">Поддержка 1С</h4>
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-sm text-foreground">
+            Провайдер специализируется на размещении решений 1С и предоставляет:
+          </p>
+          <ul className="list-disc pl-5 text-sm text-foreground space-y-1">
+            <li>Оптимизированные серверы для 1С:Предприятие 8</li>
+            <li>Выделенные серверы для баз данных 1С</li>
+            <li>Автоматическое резервное копирование конфигураций</li>
+            <li>Техническую поддержку по настройке 1С</li>
+            <li>Быструю миграцию существующих баз 1С в облако</li>
+          </ul>
+
+          <div className="mt-4">
+            <div className="text-sm font-medium text-foreground mb-2">
+              Преимущества:
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
+                Высокая доступность
+              </Badge>
+              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
+                Масштабируемость
+              </Badge>
+              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
+                Безопасность данных
+              </Badge>
+              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
+                Резервное копирование
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       className={`relative flex flex-col group ${
@@ -340,6 +504,12 @@ export const ProviderCard = ({
                       {renderFstekCertifications()}
                     </div>
                   )}
+              </div>
+
+              {/* Добавляем разделы GPU и 1С */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {renderGpuSection()}
+                {render1CSection()}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

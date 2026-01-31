@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 interface ProviderCardHeaderProps {
   provider: Provider;
   index: number;
-  onProviderClick: () => void; // Оставляем для трекинга
+  onProviderClick: () => void;
   onCompareClick?: () => void;
   isComparing?: boolean;
   showDetails?: boolean;
@@ -32,6 +32,15 @@ export const ProviderCardHeader = ({
   const [showAllLocations, setShowAllLocations] = useState(false);
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showCompareTooltip, setShowCompareTooltip] = useState(false);
+  const [gpuTooltip, setGpuTooltip] = useState<{
+    show: boolean;
+    model: string;
+    description: string;
+  }>({
+    show: false,
+    model: "",
+    description: "",
+  });
 
   // Функция для открытия сайта в новом окне
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
@@ -92,6 +101,44 @@ export const ProviderCardHeader = ({
     };
   };
 
+  // Функция для получения описания GPU
+  const getGpuDescription = (model: string): string => {
+    const descriptions: Record<string, string> = {
+      "GTX 1080": "Игровая GPU, 8GB GDDR5X, 2560 ядер CUDA",
+      "GTX 1080 Ti": "Игровая GPU, 11GB GDDR5X, 3584 ядер CUDA",
+      "RTX 2080 Ti":
+        "Игровая/рабочая GPU, 11GB GDDR6, 4352 ядра CUDA, поддержка RTX",
+      "RTX 3080": "Игровая GPU, 10GB GDDR6X, 8704 ядра CUDA",
+      "RTX 3090": "Игровая/рабочая GPU, 24GB GDDR6X, 10496 ядер CUDA",
+      "RTX 4090": "Игровая GPU, 24GB GDDR6X, 16384 ядра CUDA",
+      A2: "Серверная GPU NVIDIA, 16GB память, для инференса и AI",
+      A30: "Серверная GPU NVIDIA, 24GB HBM2, для AI и HPC",
+      A2000: "Рабочая GPU, 6GB GDDR6, для рабочих станций",
+      A4000: "Рабочая GPU, 16GB GDDR6, для рабочих станций и рендеринга",
+      A5000: "Рабочая GPU, 24GB GDDR6, для профессионального использования",
+      A6000: "Рабочая GPU, 48GB GDDR6, для профессиональных рабочих станций",
+      "Tesla T4": "Серверная GPU, 16GB GDDR6, для инференса в ЦОД",
+      V100: "Серверная GPU NVIDIA, 16-32GB HBM2, для машинного обучения",
+      A100: "Серверная GPU NVIDIA, 40-80GB HBM2, для AI и HPC",
+      H100: "Серверная GPU NVIDIA, 80GB HBM3, для AI и высокопроизводительных вычислений",
+    };
+
+    return descriptions[model] || "Графический процессор для вычислений";
+  };
+
+  // Функция для показа тултипа GPU
+  const showGpuTooltip = (model: string) => {
+    setGpuTooltip({
+      show: true,
+      model,
+      description: getGpuDescription(model),
+    });
+  };
+
+  const hideGpuTooltip = () => {
+    setGpuTooltip({ show: false, model: "", description: "" });
+  };
+
   return (
     <div className="flex flex-col gap-3 flex-1">
       <div className="flex items-start justify-between gap-3">
@@ -146,6 +193,17 @@ export const ProviderCardHeader = ({
                     />
                   </div>
                 )}
+
+                {/* Иконка 1С */}
+                {provider.technicalSpecs.supports1C && (
+                  <div className="w-5 h-5 bg-purple-500/20 rounded-md flex items-center justify-center">
+                    <Icon
+                      name="Database"
+                      size={10}
+                      className="text-purple-500"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -178,7 +236,7 @@ export const ProviderCardHeader = ({
         >
           <div className="relative">
             <button
-              onClick={handleProviderClickWithTracking} // Используем новую функцию
+              onClick={handleProviderClickWithTracking}
               onMouseEnter={() => setShowLinkTooltip(true)}
               onMouseLeave={() => setShowLinkTooltip(false)}
               className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
@@ -280,6 +338,57 @@ export const ProviderCardHeader = ({
               {provider.technicalSpecs.virtualization.slice(0, 2).join(", ")}
             </span>
           </div>
+
+          {/* GPU отображение */}
+          {provider.technicalSpecs.gpuModels &&
+            provider.technicalSpecs.gpuModels.length > 0 && (
+              <div className="relative">
+                <div
+                  className="flex items-center gap-1.5 text-sm"
+                  onMouseEnter={() => {
+                    // Показываем первый GPU при наведении на строку
+                    if (
+                      provider.technicalSpecs.gpuModels &&
+                      provider.technicalSpecs.gpuModels.length > 0
+                    ) {
+                      showGpuTooltip(provider.technicalSpecs.gpuModels[0]);
+                    }
+                  }}
+                  onMouseLeave={hideGpuTooltip}
+                >
+                  <Icon
+                    name="Cpu"
+                    size={14}
+                    className="text-purple-500 flex-shrink-0"
+                  />
+                  <span className="text-foreground">
+                    GPU: {provider.technicalSpecs.gpuModels.length} модел
+                    {provider.technicalSpecs.gpuModels.length === 1
+                      ? "ь"
+                      : "ей"}
+                  </span>
+                  <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-[10px] px-1 py-0">
+                    +
+                  </Badge>
+                </div>
+
+                {gpuTooltip.show && (
+                  <div className="absolute z-50 top-full left-0 mt-1 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
+                    <div className="text-xs font-semibold text-foreground mb-1">
+                      {gpuTooltip.model}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {gpuTooltip.description}
+                    </div>
+                    <div className="mt-1 text-xs text-primary">
+                      Всего {provider.technicalSpecs.gpuModels?.length || 0}{" "}
+                      моделей GPU
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
           {provider.technicalSpecs.kubernetes?.available && (
             <div className="flex items-center gap-1.5 text-sm">
               <Icon
@@ -293,6 +402,21 @@ export const ProviderCardHeader = ({
                   managed
                 </Badge>
               )}
+            </div>
+          )}
+
+          {/* 1С отображение */}
+          {provider.technicalSpecs.supports1C && (
+            <div className="flex items-center gap-1.5 text-sm">
+              <Icon
+                name="Database"
+                size={14}
+                className="text-purple-500 flex-shrink-0"
+              />
+              <span className="text-foreground">1С</span>
+              <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-[10px] px-1 py-0">
+                Поддерживает
+              </Badge>
             </div>
           )}
         </div>
@@ -384,12 +508,25 @@ export const ProviderCardHeader = ({
             КИИ
           </Badge>
         )}
+        {provider.technicalSpecs.supports1C && (
+          <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-xs px-2 py-1">
+            <Icon name="Database" size={12} className="mr-1" />
+            1С
+          </Badge>
+        )}
         {provider.uptime30days && (
           <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
             <Icon name="Activity" size={12} className="mr-1" />
             {t("common.uptime")}: {provider.uptime30days}%
           </Badge>
         )}
+        {provider.technicalSpecs.gpuModels &&
+          provider.technicalSpecs.gpuModels.length > 0 && (
+            <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-xs px-2 py-1">
+              <Icon name="Cpu" size={12} className="mr-1" />
+              GPU: {provider.technicalSpecs.gpuModels.length}
+            </Badge>
+          )}
       </div>
     </div>
   );

@@ -112,6 +112,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Добавляем новые фильтры
+  const [filterGPU, setFilterGPU] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterGPU");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filter1C, setFilter1C] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filter1C");
+    return saved ? JSON.parse(saved) : false;
+  });
+
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
     [],
   );
@@ -297,6 +308,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterClientType]);
 
+  // Сохраняем новые фильтры
+  useEffect(() => {
+    if (filterGPU.length > 0) {
+      localStorage.setItem("filterGPU", JSON.stringify(filterGPU));
+    } else {
+      localStorage.removeItem("filterGPU");
+    }
+  }, [filterGPU]);
+
+  useEffect(() => {
+    localStorage.setItem("filter1C", JSON.stringify(filter1C));
+  }, [filter1C]);
+
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
@@ -360,6 +384,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     () =>
       Array.from(
         new Set(providers.flatMap((p) => p.technicalSpecs.cpuModels || [])),
+      ).sort(),
+    [providers],
+  );
+
+  // Получаем все уникальные GPU из провайдеров
+  const allGPUs = useMemo(
+    () =>
+      Array.from(
+        new Set(providers.flatMap((p) => p.technicalSpecs.gpuModels || [])),
       ).sort(),
     [providers],
   );
@@ -457,6 +490,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingClientType) return false;
       }
 
+      // Фильтр GPU
+      if (filterGPU.length > 0) {
+        const hasMatchingGPU = filterGPU.some(
+          (gpu) => p.technicalSpecs.gpuModels?.includes(gpu) || false,
+        );
+        if (!hasMatchingGPU) return false;
+      }
+
+      // Фильтр 1С
+      if (filter1C && !p.technicalSpecs.supports1C) return false;
+
       return true;
     });
 
@@ -504,6 +548,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterAdditionalServices,
     filterRegistrationData,
     filterClientType,
+    filterGPU,
+    filter1C,
     sortBy,
   ]);
 
@@ -580,12 +626,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterRegistrationData={setFilterRegistrationData}
                   filterClientType={filterClientType}
                   setFilterClientType={setFilterClientType}
+                  // Добавляем новые фильтры
+                  filterGPU={filterGPU}
+                  setFilterGPU={setFilterGPU}
+                  filter1C={filter1C}
+                  setFilter1C={setFilter1C}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
+                  allGPUs={allGPUs} // Передаем список GPU
                   fstekOptions={fstekOptions}
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
@@ -664,12 +716,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterRegistrationData={setFilterRegistrationData}
                   filterClientType={filterClientType}
                   setFilterClientType={setFilterClientType}
+                  // Добавляем новые фильтры
+                  filterGPU={filterGPU}
+                  setFilterGPU={setFilterGPU}
+                  filter1C={filter1C}
+                  setFilter1C={setFilter1C}
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
+                  allGPUs={allGPUs} // Передаем список GPU
                   fstekOptions={fstekOptions}
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}

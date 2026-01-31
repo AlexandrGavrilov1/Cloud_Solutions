@@ -1,3 +1,4 @@
+// FilterPanel.tsx
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
@@ -36,15 +37,17 @@ interface FilterPanelProps {
   setFilterMobileApp: (value: boolean) => void;
   filterOrderBeforeRegistration: boolean;
   setFilterOrderBeforeRegistration: (value: boolean) => void;
-
-  // Переименовано с filterITConsulting
   filterAdditionalServices: string[];
   setFilterAdditionalServices: (value: string[]) => void;
-
   filterRegistrationData: string[];
   setFilterRegistrationData: (value: string[]) => void;
   filterClientType: string[];
   setFilterClientType: (value: string[]) => void;
+  // Добавляем новые фильтры
+  filterGPU: string[];
+  setFilterGPU: (value: string[]) => void;
+  filter1C: boolean;
+  setFilter1C: (value: boolean) => void;
 
   allLocations: string[];
   allVirtualizations: string[];
@@ -52,13 +55,12 @@ interface FilterPanelProps {
   allPaymentMethods: string[];
   allOS: string[];
   allCPUs: string[];
+  allGPUs: string[]; // Добавляем список всех GPU
   fstekOptions: string[];
 
-  // Переименовано и обновлены опции
   additionalServicesOptions: AdditionalServiceType[];
   registrationDataOptions: RegistrationDataField[];
 
-  // Упрощенные опции для типа клиента
   clientTypeOptions: ClientType[];
 }
 
@@ -89,15 +91,17 @@ export const FilterPanel = ({
   setFilterMobileApp,
   filterOrderBeforeRegistration,
   setFilterOrderBeforeRegistration,
-
-  // Переименовано
   filterAdditionalServices,
   setFilterAdditionalServices,
-
   filterRegistrationData,
   setFilterRegistrationData,
   filterClientType,
   setFilterClientType,
+  // Добавляем новые фильтры
+  filterGPU,
+  setFilterGPU,
+  filter1C,
+  setFilter1C,
 
   allLocations,
   allVirtualizations,
@@ -105,9 +109,9 @@ export const FilterPanel = ({
   allPaymentMethods,
   allOS,
   allCPUs,
+  allGPUs = [], // По умолчанию пустой массив
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
 
-  // Переименовано и обновлены опции
   additionalServicesOptions = [
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
@@ -134,7 +138,6 @@ export const FilterPanel = ({
     "Скан удостоверения личности",
   ],
 
-  // Упрощенные опции для типа клиента
   clientTypeOptions = ["Физлицо", "Юрлицо"],
 }: FilterPanelProps) => {
   const { t } = useLanguage();
@@ -147,10 +150,8 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-
-    // Переименовано
+    gpu: false, // Добавляем дропдаун для GPU
     additionalServices: false,
-
     registrationData: false,
     clientType: false,
   });
@@ -169,10 +170,12 @@ export const FilterPanel = ({
     filterKII ||
     filterMobileApp ||
     filterOrderBeforeRegistration ||
-    // Переименовано
     filterAdditionalServices.length > 0 ||
     filterRegistrationData.length > 0 ||
-    filterClientType.length > 0;
+    filterClientType.length > 0 ||
+    // Добавляем новые фильтры
+    filterGPU.length > 0 ||
+    filter1C;
 
   const activeFiltersCount = [
     filterFZ152,
@@ -188,12 +191,12 @@ export const FilterPanel = ({
     filterKII,
     filterMobileApp,
     filterOrderBeforeRegistration,
-
-    // Переименовано
     filterAdditionalServices.length > 0,
-
     filterRegistrationData.length > 0,
     filterClientType.length > 0,
+    // Добавляем новые фильтры
+    filterGPU.length > 0,
+    filter1C,
   ].filter(Boolean).length;
 
   const clearFilters = () => {
@@ -210,12 +213,12 @@ export const FilterPanel = ({
     setFilterKII(false);
     setFilterMobileApp(false);
     setFilterOrderBeforeRegistration(false);
-
-    // Переименовано
     setFilterAdditionalServices([]);
-
     setFilterRegistrationData([]);
     setFilterClientType([]);
+    // Очищаем новые фильтры
+    setFilterGPU([]);
+    setFilter1C(false);
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -250,7 +253,6 @@ export const FilterPanel = ({
     setFilterFSTEK(newValue);
   };
 
-  // Переименовано
   const handleAdditionalServicesChange = (option: string) => {
     const newValue = filterAdditionalServices.includes(option)
       ? filterAdditionalServices.filter((v) => v !== option)
@@ -270,6 +272,13 @@ export const FilterPanel = ({
       ? filterClientType.filter((v) => v !== option)
       : [...filterClientType, option];
     setFilterClientType(newValue);
+  };
+
+  const handleGpuChange = (option: string) => {
+    const newValue = filterGPU.includes(option)
+      ? filterGPU.filter((v) => v !== option)
+      : [...filterGPU, option];
+    setFilterGPU(newValue);
   };
 
   const toggleDropdown = (dropdown: string) => {
@@ -359,7 +368,6 @@ export const FilterPanel = ({
     );
   };
 
-  // Переименовано с ITConsultingDropdown на AdditionalServicesDropdown
   const AdditionalServicesDropdown = () => {
     const isOpen = dropdownsOpen.additionalServices;
 
@@ -590,6 +598,87 @@ export const FilterPanel = ({
                       }`}
                     >
                       {filterClientType.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={8}
+                          className="text-background w-2.5 h-2.5"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Добавляем дропдаун для GPU
+  const GpuDropdown = () => {
+    const isOpen = dropdownsOpen.gpu;
+
+    return (
+      <div className="group">
+        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+          <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+          <span className="text-xs">GPU</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => toggleDropdown("gpu")}
+            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+              </div>
+              <span className="truncate">
+                {filterGPU.length === 0
+                  ? "Любой GPU"
+                  : filterGPU.length === 1
+                    ? filterGPU[0]
+                    : `GPU (${filterGPU.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={10}
+              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="p-2">
+                <button
+                  type="button"
+                  onClick={() => setFilterGPU([])}
+                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                    filterGPU.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любой GPU
+                </button>
+                {allGPUs.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleGpuChange(option)}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                        filterGPU.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterGPU.includes(option) && (
                         <Icon
                           name="Check"
                           size={8}
@@ -938,6 +1027,41 @@ export const FilterPanel = ({
                   </span>
                 </label>
               </div>
+
+              {/* Добавляем чекбокс для 1С */}
+              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="supports1C"
+                    checked={filter1C}
+                    onChange={(e) => setFilter1C(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                    {filter1C && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                </div>
+                <label
+                  htmlFor="supports1C"
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Icon
+                    name="Database"
+                    size={10}
+                    className="text-purple-500 w-3 h-3"
+                  />
+                  <span className="text-xs font-medium text-foreground">
+                    1С
+                  </span>
+                </label>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1029,12 +1153,13 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* Переименованный дропдаун для дополнительных услуг */}
+              {/* Добавляем дропдаун для GPU */}
+              <GpuDropdown />
+
               <div className="col-span-1 sm:col-span-2">
                 <AdditionalServicesDropdown />
               </div>
 
-              {/* Новые дропдауны */}
               <div className="col-span-1 sm:col-span-2">
                 <RegistrationDataDropdown />
               </div>

@@ -24,6 +24,10 @@ export interface TechnicalSpecs {
     available: boolean;
     managed: boolean;
   };
+  // Добавляем поддержку GPU
+  gpuModels?: string[];
+  // Добавляем поддержку 1C
+  supports1C?: boolean;
 }
 
 export interface ServiceGuarantees {
