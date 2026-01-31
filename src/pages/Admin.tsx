@@ -4,6 +4,7 @@ import Icon from '@/components/ui/icon';
 import { AdminLogin } from '@/components/admin/AdminLogin';
 import { ClickStatsSection } from '@/components/admin/ClickStatsSection';
 import { ReviewModerationSection } from '@/components/admin/ReviewModerationSection';
+import { ProviderStatsSection } from '@/components/admin/ProviderStatsSection';
 import { generateSitemap, downloadSitemap } from '@/utils/sitemap-generator';
 
 interface Review {
@@ -42,6 +43,7 @@ const Admin = () => {
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [isLoadingDaily, setIsLoadingDaily] = useState(true);
   const [period, setPeriod] = useState<'1' | '7' | '30'>('30');
+  const [activeTab, setActiveTab] = useState<'stats' | 'providers' | 'reviews'>('stats');
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -252,21 +254,68 @@ const Admin = () => {
           </div>
         </div>
 
-        <ClickStatsSection
-          clickStats={clickStats}
-          isLoadingStats={isLoadingStats}
-          dailyStats={dailyStats}
-          isLoadingDaily={isLoadingDaily}
-          period={period}
-          onPeriodChange={handlePeriodChange}
-        />
+        <div className="flex gap-3 mb-6 border-b border-border">
+          <button
+            onClick={() => setActiveTab('stats')}
+            className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
+              activeTab === 'stats'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Icon name="BarChart3" size={18} />
+            Статистика кликов
+          </button>
+          <button
+            onClick={() => setActiveTab('providers')}
+            className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
+              activeTab === 'providers'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Icon name="Building2" size={18} />
+            Провайдеры
+          </button>
+          <button
+            onClick={() => setActiveTab('reviews')}
+            className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
+              activeTab === 'reviews'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Icon name="MessageSquare" size={18} />
+            Модерация отзывов
+            {pendingReviews.length > 0 && (
+              <span className="bg-destructive text-destructive-foreground text-xs px-2 py-0.5 rounded-full">
+                {pendingReviews.length}
+              </span>
+            )}
+          </button>
+        </div>
 
-        <ReviewModerationSection
-          pendingReviews={pendingReviews}
-          isLoading={isLoading}
-          processingId={processingId}
-          onReviewAction={handleReviewAction}
-        />
+        {activeTab === 'stats' && (
+          <ClickStatsSection
+            clickStats={clickStats}
+            isLoadingStats={isLoadingStats}
+            dailyStats={dailyStats}
+            isLoadingDaily={isLoadingDaily}
+            period={period}
+            onPeriodChange={handlePeriodChange}
+          />
+        )}
+
+        {activeTab === 'providers' && <ProviderStatsSection />}
+
+        {activeTab === 'reviews' && (
+          <ReviewModerationSection
+            pendingReviews={pendingReviews}
+            isLoading={isLoading}
+            processingId={processingId}
+            onReviewAction={handleReviewAction}
+          />
+        )}
       </div>
     </div>
   );
