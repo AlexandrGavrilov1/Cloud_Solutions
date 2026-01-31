@@ -9,7 +9,7 @@ export const providers: Provider[] = [
     name: "Timeweb Cloud",
     logo: "providers_logo/01_TimeWeb_Cloud.jpg",
     rating: 9.8,
-    basePrice: 558,
+    basePrice: 290,
     cpuPrice: 220,
     ramPrice: 130,
     storagePrice: 15,
