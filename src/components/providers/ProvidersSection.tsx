@@ -20,7 +20,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  // Фильтрыыы
+  // Фильтрыы
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
