@@ -150,7 +150,7 @@ export const FilterPanel = ({
     paymentMethod: false,
     os: false,
     cpu: false,
-    gpu: false, // Добавляем дропдаун для GPU
+    gpu: false,
     additionalServices: false,
     registrationData: false,
     clientType: false,
@@ -173,7 +173,6 @@ export const FilterPanel = ({
     filterAdditionalServices.length > 0 ||
     filterRegistrationData.length > 0 ||
     filterClientType.length > 0 ||
-    // Добавляем новые фильтры
     filterGPU.length > 0 ||
     filter1C;
 
@@ -194,7 +193,6 @@ export const FilterPanel = ({
     filterAdditionalServices.length > 0,
     filterRegistrationData.length > 0,
     filterClientType.length > 0,
-    // Добавляем новые фильтры
     filterGPU.length > 0,
     filter1C,
   ].filter(Boolean).length;
@@ -216,7 +214,6 @@ export const FilterPanel = ({
     setFilterAdditionalServices([]);
     setFilterRegistrationData([]);
     setFilterClientType([]);
-    // Очищаем новые фильтры
     setFilterGPU([]);
     setFilter1C(false);
   };
@@ -616,7 +613,7 @@ export const FilterPanel = ({
     );
   };
 
-  // Добавляем дропдаун для GPU
+  // Дропдаун для GPU (меняем местами с PaymentMethod)
   const GpuDropdown = () => {
     const isOpen = dropdownsOpen.gpu;
 
@@ -1028,7 +1025,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              {/* Добавляем чекбокс для 1С */}
+              {/* Чекбокс для 1С с той же иконкой, что и в фильтрах */}
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -1055,7 +1052,7 @@ export const FilterPanel = ({
                   <Icon
                     name="Database"
                     size={10}
-                    className="text-purple-500 w-3 h-3"
+                    className="text-primary w-3 h-3"
                   />
                   <span className="text-xs font-medium text-foreground">
                     1С
@@ -1113,21 +1110,8 @@ export const FilterPanel = ({
                 labelText={t("filters.diskType")}
               />
 
-              <MultiSelect
-                value={filterPaymentMethod}
-                onChange={(value) =>
-                  handleMultiSelectChange(
-                    value,
-                    filterPaymentMethod,
-                    setFilterPaymentMethod,
-                  )
-                }
-                options={allPaymentMethods}
-                placeholder={t("filters.anyMethod")}
-                iconName="Wallet"
-                dropdownKey="paymentMethod"
-                labelText={t("filters.paymentMethod")}
-              />
+              {/* GPU теперь идет перед OS */}
+              <GpuDropdown />
 
               <MultiSelect
                 value={filterOS}
@@ -1153,8 +1137,22 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* Добавляем дропдаун для GPU */}
-              <GpuDropdown />
+              {/* PaymentMethod теперь идет после CPU */}
+              <MultiSelect
+                value={filterPaymentMethod}
+                onChange={(value) =>
+                  handleMultiSelectChange(
+                    value,
+                    filterPaymentMethod,
+                    setFilterPaymentMethod,
+                  )
+                }
+                options={allPaymentMethods}
+                placeholder={t("filters.anyMethod")}
+                iconName="Wallet"
+                dropdownKey="paymentMethod"
+                labelText={t("filters.paymentMethod")}
+              />
 
               <div className="col-span-1 sm:col-span-2">
                 <AdditionalServicesDropdown />

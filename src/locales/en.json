@@ -88,7 +88,7 @@
     "supportedClients": "Supported Client Types",
     "gpu": "Graphics Processors",
     "gpuDescription": "Provider offers servers with GPUs for machine learning, visualization and computations",
-    "supports1C": "1C Support",
+    "supports1C": "1C",
     "supports1CDescription": "Provider specializes in hosting 1C solutions and provides optimized servers"
   },
   "resources": {
@@ -140,6 +140,6 @@
     "gpu": "GPU",
     "anyGpu": "Any GPU",
     "supports1C": "1C",
-    "with1C": "With 1C support"
+    "with1C": "With 1C"
   }
 }

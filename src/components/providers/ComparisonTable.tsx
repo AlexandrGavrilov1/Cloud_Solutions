@@ -231,13 +231,13 @@ export const ComparisonTable = ({
                         </Badge>
                       )}
                       {provider.technicalSpecs.supports1C && (
-                        <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px] px-1.5 py-0.5">
+                        <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
                           1С
                         </Badge>
                       )}
                       {provider.technicalSpecs.gpuModels &&
                         provider.technicalSpecs.gpuModels.length > 0 && (
-                          <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px] px-1.5 py-0.5">
+                          <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
                             GPU
                           </Badge>
                         )}
@@ -688,7 +688,7 @@ export const ComparisonTable = ({
                                   className="text-green-500"
                                 />
                                 <Badge className="bg-green-500/20 text-green-500 border-0 text-xs">
-                                  {t("card.yes")}
+                                  1С
                                 </Badge>
                               </div>
                             ) : (

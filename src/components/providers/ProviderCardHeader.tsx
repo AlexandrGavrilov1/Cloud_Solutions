@@ -194,14 +194,10 @@ export const ProviderCardHeader = ({
                   </div>
                 )}
 
-                {/* Иконка 1С */}
+                {/* Иконка 1С - цвет как у остальных иконок */}
                 {provider.technicalSpecs.supports1C && (
-                  <div className="w-5 h-5 bg-purple-500/20 rounded-md flex items-center justify-center">
-                    <Icon
-                      name="Database"
-                      size={10}
-                      className="text-purple-500"
-                    />
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon name="Database" size={10} className="text-primary" />
                   </div>
                 )}
               </div>
@@ -339,7 +335,7 @@ export const ProviderCardHeader = ({
             </span>
           </div>
 
-          {/* GPU отображение */}
+          {/* GPU отображение - убрали значок + */}
           {provider.technicalSpecs.gpuModels &&
             provider.technicalSpecs.gpuModels.length > 0 && (
               <div className="relative">
@@ -359,7 +355,7 @@ export const ProviderCardHeader = ({
                   <Icon
                     name="Cpu"
                     size={14}
-                    className="text-purple-500 flex-shrink-0"
+                    className="text-primary flex-shrink-0" // Цвет как у остальных иконок
                   />
                   <span className="text-foreground">
                     GPU: {provider.technicalSpecs.gpuModels.length} модел
@@ -367,9 +363,6 @@ export const ProviderCardHeader = ({
                       ? "ь"
                       : "ей"}
                   </span>
-                  <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-[10px] px-1 py-0">
-                    +
-                  </Badge>
                 </div>
 
                 {gpuTooltip.show && (
@@ -405,18 +398,15 @@ export const ProviderCardHeader = ({
             </div>
           )}
 
-          {/* 1С отображение */}
+          {/* 1С отображение - убрали "Поддерживает" */}
           {provider.technicalSpecs.supports1C && (
             <div className="flex items-center gap-1.5 text-sm">
               <Icon
                 name="Database"
                 size={14}
-                className="text-purple-500 flex-shrink-0"
+                className="text-primary flex-shrink-0" // Цвет как у остальных иконок
               />
               <span className="text-foreground">1С</span>
-              <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-[10px] px-1 py-0">
-                Поддерживает
-              </Badge>
             </div>
           )}
         </div>
@@ -509,7 +499,7 @@ export const ProviderCardHeader = ({
           </Badge>
         )}
         {provider.technicalSpecs.supports1C && (
-          <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-xs px-2 py-1">
+          <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
             <Icon name="Database" size={12} className="mr-1" />
             1С
           </Badge>
@@ -522,7 +512,7 @@ export const ProviderCardHeader = ({
         )}
         {provider.technicalSpecs.gpuModels &&
           provider.technicalSpecs.gpuModels.length > 0 && (
-            <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-500 border font-semibold text-xs px-2 py-1">
+            <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
               <Icon name="Cpu" size={12} className="mr-1" />
               GPU: {provider.technicalSpecs.gpuModels.length}
             </Badge>
