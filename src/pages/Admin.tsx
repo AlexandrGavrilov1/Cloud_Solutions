@@ -47,6 +47,7 @@ const Admin = () => {
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
   const [onedashError, setOnedashError] = useState('');
+  const [onedashEndpoint, setOnedashEndpoint] = useState<'balance' | 'stats' | 'registrations'>('stats');
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -212,7 +213,7 @@ const Admin = () => {
     setOnedashError('');
     
     try {
-      const response = await fetch('https://rdp-onedash.ru/web-api/stats', {
+      const response = await fetch(`https://rdp-onedash.ru/web-api/${onedashEndpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -229,7 +230,7 @@ const Admin = () => {
         setOnedashApiData(data);
       } else {
         const text = await response.text();
-        setOnedashApiData({ raw_response: text.substring(0, 1000) });
+        setOnedashApiData({ raw_response: text.substring(0, 1000), endpoint: onedashEndpoint });
       }
     } catch (error: any) {
       setOnedashError(error.message || 'Ошибка подключения');
@@ -369,23 +370,69 @@ const Admin = () => {
                 <h2 className="text-2xl font-bold text-foreground mb-1">OneDash API Test</h2>
                 <p className="text-sm text-muted-foreground">Тестирование интеграции с API OneDash</p>
               </div>
-              <Button
-                onClick={testOneDashAPI}
-                disabled={onedashLoading}
-                className="flex items-center gap-2"
-              >
-                {onedashLoading ? (
-                  <>
-                    <Icon name="Loader2" size={18} className="animate-spin" />
-                    Загрузка...
-                  </>
-                ) : (
-                  <>
-                    <Icon name="RefreshCw" size={18} />
-                    Проверить API
-                  </>
-                )}
-              </Button>
+              <div className="flex items-center gap-3">
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setOnedashEndpoint('balance')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === 'balance'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    Balance
+                  </button>
+                  <button
+                    onClick={() => setOnedashEndpoint('stats')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === 'stats'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    Stats
+                  </button>
+                  <button
+                    onClick={() => setOnedashEndpoint('registrations')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === 'registrations'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    Registrations
+                  </button>
+                </div>
+                <Button
+                  onClick={testOneDashAPI}
+                  disabled={onedashLoading}
+                  className="flex items-center gap-2"
+                >
+                  {onedashLoading ? (
+                    <>
+                      <Icon name="Loader2" size={18} className="animate-spin" />
+                      Загрузка...
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="RefreshCw" size={18} />
+                      Проверить API
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            <div className="bg-muted/30 rounded-lg p-4 mb-6 border border-border">
+              <div className="flex items-start gap-3">
+                <Icon name="Info" size={20} className="text-primary mt-0.5 flex-shrink-0" />
+                <div className="text-sm">
+                  <p className="font-medium text-foreground mb-1">Выбранный эндпоинт:</p>
+                  <code className="text-xs bg-background px-2 py-1 rounded border border-border">
+                    POST https://rdp-onedash.ru/web-api/{onedashEndpoint}
+                  </code>
+                </div>
+              </div>
             </div>
 
             {onedashError && (
