@@ -71,6 +71,7 @@ export const providers: Provider[] = [
         "RTX 3080",
         "RTX 3090",
         "RTX 4090",
+        "A2",
         "A30",
         "A2000",
         "A4000",
