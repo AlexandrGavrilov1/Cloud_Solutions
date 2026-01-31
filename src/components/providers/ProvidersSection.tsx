@@ -175,7 +175,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
-  // Сохранение фильтров в localStorage
+  // Сохранение фильтров в localStorageй
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);

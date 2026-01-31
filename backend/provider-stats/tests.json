@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Get provider statistics",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "stats": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
