@@ -75,13 +75,21 @@ export const UptimeChart = ({
     }
   };
 
-  const handleProviderClick = async () => {
-    // Простая проверка Яндекс.Метрики
+  const handleProviderClick = async (provider: Provider) => {
+    // Трекинг клика
+    await trackClick(provider.id);
+
+    // Яндекс.Метрика
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "ClickOnUptime", {
         provider_id: provider.id,
         provider_name: provider.name,
       });
+    }
+
+    // Открытие сайта провайдера
+    if (provider.url) {
+      window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -117,7 +125,7 @@ export const UptimeChart = ({
                   index={index}
                   isExpanded={expandedProviders.has(provider.id)}
                   onToggleExpand={() => handleToggleExpand(provider.id)}
-                  onProviderClick={handleProviderClick}
+                  onProviderClick={() => handleProviderClick(provider)}
                   getDowntimeMinutes={getDowntimeMinutes}
                 />
               ))}

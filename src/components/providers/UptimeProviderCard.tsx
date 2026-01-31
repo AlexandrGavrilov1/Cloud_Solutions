@@ -7,7 +7,7 @@ interface UptimeProviderCardProps {
   index: number;
   isExpanded: boolean;
   onToggleExpand: () => void;
-  onProviderClick: (provider: Provider) => void;
+  onProviderClick: () => void;
   getDowntimeMinutes: (uptime: number) => string;
 }
 
@@ -430,7 +430,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
           </div>
           <div className="flex-1 min-w-0">
             <button
-              onClick={() => onProviderClick(provider)}
+              onClick={onProviderClick}
               className="text-sm md:text-base font-bold text-foreground truncate hover:text-primary transition-colors flex items-center gap-1 group/name"
             >
               {provider.name}
