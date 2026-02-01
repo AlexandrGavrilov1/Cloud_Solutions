@@ -581,6 +581,9 @@ export const providers: Provider[] = [
         available: true,
         managed: false,
       },
+      gpuModels: ["RTX 4090", "L4", "L40S"],
+      // Добавляем поддержку 1С
+      supports1C: false,
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
