@@ -284,6 +284,9 @@ export const providers: Provider[] = [
       controlPanel: "Собственная панель",
       apiAccess: true,
       ddosProtection: "До 100 Гбит/с",
+      gpuModels: ["A100", "A4000", "A5000"],
+      // Добавляем поддержку 1С
+      supports1C: true,
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
