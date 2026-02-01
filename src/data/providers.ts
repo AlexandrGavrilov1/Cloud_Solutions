@@ -2103,6 +2103,17 @@ export const providers: Provider[] = [
       controlPanel: "Собственная панель",
       apiAccess: true,
       ddosProtection: "Базовая защита",
+      gpuModels: [
+        "GTX 1080",
+        "GTX 1080 Ti",
+        "RTX 3090",
+        "RTX 4090",
+        "RTX 4090D",
+        "A4000",
+        "A5000",
+      ],
+      // Добавляем поддержку 1С
+      supports1C: true,
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
