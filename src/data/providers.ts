@@ -1995,6 +1995,21 @@ export const providers: Provider[] = [
       controlPanel: "ISPmanager",
       apiAccess: true,
       ddosProtection: "До 60 Гбит/с",
+      gpuModels: [
+        "GTX 1080",
+        "RTX 4090",
+        "A2000",
+        "A4000",
+        "A5000",
+        "Tesla T4",
+        "A2",
+        "H100",
+        "H200",
+        "L4",
+        "A100",
+      ],
+      // Добавляем поддержку 1С
+      supports1C: true,
     },
     serviceGuarantees: {
       uptimeSLA: "99.9%",
