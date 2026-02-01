@@ -274,17 +274,17 @@ export const ProviderCardHeader = ({
         <Icon
           name="MapPin"
           size={14}
-          className="text-blue-500 mt-0.5 flex-shrink-0"
+          className="text-primary mt-0.5 flex-shrink-0"
         />
         <div className="flex items-center gap-1">
-          <span className="text-blue-600 text-xs">
+          <span className="text-foreground text-xs">
             {showAllLocations
               ? provider.locations.join(", ")
               : provider.locations.slice(0, 2).join(", ")}
             {provider.locations.length > 2 && !showAllLocations && (
               <button
                 onClick={() => setShowAllLocations(true)}
-                className="text-blue-600 hover:underline ml-1"
+                className="text-primary hover:underline ml-1"
                 aria-label="Показать все локации"
               >
                 +{provider.locations.length - 2}
@@ -293,7 +293,7 @@ export const ProviderCardHeader = ({
             {showAllLocations && provider.locations.length > 2 && (
               <button
                 onClick={() => setShowAllLocations(false)}
-                className="text-blue-600 hover:underline ml-1"
+                className="text-primary hover:underline ml-1"
                 aria-label="Скрыть локации"
               >
                 скрыть
@@ -309,19 +309,15 @@ export const ProviderCardHeader = ({
             <Icon
               name="HardDrive"
               size={14}
-              className="text-violet-500 flex-shrink-0"
+              className="text-primary flex-shrink-0"
             />
-            <span className="text-violet-600 truncate">
+            <span className="text-foreground truncate">
               {provider.technicalSpecs.diskType}
             </span>
           </div>
           <div className="flex items-center gap-1.5 text-sm">
-            <Icon
-              name="Box"
-              size={14}
-              className="text-cyan-500 flex-shrink-0"
-            />
-            <span className="text-cyan-600 truncate">
+            <Icon name="Box" size={14} className="text-primary flex-shrink-0" />
+            <span className="text-foreground truncate">
               {provider.technicalSpecs.virtualization.slice(0, 2).join(", ")}
             </span>
           </div>
@@ -344,9 +340,9 @@ export const ProviderCardHeader = ({
                   <Icon
                     name="Cpu"
                     size={14}
-                    className="text-indigo-500 flex-shrink-0"
+                    className="text-primary flex-shrink-0"
                   />
-                  <span className="text-indigo-600">
+                  <span className="text-foreground">
                     GPU: {provider.technicalSpecs.gpuModels.length} модел
                     {provider.technicalSpecs.gpuModels.length === 1
                       ? "ь"
@@ -356,13 +352,13 @@ export const ProviderCardHeader = ({
 
                 {gpuTooltip.show && (
                   <div className="absolute z-50 top-full left-0 mt-1 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
-                    <div className="text-xs font-semibold text-indigo-600 mb-1">
+                    <div className="text-xs font-semibold text-foreground mb-1">
                       {gpuTooltip.model}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {gpuTooltip.description}
                     </div>
-                    <div className="mt-1 text-xs text-indigo-500">
+                    <div className="mt-1 text-xs text-primary">
                       Всего {provider.technicalSpecs.gpuModels?.length || 0}{" "}
                       моделей GPU
                     </div>
@@ -376,11 +372,11 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Network"
                 size={14}
-                className="text-emerald-500 flex-shrink-0"
+                className="text-primary flex-shrink-0"
               />
-              <span className="text-emerald-600">Kubernetes</span>
+              <span className="text-foreground">Kubernetes</span>
               {provider.technicalSpecs.kubernetes.managed && (
-                <Badge className="bg-emerald-500/10 border-emerald-500/30 text-emerald-600 border font-semibold text-[10px] px-1 py-0">
+                <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-[10px] px-1 py-0">
                   managed
                 </Badge>
               )}
@@ -392,9 +388,9 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Database"
                 size={14}
-                className="text-green-500 flex-shrink-0"
+                className="text-primary flex-shrink-0"
               />
-              <span className="text-green-600">1С</span>
+              <span className="text-foreground">1С</span>
             </div>
           )}
         </div>
@@ -404,16 +400,19 @@ export const ProviderCardHeader = ({
             <div className="flex items-baseline whitespace-nowrap">
               {provider.basePrice !== 0 ? (
                 <>
-                  <span className="text-2xl font-black text-blue-500 mr-2">
+                  <span className="text-2xl font-black text-primary mr-2">
                     {t("common.from")}
                   </span>
-                  <span className="text-2xl font-black text-blue-500">
+                  <span className="text-2xl font-black text-primary">
                     {priceText}
                   </span>
                 </>
               ) : (
                 <div className="text-right">
-                  <span className="text-2xl font-black text-orange-500">
+                  <span
+                    className="text-xl font-bold"
+                    style={{ color: "rgb(255, 143, 51)" }}
+                  >
                     {priceText}
                   </span>
                 </div>
@@ -425,10 +424,10 @@ export const ProviderCardHeader = ({
               name="Gift"
               size={14}
               className={
-                provider.trialDays ? "text-amber-500" : "text-muted-foreground"
+                provider.trialDays ? "text-primary" : "text-muted-foreground"
               }
             />
-            <span className="text-amber-600 text-xs truncate">
+            <span className="text-foreground text-xs truncate">
               {provider.trialDays
                 ? typeof provider.trialDays === "number" &&
                   provider.trialDays > 0
@@ -440,6 +439,7 @@ export const ProviderCardHeader = ({
         </div>
       </div>
 
+      {/* ТОЛЬКО НИЖНИЕ БЕЙДЖИ ИМЕЮТ ЦВЕТА */}
       <div className="flex items-center gap-2 flex-wrap">
         {provider.serviceGuarantees.supportResponseTime &&
           (() => {
