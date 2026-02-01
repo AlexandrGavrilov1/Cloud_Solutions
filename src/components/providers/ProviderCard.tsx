@@ -258,7 +258,7 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-card border border-border rounded-2xl p-4">
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="UserPlus" size={18} className="text-primary" />
@@ -280,7 +280,7 @@ export const ProviderCard = ({
             ))}
           </div>
 
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-sm text-foreground leading-relaxed">
             Для регистрации у этого провайдера требуется предоставить указанные
             данные.
           </p>
@@ -298,7 +298,7 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-card border border-border rounded-2xl p-4">
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Briefcase" size={18} className="text-primary" />
@@ -308,7 +308,7 @@ export const ProviderCard = ({
           </h4>
         </div>
         <div className="space-y-2">
-          <p className="text-sm text-foreground mb-2">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
             Предоставляемые дополнительные услуги:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -336,7 +336,7 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-card border border-border rounded-2xl p-4">
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Users" size={18} className="text-primary" />
@@ -357,7 +357,7 @@ export const ProviderCard = ({
           ))}
         </div>
 
-        <p className="text-sm text-muted-foreground mt-3">
+        <p className="text-sm text-foreground leading-relaxed mt-3">
           Провайдер работает{" "}
           {provider.supportedClientTypes.length === 2
             ? "как с физическими, так и с юридическими лицами"
@@ -379,7 +379,7 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-card border border-border rounded-2xl p-4">
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Cpu" size={18} className="text-primary" />
@@ -388,10 +388,10 @@ export const ProviderCard = ({
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground">
+          <p className="text-sm text-foreground leading-relaxed">
             Провайдер предоставляет серверы с графическими процессорами для:
           </p>
-          <ul className="list-disc pl-5 text-sm text-foreground space-y-1">
+          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1">
             <li>Машинного обучения и искусственного интеллекта</li>
             <li>Визуализации и рендеринга</li>
             <li>Научных вычислений и моделирования</li>
@@ -447,7 +447,7 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-card border border-border rounded-2xl p-4">
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Monitor" size={18} className="text-primary" />
@@ -456,7 +456,7 @@ export const ProviderCard = ({
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground">
+          <p className="text-sm text-foreground leading-relaxed">
             Провайдер поддерживает следующие операционные системы:
           </p>
 
@@ -506,7 +506,7 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-card border border-border rounded-2xl p-4">
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Database" size={18} className="text-primary" />
@@ -515,10 +515,10 @@ export const ProviderCard = ({
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground">
+          <p className="text-sm text-foreground leading-relaxed">
             Провайдер специализируется на размещении решений 1С и предоставляет:
           </p>
-          <ul className="list-disc pl-5 text-sm text-foreground space-y-1">
+          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1">
             <li>Оптимизированные серверы для 1С:Предприятие 8</li>
             <li>Выделенные серверы для баз данных 1С</li>
             <li>Автоматическое резервное копирование конфигураций</li>
@@ -546,6 +546,72 @@ export const ProviderCard = ({
             </div>
           </div>
         </div>
+      </div>
+    );
+  };
+
+  // Рендерим мобильное приложение
+  const renderMobileAppSection = () => {
+    return (
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon
+              name={provider.mobileApp ? "Smartphone" : "SmartphoneOff"}
+              size={18}
+              className={
+                provider.mobileApp ? "text-primary" : "text-muted-foreground"
+              }
+            />
+          </div>
+          <h4 className="text-base font-bold text-foreground">
+            Мобильное приложение
+          </h4>
+          <Badge
+            className={
+              provider.mobileApp
+                ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                : "bg-red-500/20 text-red-500 border-red-500/30 ml-auto"
+            }
+          >
+            {provider.mobileApp ? "Доступно" : "Отсутствует"}
+          </Badge>
+        </div>
+        <p className="text-sm text-foreground leading-relaxed">
+          {provider.mobileApp
+            ? "Провайдер предоставляет мобильное приложение для управления серверами и мониторинга"
+            : "Провайдер не предоставляет мобильное приложение"}
+        </p>
+      </div>
+    );
+  };
+
+  // Рендерим заказ услуг
+  const renderOrderServicesSection = () => {
+    return (
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="ClipboardCheck" size={18} className="text-primary" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">Заказ услуг</h4>
+          <Badge
+            className={
+              provider.orderBeforeRegistration
+                ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
+            }
+          >
+            {provider.orderBeforeRegistration
+              ? "До регистрации"
+              : "После регистрации"}
+          </Badge>
+        </div>
+        <p className="text-sm text-foreground leading-relaxed">
+          {provider.orderBeforeRegistration
+            ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
+            : "Требуется регистрация и создание учетной записи перед заказом услуг"}
+        </p>
       </div>
     );
   };
@@ -686,78 +752,14 @@ export const ProviderCard = ({
 
               {/* Третий ряд: Заказ услуг и Данные для регистрации */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-card border border-border rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="ClipboardCheck"
-                        size={18}
-                        className="text-primary"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">
-                      Заказ услуг
-                    </h4>
-                    <Badge
-                      className={
-                        provider.orderBeforeRegistration
-                          ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
-                          : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
-                      }
-                    >
-                      {provider.orderBeforeRegistration
-                        ? "До регистрации"
-                        : "После регистрации"}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-foreground">
-                    {provider.orderBeforeRegistration
-                      ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
-                      : "Требуется регистрация и создание учетной записи перед заказом услуг"}
-                  </p>
-                </div>
-
+                {renderOrderServicesSection()}
                 {renderRegistrationData()}
               </div>
 
               {/* Четвертый ряд: Поддерживаемые типы клиентов и Мобильное приложение */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {renderClientTypes()}
-
-                <div className="bg-card border border-border rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name={
-                          provider.mobileApp ? "Smartphone" : "SmartphoneOff"
-                        }
-                        size={18}
-                        className={
-                          provider.mobileApp
-                            ? "text-primary"
-                            : "text-muted-foreground"
-                        }
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">
-                      Мобильное приложение
-                    </h4>
-                    <Badge
-                      className={
-                        provider.mobileApp
-                          ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
-                          : "bg-red-500/20 text-red-500 border-red-500/30 ml-auto"
-                      }
-                    >
-                      {provider.mobileApp ? "Доступно" : "Отсутствует"}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-foreground">
-                    {provider.mobileApp
-                      ? "Провайдер предоставляет мобильное приложение для управления серверами и мониторинга"
-                      : "Провайдер не предоставляет мобильное приложение"}
-                  </p>
-                </div>
+                {renderMobileAppSection()}
               </div>
 
               {/* Пятый ряд: Поддержка GPU и Доступные ОС */}
@@ -768,15 +770,28 @@ export const ProviderCard = ({
 
               {/* Шестой ряд: Технические характеристики и Поддержка 1С */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <TechnicalSpecsSection provider={provider} />
+                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                  <TechnicalSpecsSection provider={provider} />
+                </div>
                 {render1CSection()}
               </div>
 
-              {/* Остальные секции */}
-              <ServiceGuaranteesSection provider={provider} />
-              <AdditionalServicesSection provider={provider} />
-              <PaymentMethodsSection provider={provider} />
-              <CaseStudiesSection provider={provider} />
+              {/* Остальные секции также с подсветкой */}
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                <ServiceGuaranteesSection provider={provider} />
+              </div>
+
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                <AdditionalServicesSection provider={provider} />
+              </div>
+
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                <PaymentMethodsSection provider={provider} />
+              </div>
+
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                <CaseStudiesSection provider={provider} />
+              </div>
 
               {/* Плюсы и минусы */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
