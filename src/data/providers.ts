@@ -1152,6 +1152,16 @@ export const providers: Provider[] = [
       controlPanel: "Собственная панель",
       apiAccess: true,
       ddosProtection: "До 100 Гбит/с",
+      gpuModels: [
+        "RTX 3080",
+        "RTX 3090",
+        "Quadro RTX 5000",
+        "V100",
+        "Tesla T4",
+        "Tesla P100",
+      ],
+      // Добавляем поддержку 1С
+      supports1C: true,
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
