@@ -2292,6 +2292,21 @@ export const providers: Provider[] = [
         available: true,
         managed: true,
       },
+      gpuModels: [
+        "A2",
+        "A2000",
+        "GTX 1080",
+        "RTX 2080 Ti",
+        "Tesla T4",
+        "A4000",
+        "A5000",
+        "V100",
+        "A30",
+        "A100",
+        "RTX 4090",
+      ],
+      // Добавляем поддержку 1С
+      supports1C: true,
     },
     serviceGuarantees: {
       uptimeSLA: "Нет единого SLA",
