@@ -136,14 +136,14 @@ export const ProviderCardHeader = ({
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <div className="relative flex-shrink-0">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-white border border-blue-500/10 shadow-soft flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-white border border-primary/10 shadow-soft flex items-center justify-center">
               <img
                 src={provider.logo}
                 alt={provider.name}
                 className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
               />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg text-background text-xs font-bold">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-lg text-background text-xs font-bold">
               {index + 1}
             </div>
           </div>
@@ -156,43 +156,35 @@ export const ProviderCardHeader = ({
 
               <div className="flex gap-1 flex-shrink-0">
                 {provider.fz152Compliant && (
-                  <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
                     <Icon
                       name="ShieldCheck"
                       size={10}
-                      className="text-blue-500"
+                      className="text-primary"
                     />
                   </div>
                 )}
 
                 {provider.fstekCertifications &&
                   provider.fstekCertifications.length > 0 && (
-                    <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
+                    <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
                       <Icon
                         name="ShieldAlert"
                         size={10}
-                        className="text-blue-500"
+                        className="text-primary"
                       />
                     </div>
                   )}
 
                 {provider.kiiPlacement && (
-                  <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
-                    <Icon
-                      name="Building2"
-                      size={10}
-                      className="text-blue-500"
-                    />
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon name="Building2" size={10} className="text-primary" />
                   </div>
                 )}
 
                 {provider.technicalSpecs.supports1C && (
-                  <div className="w-5 h-5 bg-green-500/20 rounded-md flex items-center justify-center">
-                    <Icon
-                      name="Database"
-                      size={10}
-                      className="text-green-500"
-                    />
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon name="Database" size={10} className="text-primary" />
                   </div>
                 )}
               </div>
@@ -207,13 +199,13 @@ export const ProviderCardHeader = ({
                     size={16}
                     className={
                       i < Math.round(avgRating)
-                        ? "fill-amber-500 text-amber-500"
+                        ? "fill-primary text-primary"
                         : "text-muted"
                     }
                   />
                 ))}
               </div>
-              <span className="text-base font-bold text-amber-600">
+              <span className="text-base font-bold text-foreground">
                 {avgRating.toFixed(1)}
               </span>
             </div>
@@ -230,10 +222,10 @@ export const ProviderCardHeader = ({
               onClick={handleProviderClickWithTracking}
               onMouseEnter={() => setShowLinkTooltip(true)}
               onMouseLeave={() => setShowLinkTooltip(false)}
-              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 xl:order-1"
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
               aria-label={`Перейти на сайт ${provider.name}`}
             >
-              <Icon name="ArrowUpRight" size={17} className="text-blue-500" />
+              <Icon name="ArrowUpRight" size={17} className="text-primary" />
             </button>
 
             {showLinkTooltip && (
@@ -251,17 +243,17 @@ export const ProviderCardHeader = ({
                 onClick={onCompareClick}
                 onMouseEnter={() => setShowCompareTooltip(true)}
                 onMouseLeave={() => setShowCompareTooltip(false)}
-                className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-violet-500/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:ring-offset-2 ${
+                className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
                   isComparing
-                    ? "border-violet-500/50 shadow-lg shadow-violet-500/30"
-                    : "border-border hover:border-violet-500/50"
+                    ? "border-primary/50 shadow-lg shadow-primary/30"
+                    : "border-border hover:border-primary/50"
                 } xl:order-2`}
                 aria-label={isComparing ? "Убрать из сравнения" : "Сравнить"}
               >
                 <Icon
                   name={isComparing ? "Check" : "GitCompare"}
                   size={17}
-                  className="text-violet-500"
+                  className="text-foreground"
                 />
               </button>
 
