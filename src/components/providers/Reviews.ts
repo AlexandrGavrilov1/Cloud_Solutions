@@ -494,7 +494,7 @@ export const reviewsData: Record<number, Review[]> = {
     },
   ],
 
- 3: [
+  3: [
     {
       author: "Игорь Р.",
       text: "REG.RU использую уже 5 лет — домены, хостинг, VPS. Всё в одном месте, очень удобно! Поддержка всегда помогает, хоть и не молниеносно.",
@@ -902,7 +902,7 @@ export const reviewsData: Record<number, Review[]> = {
       rating: 5, // Изменено с 4 на 5
       date: "30 окт 2025",
     },
-],
+  ],
 
   12: [
     {
@@ -1319,7 +1319,7 @@ export const reviewsData: Record<number, Review[]> = {
       rating: 5,
       date: "07 ноя 2025",
     },
-]
+  ],
 
   21: [
     {
