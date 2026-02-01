@@ -902,7 +902,7 @@ export const reviewsData: Record<number, Review[]> = {
       rating: 5, // Изменено с 4 на 5
       date: "30 окт 2025",
     },
-]
+],
 
   12: [
     {
