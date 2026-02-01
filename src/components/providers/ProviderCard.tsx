@@ -1,5 +1,4 @@
-// ProviderCard.tsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -51,6 +50,44 @@ export const ProviderCard = ({
     description: "",
   });
 
+  const [osTooltip, setOsTooltip] = useState<{
+    show: boolean;
+    os: string;
+    description: string;
+  }>({
+    show: false,
+    os: "",
+    description: "",
+  });
+
+  const gpuTooltipRef = useRef<HTMLDivElement>(null);
+  const osTooltipRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Функция для проверки видимости тултипа и корректировки позиции
+  const adjustTooltipPosition = (
+    tooltipRef: React.RefObject<HTMLDivElement>,
+  ) => {
+    if (!tooltipRef.current || !cardRef.current) return;
+
+    const tooltip = tooltipRef.current;
+    const card = cardRef.current;
+    const cardRect = card.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    // Проверяем, выходит ли тултип за правую границу карточки
+    if (tooltipRect.right > cardRect.right) {
+      const overflow = tooltipRect.right - cardRect.right;
+      tooltip.style.left = `calc(50% - ${overflow}px - 0.5rem)`;
+    }
+
+    // Проверяем, выходит ли тултип за левую границу карточки
+    if (tooltipRect.left < cardRect.left) {
+      const overflow = cardRect.left - tooltipRect.left;
+      tooltip.style.left = `calc(50% + ${overflow}px + 0.5rem)`;
+    }
+  };
+
   // Получаем текстовое представление цены
   const getPriceText = () => {
     if (provider.basePrice === 0) {
@@ -68,7 +105,6 @@ export const ProviderCard = ({
     }
 
     if (provider.url) {
-      // Трекинг клика
       try {
         await fetch(
           "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
@@ -86,7 +122,6 @@ export const ProviderCard = ({
         console.error("Error tracking click:", error);
       }
 
-      // Открываем в новом окне
       window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
@@ -118,6 +153,34 @@ export const ProviderCard = ({
     return descriptions[model] || "Графический процессор для вычислений";
   };
 
+  // Функция для получения описания ОС
+  const getOsDescription = (osName: string): string => {
+    const descriptions: Record<string, string> = {
+      "Alma Linux": "Свободная, стабильная ОС, форк RHEL, для серверов",
+      "Alt Linux": "Российский дистрибутив Linux, сертифицированный ФСТЭК",
+      "Arch Linux": "Простой, современный дистрибутив с rolling release",
+      "Astra Linux":
+        "Российская ОС, сертифицированная для обработки секретной информации",
+      AstraLinux:
+        "Российская ОС, сертифицированная для обработки секретной информации",
+      Bitrix: "Готовый виртуальный сервер с предустановленной CMS Bitrix",
+      CentOS: "Стабильный, бесплатный форк RHEL, популярный для серверов",
+      CoreOS: "Контейнерно-ориентированная ОС, сейчас называется Flatcar",
+      Debian: "Стабильная, универсальная ОС, одна из самых популярных",
+      Fedora: "Инновационный дистрибутив с новейшими технологиями",
+      FreeBSD: "Продвинутая Unix-подобная ОС, известная стабильностью",
+      "Oracle Linux": "Совместимый с RHEL дистрибутив от Oracle",
+      "Red Hat": "Корпоративный Linux с коммерческой поддержкой (RHEL)",
+      "Rocky Linux": "Форк RHEL, созданный как замена CentOS",
+      SUSE: "Корпоративный дистрибутив Linux, популярный в Европе",
+      Ubuntu: "Популярный, удобный дистрибутив Linux, LTS-версии стабильны",
+      "Windows Server": "Серверная ОС от Microsoft, для Active Directory, .NET",
+      WordPress: "Готовый виртуальный сервер с предустановленным WordPress",
+    };
+
+    return descriptions[osName] || "Операционная система для серверов";
+  };
+
   // Функция для показа тултипа GPU
   const showGpuTooltip = (model: string) => {
     setGpuTooltip({
@@ -125,10 +188,29 @@ export const ProviderCard = ({
       model,
       description: getGpuDescription(model),
     });
+
+    // Корректируем позицию после отрисовки
+    setTimeout(() => adjustTooltipPosition(gpuTooltipRef), 10);
   };
 
   const hideGpuTooltip = () => {
     setGpuTooltip({ show: false, model: "", description: "" });
+  };
+
+  // Функция для показа тултипа ОС
+  const showOsTooltip = (os: string) => {
+    setOsTooltip({
+      show: true,
+      os,
+      description: getOsDescription(os),
+    });
+
+    // Корректируем позицию после отрисовки
+    setTimeout(() => adjustTooltipPosition(osTooltipRef), 10);
+  };
+
+  const hideOsTooltip = () => {
+    setOsTooltip({ show: false, os: "", description: "" });
   };
 
   const renderFstekCertifications = () => {
@@ -147,11 +229,11 @@ export const ProviderCard = ({
         <div className="space-y-2">
           {provider.fstekCertifications.map((cert, idx) => (
             <div key={idx} className="flex items-start gap-2">
-              <div className="w-5 h-5 bg-secondary/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Icon name="ShieldCheck" size={12} className="text-secondary" />
+              <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Icon name="ShieldCheck" size={12} className="text-primary" />
               </div>
               <div>
-                <Badge className="bg-secondary/10 text-secondary border-secondary/30 mb-1">
+                <Badge className="bg-primary/10 text-primary border-primary/30 mb-1">
                   {cert}
                 </Badge>
                 <p className="text-xs text-muted-foreground">
@@ -178,8 +260,8 @@ export const ProviderCard = ({
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-indigo-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="UserPlus" size={18} className="text-indigo-500" />
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="UserPlus" size={18} className="text-primary" />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Данные для регистрации
@@ -191,7 +273,7 @@ export const ProviderCard = ({
             {provider.registrationData.map((dataField, idx) => (
               <Badge
                 key={idx}
-                className="bg-indigo-500/20 text-indigo-500 border-indigo-500/30 text-sm"
+                className="bg-primary/10 text-primary border-primary/30 text-sm"
               >
                 {dataField}
               </Badge>
@@ -218,8 +300,8 @@ export const ProviderCard = ({
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Briefcase" size={18} className="text-purple-500" />
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="Briefcase" size={18} className="text-primary" />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Дополнительные услуги
@@ -234,7 +316,7 @@ export const ProviderCard = ({
               <Badge
                 key={idx}
                 variant="outline"
-                className="bg-purple-500/10 text-purple-500 border-purple-500/30"
+                className="bg-primary/10 text-primary border-primary/30"
               >
                 {service}
               </Badge>
@@ -256,8 +338,8 @@ export const ProviderCard = ({
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-teal-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Users" size={18} className="text-teal-500" />
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="Users" size={18} className="text-primary" />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Поддерживаемые типы клиентов
@@ -268,11 +350,7 @@ export const ProviderCard = ({
           {provider.supportedClientTypes.map((type, idx) => (
             <Badge
               key={idx}
-              className={`text-sm ${
-                type === "Физлицо"
-                  ? "bg-blue-500/20 text-blue-500 border-blue-500/30"
-                  : "bg-purple-500/20 text-purple-500 border-purple-500/30"
-              }`}
+              className={`text-sm bg-primary/10 text-primary border-primary/30`}
             >
               {type}
             </Badge>
@@ -303,8 +381,8 @@ export const ProviderCard = ({
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Cpu" size={18} className="text-purple-500" />
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="Cpu" size={18} className="text-primary" />
           </div>
           <h4 className="text-base font-bold text-foreground">Поддержка GPU</h4>
         </div>
@@ -332,17 +410,83 @@ export const ProviderCard = ({
                   onMouseEnter={() => showGpuTooltip(gpuModel)}
                   onMouseLeave={hideGpuTooltip}
                 >
-                  <Badge className="bg-purple-500/10 text-purple-500 border-purple-500/30 cursor-help">
+                  <Badge className="bg-primary/10 text-primary border-primary/30 cursor-help">
                     {gpuModel}
                   </Badge>
 
                   {gpuTooltip.show && gpuTooltip.model === gpuModel && (
-                    <div className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
+                    <div
+                      ref={gpuTooltipRef}
+                      className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
+                      style={{ transformOrigin: "center bottom" }}
+                    >
                       <div className="text-xs font-semibold text-foreground mb-1">
                         {gpuTooltip.model}
                       </div>
                       <div className="text-xs text-muted-foreground">
                         {gpuTooltip.description}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Рендерим раздел доступных ОС
+  const renderOsSection = () => {
+    if (
+      !provider.technicalSpecs.availableOS ||
+      provider.technicalSpecs.availableOS.length === 0
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="Monitor" size={18} className="text-primary" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">Доступные ОС</h4>
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-sm text-foreground">
+            Провайдер поддерживает следующие операционные системы:
+          </p>
+
+          <div className="mt-4">
+            <div className="text-sm font-medium text-foreground mb-2">
+              Доступные операционные системы:
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {provider.technicalSpecs.availableOS.map((os, idx) => (
+                <div
+                  key={idx}
+                  className="relative"
+                  onMouseEnter={() => showOsTooltip(os)}
+                  onMouseLeave={hideOsTooltip}
+                >
+                  <Badge className="bg-primary/10 text-primary border-primary/30 cursor-help">
+                    {os}
+                  </Badge>
+
+                  {osTooltip.show && osTooltip.os === os && (
+                    <div
+                      ref={osTooltipRef}
+                      className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
+                      style={{ transformOrigin: "center bottom" }}
+                    >
+                      <div className="text-xs font-semibold text-foreground mb-1">
+                        {osTooltip.os}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {osTooltip.description}
                       </div>
                     </div>
                   )}
@@ -364,8 +508,8 @@ export const ProviderCard = ({
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Database" size={18} className="text-purple-500" />
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="Database" size={18} className="text-primary" />
           </div>
           <h4 className="text-base font-bold text-foreground">Поддержка 1С</h4>
         </div>
@@ -408,6 +552,7 @@ export const ProviderCard = ({
 
   return (
     <div
+      ref={cardRef}
       className={`relative flex flex-col group ${
         showDetails ? "col-span-full z-10" : ""
       }`}
@@ -454,6 +599,7 @@ export const ProviderCard = ({
             }`}
           >
             <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
+              {/* Первый ряд: Соответствие 152-ФЗ и ФСТЭК */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {provider.fz152Compliant && (
                   <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
@@ -482,20 +628,20 @@ export const ProviderCard = ({
 
                 {provider.fstekCertifications &&
                   provider.fstekCertifications.length > 0 && (
-                    <div className="bg-secondary/5 border border-secondary/20 rounded-2xl p-4">
+                    <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
                       <div className="flex items-center gap-2 mb-3">
-                        <div className="w-9 h-9 bg-secondary/20 rounded-xl flex items-center justify-center">
+                        <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
                           <Icon
                             name="ShieldAlert"
                             size={18}
-                            className="text-secondary"
+                            className="text-primary"
                           />
                         </div>
                         <h4 className="text-base font-bold text-foreground">
                           ФСТЭК
                         </h4>
                         {provider.fstekLevel && (
-                          <Badge className="bg-secondary/20 text-secondary border-0 ml-auto">
+                          <Badge className="bg-primary/20 text-primary border-0 ml-auto">
                             {provider.fstekLevel}
                           </Badge>
                         )}
@@ -506,21 +652,16 @@ export const ProviderCard = ({
                   )}
               </div>
 
-              {/* Добавляем разделы GPU и 1С */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {renderGpuSection()}
-                {render1CSection()}
-              </div>
-
+              {/* Второй ряд: Размещение КИИ и Дополнительные услуги */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {provider.kiiPlacement && (
-                  <div className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-4">
+                  <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
                         <Icon
                           name="Building2"
                           size={18}
-                          className="text-blue-500"
+                          className="text-primary"
                         />
                       </div>
                       <h4 className="text-base font-bold text-foreground">
@@ -539,6 +680,49 @@ export const ProviderCard = ({
                     </p>
                   </div>
                 )}
+
+                {renderAdditionalServices()}
+              </div>
+
+              {/* Третий ряд: Заказ услуг и Данные для регистрации */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="bg-card border border-border rounded-2xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                      <Icon
+                        name="ClipboardCheck"
+                        size={18}
+                        className="text-primary"
+                      />
+                    </div>
+                    <h4 className="text-base font-bold text-foreground">
+                      Заказ услуг
+                    </h4>
+                    <Badge
+                      className={
+                        provider.orderBeforeRegistration
+                          ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
+                          : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
+                      }
+                    >
+                      {provider.orderBeforeRegistration
+                        ? "До регистрации"
+                        : "После регистрации"}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-foreground">
+                    {provider.orderBeforeRegistration
+                      ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
+                      : "Требуется регистрация и создание учетной записи перед заказом услуг"}
+                  </p>
+                </div>
+
+                {renderRegistrationData()}
+              </div>
+
+              {/* Четвертый ряд: Поддерживаемые типы клиентов и Мобильное приложение */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {renderClientTypes()}
 
                 <div className="bg-card border border-border rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-3">
@@ -574,52 +758,27 @@ export const ProviderCard = ({
                       : "Провайдер не предоставляет мобильное приложение"}
                   </p>
                 </div>
-
-                <div className="bg-card border border-border rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="ClipboardCheck"
-                        size={18}
-                        className="text-primary"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">
-                      Заказ услуг
-                    </h4>
-                    <Badge
-                      className={
-                        provider.orderBeforeRegistration
-                          ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
-                          : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
-                      }
-                    >
-                      {provider.orderBeforeRegistration
-                        ? "До регистрации"
-                        : "После регистрации"}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-foreground">
-                    {provider.orderBeforeRegistration
-                      ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
-                      : "Требуется регистрация и создание учетной записи перед заказом услуг"}
-                  </p>
-                </div>
-
-                {renderAdditionalServices()}
               </div>
 
+              {/* Пятый ряд: Поддержка GPU и Доступные ОС */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {renderRegistrationData()}
-                {renderClientTypes()}
+                {renderGpuSection()}
+                {renderOsSection()}
               </div>
 
-              <TechnicalSpecsSection provider={provider} />
+              {/* Шестой ряд: Технические характеристики и Поддержка 1С */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <TechnicalSpecsSection provider={provider} />
+                {render1CSection()}
+              </div>
+
+              {/* Остальные секции */}
               <ServiceGuaranteesSection provider={provider} />
               <AdditionalServicesSection provider={provider} />
               <PaymentMethodsSection provider={provider} />
               <CaseStudiesSection provider={provider} />
 
+              {/* Плюсы и минусы */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="bg-accent border border-secondary/30 rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-4">

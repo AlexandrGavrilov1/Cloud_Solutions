@@ -1,5 +1,4 @@
-// ProviderCardHeader.tsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
@@ -42,14 +41,9 @@ export const ProviderCardHeader = ({
     description: "",
   });
 
-  // Функция для открытия сайта в новом окне
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
     e.preventDefault();
-
-    // Вызываем трекинг
     onProviderClick();
-
-    // Открываем сайт в новом окне
     if (provider.url) {
       window.open(provider.url, "_blank", "noopener,noreferrer");
     }
@@ -101,7 +95,6 @@ export const ProviderCardHeader = ({
     };
   };
 
-  // Функция для получения описания GPU
   const getGpuDescription = (model: string): string => {
     const descriptions: Record<string, string> = {
       "GTX 1080": "Игровая GPU, 8GB GDDR5X, 2560 ядер CUDA",
@@ -126,7 +119,6 @@ export const ProviderCardHeader = ({
     return descriptions[model] || "Графический процессор для вычислений";
   };
 
-  // Функция для показа тултипа GPU
   const showGpuTooltip = (model: string) => {
     setGpuTooltip({
       show: true,
@@ -175,26 +167,21 @@ export const ProviderCardHeader = ({
 
                 {provider.fstekCertifications &&
                   provider.fstekCertifications.length > 0 && (
-                    <div className="w-5 h-5 bg-secondary/20 rounded-md flex items-center justify-center">
+                    <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
                       <Icon
                         name="ShieldAlert"
                         size={10}
-                        className="text-secondary"
+                        className="text-primary"
                       />
                     </div>
                   )}
 
                 {provider.kiiPlacement && (
-                  <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
-                    <Icon
-                      name="Building2"
-                      size={10}
-                      className="text-blue-500"
-                    />
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon name="Building2" size={10} className="text-primary" />
                   </div>
                 )}
 
-                {/* Иконка 1С - цвет как у остальных иконок */}
                 {provider.technicalSpecs.supports1C && (
                   <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
                     <Icon name="Database" size={10} className="text-primary" />
@@ -335,14 +322,12 @@ export const ProviderCardHeader = ({
             </span>
           </div>
 
-          {/* GPU отображение - убрали значок + */}
           {provider.technicalSpecs.gpuModels &&
             provider.technicalSpecs.gpuModels.length > 0 && (
               <div className="relative">
                 <div
                   className="flex items-center gap-1.5 text-sm"
                   onMouseEnter={() => {
-                    // Показываем первый GPU при наведении на строку
                     if (
                       provider.technicalSpecs.gpuModels &&
                       provider.technicalSpecs.gpuModels.length > 0
@@ -355,7 +340,7 @@ export const ProviderCardHeader = ({
                   <Icon
                     name="Cpu"
                     size={14}
-                    className="text-primary flex-shrink-0" // Цвет как у остальных иконок
+                    className="text-primary flex-shrink-0"
                   />
                   <span className="text-foreground">
                     GPU: {provider.technicalSpecs.gpuModels.length} модел
@@ -398,13 +383,12 @@ export const ProviderCardHeader = ({
             </div>
           )}
 
-          {/* 1С отображение - убрали "Поддерживает" */}
           {provider.technicalSpecs.supports1C && (
             <div className="flex items-center gap-1.5 text-sm">
               <Icon
                 name="Database"
                 size={14}
-                className="text-primary flex-shrink-0" // Цвет как у остальных иконок
+                className="text-primary flex-shrink-0"
               />
               <span className="text-foreground">1С</span>
             </div>
@@ -482,7 +466,7 @@ export const ProviderCardHeader = ({
         )}
         {provider.fstekCertifications &&
           provider.fstekCertifications.length > 0 && (
-            <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
+            <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
               <Icon name="ShieldAlert" size={12} className="mr-1" />
               ФСТЭК
               {provider.fstekCertifications.length > 0 && (
@@ -493,7 +477,7 @@ export const ProviderCardHeader = ({
             </Badge>
           )}
         {provider.kiiPlacement && (
-          <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-500 border font-semibold text-xs px-2 py-1">
+          <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
             <Icon name="Building2" size={12} className="mr-1" />
             КИИ
           </Badge>
