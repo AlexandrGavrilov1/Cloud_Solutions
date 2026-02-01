@@ -30,7 +30,7 @@ export const TechnicalSpecsSection = ({
           </div>
         </div>
 
-        {/* Скорость сетии */}
+        {/* Скорость сети */}
         <div className="flex items-start gap-3">
           <Icon name="Wifi" size={16} className="text-primary mt-0.5" />
           <div>
