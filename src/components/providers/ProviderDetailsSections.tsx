@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import { Provider } from "./types";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// TechnicalSpecsSection
 interface TechnicalSpecsSectionProps {
   provider: Provider;
 }
@@ -198,6 +199,266 @@ export const TechnicalSpecsSection = ({
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+// ServiceGuaranteesSection
+interface ServiceGuaranteesSectionProps {
+  provider: Provider;
+}
+
+export const ServiceGuaranteesSection = ({
+  provider,
+}: ServiceGuaranteesSectionProps) => {
+  const { serviceGuarantees } = provider;
+  const { t } = useLanguage();
+
+  const getSupportSpeedBadge = (responseTime: string) => {
+    const time = responseTime.toLowerCase();
+    if (
+      time.includes("5 мин") ||
+      time.includes("< 5") ||
+      time.includes("мгновенно")
+    ) {
+      return {
+        color: "text-green-600 dark:text-green-400",
+        bg: "bg-green-500/10",
+        label: "Отлично",
+      };
+    }
+    if (
+      time.includes("15 мин") ||
+      time.includes("< 15") ||
+      time.includes("10 мин")
+    ) {
+      return {
+        color: "text-yellow-600 dark:text-yellow-400",
+        bg: "bg-yellow-500/10",
+        label: "Хорошо",
+      };
+    }
+    if (
+      time.includes("30 мин") ||
+      time.includes("1 час") ||
+      time.includes("час")
+    ) {
+      return {
+        color: "text-orange-600 dark:text-orange-400",
+        bg: "bg-orange-500/10",
+        label: "Средне",
+      };
+    }
+    return {
+      color: "text-gray-600 dark:text-gray-400",
+      bg: "bg-gray-500/10",
+      label: "Медленно",
+    };
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="grid md:grid-cols-3 gap-4">
+        <div className="bg-background rounded-xl p-4 border border-border">
+          <div className="flex items-center gap-2 mb-2">
+            <Icon name="Activity" size={16} className="text-primary" />
+            <div className="text-xs font-bold text-muted-foreground uppercase">
+              {t("card.uptimeSLA")}
+            </div>
+          </div>
+          <div className="text-2xl font-black text-primary">
+            {serviceGuarantees.uptimeSLA}
+          </div>
+        </div>
+        {serviceGuarantees.supportResponseTime &&
+          (() => {
+            const badge = getSupportSpeedBadge(
+              serviceGuarantees.supportResponseTime,
+            );
+            return (
+              <div className="bg-background rounded-xl p-4 border border-border relative overflow-hidden">
+                <div
+                  className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold ${badge.bg} ${badge.color}`}
+                >
+                  {badge.label}
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Icon
+                    name="MessageCircle"
+                    size={16}
+                    className={badge.color}
+                  />
+                  <div className="text-xs font-bold text-muted-foreground uppercase">
+                    {t("card.supportResponseTime")}
+                  </div>
+                </div>
+                <div className={`text-2xl font-black ${badge.color}`}>
+                  {serviceGuarantees.supportResponseTime}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Среднее время ответа
+                </div>
+              </div>
+            );
+          })()}
+        <div className="bg-background rounded-xl p-4 border border-border">
+          <div className="flex items-center gap-2 mb-2">
+            <Icon name="DollarSign" size={16} className="text-primary" />
+            <div className="text-xs font-bold text-muted-foreground uppercase">
+              {t("card.moneyBackGuarantee")}
+            </div>
+          </div>
+          <div className="text-2xl font-black text-primary">
+            {serviceGuarantees.moneyBackGuarantee
+              ? `${serviceGuarantees.moneyBackGuarantee} ${t("common.days")}`
+              : t("common.absent")}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// AdditionalServicesSection
+interface AdditionalServicesSectionProps {
+  provider: Provider;
+}
+
+export const AdditionalServicesSection = ({
+  provider,
+}: AdditionalServicesSectionProps) => {
+  const { additionalServices } = provider;
+  const { t } = useLanguage();
+
+  return (
+    <div className="space-y-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.autoBackups ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+        >
+          <Icon
+            name={additionalServices.autoBackups ? "CheckCircle" : "XCircle"}
+            size={16}
+            className={
+              additionalServices.autoBackups ? "text-primary" : "text-muted"
+            }
+          />
+          <div className="flex-1">
+            <div className="text-sm font-semibold text-foreground">
+              {t("card.autoBackups")}
+            </div>
+            {additionalServices.autoBackups &&
+              additionalServices.backupPrice && (
+                <div className="text-xs text-muted-foreground">
+                  {additionalServices.backupPrice}₽/мес
+                </div>
+              )}
+            {additionalServices.autoBackups &&
+              !additionalServices.backupPrice && (
+                <div className="text-xs text-primary font-medium">
+                  {t("common.free")}
+                </div>
+              )}
+          </div>
+        </div>
+        <div
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.monitoring ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+        >
+          <Icon
+            name={additionalServices.monitoring ? "CheckCircle" : "XCircle"}
+            size={16}
+            className={
+              additionalServices.monitoring ? "text-primary" : "text-muted"
+            }
+          />
+          <div className="text-sm font-semibold text-foreground">
+            {t("card.monitoring")}
+          </div>
+        </div>
+        <div
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.snapshots ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+        >
+          <Icon
+            name={additionalServices.snapshots ? "CheckCircle" : "XCircle"}
+            size={16}
+            className={
+              additionalServices.snapshots ? "text-primary" : "text-muted"
+            }
+          />
+          <div className="text-sm font-semibold text-foreground">
+            {t("card.snapshots")}
+          </div>
+        </div>
+        <div
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.customOS ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+        >
+          <Icon
+            name={additionalServices.customOS ? "CheckCircle" : "XCircle"}
+            size={16}
+            className={
+              additionalServices.customOS ? "text-primary" : "text-muted"
+            }
+          />
+          <div className="text-sm font-semibold text-foreground">
+            {t("card.customOS")}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// PaymentMethodsSection
+interface PaymentMethodsSectionProps {
+  provider: Provider;
+}
+
+export const PaymentMethodsSection = ({
+  provider,
+}: PaymentMethodsSectionProps) => {
+  const { pricingDetails } = provider;
+  const { t } = useLanguage();
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        {pricingDetails.paymentMethods.map((method, idx) => (
+          <Badge
+            key={idx}
+            className="bg-primary/10 border border-primary/30 text-primary"
+          >
+            {method}
+          </Badge>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// CaseStudiesSection
+interface CaseStudiesSectionProps {
+  provider: Provider;
+}
+
+export const CaseStudiesSection = ({ provider }: CaseStudiesSectionProps) => {
+  const { t } = useLanguage();
+
+  if (!provider.caseStudies || provider.caseStudies.length === 0) return null;
+
+  return (
+    <div className="space-y-3">
+      {provider.caseStudies.map((caseStudy, idx) => (
+        <div key={idx} className="flex items-start gap-2">
+          <Icon
+            name="CheckCircle2"
+            size={14}
+            className="text-primary flex-shrink-0 mt-0.5"
+          />
+          <span className="text-sm text-foreground leading-relaxed">
+            {caseStudy}
+          </span>
+        </div>
+      ))}
     </div>
   );
 };
