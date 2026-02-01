@@ -4835,6 +4835,18 @@ export const providers: Provider[] = [
         available: false,
         managed: false,
       },
+      gpuModels: [
+        "GTX 1080 Ti",
+        "RTX 3080",
+        "A4000",
+        "RTX PRO 6000",
+        "A5000",
+        "Tesla V100",
+        "RTX 4090",
+        "RTX 5090",
+      ],
+      // Добавляем поддержку 1С
+      supports1C: false,
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
