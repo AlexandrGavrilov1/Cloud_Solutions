@@ -15,6 +15,8 @@ interface FilterPanelProps {
   setFilterFZ152: (value: boolean) => void;
   filterFSTEK: string[];
   setFilterFSTEK: (value: string[]) => void;
+  filterHasFSTEK: boolean; // Новый: наличие ФСТЭК (любого)
+  setFilterHasFSTEK: (value: boolean) => void;
   filterTrialPeriod: boolean;
   setFilterTrialPeriod: (value: boolean) => void;
   filterLocation: string[];
@@ -43,9 +45,10 @@ interface FilterPanelProps {
   setFilterRegistrationData: (value: string[]) => void;
   filterClientType: string[];
   setFilterClientType: (value: string[]) => void;
-  // Добавляем новые фильтры
   filterGPU: string[];
   setFilterGPU: (value: string[]) => void;
+  filterHasGPU: boolean; // Новый: наличие GPU (любого)
+  setFilterHasGPU: (value: boolean) => void;
   filter1C: boolean;
   setFilter1C: (value: boolean) => void;
 
@@ -55,7 +58,7 @@ interface FilterPanelProps {
   allPaymentMethods: string[];
   allOS: string[];
   allCPUs: string[];
-  allGPUs: string[]; // Добавляем список всех GPU
+  allGPUs: string[];
   fstekOptions: string[];
 
   additionalServicesOptions: AdditionalServiceType[];
@@ -69,6 +72,8 @@ export const FilterPanel = ({
   setFilterFZ152,
   filterFSTEK,
   setFilterFSTEK,
+  filterHasFSTEK,
+  setFilterHasFSTEK,
   filterTrialPeriod,
   setFilterTrialPeriod,
   filterLocation,
@@ -97,9 +102,10 @@ export const FilterPanel = ({
   setFilterRegistrationData,
   filterClientType,
   setFilterClientType,
-  // Добавляем новые фильтры
   filterGPU,
   setFilterGPU,
+  filterHasGPU,
+  setFilterHasGPU,
   filter1C,
   setFilter1C,
 
@@ -109,7 +115,7 @@ export const FilterPanel = ({
   allPaymentMethods,
   allOS,
   allCPUs,
-  allGPUs = [], // По умолчанию пустой массив
+  allGPUs = [],
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
 
   additionalServicesOptions = [
@@ -158,6 +164,7 @@ export const FilterPanel = ({
 
   const hasActiveFilters =
     filterFZ152 ||
+    filterHasFSTEK || // Добавляем
     filterFSTEK.length > 0 ||
     filterTrialPeriod ||
     filterLocation.length > 0 ||
@@ -173,11 +180,13 @@ export const FilterPanel = ({
     filterAdditionalServices.length > 0 ||
     filterRegistrationData.length > 0 ||
     filterClientType.length > 0 ||
+    filterHasGPU || // Добавляем
     filterGPU.length > 0 ||
     filter1C;
 
   const activeFiltersCount = [
     filterFZ152,
+    filterHasFSTEK,
     filterFSTEK.length > 0,
     filterTrialPeriod,
     filterLocation.length > 0,
@@ -193,6 +202,7 @@ export const FilterPanel = ({
     filterAdditionalServices.length > 0,
     filterRegistrationData.length > 0,
     filterClientType.length > 0,
+    filterHasGPU,
     filterGPU.length > 0,
     filter1C,
   ].filter(Boolean).length;
@@ -200,6 +210,7 @@ export const FilterPanel = ({
   const clearFilters = () => {
     setFilterFZ152(false);
     setFilterFSTEK([]);
+    setFilterHasFSTEK(false); // Сбрасываем
     setFilterTrialPeriod(false);
     setFilterLocation([]);
     setFilterVirtualization([]);
@@ -215,6 +226,7 @@ export const FilterPanel = ({
     setFilterRegistrationData([]);
     setFilterClientType([]);
     setFilterGPU([]);
+    setFilterHasGPU(false); // Сбрасываем
     setFilter1C(false);
   };
 
@@ -248,6 +260,10 @@ export const FilterPanel = ({
       ? filterFSTEK.filter((v) => v !== option)
       : [...filterFSTEK, option];
     setFilterFSTEK(newValue);
+    // Если выбираем конкретный сертификат, снимаем чекбокс "Есть ФСТЭК"
+    if (newValue.length > 0) {
+      setFilterHasFSTEK(false);
+    }
   };
 
   const handleAdditionalServicesChange = (option: string) => {
@@ -276,6 +292,10 @@ export const FilterPanel = ({
       ? filterGPU.filter((v) => v !== option)
       : [...filterGPU, option];
     setFilterGPU(newValue);
+    // Если выбираем конкретную модель GPU, снимаем чекбокс "Есть GPU"
+    if (newValue.length > 0) {
+      setFilterHasGPU(false);
+    }
   };
 
   const toggleDropdown = (dropdown: string) => {
@@ -285,81 +305,137 @@ export const FilterPanel = ({
     }));
   };
 
+  // Обработчик для чекбокса "Есть ФСТЭК"
+  const handleHasFSTEKChange = (checked: boolean) => {
+    setFilterHasFSTEK(checked);
+    // Если включаем "Есть ФСТЭК", очищаем конкретные сертификаты
+    if (checked) {
+      setFilterFSTEK([]);
+    }
+  };
+
+  // Обработчик для чекбокса "Есть GPU"
+  const handleHasGPUChange = (checked: boolean) => {
+    setFilterHasGPU(checked);
+    // Если включаем "Есть GPU", очищаем конкретные модели
+    if (checked) {
+      setFilterGPU([]);
+    }
+  };
+
   const FstekDropdown = () => {
     const isOpen = dropdownsOpen.fstek;
 
     return (
       <div className="group">
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => toggleDropdown("fstek")}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
-          >
-            <div className="flex items-center gap-2 overflow-hidden">
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon
-                  name="ShieldAlert"
-                  size={10}
-                  className="text-primary w-3 h-3"
-                />
+        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+          <Icon name="ShieldAlert" size={10} className="text-primary w-3 h-3" />
+          <span className="text-xs">ФСТЭК</span>
+        </label>
+        <div className="space-y-2">
+          {/* Чекбокс "Есть ФСТЭК" */}
+          <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="hasFSTEK"
+                checked={filterHasFSTEK}
+                onChange={(e) => handleHasFSTEKChange(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterHasFSTEK && (
+                  <Icon
+                    name="Check"
+                    size={8}
+                    className="text-background w-2.5 h-2.5"
+                  />
+                )}
               </div>
-              <span className="truncate">
-                {filterFSTEK.length === 0
-                  ? "ФСТЭК"
-                  : filterFSTEK.length === 1
-                    ? filterFSTEK[0]
-                    : `ФСТЭК (${filterFSTEK.length})`}
+            </div>
+            <label
+              htmlFor="hasFSTEK"
+              className="flex items-center gap-1.5 cursor-pointer"
+            >
+              <span className="text-xs font-medium text-foreground">
+                Есть ФСТЭК
               </span>
-            </div>
-            <Icon
-              name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
-            />
-          </button>
+            </label>
+          </div>
 
-          {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
-                <button
-                  type="button"
-                  onClick={() => setFilterFSTEK([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
-                    filterFSTEK.length === 0
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "hover:bg-primary/5"
-                  }`}
-                >
-                  Любой ФСТЭК
-                </button>
-                {fstekOptions.map((option) => (
-                  <div
-                    key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                    onClick={() => handleFstekChange(option)}
-                  >
-                    <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                        filterFSTEK.includes(option)
-                          ? "bg-primary border-primary"
-                          : "border-primary/50"
-                      }`}
-                    >
-                      {filterFSTEK.includes(option) && (
-                        <Icon
-                          name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
-                        />
-                      )}
-                    </div>
-                    <span className="text-sm">{option}</span>
-                  </div>
-                ))}
+          {/* Выбор конкретных сертификатов */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => toggleDropdown("fstek")}
+              className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+              disabled={filterHasFSTEK}
+            >
+              <div className="flex items-center gap-2 overflow-hidden">
+                <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon
+                    name="ShieldCheck"
+                    size={10}
+                    className="text-primary w-3 h-3"
+                  />
+                </div>
+                <span className="truncate">
+                  {filterFSTEK.length === 0
+                    ? "Конкретный сертификат"
+                    : filterFSTEK.length === 1
+                      ? filterFSTEK[0]
+                      : `Сертификаты (${filterFSTEK.length})`}
+                </span>
               </div>
-            </div>
-          )}
+              <Icon
+                name={isOpen ? "ChevronUp" : "ChevronDown"}
+                size={10}
+                className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              />
+            </button>
+
+            {isOpen && (
+              <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className="p-2">
+                  <button
+                    type="button"
+                    onClick={() => setFilterFSTEK([])}
+                    className={`w-full text-left px-3 py-2 rounded text-sm ${
+                      filterFSTEK.length === 0
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "hover:bg-primary/5"
+                    }`}
+                  >
+                    Любой ФСТЭК
+                  </button>
+                  {fstekOptions.map((option) => (
+                    <div
+                      key={option}
+                      className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                      onClick={() => handleFstekChange(option)}
+                    >
+                      <div
+                        className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                          filterFSTEK.includes(option)
+                            ? "bg-primary border-primary"
+                            : "border-primary/50"
+                        }`}
+                      >
+                        {filterFSTEK.includes(option) && (
+                          <Icon
+                            name="Check"
+                            size={8}
+                            className="text-background w-2.5 h-2.5"
+                          />
+                        )}
+                      </div>
+                      <span className="text-sm">{option}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -613,7 +689,7 @@ export const FilterPanel = ({
     );
   };
 
-  // Дропдаун для GPU (меняем местами с PaymentMethod)
+  // Дропдаун для GPU с чекбоксом "Есть GPU"
   const GpuDropdown = () => {
     const isOpen = dropdownsOpen.gpu;
 
@@ -623,72 +699,106 @@ export const FilterPanel = ({
           <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
           <span className="text-xs">GPU</span>
         </label>
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => toggleDropdown("gpu")}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
-          >
-            <div className="flex items-center gap-2 overflow-hidden">
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+        <div className="space-y-2">
+          {/* Чекбокс "Есть GPU" */}
+          <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="hasGPU"
+                checked={filterHasGPU}
+                onChange={(e) => handleHasGPUChange(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterHasGPU && (
+                  <Icon
+                    name="Check"
+                    size={8}
+                    className="text-background w-2.5 h-2.5"
+                  />
+                )}
               </div>
-              <span className="truncate">
-                {filterGPU.length === 0
-                  ? "Любой GPU"
-                  : filterGPU.length === 1
-                    ? filterGPU[0]
-                    : `GPU (${filterGPU.length})`}
+            </div>
+            <label
+              htmlFor="hasGPU"
+              className="flex items-center gap-1.5 cursor-pointer"
+            >
+              <span className="text-xs font-medium text-foreground">
+                Есть GPU
               </span>
-            </div>
-            <Icon
-              name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
-            />
-          </button>
+            </label>
+          </div>
 
-          {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
-                <button
-                  type="button"
-                  onClick={() => setFilterGPU([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
-                    filterGPU.length === 0
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "hover:bg-primary/5"
-                  }`}
-                >
-                  Любой GPU
-                </button>
-                {allGPUs.map((option) => (
-                  <div
-                    key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                    onClick={() => handleGpuChange(option)}
-                  >
-                    <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                        filterGPU.includes(option)
-                          ? "bg-primary border-primary"
-                          : "border-primary/50"
-                      }`}
-                    >
-                      {filterGPU.includes(option) && (
-                        <Icon
-                          name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
-                        />
-                      )}
-                    </div>
-                    <span className="text-sm">{option}</span>
-                  </div>
-                ))}
+          {/* Выбор конкретных моделей GPU */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => toggleDropdown("gpu")}
+              className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+              disabled={filterHasGPU}
+            >
+              <div className="flex items-center gap-2 overflow-hidden">
+                <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+                </div>
+                <span className="truncate">
+                  {filterGPU.length === 0
+                    ? "Конкретная модель"
+                    : filterGPU.length === 1
+                      ? filterGPU[0]
+                      : `Модели (${filterGPU.length})`}
+                </span>
               </div>
-            </div>
-          )}
+              <Icon
+                name={isOpen ? "ChevronUp" : "ChevronDown"}
+                size={10}
+                className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              />
+            </button>
+
+            {isOpen && (
+              <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className="p-2">
+                  <button
+                    type="button"
+                    onClick={() => setFilterGPU([])}
+                    className={`w-full text-left px-3 py-2 rounded text-sm ${
+                      filterGPU.length === 0
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "hover:bg-primary/5"
+                    }`}
+                  >
+                    Любой GPU
+                  </button>
+                  {allGPUs.map((option) => (
+                    <div
+                      key={option}
+                      className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                      onClick={() => handleGpuChange(option)}
+                    >
+                      <div
+                        className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                          filterGPU.includes(option)
+                            ? "bg-primary border-primary"
+                            : "border-primary/50"
+                        }`}
+                      >
+                        {filterGPU.includes(option) && (
+                          <Icon
+                            name="Check"
+                            size={8}
+                            className="text-background w-2.5 h-2.5"
+                          />
+                        )}
+                      </div>
+                      <span className="text-sm">{option}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -883,6 +993,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
+              {/* ФСТЭК заменяем на новый компонент с чекбоксом */}
               <div className="col-span-1 sm:col-span-2">
                 <FstekDropdown />
               </div>
@@ -1025,7 +1136,6 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              {/* Чекбокс для 1С с той же иконкой, что и в фильтрах */}
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -1110,7 +1220,7 @@ export const FilterPanel = ({
                 labelText={t("filters.diskType")}
               />
 
-              {/* GPU теперь идет перед OS */}
+              {/* GPU с чекбоксом "Есть GPU" */}
               <GpuDropdown />
 
               <MultiSelect
@@ -1137,7 +1247,6 @@ export const FilterPanel = ({
                 labelText="Процессор"
               />
 
-              {/* PaymentMethod теперь идет после CPU */}
               <MultiSelect
                 value={filterPaymentMethod}
                 onChange={(value) =>

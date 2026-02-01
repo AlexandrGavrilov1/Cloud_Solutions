@@ -1,4 +1,3 @@
-// ProvidersSection.tsx
 import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -20,7 +19,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  // Фильтрыы
+  // Фильтры
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -29,6 +28,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterFSTEK");
     return saved ? JSON.parse(saved) : [];
+  });
+
+  // Новый фильтр: наличие ФСТЭК (любого)
+  const [filterHasFSTEK, setFilterHasFSTEK] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterHasFSTEK");
+    return saved ? JSON.parse(saved) : false;
   });
 
   const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
@@ -112,10 +117,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Добавляем новые фильтры
   const [filterGPU, setFilterGPU] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterGPU");
     return saved ? JSON.parse(saved) : [];
+  });
+
+  // Новый фильтр: наличие GPU (любого)
+  const [filterHasGPU, setFilterHasGPU] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterHasGPU");
+    return saved ? JSON.parse(saved) : false;
   });
 
   const [filter1C, setFilter1C] = useState<boolean>(() => {
@@ -175,7 +185,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
-  // Сохранение фильтров в localStorageй
+  // Сохранение фильтров в localStorage
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
@@ -187,6 +197,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterFSTEK");
     }
   }, [filterFSTEK]);
+
+  useEffect(() => {
+    localStorage.setItem("filterHasFSTEK", JSON.stringify(filterHasFSTEK));
+  }, [filterHasFSTEK]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -308,7 +322,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterClientType]);
 
-  // Сохраняем новые фильтры
   useEffect(() => {
     if (filterGPU.length > 0) {
       localStorage.setItem("filterGPU", JSON.stringify(filterGPU));
@@ -316,6 +329,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterGPU");
     }
   }, [filterGPU]);
+
+  useEffect(() => {
+    localStorage.setItem("filterHasGPU", JSON.stringify(filterHasGPU));
+  }, [filterHasGPU]);
 
   useEffect(() => {
     localStorage.setItem("filter1C", JSON.stringify(filter1C));
@@ -388,7 +405,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // Получаем все уникальные GPU из провайдеров
   const allGPUs = useMemo(
     () =>
       Array.from(
@@ -408,7 +424,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
       if (filterFZ152 && !p.fz152Compliant) return false;
 
-      if (filterFSTEK.length > 0) {
+      // Фильтр: наличие ФСТЭК (любого)
+      if (filterHasFSTEK) {
+        const hasAnyFSTEK =
+          p.fstekCertifications && p.fstekCertifications.length > 0;
+        if (!hasAnyFSTEK) return false;
+      }
+
+      // Фильтр: конкретные сертификаты ФСТЭК (только если не выбран "Есть ФСТЭК")
+      if (!filterHasFSTEK && filterFSTEK.length > 0) {
         const hasMatchingFSTEK = filterFSTEK.some(
           (cert) => p.fstekCertifications?.includes(cert) || false,
         );
@@ -490,8 +514,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingClientType) return false;
       }
 
-      // Фильтр GPU
-      if (filterGPU.length > 0) {
+      // Фильтр: наличие GPU (любого)
+      if (filterHasGPU) {
+        const hasAnyGPU =
+          p.technicalSpecs.gpuModels && p.technicalSpecs.gpuModels.length > 0;
+        if (!hasAnyGPU) return false;
+      }
+
+      // Фильтр: конкретные модели GPU (только если не выбран "Есть GPU")
+      if (!filterHasGPU && filterGPU.length > 0) {
         const hasMatchingGPU = filterGPU.some(
           (gpu) => p.technicalSpecs.gpuModels?.includes(gpu) || false,
         );
@@ -533,6 +564,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     providers,
     searchQuery,
     filterFZ152,
+    filterHasFSTEK,
     filterFSTEK,
     filterTrialPeriod,
     filterLocation,
@@ -548,6 +580,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterAdditionalServices,
     filterRegistrationData,
     filterClientType,
+    filterHasGPU,
     filterGPU,
     filter1C,
     sortBy,
@@ -596,6 +629,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
                   setFilterFSTEK={setFilterFSTEK}
+                  filterHasFSTEK={filterHasFSTEK}
+                  setFilterHasFSTEK={setFilterHasFSTEK}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
                   filterLocation={filterLocation}
@@ -626,9 +661,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterRegistrationData={setFilterRegistrationData}
                   filterClientType={filterClientType}
                   setFilterClientType={setFilterClientType}
-                  // Добавляем новые фильтры
                   filterGPU={filterGPU}
                   setFilterGPU={setFilterGPU}
+                  filterHasGPU={filterHasGPU}
+                  setFilterHasGPU={setFilterHasGPU}
                   filter1C={filter1C}
                   setFilter1C={setFilter1C}
                   allLocations={allLocations}
@@ -637,7 +673,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  allGPUs={allGPUs} // Передаем список GPU
+                  allGPUs={allGPUs}
                   fstekOptions={fstekOptions}
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
@@ -686,6 +722,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterFZ152={setFilterFZ152}
                   filterFSTEK={filterFSTEK}
                   setFilterFSTEK={setFilterFSTEK}
+                  filterHasFSTEK={filterHasFSTEK}
+                  setFilterHasFSTEK={setFilterHasFSTEK}
                   filterTrialPeriod={filterTrialPeriod}
                   setFilterTrialPeriod={setFilterTrialPeriod}
                   filterLocation={filterLocation}
@@ -716,9 +754,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterRegistrationData={setFilterRegistrationData}
                   filterClientType={filterClientType}
                   setFilterClientType={setFilterClientType}
-                  // Добавляем новые фильтры
                   filterGPU={filterGPU}
                   setFilterGPU={setFilterGPU}
+                  filterHasGPU={filterHasGPU}
+                  setFilterHasGPU={setFilterHasGPU}
                   filter1C={filter1C}
                   setFilter1C={setFilter1C}
                   allLocations={allLocations}
@@ -727,7 +766,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   allPaymentMethods={allPaymentMethods}
                   allOS={allOS}
                   allCPUs={allCPUs}
-                  allGPUs={allGPUs} // Передаем список GPU
+                  allGPUs={allGPUs}
                   fstekOptions={fstekOptions}
                   additionalServicesOptions={additionalServicesOptions}
                   registrationDataOptions={registrationDataOptions}
