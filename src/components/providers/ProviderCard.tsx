@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,6 @@ export const ProviderCard = ({
   const osTooltipRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Функция для проверки видимости тултипа и корректировки позиции
   const adjustTooltipPosition = (
     tooltipRef: React.RefObject<HTMLDivElement>,
   ) => {
@@ -75,20 +74,17 @@ export const ProviderCard = ({
     const cardRect = card.getBoundingClientRect();
     const tooltipRect = tooltip.getBoundingClientRect();
 
-    // Проверяем, выходит ли тултип за правую границу карточки
     if (tooltipRect.right > cardRect.right) {
       const overflow = tooltipRect.right - cardRect.right;
       tooltip.style.left = `calc(50% - ${overflow}px - 0.5rem)`;
     }
 
-    // Проверяем, выходит ли тултип за левую границу карточки
     if (tooltipRect.left < cardRect.left) {
       const overflow = cardRect.left - tooltipRect.left;
       tooltip.style.left = `calc(50% + ${overflow}px + 0.5rem)`;
     }
   };
 
-  // Получаем текстовое представление цены
   const getPriceText = () => {
     if (provider.basePrice === 0) {
       return t("common.priceOnRequest") || "Цена по запросу";
@@ -126,7 +122,6 @@ export const ProviderCard = ({
     }
   };
 
-  // Функция для получения описания GPU
   const getGpuDescription = (model: string): string => {
     const descriptions: Record<string, string> = {
       "GTX 1080": "Игровая GPU NVIDIA, 8GB GDDR5X, 2560 ядер CUDA",
@@ -153,7 +148,6 @@ export const ProviderCard = ({
     return descriptions[model] || "Графический процессор для вычислений";
   };
 
-  // Функция для получения описания ОС
   const getOsDescription = (osName: string): string => {
     const descriptions: Record<string, string> = {
       "Alma Linux": "Свободная, стабильная ОС, форк RHEL, для серверов",
@@ -181,7 +175,6 @@ export const ProviderCard = ({
     return descriptions[osName] || "Операционная система для серверов";
   };
 
-  // Функция для показа тултипа GPU
   const showGpuTooltip = (model: string) => {
     setGpuTooltip({
       show: true,
@@ -189,7 +182,6 @@ export const ProviderCard = ({
       description: getGpuDescription(model),
     });
 
-    // Корректируем позицию после отрисовки
     setTimeout(() => adjustTooltipPosition(gpuTooltipRef), 10);
   };
 
@@ -197,7 +189,6 @@ export const ProviderCard = ({
     setGpuTooltip({ show: false, model: "", description: "" });
   };
 
-  // Функция для показа тултипа ОС
   const showOsTooltip = (os: string) => {
     setOsTooltip({
       show: true,
@@ -205,7 +196,6 @@ export const ProviderCard = ({
       description: getOsDescription(os),
     });
 
-    // Корректируем позицию после отрисовки
     setTimeout(() => adjustTooltipPosition(osTooltipRef), 10);
   };
 
@@ -369,7 +359,6 @@ export const ProviderCard = ({
     );
   };
 
-  // Рендерим раздел GPU
   const renderGpuSection = () => {
     if (
       !provider.technicalSpecs.gpuModels ||
@@ -437,7 +426,6 @@ export const ProviderCard = ({
     );
   };
 
-  // Рендерим раздел доступных ОС
   const renderOsSection = () => {
     if (
       !provider.technicalSpecs.availableOS ||
@@ -499,7 +487,6 @@ export const ProviderCard = ({
     );
   };
 
-  // Рендерим раздел 1С
   const render1CSection = () => {
     if (!provider.technicalSpecs.supports1C) {
       return null;
@@ -525,32 +512,11 @@ export const ProviderCard = ({
             <li>Техническую поддержку по настройке 1С</li>
             <li>Быструю миграцию существующих баз 1С в облако</li>
           </ul>
-
-          <div className="mt-4">
-            <div className="text-sm font-medium text-foreground mb-2">
-              Преимущества:
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
-                Высокая доступность
-              </Badge>
-              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
-                Масштабируемость
-              </Badge>
-              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
-                Безопасность данных
-              </Badge>
-              <Badge className="bg-green-500/10 text-green-500 border-green-500/30">
-                Резервное копирование
-              </Badge>
-            </div>
-          </div>
         </div>
       </div>
     );
   };
 
-  // Рендерим мобильное приложение
   const renderMobileAppSection = () => {
     return (
       <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
@@ -559,21 +525,13 @@ export const ProviderCard = ({
             <Icon
               name={provider.mobileApp ? "Smartphone" : "SmartphoneOff"}
               size={18}
-              className={
-                provider.mobileApp ? "text-primary" : "text-muted-foreground"
-              }
+              className={provider.mobileApp ? "text-primary" : "text-primary"}
             />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Мобильное приложение
           </h4>
-          <Badge
-            className={
-              provider.mobileApp
-                ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
-                : "bg-red-500/20 text-red-500 border-red-500/30 ml-auto"
-            }
-          >
+          <Badge className="bg-primary/10 text-primary border-primary/30 ml-auto">
             {provider.mobileApp ? "Доступно" : "Отсутствует"}
           </Badge>
         </div>
@@ -586,7 +544,6 @@ export const ProviderCard = ({
     );
   };
 
-  // Рендерим заказ услуг
   const renderOrderServicesSection = () => {
     return (
       <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
@@ -595,13 +552,7 @@ export const ProviderCard = ({
             <Icon name="ClipboardCheck" size={18} className="text-primary" />
           </div>
           <h4 className="text-base font-bold text-foreground">Заказ услуг</h4>
-          <Badge
-            className={
-              provider.orderBeforeRegistration
-                ? "bg-green-500/20 text-green-500 border-green-500/30 ml-auto"
-                : "bg-orange-500/20 text-orange-500 border-orange-500/30 ml-auto"
-            }
-          >
+          <Badge className="bg-primary/10 text-primary border-primary/30 ml-auto">
             {provider.orderBeforeRegistration
               ? "До регистрации"
               : "После регистрации"}
@@ -771,6 +722,18 @@ export const ProviderCard = ({
               {/* Шестой ряд: Технические характеристики и Поддержка 1С */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                      <Icon
+                        name="Settings"
+                        size={18}
+                        className="text-primary"
+                      />
+                    </div>
+                    <h4 className="text-base font-bold text-foreground">
+                      Технические характеристики
+                    </h4>
+                  </div>
                   <TechnicalSpecsSection provider={provider} />
                 </div>
                 {render1CSection()}
