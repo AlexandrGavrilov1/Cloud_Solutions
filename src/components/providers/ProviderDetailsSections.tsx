@@ -19,12 +19,12 @@ export const TechnicalSpecsSection = ({
       <div className="grid md:grid-cols-3 gap-4">
         {/* Тип дисков */}
         <div className="flex items-start gap-3">
-          <Icon name="HardDrive" size={16} className="text-primary mt-0.5" />
+          <Icon name="HardDrive" size={16} className="text-violet-500 mt-0.5" />
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">
               {t("common.disks")}
             </div>
-            <Badge className="bg-primary/10 border border-primary/30 text-primary font-bold text-xs transition-all duration-300 hover:bg-primary/20 hover:scale-105 hover:shadow-md cursor-default">
+            <Badge className="bg-violet-500/10 border border-violet-500/30 text-violet-600 font-bold text-xs transition-all duration-300 hover:bg-violet-500/20 hover:scale-105 hover:shadow-md cursor-default">
               <Icon name="HardDrive" size={12} className="mr-1" />
               {technicalSpecs.diskType}
             </Badge>
@@ -33,12 +33,12 @@ export const TechnicalSpecsSection = ({
 
         {/* Скорость сети */}
         <div className="flex items-start gap-3">
-          <Icon name="Wifi" size={16} className="text-primary mt-0.5" />
+          <Icon name="Wifi" size={16} className="text-blue-500 mt-0.5" />
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">
               {t("card.networkSpeed")}
             </div>
-            <Badge className="bg-primary/10 border border-primary/30 text-primary font-bold text-xs transition-all duration-300 hover:bg-primary/20 hover:scale-105 hover:shadow-md cursor-default">
+            <Badge className="bg-blue-500/10 border border-blue-500/30 text-blue-600 font-bold text-xs transition-all duration-300 hover:bg-blue-500/20 hover:scale-105 hover:shadow-md cursor-default">
               <Icon name="Zap" size={12} className="mr-1" />
               {technicalSpecs.networkSpeed}
             </Badge>
@@ -47,7 +47,7 @@ export const TechnicalSpecsSection = ({
 
         {/* Виртуализация */}
         <div className="flex items-start gap-3">
-          <Icon name="Box" size={16} className="text-primary mt-0.5" />
+          <Icon name="Box" size={16} className="text-cyan-500 mt-0.5" />
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">
               {t("common.virtualization")}
@@ -56,7 +56,7 @@ export const TechnicalSpecsSection = ({
               {technicalSpecs.virtualization.map((virt, idx) => (
                 <Badge
                   key={idx}
-                  className="bg-primary/10 border border-primary/30 text-primary font-bold text-xs transition-all duration-300 hover:bg-primary/20 hover:scale-105 hover:shadow-md cursor-default"
+                  className="bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 font-bold text-xs transition-all duration-300 hover:bg-cyan-500/20 hover:scale-105 hover:shadow-md cursor-default"
                 >
                   <Icon name="Box" size={12} className="mr-1" />
                   {virt}
@@ -68,12 +68,12 @@ export const TechnicalSpecsSection = ({
 
         {/* DDoS защита */}
         <div className="flex items-start gap-3">
-          <Icon name="Shield" size={16} className="text-primary mt-0.5" />
+          <Icon name="Shield" size={16} className="text-amber-500 mt-0.5" />
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">
               {t("card.ddosProtection")}
             </div>
-            <Badge className="bg-primary/10 border border-primary/30 text-primary font-bold text-xs transition-all duration-300 hover:bg-primary/20 hover:scale-105 hover:shadow-md cursor-default">
+            <Badge className="bg-amber-500/10 border border-amber-500/30 text-amber-600 font-bold text-xs transition-all duration-300 hover:bg-amber-500/20 hover:scale-105 hover:shadow-md cursor-default">
               <Icon name="ShieldCheck" size={12} className="mr-1" />
               {technicalSpecs.ddosProtection}
             </Badge>
@@ -82,12 +82,12 @@ export const TechnicalSpecsSection = ({
 
         {/* Панель управления */}
         <div className="flex items-start gap-3">
-          <Icon name="Layout" size={16} className="text-primary mt-0.5" />
+          <Icon name="Layout" size={16} className="text-purple-500 mt-0.5" />
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">
               {t("card.controlPanel")}
             </div>
-            <Badge className="bg-primary/10 border border-primary/30 text-primary font-bold text-xs transition-all duration-300 hover:bg-primary/20 hover:scale-105 hover:shadow-md cursor-default">
+            <Badge className="bg-purple-500/10 border border-purple-500/30 text-purple-600 font-bold text-xs transition-all duration-300 hover:bg-purple-500/20 hover:scale-105 hover:shadow-md cursor-default">
               <Icon name="Monitor" size={12} className="mr-1" />
               {technicalSpecs.controlPanel}
             </Badge>
@@ -96,17 +96,17 @@ export const TechnicalSpecsSection = ({
 
         {/* IP */}
         <div className="flex items-start gap-3">
-          <Icon name="Network" size={16} className="text-primary mt-0.5" />
+          <Icon name="Network" size={16} className="text-indigo-500 mt-0.5" />
           <div>
             <div className="text-xs text-muted-foreground mb-0.5">IP</div>
             <div className="flex gap-1.5">
               {technicalSpecs.ipv4 && (
-                <Badge className="bg-primary/10 border border-primary/30 text-primary text-xs">
+                <Badge className="bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 text-xs">
                   IPv4
                 </Badge>
               )}
               {technicalSpecs.ipv6 && (
-                <Badge className="bg-primary/10 border border-primary/30 text-primary text-xs">
+                <Badge className="bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 text-xs">
                   IPv6
                 </Badge>
               )}
@@ -119,8 +119,8 @@ export const TechnicalSpecsSection = ({
       {technicalSpecs.cpuModels && technicalSpecs.cpuModels.length > 0 && (
         <div className="pt-4 border-t border-border">
           <div className="flex items-center gap-2 mb-2">
-            <Icon name="Cpu" size={16} className="text-primary" />
-            <div className="text-sm font-semibold text-foreground">
+            <Icon name="Cpu" size={16} className="text-emerald-500" />
+            <div className="text-sm font-semibold text-emerald-600">
               Процессоры:
             </div>
           </div>
@@ -128,7 +128,7 @@ export const TechnicalSpecsSection = ({
             {technicalSpecs.cpuModels.map((cpu, idx) => (
               <Badge
                 key={idx}
-                className="bg-primary/10 border border-primary/30 text-primary text-xs"
+                className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 text-xs"
               >
                 {cpu}
               </Badge>
@@ -142,8 +142,8 @@ export const TechnicalSpecsSection = ({
         technicalSpecs.memoryOptions.length > 0 && (
           <div className="pt-4 border-t border-border">
             <div className="flex items-center gap-2 mb-2">
-              <Icon name="MemoryStick" size={16} className="text-primary" />
-              <div className="text-sm font-semibold text-foreground">
+              <Icon name="MemoryStick" size={16} className="text-rose-500" />
+              <div className="text-sm font-semibold text-rose-600">
                 Опции памяти:
               </div>
             </div>
@@ -151,7 +151,7 @@ export const TechnicalSpecsSection = ({
               {technicalSpecs.memoryOptions.map((memory, idx) => (
                 <Badge
                   key={idx}
-                  className="bg-primary/10 border border-primary/30 text-primary text-xs"
+                  className="bg-rose-500/10 border border-rose-500/30 text-rose-600 text-xs"
                 >
                   {memory}
                 </Badge>
@@ -166,32 +166,32 @@ export const TechnicalSpecsSection = ({
         technicalSpecs.customOS) && (
         <div className="pt-4 border-t border-border">
           <div className="flex items-center gap-2 mb-2">
-            <Icon name="CheckCircle" size={16} className="text-primary" />
-            <div className="text-sm font-semibold text-foreground">
+            <Icon name="CheckCircle" size={16} className="text-teal-500" />
+            <div className="text-sm font-semibold text-teal-600">
               Дополнительные возможности:
             </div>
           </div>
           <div className="flex flex-wrap gap-3">
             {technicalSpecs.guaranteedResources && (
               <div className="flex items-center gap-1.5 text-xs">
-                <Icon name="Check" size={14} className="text-primary" />
-                <span className="text-foreground font-medium">
+                <Icon name="Check" size={14} className="text-teal-500" />
+                <span className="text-teal-600 font-medium">
                   {t("card.guaranteedResources")}
                 </span>
               </div>
             )}
             {technicalSpecs.apiAccess && (
               <div className="flex items-center gap-1.5 text-xs">
-                <Icon name="Code" size={14} className="text-primary" />
-                <span className="text-foreground font-medium">
+                <Icon name="Code" size={14} className="text-teal-500" />
+                <span className="text-teal-600 font-medium">
                   {t("card.apiAccess")}
                 </span>
               </div>
             )}
             {technicalSpecs.customOS && (
               <div className="flex items-center gap-1.5 text-xs">
-                <Icon name="Upload" size={14} className="text-primary" />
-                <span className="text-foreground font-medium">
+                <Icon name="Upload" size={14} className="text-teal-500" />
+                <span className="text-teal-600 font-medium">
                   {t("card.customOS")}
                 </span>
               </div>
@@ -222,8 +222,8 @@ export const ServiceGuaranteesSection = ({
       time.includes("мгновенно")
     ) {
       return {
-        color: "text-green-600 dark:text-green-400",
-        bg: "bg-green-500/10",
+        color: "text-emerald-600 dark:text-emerald-400",
+        bg: "bg-emerald-500/10",
         label: "Отлично",
       };
     }
@@ -233,8 +233,8 @@ export const ServiceGuaranteesSection = ({
       time.includes("10 мин")
     ) {
       return {
-        color: "text-yellow-600 dark:text-yellow-400",
-        bg: "bg-yellow-500/10",
+        color: "text-amber-600 dark:text-amber-400",
+        bg: "bg-amber-500/10",
         label: "Хорошо",
       };
     }
@@ -261,12 +261,12 @@ export const ServiceGuaranteesSection = ({
       <div className="grid md:grid-cols-3 gap-4">
         <div className="bg-background rounded-xl p-4 border border-border">
           <div className="flex items-center gap-2 mb-2">
-            <Icon name="Activity" size={16} className="text-primary" />
+            <Icon name="Activity" size={16} className="text-orange-500" />
             <div className="text-xs font-bold text-muted-foreground uppercase">
               {t("card.uptimeSLA")}
             </div>
           </div>
-          <div className="text-2xl font-black text-primary">
+          <div className="text-2xl font-black text-orange-600">
             {serviceGuarantees.uptimeSLA}
           </div>
         </div>
@@ -303,12 +303,12 @@ export const ServiceGuaranteesSection = ({
           })()}
         <div className="bg-background rounded-xl p-4 border border-border">
           <div className="flex items-center gap-2 mb-2">
-            <Icon name="DollarSign" size={16} className="text-primary" />
+            <Icon name="DollarSign" size={16} className="text-emerald-500" />
             <div className="text-xs font-bold text-muted-foreground uppercase">
               {t("card.moneyBackGuarantee")}
             </div>
           </div>
-          <div className="text-2xl font-black text-primary">
+          <div className="text-2xl font-black text-emerald-600">
             {serviceGuarantees.moneyBackGuarantee
               ? `${serviceGuarantees.moneyBackGuarantee} ${t("common.days")}`
               : t("common.absent")}
@@ -334,17 +334,17 @@ export const AdditionalServicesSection = ({
     <div className="space-y-4">
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
         <div
-          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.autoBackups ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.autoBackups ? "bg-emerald-500/10 border border-emerald-500/30" : "bg-background border border-border"}`}
         >
           <Icon
             name={additionalServices.autoBackups ? "CheckCircle" : "XCircle"}
             size={16}
             className={
-              additionalServices.autoBackups ? "text-primary" : "text-muted"
+              additionalServices.autoBackups ? "text-emerald-500" : "text-muted"
             }
           />
           <div className="flex-1">
-            <div className="text-sm font-semibold text-foreground">
+            <div className="text-sm font-semibold text-emerald-600">
               {t("card.autoBackups")}
             </div>
             {additionalServices.autoBackups &&
@@ -355,51 +355,51 @@ export const AdditionalServicesSection = ({
               )}
             {additionalServices.autoBackups &&
               !additionalServices.backupPrice && (
-                <div className="text-xs text-primary font-medium">
+                <div className="text-xs text-emerald-600 font-medium">
                   {t("common.free")}
                 </div>
               )}
           </div>
         </div>
         <div
-          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.monitoring ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.monitoring ? "bg-blue-500/10 border border-blue-500/30" : "bg-background border border-border"}`}
         >
           <Icon
             name={additionalServices.monitoring ? "CheckCircle" : "XCircle"}
             size={16}
             className={
-              additionalServices.monitoring ? "text-primary" : "text-muted"
+              additionalServices.monitoring ? "text-blue-500" : "text-muted"
             }
           />
-          <div className="text-sm font-semibold text-foreground">
+          <div className="text-sm font-semibold text-blue-600">
             {t("card.monitoring")}
           </div>
         </div>
         <div
-          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.snapshots ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.snapshots ? "bg-purple-500/10 border border-purple-500/30" : "bg-background border border-border"}`}
         >
           <Icon
             name={additionalServices.snapshots ? "CheckCircle" : "XCircle"}
             size={16}
             className={
-              additionalServices.snapshots ? "text-primary" : "text-muted"
+              additionalServices.snapshots ? "text-purple-500" : "text-muted"
             }
           />
-          <div className="text-sm font-semibold text-foreground">
+          <div className="text-sm font-semibold text-purple-600">
             {t("card.snapshots")}
           </div>
         </div>
         <div
-          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.customOS ? "bg-primary/10 border border-primary/30" : "bg-background border border-border"}`}
+          className={`flex items-center gap-2 p-3 rounded-xl ${additionalServices.customOS ? "bg-amber-500/10 border border-amber-500/30" : "bg-background border border-border"}`}
         >
           <Icon
             name={additionalServices.customOS ? "CheckCircle" : "XCircle"}
             size={16}
             className={
-              additionalServices.customOS ? "text-primary" : "text-muted"
+              additionalServices.customOS ? "text-amber-500" : "text-muted"
             }
           />
-          <div className="text-sm font-semibold text-foreground">
+          <div className="text-sm font-semibold text-amber-600">
             {t("card.customOS")}
           </div>
         </div>
@@ -419,14 +419,35 @@ export const PaymentMethodsSection = ({
   const { pricingDetails } = provider;
   const { t } = useLanguage();
 
+  const getPaymentMethodColor = (method: string) => {
+    if (method.includes("Банк") || method.includes("Перевод"))
+      return "text-blue-600 bg-blue-500/10 border-blue-500/30";
+    if (
+      method.includes("Карт") ||
+      method.includes("Visa") ||
+      method.includes("MasterCard")
+    )
+      return "text-indigo-600 bg-indigo-500/10 border-indigo-500/30";
+    if (
+      method.includes("Крипт") ||
+      method.includes("Bitcoin") ||
+      method.includes("ETH")
+    )
+      return "text-amber-600 bg-amber-500/10 border-amber-500/30";
+    if (
+      method.includes("Электрон") ||
+      method.includes("WebMoney") ||
+      method.includes("QIWI")
+    )
+      return "text-purple-600 bg-purple-500/10 border-purple-500/30";
+    return "text-rose-600 bg-rose-500/10 border-rose-500/30";
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         {pricingDetails.paymentMethods.map((method, idx) => (
-          <Badge
-            key={idx}
-            className="bg-primary/10 border border-primary/30 text-primary"
-          >
+          <Badge key={idx} className={`${getPaymentMethodColor(method)}`}>
             {method}
           </Badge>
         ))}
@@ -452,9 +473,9 @@ export const CaseStudiesSection = ({ provider }: CaseStudiesSectionProps) => {
           <Icon
             name="CheckCircle2"
             size={14}
-            className="text-primary flex-shrink-0 mt-0.5"
+            className="text-sky-500 flex-shrink-0 mt-0.5"
           />
-          <span className="text-sm text-foreground leading-relaxed">
+          <span className="text-sm text-sky-600 leading-relaxed">
             {caseStudy}
           </span>
         </div>

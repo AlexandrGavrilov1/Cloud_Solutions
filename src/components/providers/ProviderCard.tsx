@@ -219,11 +219,11 @@ export const ProviderCard = ({
         <div className="space-y-2">
           {provider.fstekCertifications.map((cert, idx) => (
             <div key={idx} className="flex items-start gap-2">
-              <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Icon name="ShieldCheck" size={12} className="text-primary" />
+              <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Icon name="ShieldCheck" size={12} className="text-blue-500" />
               </div>
               <div>
-                <Badge className="bg-primary/10 text-primary border-primary/30 mb-1">
+                <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/30 mb-1">
                   {cert}
                 </Badge>
                 <p className="text-xs text-muted-foreground">
@@ -248,32 +248,30 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="UserPlus" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="UserPlus" size={18} className="text-indigo-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Данные для регистрации
           </h4>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
+            Для регистрации требуется предоставить:
+          </p>
           <div className="flex flex-wrap gap-2">
             {provider.registrationData.map((dataField, idx) => (
               <Badge
                 key={idx}
-                className="bg-primary/10 text-primary border-primary/30 text-sm"
+                className="bg-amber-500/10 text-amber-600 border-amber-500/30 text-sm"
               >
                 {dataField}
               </Badge>
             ))}
           </div>
-
-          <p className="text-sm text-foreground leading-relaxed">
-            Для регистрации у этого провайдера требуется предоставить указанные
-            данные.
-          </p>
         </div>
       </div>
     );
@@ -288,10 +286,10 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="Briefcase" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Briefcase" size={18} className="text-purple-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Дополнительные услуги
@@ -305,8 +303,7 @@ export const ProviderCard = ({
             {provider.additionalServicesList.map((service, idx) => (
               <Badge
                 key={idx}
-                variant="outline"
-                className="bg-primary/10 text-primary border-primary/30"
+                className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30"
               >
                 {service}
               </Badge>
@@ -326,35 +323,40 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="Users" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-teal-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Users" size={18} className="text-teal-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Поддерживаемые типы клиентов
           </h4>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {provider.supportedClientTypes.map((type, idx) => (
-            <Badge
-              key={idx}
-              className={`text-sm bg-primary/10 text-primary border-primary/30`}
-            >
-              {type}
-            </Badge>
-          ))}
+        <div className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {provider.supportedClientTypes.map((type, idx) => (
+              <Badge
+                key={idx}
+                className={`text-sm ${
+                  type === "Физлицо"
+                    ? "bg-blue-500/10 text-blue-600 border-blue-500/30"
+                    : "bg-purple-500/10 text-purple-600 border-purple-500/30"
+                }`}
+              >
+                {type}
+              </Badge>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Провайдер работает{" "}
+            {provider.supportedClientTypes.length === 2
+              ? "как с физическими, так и с юридическими лицами"
+              : provider.supportedClientTypes.includes("Физлицо")
+                ? "только с физическими лицами"
+                : "только с юридическими лицами"}
+          </p>
         </div>
-
-        <p className="text-sm text-foreground leading-relaxed mt-3">
-          Провайдер работает{" "}
-          {provider.supportedClientTypes.length === 2
-            ? "как с физическими, так и с юридическими лицами"
-            : provider.supportedClientTypes.includes("Физлицо")
-              ? "только с физическими лицами"
-              : "только с юридическими лицами"}
-        </p>
       </div>
     );
   };
@@ -368,26 +370,26 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="Cpu" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Cpu" size={18} className="text-purple-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">Поддержка GPU</h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
             Провайдер предоставляет серверы с графическими процессорами для:
           </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1">
+          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1 mb-4">
             <li>Машинного обучения и искусственного интеллекта</li>
             <li>Визуализации и рендеринга</li>
             <li>Научных вычислений и моделирования</li>
             <li>Игровых серверов и стриминга</li>
           </ul>
 
-          <div className="mt-4">
+          <div>
             <div className="text-sm font-medium text-foreground mb-2">
               Доступные модели GPU:
             </div>
@@ -399,7 +401,7 @@ export const ProviderCard = ({
                   onMouseEnter={() => showGpuTooltip(gpuModel)}
                   onMouseLeave={hideGpuTooltip}
                 >
-                  <Badge className="bg-primary/10 text-primary border-primary/30 cursor-help">
+                  <Badge className="bg-indigo-500/10 text-indigo-600 border-indigo-500/30 cursor-help">
                     {gpuModel}
                   </Badge>
 
@@ -409,7 +411,7 @@ export const ProviderCard = ({
                       className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
                       style={{ transformOrigin: "center bottom" }}
                     >
-                      <div className="text-xs font-semibold text-foreground mb-1">
+                      <div className="text-xs font-semibold text-indigo-600 mb-1">
                         {gpuTooltip.model}
                       </div>
                       <div className="text-xs text-muted-foreground">
@@ -435,20 +437,20 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="Monitor" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Monitor" size={18} className="text-cyan-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">Доступные ОС</h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
             Провайдер поддерживает следующие операционные системы:
           </p>
 
-          <div className="mt-4">
+          <div>
             <div className="text-sm font-medium text-foreground mb-2">
               Доступные операционные системы:
             </div>
@@ -460,7 +462,7 @@ export const ProviderCard = ({
                   onMouseEnter={() => showOsTooltip(os)}
                   onMouseLeave={hideOsTooltip}
                 >
-                  <Badge className="bg-primary/10 text-primary border-primary/30 cursor-help">
+                  <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30 cursor-help">
                     {os}
                   </Badge>
 
@@ -470,7 +472,7 @@ export const ProviderCard = ({
                       className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
                       style={{ transformOrigin: "center bottom" }}
                     >
-                      <div className="text-xs font-semibold text-foreground mb-1">
+                      <div className="text-xs font-semibold text-emerald-600 mb-1">
                         {osTooltip.os}
                       </div>
                       <div className="text-xs text-muted-foreground">
@@ -493,16 +495,16 @@ export const ProviderCard = ({
     }
 
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="Database" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Database" size={18} className="text-green-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">Поддержка 1С</h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
             Провайдер специализируется на размещении решений 1С и предоставляет:
           </p>
           <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1">
@@ -519,19 +521,27 @@ export const ProviderCard = ({
 
   const renderMobileAppSection = () => {
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-pink-500/20 rounded-xl flex items-center justify-center">
             <Icon
               name={provider.mobileApp ? "Smartphone" : "SmartphoneOff"}
               size={18}
-              className={provider.mobileApp ? "text-primary" : "text-primary"}
+              className={
+                provider.mobileApp ? "text-pink-500" : "text-muted-foreground"
+              }
             />
           </div>
           <h4 className="text-base font-bold text-foreground">
             Мобильное приложение
           </h4>
-          <Badge className="bg-primary/10 text-primary border-primary/30 ml-auto">
+          <Badge
+            className={
+              provider.mobileApp
+                ? "bg-green-500/10 text-green-600 border-green-500/30 ml-auto"
+                : "bg-gray-500/10 text-gray-600 border-gray-500/30 ml-auto"
+            }
+          >
             {provider.mobileApp ? "Доступно" : "Отсутствует"}
           </Badge>
         </div>
@@ -546,13 +556,19 @@ export const ProviderCard = ({
 
   const renderOrderServicesSection = () => {
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+      <div className="bg-card border border-border rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Icon name="ClipboardCheck" size={18} className="text-primary" />
+          <div className="w-9 h-9 bg-amber-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="ClipboardCheck" size={18} className="text-amber-500" />
           </div>
           <h4 className="text-base font-bold text-foreground">Заказ услуг</h4>
-          <Badge className="bg-primary/10 text-primary border-primary/30 ml-auto">
+          <Badge
+            className={
+              provider.orderBeforeRegistration
+                ? "bg-green-500/10 text-green-600 border-green-500/30 ml-auto"
+                : "bg-blue-500/10 text-blue-600 border-blue-500/30 ml-auto"
+            }
+          >
             {provider.orderBeforeRegistration
               ? "До регистрации"
               : "После регистрации"}
@@ -619,20 +635,20 @@ export const ProviderCard = ({
               {/* Первый ряд: Соответствие 152-ФЗ и ФСТЭК */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {provider.fz152Compliant && (
-                  <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                  <div className="bg-card border border-border rounded-2xl p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
                         <Icon
                           name="ShieldCheck"
                           size={18}
-                          className="text-primary"
+                          className="text-blue-500"
                         />
                       </div>
                       <h4 className="text-base font-bold text-foreground">
                         {t("card.fz152")}
                       </h4>
                       {provider.fz152Level && (
-                        <Badge className="bg-primary/20 text-primary border-0 ml-auto">
+                        <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 ml-auto">
                           {provider.fz152Level}
                         </Badge>
                       )}
@@ -645,20 +661,20 @@ export const ProviderCard = ({
 
                 {provider.fstekCertifications &&
                   provider.fstekCertifications.length > 0 && (
-                    <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                    <div className="bg-card border border-border rounded-2xl p-4">
                       <div className="flex items-center gap-2 mb-3">
-                        <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
                           <Icon
                             name="ShieldAlert"
                             size={18}
-                            className="text-primary"
+                            className="text-blue-500"
                           />
                         </div>
                         <h4 className="text-base font-bold text-foreground">
                           ФСТЭК
                         </h4>
                         {provider.fstekLevel && (
-                          <Badge className="bg-primary/20 text-primary border-0 ml-auto">
+                          <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 ml-auto">
                             {provider.fstekLevel}
                           </Badge>
                         )}
@@ -672,13 +688,13 @@ export const ProviderCard = ({
               {/* Второй ряд: Размещение КИИ и Дополнительные услуги */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {provider.kiiPlacement && (
-                  <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                  <div className="bg-card border border-border rounded-2xl p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
                         <Icon
                           name="Building2"
                           size={18}
-                          className="text-primary"
+                          className="text-blue-500"
                         />
                       </div>
                       <h4 className="text-base font-bold text-foreground">
@@ -721,13 +737,13 @@ export const ProviderCard = ({
 
               {/* Шестой ряд: Технические характеристики и Поддержка 1С */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+                <div className="bg-card border border-border rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+                    <div className="w-9 h-9 bg-violet-500/20 rounded-xl flex items-center justify-center">
                       <Icon
                         name="Settings"
                         size={18}
-                        className="text-primary"
+                        className="text-violet-500"
                       />
                     </div>
                     <h4 className="text-base font-bold text-foreground">
@@ -739,32 +755,70 @@ export const ProviderCard = ({
                 {render1CSection()}
               </div>
 
-              {/* Остальные секции также с подсветкой */}
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              {/* Остальные секции */}
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-9 h-9 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                    <Icon name="Award" size={18} className="text-orange-500" />
+                  </div>
+                  <h4 className="text-base font-bold text-foreground">
+                    Гарантии обслуживания
+                  </h4>
+                </div>
                 <ServiceGuaranteesSection provider={provider} />
               </div>
 
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                    <Icon
+                      name="Package"
+                      size={18}
+                      className="text-emerald-500"
+                    />
+                  </div>
+                  <h4 className="text-base font-bold text-foreground">
+                    Дополнительные услуги
+                  </h4>
+                </div>
                 <AdditionalServicesSection provider={provider} />
               </div>
 
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-9 h-9 bg-rose-500/20 rounded-xl flex items-center justify-center">
+                    <Icon
+                      name="CreditCard"
+                      size={18}
+                      className="text-rose-500"
+                    />
+                  </div>
+                  <h4 className="text-base font-bold text-foreground">
+                    Способы оплаты
+                  </h4>
+                </div>
                 <PaymentMethodsSection provider={provider} />
               </div>
 
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-9 h-9 bg-sky-500/20 rounded-xl flex items-center justify-center">
+                    <Icon name="Briefcase" size={18} className="text-sky-500" />
+                  </div>
+                  <h4 className="text-base font-bold text-foreground">Кейсы</h4>
+                </div>
                 <CaseStudiesSection provider={provider} />
               </div>
 
               {/* Плюсы и минусы */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-accent border border-secondary/30 rounded-2xl p-4">
+                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-secondary rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
                       <Icon
                         name="Check"
                         size={18}
-                        className="text-background"
+                        className="text-emerald-500"
                       />
                     </div>
                     <h4 className="text-base font-bold text-foreground">
@@ -774,11 +828,11 @@ export const ProviderCard = ({
                   <ul className="space-y-2.5">
                     {provider.pros.map((pro, idx) => (
                       <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-5 h-5 bg-emerald-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Icon
                             name="Plus"
                             size={12}
-                            className="text-background"
+                            className="text-emerald-500"
                           />
                         </div>
                         <span className="text-sm text-foreground font-medium">
@@ -789,13 +843,13 @@ export const ProviderCard = ({
                   </ul>
                 </div>
 
-                <div className="bg-accent border border-destructive/30 rounded-2xl p-4">
+                <div className="bg-rose-500/5 border border-rose-500/20 rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-destructive rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-9 h-9 bg-rose-500/20 rounded-xl flex items-center justify-center">
                       <Icon
                         name="AlertCircle"
                         size={18}
-                        className="text-destructive-foreground"
+                        className="text-rose-500"
                       />
                     </div>
                     <h4 className="text-base font-bold text-foreground">
@@ -805,11 +859,11 @@ export const ProviderCard = ({
                   <ul className="space-y-2.5">
                     {provider.cons.map((con, idx) => (
                       <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-destructive rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-5 h-5 bg-rose-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Icon
                             name="Minus"
                             size={12}
-                            className="text-destructive-foreground"
+                            className="text-rose-500"
                           />
                         </div>
                         <span className="text-sm text-foreground font-medium">
