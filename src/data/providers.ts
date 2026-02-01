@@ -1057,6 +1057,10 @@ export const providers: Provider[] = [
       controlPanel: "ISPmanager",
       apiAccess: true,
       ddosProtection: "Базовая защита",
+
+      gpuModels: ["GT 1030", "RTX 1060", "RTX 4060Ti", "GRID K1", "RTX 4090"],
+      // Добавляем поддержку 1С
+      supports1C: true,
     },
     serviceGuarantees: {
       uptimeSLA: "99.98%",
