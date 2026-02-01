@@ -716,7 +716,7 @@ export const reviewsData: Record<number, Review[]> = {
     {
       author: "Павел Ж.",
       text: "Тестовая неделя дала время всё проверить. SSD диски работают быстро, хотя не NVMe. Для WordPress сайта хватает.",
-      rating: 4,
+      rating: 5, // Изменено с 4 на 5
       date: "23 окт 2025",
     },
     {
