@@ -626,6 +626,8 @@ export const FilterPanel = ({
     );
   };
 
+  // FilterPanel.tsx - исправленный GpuDropdown компонент
+
   // Дропдаун для GPU
   const GpuDropdown = () => {
     const isOpen = dropdownsOpen.gpu;
@@ -647,13 +649,13 @@ export const FilterPanel = ({
                 <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
               </div>
               <span className="truncate">
-                {filterGPU.length === 0
-                  ? filterHasGPU
+                {filterHasGPU
+                  ? "Любой GPU (есть GPU)"
+                  : filterGPU.length === 0
                     ? "Любой GPU"
-                    : "Любой GPU"
-                  : filterGPU.length === 1
-                    ? filterGPU[0]
-                    : `GPU (${filterGPU.length})`}
+                    : filterGPU.length === 1
+                      ? filterGPU[0]
+                      : `GPU (${filterGPU.length})`}
               </span>
             </div>
             <Icon
@@ -666,25 +668,26 @@ export const FilterPanel = ({
           {isOpen && (
             <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
               <div className="p-2">
-                {/* Добавляем опцию "Любой GPU" (булевый фильтр) */}
+                {/* Опция "Любой GPU" (булевый фильтр) */}
                 <div
                   className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
                   onClick={() => {
-                    setFilterHasGPU(!filterHasGPU);
+                    const newHasGPU = !filterHasGPU;
+                    setFilterHasGPU(newHasGPU);
                     // Если включаем "Любой GPU", очищаем выбор конкретных моделей
-                    if (!filterHasGPU) {
+                    if (newHasGPU) {
                       setFilterGPU([]);
                     }
                   }}
                 >
                   <div
                     className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
-                      filterHasGPU && filterGPU.length === 0
+                      filterHasGPU
                         ? "bg-primary border-primary"
                         : "border-primary/50"
                     }`}
                   >
-                    {filterHasGPU && filterGPU.length === 0 && (
+                    {filterHasGPU && (
                       <Icon
                         name="Check"
                         size={8}
@@ -698,24 +701,43 @@ export const FilterPanel = ({
                 <div className="border-t border-border my-2"></div>
 
                 {/* Опция "Все модели" */}
-                <button
-                  type="button"
-                  onClick={() => setFilterGPU([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm mb-1 ${
-                    filterGPU.length === 0 && !filterHasGPU
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "hover:bg-primary/5"
-                  }`}
+                <div
+                  className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded mb-1"
+                  onClick={() => {
+                    setFilterGPU([]);
+                    setFilterHasGPU(false);
+                  }}
                 >
-                  Все модели GPU
-                </button>
+                  <div
+                    className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      filterGPU.length === 0 && !filterHasGPU
+                        ? "bg-primary border-primary"
+                        : "border-primary/50"
+                    }`}
+                  >
+                    {filterGPU.length === 0 && !filterHasGPU && (
+                      <Icon
+                        name="Check"
+                        size={8}
+                        className="text-background w-2.5 h-2.5"
+                      />
+                    )}
+                  </div>
+                  <span className="text-sm">Все модели GPU</span>
+                </div>
 
                 {/* Список конкретных GPU моделей */}
                 {allGPUs.map((option) => (
                   <div
                     key={option}
                     className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
-                    onClick={() => handleGpuChange(option)}
+                    onClick={() => {
+                      handleGpuChange(option);
+                      // Если выбираем конкретную модель, выключаем "Любой GPU"
+                      if (filterHasGPU) {
+                        setFilterHasGPU(false);
+                      }
+                    }}
                   >
                     <div
                       className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
