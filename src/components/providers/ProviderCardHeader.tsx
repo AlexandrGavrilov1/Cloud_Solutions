@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
@@ -57,9 +57,9 @@ export const ProviderCardHeader = ({
       time.includes("мгновенно")
     ) {
       return {
-        bg: "bg-green-500/10",
-        border: "border-green-500/30",
-        text: "text-green-700 dark:text-green-400",
+        bg: "bg-emerald-500/10",
+        border: "border-emerald-500/30",
+        text: "text-emerald-700 dark:text-emerald-400",
         icon: "Zap",
       };
     }
@@ -69,9 +69,9 @@ export const ProviderCardHeader = ({
       time.includes("10 мин")
     ) {
       return {
-        bg: "bg-yellow-500/10",
-        border: "border-yellow-500/30",
-        text: "text-yellow-700 dark:text-yellow-400",
+        bg: "bg-amber-500/10",
+        border: "border-amber-500/30",
+        text: "text-amber-700 dark:text-amber-400",
         icon: "Clock",
       };
     }
@@ -136,14 +136,14 @@ export const ProviderCardHeader = ({
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <div className="relative flex-shrink-0">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-white border border-primary/10 shadow-soft flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-white border border-blue-500/10 shadow-soft flex items-center justify-center">
               <img
                 src={provider.logo}
                 alt={provider.name}
                 className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
               />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-lg text-background text-xs font-bold">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg text-background text-xs font-bold">
               {index + 1}
             </div>
           </div>
@@ -156,35 +156,43 @@ export const ProviderCardHeader = ({
 
               <div className="flex gap-1 flex-shrink-0">
                 {provider.fz152Compliant && (
-                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                  <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
                     <Icon
                       name="ShieldCheck"
                       size={10}
-                      className="text-primary"
+                      className="text-blue-500"
                     />
                   </div>
                 )}
 
                 {provider.fstekCertifications &&
                   provider.fstekCertifications.length > 0 && (
-                    <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
                       <Icon
                         name="ShieldAlert"
                         size={10}
-                        className="text-primary"
+                        className="text-blue-500"
                       />
                     </div>
                   )}
 
                 {provider.kiiPlacement && (
-                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
-                    <Icon name="Building2" size={10} className="text-primary" />
+                  <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center">
+                    <Icon
+                      name="Building2"
+                      size={10}
+                      className="text-blue-500"
+                    />
                   </div>
                 )}
 
                 {provider.technicalSpecs.supports1C && (
-                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
-                    <Icon name="Database" size={10} className="text-primary" />
+                  <div className="w-5 h-5 bg-green-500/20 rounded-md flex items-center justify-center">
+                    <Icon
+                      name="Database"
+                      size={10}
+                      className="text-green-500"
+                    />
                   </div>
                 )}
               </div>
@@ -199,13 +207,13 @@ export const ProviderCardHeader = ({
                     size={16}
                     className={
                       i < Math.round(avgRating)
-                        ? "fill-primary text-primary"
+                        ? "fill-amber-500 text-amber-500"
                         : "text-muted"
                     }
                   />
                 ))}
               </div>
-              <span className="text-base font-bold text-foreground">
+              <span className="text-base font-bold text-amber-600">
                 {avgRating.toFixed(1)}
               </span>
             </div>
@@ -222,10 +230,10 @@ export const ProviderCardHeader = ({
               onClick={handleProviderClickWithTracking}
               onMouseEnter={() => setShowLinkTooltip(true)}
               onMouseLeave={() => setShowLinkTooltip(false)}
-              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 xl:order-1"
               aria-label={`Перейти на сайт ${provider.name}`}
             >
-              <Icon name="ArrowUpRight" size={17} className="text-primary" />
+              <Icon name="ArrowUpRight" size={17} className="text-blue-500" />
             </button>
 
             {showLinkTooltip && (
@@ -243,17 +251,17 @@ export const ProviderCardHeader = ({
                 onClick={onCompareClick}
                 onMouseEnter={() => setShowCompareTooltip(true)}
                 onMouseLeave={() => setShowCompareTooltip(false)}
-                className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
+                className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-violet-500/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:ring-offset-2 ${
                   isComparing
-                    ? "border-primary/50 shadow-lg shadow-primary/30"
-                    : "border-border hover:border-primary/50"
+                    ? "border-violet-500/50 shadow-lg shadow-violet-500/30"
+                    : "border-border hover:border-violet-500/50"
                 } xl:order-2`}
                 aria-label={isComparing ? "Убрать из сравнения" : "Сравнить"}
               >
                 <Icon
                   name={isComparing ? "Check" : "GitCompare"}
                   size={17}
-                  className="text-foreground"
+                  className="text-violet-500"
                 />
               </button>
 
@@ -274,17 +282,17 @@ export const ProviderCardHeader = ({
         <Icon
           name="MapPin"
           size={14}
-          className="text-primary mt-0.5 flex-shrink-0"
+          className="text-blue-500 mt-0.5 flex-shrink-0"
         />
         <div className="flex items-center gap-1">
-          <span className="text-foreground text-xs">
+          <span className="text-blue-600 text-xs">
             {showAllLocations
               ? provider.locations.join(", ")
               : provider.locations.slice(0, 2).join(", ")}
             {provider.locations.length > 2 && !showAllLocations && (
               <button
                 onClick={() => setShowAllLocations(true)}
-                className="text-primary hover:underline ml-1"
+                className="text-blue-600 hover:underline ml-1"
                 aria-label="Показать все локации"
               >
                 +{provider.locations.length - 2}
@@ -293,7 +301,7 @@ export const ProviderCardHeader = ({
             {showAllLocations && provider.locations.length > 2 && (
               <button
                 onClick={() => setShowAllLocations(false)}
-                className="text-primary hover:underline ml-1"
+                className="text-blue-600 hover:underline ml-1"
                 aria-label="Скрыть локации"
               >
                 скрыть
@@ -309,15 +317,19 @@ export const ProviderCardHeader = ({
             <Icon
               name="HardDrive"
               size={14}
-              className="text-primary flex-shrink-0"
+              className="text-violet-500 flex-shrink-0"
             />
-            <span className="text-foreground truncate">
+            <span className="text-violet-600 truncate">
               {provider.technicalSpecs.diskType}
             </span>
           </div>
           <div className="flex items-center gap-1.5 text-sm">
-            <Icon name="Box" size={14} className="text-primary flex-shrink-0" />
-            <span className="text-foreground truncate">
+            <Icon
+              name="Box"
+              size={14}
+              className="text-cyan-500 flex-shrink-0"
+            />
+            <span className="text-cyan-600 truncate">
               {provider.technicalSpecs.virtualization.slice(0, 2).join(", ")}
             </span>
           </div>
@@ -340,9 +352,9 @@ export const ProviderCardHeader = ({
                   <Icon
                     name="Cpu"
                     size={14}
-                    className="text-primary flex-shrink-0"
+                    className="text-indigo-500 flex-shrink-0"
                   />
-                  <span className="text-foreground">
+                  <span className="text-indigo-600">
                     GPU: {provider.technicalSpecs.gpuModels.length} модел
                     {provider.technicalSpecs.gpuModels.length === 1
                       ? "ь"
@@ -352,13 +364,13 @@ export const ProviderCardHeader = ({
 
                 {gpuTooltip.show && (
                   <div className="absolute z-50 top-full left-0 mt-1 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
-                    <div className="text-xs font-semibold text-foreground mb-1">
+                    <div className="text-xs font-semibold text-indigo-600 mb-1">
                       {gpuTooltip.model}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {gpuTooltip.description}
                     </div>
-                    <div className="mt-1 text-xs text-primary">
+                    <div className="mt-1 text-xs text-indigo-500">
                       Всего {provider.technicalSpecs.gpuModels?.length || 0}{" "}
                       моделей GPU
                     </div>
@@ -372,11 +384,11 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Network"
                 size={14}
-                className="text-primary flex-shrink-0"
+                className="text-emerald-500 flex-shrink-0"
               />
-              <span className="text-foreground">Kubernetes</span>
+              <span className="text-emerald-600">Kubernetes</span>
               {provider.technicalSpecs.kubernetes.managed && (
-                <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-[10px] px-1 py-0">
+                <Badge className="bg-emerald-500/10 border-emerald-500/30 text-emerald-600 border font-semibold text-[10px] px-1 py-0">
                   managed
                 </Badge>
               )}
@@ -388,9 +400,9 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Database"
                 size={14}
-                className="text-primary flex-shrink-0"
+                className="text-green-500 flex-shrink-0"
               />
-              <span className="text-foreground">1С</span>
+              <span className="text-green-600">1С</span>
             </div>
           )}
         </div>
@@ -400,19 +412,16 @@ export const ProviderCardHeader = ({
             <div className="flex items-baseline whitespace-nowrap">
               {provider.basePrice !== 0 ? (
                 <>
-                  <span className="text-2xl font-black text-primary mr-2">
+                  <span className="text-2xl font-black text-blue-500 mr-2">
                     {t("common.from")}
                   </span>
-                  <span className="text-2xl font-black text-primary">
+                  <span className="text-2xl font-black text-blue-500">
                     {priceText}
                   </span>
                 </>
               ) : (
                 <div className="text-right">
-                  <span
-                    className="text-xl font-bold"
-                    style={{ color: "rgb(255, 143, 51)" }}
-                  >
+                  <span className="text-2xl font-black text-orange-500">
                     {priceText}
                   </span>
                 </div>
@@ -424,10 +433,10 @@ export const ProviderCardHeader = ({
               name="Gift"
               size={14}
               className={
-                provider.trialDays ? "text-primary" : "text-muted-foreground"
+                provider.trialDays ? "text-amber-500" : "text-muted-foreground"
               }
             />
-            <span className="text-foreground text-xs truncate">
+            <span className="text-amber-600 text-xs truncate">
               {provider.trialDays
                 ? typeof provider.trialDays === "number" &&
                   provider.trialDays > 0
@@ -459,15 +468,19 @@ export const ProviderCardHeader = ({
             );
           })()}
         {provider.fz152Compliant && (
-          <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
-            <Icon name="ShieldCheck" size={12} className="mr-1" />
+          <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="ShieldCheck" size={12} className="text-blue-500 mr-1" />
             152-ФЗ
           </Badge>
         )}
         {provider.fstekCertifications &&
           provider.fstekCertifications.length > 0 && (
-            <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
-              <Icon name="ShieldAlert" size={12} className="mr-1" />
+            <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-600 border font-semibold text-xs px-2 py-1">
+              <Icon
+                name="ShieldAlert"
+                size={12}
+                className="text-blue-500 mr-1"
+              />
               ФСТЭК
               {provider.fstekCertifications.length > 0 && (
                 <span className="ml-1 font-normal">
@@ -477,27 +490,27 @@ export const ProviderCardHeader = ({
             </Badge>
           )}
         {provider.kiiPlacement && (
-          <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
-            <Icon name="Building2" size={12} className="mr-1" />
+          <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Building2" size={12} className="text-blue-500 mr-1" />
             КИИ
           </Badge>
         )}
         {provider.technicalSpecs.supports1C && (
-          <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
-            <Icon name="Database" size={12} className="mr-1" />
+          <Badge className="bg-green-500/10 border-green-500/30 text-green-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Database" size={12} className="text-green-500 mr-1" />
             1С
           </Badge>
         )}
         {provider.uptime30days && (
-          <Badge className="bg-secondary/10 border-secondary/30 text-secondary border font-semibold text-xs px-2 py-1">
-            <Icon name="Activity" size={12} className="mr-1" />
+          <Badge className="bg-orange-500/10 border-orange-500/30 text-orange-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Activity" size={12} className="text-orange-500 mr-1" />
             {t("common.uptime")}: {provider.uptime30days}%
           </Badge>
         )}
         {provider.technicalSpecs.gpuModels &&
           provider.technicalSpecs.gpuModels.length > 0 && (
-            <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-xs px-2 py-1">
-              <Icon name="Cpu" size={12} className="mr-1" />
+            <Badge className="bg-indigo-500/10 border-indigo-500/30 text-indigo-600 border font-semibold text-xs px-2 py-1">
+              <Icon name="Cpu" size={12} className="text-indigo-500 mr-1" />
               GPU: {provider.technicalSpecs.gpuModels.length}
             </Badge>
           )}
