@@ -20,7 +20,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  // Фильтры
+  // Фильтрыы
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -118,12 +118,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Новый фильтр: есть ли GPU вообще
-  const [filterHasGPU, setFilterHasGPU] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterHasGPU");
-    return saved ? JSON.parse(saved) : false;
-  });
-
   const [filter1C, setFilter1C] = useState<boolean>(() => {
     const saved = localStorage.getItem("filter1C");
     return saved ? JSON.parse(saved) : false;
@@ -181,7 +175,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
-  // Сохранение фильтров в localStorage
+  // Сохранение фильтров в localStorageй
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
@@ -322,10 +316,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterGPU");
     }
   }, [filterGPU]);
-
-  useEffect(() => {
-    localStorage.setItem("filterHasGPU", JSON.stringify(filterHasGPU));
-  }, [filterHasGPU]);
 
   useEffect(() => {
     localStorage.setItem("filter1C", JSON.stringify(filter1C));
@@ -500,17 +490,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingClientType) return false;
       }
 
-      // Фильтр GPU - работает двумя способами:
-      // 1. Фильтр "есть ли GPU вообще" (булевый фильтр)
-      if (filterHasGPU) {
-        const hasAnyGPU = (p.technicalSpecs.gpuModels || []).length > 0;
-        if (!hasAnyGPU) return false;
-      }
-
-      // 2. Фильтр по конкретным моделям GPU
+      // Фильтр GPU
       if (filterGPU.length > 0) {
-        const gpuModels = p.technicalSpecs.gpuModels || [];
-        const hasMatchingGPU = filterGPU.some((gpu) => gpuModels.includes(gpu));
+        const hasMatchingGPU = filterGPU.some(
+          (gpu) => p.technicalSpecs.gpuModels?.includes(gpu) || false,
+        );
         if (!hasMatchingGPU) return false;
       }
 
@@ -565,7 +549,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterRegistrationData,
     filterClientType,
     filterGPU,
-    filterHasGPU, // Добавляем новый фильтр
     filter1C,
     sortBy,
   ]);
@@ -646,8 +629,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   // Добавляем новые фильтры
                   filterGPU={filterGPU}
                   setFilterGPU={setFilterGPU}
-                  filterHasGPU={filterHasGPU} // Новый фильтр
-                  setFilterHasGPU={setFilterHasGPU} // Новый фильтр
                   filter1C={filter1C}
                   setFilter1C={setFilter1C}
                   allLocations={allLocations}
@@ -738,8 +719,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   // Добавляем новые фильтры
                   filterGPU={filterGPU}
                   setFilterGPU={setFilterGPU}
-                  filterHasGPU={filterHasGPU} // Новый фильтр
-                  setFilterHasGPU={setFilterHasGPU} // Новый фильтр
                   filter1C={filter1C}
                   setFilter1C={setFilter1C}
                   allLocations={allLocations}
