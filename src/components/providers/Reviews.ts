@@ -494,7 +494,7 @@ export const reviewsData: Record<number, Review[]> = {
     },
   ],
 
- 3: [
+  3: [
     {
       author: "Игорь Р.",
       text: "REG.RU использую уже 5 лет — домены, хостинг, VPS. Всё в одном месте, очень удобно! Поддержка всегда помогает, хоть и не молниеносно.",
@@ -597,7 +597,7 @@ export const reviewsData: Record<number, Review[]> = {
       rating: 5,
       date: "28 окт 2025",
     },
-  ]
+  ],
 
   4: [], // Nubes - без отзывов
 
