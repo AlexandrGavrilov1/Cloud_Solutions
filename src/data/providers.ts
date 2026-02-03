@@ -4893,15 +4893,15 @@ export const providers: Provider[] = [
 
     fz152Compliant: true,
     fz152Level: "",
-    fstekCompliant: false,
-    fstekCertifications: [],
+    fstekCompliant: true,
+    fstekCertifications: ["ФСТЭК-21"],
     fstekLevel: "",
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: [],
     registrationData: ["Email"],
-    supportedClientTypes: ["Физлицо", "Юрлицо"],
+    supportedClientTypes: ["Физлицо"],
 
     technicalSpecs: {
       diskType: "NVMe",
