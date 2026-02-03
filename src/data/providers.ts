@@ -1,4 +1,3 @@
-//providers.ts
 import { Provider } from "@/components/providers/types";
 import { reviewsData } from "@/components/providers/Reviews";
 

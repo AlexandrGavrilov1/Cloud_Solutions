@@ -1,4 +1,3 @@
-//ProviderCard.tsx
 import { useState, useRef } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
