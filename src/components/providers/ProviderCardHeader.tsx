@@ -1,45 +1,36 @@
-import { useState, useRef } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
-import { Provider, ReferralProgramItem } from "./types";
-import {
-  TechnicalSpecsSection,
-  ServiceGuaranteesSection,
-  AdditionalServicesSection,
-  PaymentMethodsSection,
-  CaseStudiesSection,
-} from "./ProviderDetailsSections";
-import { ProviderCardHeader } from "./ProviderCardHeader";
-import { ProviderReviews } from "./ProviderReviews";
+import { Provider } from "./types";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface ProviderCardProps {
+interface ProviderCardHeaderProps {
   provider: Provider;
   index: number;
-  showDetails: boolean;
-  onToggleDetails: () => void;
-  reviewsToShow: number;
-  onLoadMoreReviews: () => void;
-  isSelected?: boolean;
-  onToggleCompare?: () => void;
+  onProviderClick: () => void;
+  onCompareClick?: () => void;
+  isComparing?: boolean;
+  showDetails?: boolean;
+  priceText: string;
 }
 
-export const ProviderCard = ({
+export const ProviderCardHeader = ({
   provider,
   index,
-  showDetails,
-  onToggleDetails,
-  reviewsToShow,
-  onLoadMoreReviews,
-  isSelected = false,
-  onToggleCompare,
-}: ProviderCardProps) => {
+  onProviderClick,
+  onCompareClick,
+  isComparing = false,
+  showDetails = false,
+  priceText,
+}: ProviderCardHeaderProps) => {
   const { t } = useLanguage();
   const avgRating =
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
+  const [showAllLocations, setShowAllLocations] = useState(false);
+  const [showLinkTooltip, setShowLinkTooltip] = useState(false);
+  const [showCompareTooltip, setShowCompareTooltip] = useState(false);
   const [gpuTooltip, setGpuTooltip] = useState<{
     show: boolean;
     model: string;
@@ -50,96 +41,76 @@ export const ProviderCard = ({
     description: "",
   });
 
-  const [osTooltip, setOsTooltip] = useState<{
-    show: boolean;
-    os: string;
-    description: string;
-  }>({
-    show: false,
-    os: "",
-    description: "",
-  });
-
-  const gpuTooltipRef = useRef<HTMLDivElement>(null);
-  const osTooltipRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const adjustTooltipPosition = (
-    tooltipRef: React.RefObject<HTMLDivElement>,
-  ) => {
-    if (!tooltipRef.current || !cardRef.current) return;
-
-    const tooltip = tooltipRef.current;
-    const card = cardRef.current;
-    const cardRect = card.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
-
-    if (tooltipRect.right > cardRect.right) {
-      const overflow = tooltipRect.right - cardRect.right;
-      tooltip.style.left = `calc(50% - ${overflow}px - 0.5rem)`;
-    }
-
-    if (tooltipRect.left < cardRect.left) {
-      const overflow = cardRect.left - tooltipRect.left;
-      tooltip.style.left = `calc(50% + ${overflow}px + 0.5rem)`;
-    }
-  };
-
-  const getPriceText = () => {
-    if (provider.basePrice === 0) {
-      return t("common.priceOnRequest") || "Цена по запросу";
-    }
-    return `${provider.basePrice}${t("common.perMonth")}`;
-  };
-
-  const handleProviderClick = async () => {
-    if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "ClickOnProviderCard", {
-        provider_id: provider.id,
-        provider_name: provider.name,
-      });
-    }
-
+  const handleProviderClickWithTracking = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onProviderClick();
     if (provider.url) {
-      try {
-        await fetch(
-          "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              provider_id: provider.id,
-            }),
-          },
-        );
-      } catch (error) {
-        console.error("Error tracking click:", error);
-      }
-
       window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
 
+  const getSupportSpeedColor = (responseTime: string) => {
+    const time = responseTime.toLowerCase();
+    if (
+      time.includes("5 мин") ||
+      time.includes("< 5") ||
+      time.includes("мгновенно")
+    ) {
+      return {
+        bg: "bg-emerald-500/10",
+        border: "border-emerald-500/30",
+        text: "text-emerald-700 dark:text-emerald-400",
+        icon: "Zap",
+      };
+    }
+    if (
+      time.includes("15 мин") ||
+      time.includes("< 15") ||
+      time.includes("10 мин")
+    ) {
+      return {
+        bg: "bg-amber-500/10",
+        border: "border-amber-500/30",
+        text: "text-amber-700 dark:text-amber-400",
+        icon: "Clock",
+      };
+    }
+    if (
+      time.includes("30 мин") ||
+      time.includes("1 час") ||
+      time.includes("час")
+    ) {
+      return {
+        bg: "bg-orange-500/10",
+        border: "border-orange-500/30",
+        text: "text-orange-700 dark:text-orange-400",
+        icon: "Clock",
+      };
+    }
+    return {
+      bg: "bg-gray-500/10",
+      border: "border-gray-500/30",
+      text: "text-gray-700 dark:text-gray-400",
+      icon: "MessageCircle",
+    };
+  };
+
   const getGpuDescription = (model: string): string => {
     const descriptions: Record<string, string> = {
-      "GTX 1080": "Игровая GPU NVIDIA, 8GB GDDR5X, 2560 ядер CUDA",
-      "GTX 1080 Ti": "Игровая GPU NVIDIA, 11GB GDDR5X, 3584 ядер CUDA",
+      "GTX 1080": "Игровая GPU, 8GB GDDR5X, 2560 ядер CUDA",
+      "GTX 1080 Ti": "Игровая GPU, 11GB GDDR5X, 3584 ядер CUDA",
       "RTX 2080 Ti":
-        "Игровая/рабочая GPU NVIDIA, 11GB GDDR6, 4352 ядра CUDA, поддержка RTX",
-      "RTX 3080": "Игровая GPU NVIDIA, 10GB GDDR6X, 8704 ядра CUDA",
-      "RTX 3090": "Игровая/рабочая GPU NVIDIA, 24GB GDDR6X, 10496 ядер CUDA",
-      "RTX 4090": "Игровая GPU NVIDIA, 24GB GDDR6X, 16384 ядра CUDA",
+        "Игровая/рабочая GPU, 11GB GDDR6, 4352 ядра CUDA, поддержка RTX",
+      "RTX 3080": "Игровая GPU, 10GB GDDR6X, 8704 ядра CUDA",
+      "RTX 3090": "Игровая/рабочая GPU, 24GB GDDR6X, 10496 ядер CUDA",
+      "RTX 4090": "Игровая GPU, 24GB GDDR6X, 16384 ядра CUDA",
       A2: "Серверная GPU NVIDIA, 16GB память, для инференса и AI",
       A30: "Серверная GPU NVIDIA, 24GB HBM2, для AI и HPC",
-      A2000: "Рабочая GPU NVIDIA, 6GB GDDR6, для рабочих станций",
-      A4000: "Рабочая GPU NVIDIA, 16GB GDDR6, для рабочих станций и рендеринга",
-      A5000:
-        "Рабочая GPU NVIDIA, 24GB GDDR6, для профессионального использования",
-      A6000:
-        "Рабочая GPU NVIDIA, 48GB GDDR6, для профессиональных рабочих станций",
-      "Tesla T4": "Серверная GPU NVIDIA, 16GB GDDR6, для инференса в ЦОД",
+      A2000: "Рабочая GPU, 6GB GDDR6, для рабочих станций",
+      A4000: "Рабочая GPU, 16GB GDDR6, для рабочих станций и рендеринга",
+      A5000: "Рабочая GPU, 24GB GDDR6, для профессионального использования",
+      A6000: "Рабочая GPU, 48GB GDDR6, для профессиональных рабочих станций",
+      "Tesla T4": "Серверная GPU, 16GB GDDR6, для инференса в ЦОД",
       V100: "Серверная GPU NVIDIA, 16-32GB HBM2, для машинного обучения",
       A100: "Серверная GPU NVIDIA, 40-80GB HBM2, для AI и HPC",
       H100: "Серверная GPU NVIDIA, 80GB HBM3, для AI и высокопроизводительных вычислений",
@@ -148,989 +119,394 @@ export const ProviderCard = ({
     return descriptions[model] || "Графический процессор для вычислений";
   };
 
-  const getOsDescription = (osName: string): string => {
-    const descriptions: Record<string, string> = {
-      "Alma Linux": "Свободная, стабильная ОС, форк RHEL, для серверов",
-      "Alt Linux": "Российский дистрибутив Linux, сертифицированный ФСТЭК",
-      "Arch Linux": "Простой, современный дистрибутив с rolling release",
-      "Astra Linux":
-        "Российская ОС, сертифицированная для обработки секретной информации",
-      AstraLinux:
-        "Российская ОС, сертифицированная для обработки секретной информации",
-      Bitrix: "Готовый виртуальный сервер с предустановленной CMS Bitrix",
-      CentOS: "Стабильный, бесплатный форк RHEL, популярный для серверов",
-      CoreOS: "Контейнерно-ориентированная ОС, сейчас называется Flatcar",
-      Debian: "Стабильная, универсальная ОС, одна из самых популярных",
-      Fedora: "Инновационный дистрибутив с новейшими технологиями",
-      FreeBSD: "Продвинутая Unix-подобная ОС, известная стабильностью",
-      "Oracle Linux": "Совместимый с RHEL дистрибутив от Oracle",
-      "Red Hat": "Корпоративный Linux с коммерческой поддержкой (RHEL)",
-      "Rocky Linux": "Форк RHEL, созданный как замена CentOS",
-      SUSE: "Корпоративный дистрибутив Linux, популярный в Европе",
-      Ubuntu: "Популярный, удобный дистрибутив Linux, LTS-версии стабильны",
-      "Windows Server": "Серверная ОС от Microsoft, для Active Directory, .NET",
-      WordPress: "Готовый виртуальный сервер с предустановленным WordPress",
-    };
-
-    return descriptions[osName] || "Операционная система для серверов";
-  };
-
   const showGpuTooltip = (model: string) => {
     setGpuTooltip({
       show: true,
       model,
       description: getGpuDescription(model),
     });
-
-    setTimeout(() => adjustTooltipPosition(gpuTooltipRef), 10);
   };
 
   const hideGpuTooltip = () => {
     setGpuTooltip({ show: false, model: "", description: "" });
   };
 
-  const showOsTooltip = (os: string) => {
-    setOsTooltip({
-      show: true,
-      os,
-      description: getOsDescription(os),
-    });
-
-    setTimeout(() => adjustTooltipPosition(osTooltipRef), 10);
-  };
-
-  const hideOsTooltip = () => {
-    setOsTooltip({ show: false, os: "", description: "" });
-  };
-
-  const renderFstekCertifications = () => {
-    if (
-      !provider.fstekCertifications ||
-      provider.fstekCertifications.length === 0
-    ) {
-      return null;
-    }
-
-    return (
-      <div className="space-y-2">
-        <div className="text-sm font-medium text-foreground">
-          Сертификации ФСТЭК:
-        </div>
-        <div className="space-y-2">
-          {provider.fstekCertifications.map((cert, idx) => (
-            <div key={idx} className="flex items-start gap-2">
-              <div className="w-5 h-5 bg-blue-500/20 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Icon name="ShieldCheck" size={12} className="text-blue-500" />
-              </div>
-              <div>
-                <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/30 mb-1">
-                  {cert}
-                </Badge>
-                <p className="text-xs text-muted-foreground">
-                  {cert === "ФСТЭК-17" &&
-                    "Требования о защите информации, не составляющей государственную тайну, содержащейся в государственных информационных системах"}
-                  {cert === "ФСТЭК-21" &&
-                    "Состав и содержание организационных и технических мер по обеспечению безопасности персональных данных"}
-                  {cert === "ФСТЭК-239" &&
-                    "Требования по обеспечению безопасности значимых объектов критической информационной инфраструктуры"}
-                </p>
-              </div>
+  return (
+    <div className="flex flex-col gap-3 flex-1">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div className="relative flex-shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-white border border-primary/10 shadow-soft flex items-center justify-center">
+              <img
+                src={provider.logo}
+                alt={provider.name}
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+              />
             </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderRegistrationData = () => {
-    if (!provider.registrationData || provider.registrationData.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-indigo-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="UserPlus" size={18} className="text-indigo-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">
-            Данные для регистрации
-          </h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Для регистрации требуется предоставить:
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {provider.registrationData.map((dataField, idx) => (
-              <Badge
-                key={idx}
-                className="bg-amber-500/10 text-amber-600 border-amber-500/30 text-sm"
-              >
-                {dataField}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderAdditionalServices = () => {
-    if (
-      !provider.additionalServicesList ||
-      provider.additionalServicesList.length === 0
-    ) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Briefcase" size={18} className="text-purple-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">
-            Дополнительные услуги
-          </h4>
-        </div>
-        <div className="space-y-2">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Предоставляемые дополнительные услуги:
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {provider.additionalServicesList.map((service, idx) => (
-              <Badge
-                key={idx}
-                className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30"
-              >
-                {service}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderClientTypes = () => {
-    if (
-      !provider.supportedClientTypes ||
-      provider.supportedClientTypes.length === 0
-    ) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-teal-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Users" size={18} className="text-teal-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">
-            Поддерживаемые типы клиентов
-          </h4>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex flex-wrap gap-2">
-            {provider.supportedClientTypes.map((type, idx) => (
-              <Badge
-                key={idx}
-                className={`text-sm ${
-                  type === "Физлицо"
-                    ? "bg-blue-500/10 text-blue-600 border-blue-500/30"
-                    : "bg-purple-500/10 text-purple-600 border-purple-500/30"
-                }`}
-              >
-                {type}
-              </Badge>
-            ))}
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Провайдер работает{" "}
-            {provider.supportedClientTypes.length === 2
-              ? "как с физическими, так и с юридическими лицами"
-              : provider.supportedClientTypes.includes("Физлицо")
-                ? "только с физическими лицами"
-                : "только с юридическими лицами"}
-          </p>
-        </div>
-      </div>
-    );
-  };
-
-  const renderGpuSection = () => {
-    if (
-      !provider.technicalSpecs.gpuModels ||
-      provider.technicalSpecs.gpuModels.length === 0
-    ) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Cpu" size={18} className="text-purple-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">Поддержка GPU</h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Провайдер предоставляет серверы с графическими процессорами для:
-          </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1 mb-4">
-            <li>Машинного обучения и искусственного интеллекта</li>
-            <li>Визуализации и рендеринга</li>
-            <li>Научных вычислений и моделирования</li>
-            <li>Игровых серверов и стриминга</li>
-          </ul>
-
-          <div>
-            <div className="text-sm font-medium text-foreground mb-2">
-              Доступные модели GPU:
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-lg flex items-center justify-center shadow-lg text-background text-xs font-bold">
+              {index + 1}
             </div>
-            <div className="flex flex-wrap gap-2">
-              {provider.technicalSpecs.gpuModels.map((gpuModel, idx) => (
-                <div
-                  key={idx}
-                  className="relative"
-                  onMouseEnter={() => showGpuTooltip(gpuModel)}
-                  onMouseLeave={hideGpuTooltip}
-                >
-                  <Badge className="bg-indigo-500/10 text-indigo-600 border-indigo-500/30 cursor-help">
-                    {gpuModel}
-                  </Badge>
+          </div>
 
-                  {gpuTooltip.show && gpuTooltip.model === gpuModel && (
-                    <div
-                      ref={gpuTooltipRef}
-                      className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
-                      style={{ transformOrigin: "center bottom" }}
-                    >
-                      <div className="text-xs font-semibold text-indigo-600 mb-1">
-                        {gpuTooltip.model}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {gpuTooltip.description}
-                      </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-foreground truncate">
+                {provider.name}
+              </h3>
+
+              <div className="flex gap-1 flex-shrink-0">
+                {provider.fz152Compliant && (
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon
+                      name="ShieldCheck"
+                      size={10}
+                      className="text-primary"
+                    />
+                  </div>
+                )}
+
+                {provider.fstekCertifications &&
+                  provider.fstekCertifications.length > 0 && (
+                    <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                      <Icon
+                        name="ShieldAlert"
+                        size={10}
+                        className="text-primary"
+                      />
                     </div>
                   )}
-                </div>
-              ))}
+
+                {provider.kiiPlacement && (
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon name="Building2" size={10} className="text-primary" />
+                  </div>
+                )}
+
+                {provider.technicalSpecs.supports1C && (
+                  <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
+                    <Icon name="Database" size={10} className="text-primary" />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Icon
+                    key={i}
+                    name="Star"
+                    size={16}
+                    className={
+                      i < Math.round(avgRating)
+                        ? "fill-primary text-primary"
+                        : "text-muted"
+                    }
+                  />
+                ))}
+              </div>
+              <span className="text-base font-bold text-foreground">
+                {avgRating.toFixed(1)}
+              </span>
             </div>
           </div>
         </div>
-      </div>
-    );
-  };
 
-  const renderOsSection = () => {
-    if (
-      !provider.technicalSpecs.availableOS ||
-      provider.technicalSpecs.availableOS.length === 0
-    ) {
-      return null;
-    }
+        <div
+          className={`flex gap-2 pointer-events-auto ${
+            showDetails ? "lg:gap-3" : ""
+          } xl:flex-col xl:gap-3`}
+        >
+          <div className="relative">
+            <button
+              onClick={handleProviderClickWithTracking}
+              onMouseEnter={() => setShowLinkTooltip(true)}
+              onMouseLeave={() => setShowLinkTooltip(false)}
+              className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 xl:order-1"
+              aria-label={`Перейти на сайт ${provider.name}`}
+            >
+              <Icon name="ArrowUpRight" size={17} className="text-primary" />
+            </button>
 
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-cyan-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Monitor" size={18} className="text-cyan-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">Доступные ОС</h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Провайдер поддерживает следующие операционные системы:
-          </p>
-
-          <div>
-            <div className="text-sm font-medium text-foreground mb-2">
-              Доступные операционные системы:
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {provider.technicalSpecs.availableOS.map((os, idx) => (
-                <div
-                  key={idx}
-                  className="relative"
-                  onMouseEnter={() => showOsTooltip(os)}
-                  onMouseLeave={hideOsTooltip}
-                >
-                  <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30 cursor-help">
-                    {os}
-                  </Badge>
-
-                  {osTooltip.show && osTooltip.os === os && (
-                    <div
-                      ref={osTooltipRef}
-                      className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
-                      style={{ transformOrigin: "center bottom" }}
-                    >
-                      <div className="text-xs font-semibold text-emerald-600 mb-1">
-                        {osTooltip.os}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {osTooltip.description}
-                      </div>
-                    </div>
-                  )}
+            {showLinkTooltip && (
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
+                <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                  Открыть в новом окне
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const render1CSection = () => {
-    if (!provider.technicalSpecs.supports1C) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Database" size={18} className="text-green-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">Поддержка 1С</h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Провайдер специализируется на размещении решений 1С и предоставляет:
-          </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1">
-            <li>Оптимизированные серверы для 1С:Предприятие 8</li>
-            <li>Выделенные серверы для баз данных 1С</li>
-            <li>Автоматическое резервное копирование конфигураций</li>
-            <li>Техническую поддержку по настройке 1С</li>
-            <li>Быструю миграцию существующих баз 1С в облако</li>
-          </ul>
-        </div>
-      </div>
-    );
-  };
-
-  const renderAISection = () => {
-    if (!provider.technicalSpecs.supportsAI) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Brain" size={18} className="text-purple-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">
-            Поддержка AI/ML
-          </h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Провайдер предоставляет инфраструктуру и сервисы для искусственного
-            интеллекта и машинного обучения:
-          </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1 mb-4">
-            <li>Выделенные GPU серверы для тренировки моделей</li>
-            <li>Предобученные модели и готовые решения</li>
-            <li>Инференс-сервисы для развертывания моделей</li>
-            <li>Инструменты для MLOps и управления ML жизненным циклом</li>
-            <li>Поддержка популярных фреймворков (TensorFlow, PyTorch)</li>
-          </ul>
-
-          {provider.technicalSpecs.aiServices &&
-            provider.technicalSpecs.aiServices.length > 0 && (
-              <div>
-                <div className="text-sm font-medium text-foreground mb-2">
-                  Доступные AI сервисы:
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {provider.technicalSpecs.aiServices.map((service, idx) => (
-                    <Badge
-                      key={idx}
-                      className="bg-purple-500/10 text-purple-600 border-purple-500/30"
-                    >
-                      {service}
-                    </Badge>
-                  ))}
-                </div>
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45"></div>
               </div>
             )}
-        </div>
-      </div>
-    );
-  };
-
-  const renderMobileAppSection = () => {
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-pink-500/20 rounded-xl flex items-center justify-center">
-            <Icon
-              name={provider.mobileApp ? "Smartphone" : "SmartphoneOff"}
-              size={18}
-              className={
-                provider.mobileApp ? "text-pink-500" : "text-muted-foreground"
-              }
-            />
           </div>
-          <h4 className="text-base font-bold text-foreground">
-            Мобильное приложение
-          </h4>
-          <Badge
-            className={
-              provider.mobileApp
-                ? "bg-green-500/10 text-green-600 border-green-500/30 ml-auto"
-                : "bg-gray-500/10 text-gray-600 border-gray-500/30 ml-auto"
-            }
-          >
-            {provider.mobileApp ? "Доступно" : "Отсутствует"}
-          </Badge>
-        </div>
-        <p className="text-sm text-foreground leading-relaxed">
-          {provider.mobileApp
-            ? "Провайдер предоставляет мобильное приложение для управления серверами и мониторинга"
-            : "Провайдер не предоставляет мобильное приложение"}
-        </p>
-      </div>
-    );
-  };
+          {onCompareClick && (
+            <div className="relative">
+              <button
+                onClick={onCompareClick}
+                onMouseEnter={() => setShowCompareTooltip(true)}
+                onMouseLeave={() => setShowCompareTooltip(false)}
+                className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-card border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${
+                  isComparing
+                    ? "border-primary/50 shadow-lg shadow-primary/30"
+                    : "border-border hover:border-primary/50"
+                } xl:order-2`}
+                aria-label={isComparing ? "Убрать из сравнения" : "Сравнить"}
+              >
+                <Icon
+                  name={isComparing ? "Check" : "GitCompare"}
+                  size={17}
+                  className="text-foreground"
+                />
+              </button>
 
-  const renderOrderServicesSection = () => {
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-amber-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="ClipboardCheck" size={18} className="text-amber-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">Заказ услуг</h4>
-          <Badge
-            className={
-              provider.orderBeforeRegistration
-                ? "bg-green-500/10 text-green-600 border-green-500/30 ml-auto"
-                : "bg-blue-500/10 text-blue-600 border-blue-500/30 ml-auto"
-            }
-          >
-            {provider.orderBeforeRegistration
-              ? "До регистрации"
-              : "После регистрации"}
-          </Badge>
-        </div>
-        <p className="text-sm text-foreground leading-relaxed">
-          {provider.orderBeforeRegistration
-            ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
-            : "Требуется регистрация и создание учетной записи перед заказом услуг"}
-        </p>
-      </div>
-    );
-  };
-
-  const renderCompanyDescription = () => {
-    // Показываем только для провайдера с id:1
-    if (provider.id !== 1 || !provider.companyDescription) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Info" size={18} className="text-blue-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">О провайдере</h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed">
-            {provider.companyDescription}
-          </p>
-
-          {(provider.foundedYear ||
-            provider.employeesCount ||
-            provider.headquarters) && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-              {provider.foundedYear && (
-                <div className="bg-background/50 p-3 rounded-lg">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Основан
+              {showCompareTooltip && (
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
+                  <div className="bg-foreground text-background text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                    {isComparing ? "В сравнении" : "Сравнить"}
                   </div>
-                  <div className="text-sm font-semibold text-foreground">
-                    {provider.foundedYear} год
-                  </div>
-                </div>
-              )}
-
-              {provider.employeesCount && (
-                <div className="bg-background/50 p-3 rounded-lg">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Сотрудников
-                  </div>
-                  <div className="text-sm font-semibold text-foreground">
-                    {provider.employeesCount}
-                  </div>
-                </div>
-              )}
-
-              {provider.headquarters && (
-                <div className="bg-background/50 p-3 rounded-lg">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Штаб-квартира
-                  </div>
-                  <div className="text-sm font-semibold text-foreground">
-                    {provider.headquarters}
-                  </div>
+                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45"></div>
                 </div>
               )}
             </div>
           )}
         </div>
       </div>
-    );
-  };
 
-  const renderContactsSection = () => {
-    // Показываем только для провайдера с id:1
-    if (
-      provider.id !== 1 ||
-      !provider.contacts ||
-      provider.contacts.length === 0
-    ) {
-      return null;
-    }
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Phone" size={18} className="text-green-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">Контакты</h4>
-        </div>
-
-        <div className="space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {provider.contacts.map((contact, idx) => (
-              <div
-                key={idx}
-                className="flex items-start gap-2 p-3 bg-background/50 rounded-lg"
+      <div className="flex items-start gap-1.5 text-sm">
+        <Icon
+          name="MapPin"
+          size={14}
+          className="text-primary mt-0.5 flex-shrink-0"
+        />
+        <div className="flex items-center gap-1">
+          <span className="text-foreground text-xs">
+            {showAllLocations
+              ? provider.locations.join(", ")
+              : provider.locations.slice(0, 2).join(", ")}
+            {provider.locations.length > 2 && !showAllLocations && (
+              <button
+                onClick={() => setShowAllLocations(true)}
+                className="text-primary hover:underline ml-1"
+                aria-label="Показать все локации"
               >
-                <Icon
-                  name={
-                    contact.type === "phone"
-                      ? "Phone"
-                      : contact.type === "email"
-                        ? "Mail"
-                        : contact.type === "address"
-                          ? "MapPin"
-                          : "Globe"
-                  }
-                  size={16}
-                  className="text-primary mt-0.5 flex-shrink-0"
-                />
-                <div>
-                  <div className="text-xs text-muted-foreground capitalize mb-1">
-                    {contact.type === "phone"
-                      ? "Телефон"
-                      : contact.type === "email"
-                        ? "Email"
-                        : contact.type === "address"
-                          ? "Адрес"
-                          : "Сайт"}
-                  </div>
-                  {contact.link ? (
-                    <a
-                      href={contact.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-semibold text-primary hover:underline"
-                    >
-                      {contact.value}
-                    </a>
-                  ) : (
-                    <div className="text-sm font-semibold text-foreground">
-                      {contact.value}
-                    </div>
-                  )}
+                +{provider.locations.length - 2}
+              </button>
+            )}
+            {showAllLocations && provider.locations.length > 2 && (
+              <button
+                onClick={() => setShowAllLocations(false)}
+                className="text-primary hover:underline ml-1"
+                aria-label="Скрыть локации"
+              >
+                скрыть
+              </button>
+            )}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6">
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center gap-1.5 text-sm">
+            <Icon
+              name="HardDrive"
+              size={14}
+              className="text-primary flex-shrink-0"
+            />
+            <span className="text-foreground truncate">
+              {provider.technicalSpecs.diskType}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-sm">
+            <Icon name="Box" size={14} className="text-primary flex-shrink-0" />
+            <span className="text-foreground truncate">
+              {provider.technicalSpecs.virtualization.slice(0, 2).join(", ")}
+            </span>
+          </div>
+
+          {provider.technicalSpecs.gpuModels &&
+            provider.technicalSpecs.gpuModels.length > 0 && (
+              <div className="relative">
+                <div
+                  className="flex items-center gap-1.5 text-sm"
+                  onMouseEnter={() => {
+                    if (
+                      provider.technicalSpecs.gpuModels &&
+                      provider.technicalSpecs.gpuModels.length > 0
+                    ) {
+                      showGpuTooltip(provider.technicalSpecs.gpuModels[0]);
+                    }
+                  }}
+                  onMouseLeave={hideGpuTooltip}
+                >
+                  <Icon
+                    name="Cpu"
+                    size={14}
+                    className="text-primary flex-shrink-0"
+                  />
+                  <span className="text-foreground">
+                    GPU: {provider.technicalSpecs.gpuModels.length} модел
+                    {provider.technicalSpecs.gpuModels.length === 1
+                      ? "ь"
+                      : "ей"}
+                  </span>
                 </div>
+
+                {gpuTooltip.show && (
+                  <div className="absolute z-50 top-full left-0 mt-1 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
+                    <div className="text-xs font-semibold text-foreground mb-1">
+                      {gpuTooltip.model}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {gpuTooltip.description}
+                    </div>
+                    <div className="mt-1 text-xs text-primary">
+                      Всего {provider.technicalSpecs.gpuModels?.length || 0}{" "}
+                      моделей GPU
+                    </div>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
+            )}
 
-  const renderReferralProgram = () => {
-    // Показываем только для провайдера с id:1
-    if (
-      provider.id !== 1 ||
-      !provider.referralProgram ||
-      provider.referralProgram.length === 0
-    ) {
-      return null;
-    }
-
-    const referralItems: ReferralProgramItem[] = provider.referralProgram;
-
-    return (
-      <div className="bg-card border border-border rounded-2xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 bg-amber-500/20 rounded-xl flex items-center justify-center">
-            <Icon name="Users" size={18} className="text-amber-500" />
-          </div>
-          <h4 className="text-base font-bold text-foreground">
-            Реферальная программа
-          </h4>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
-            Размер партнёрского вознаграждения:
-          </p>
-
-          <div className="space-y-2">
-            {referralItems.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between p-2 hover:bg-background/50 rounded-lg"
-              >
-                <span className="text-sm text-foreground">{item.service}</span>
-                <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/30">
-                  {item.commission}
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <div
-      ref={cardRef}
-      className={`relative flex flex-col group ${
-        showDetails ? "col-span-full z-10" : ""
-      }`}
-    >
-      <Card
-        className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift
-          ${
-            isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : ""
-          } transition-all`}
-      >
-        <CardHeader className="p-5">
-          <ProviderCardHeader
-            provider={provider}
-            index={index}
-            onProviderClick={handleProviderClick}
-            onCompareClick={onToggleCompare}
-            isComparing={isSelected}
-            showDetails={showDetails}
-            priceText={getPriceText()}
-          />
-        </CardHeader>
-
-        <CardContent className="px-5 pb-5">
-          <div className="space-y-3">
-            <Button
-              variant="ghost"
-              className="w-full text-sm font-semibold hover:bg-accent/50 hover:text-primary justify-between"
-              onClick={onToggleDetails}
-            >
-              <div className="flex items-center gap-2">
-                <Icon name={showDetails ? "EyeOff" : "Eye"} size={18} />
-                <span>{showDetails ? "Скрыть детали" : "Показать детали"}</span>
-              </div>
+          {provider.technicalSpecs.kubernetes?.available && (
+            <div className="flex items-center gap-1.5 text-sm">
               <Icon
-                name={showDetails ? "ChevronUp" : "ChevronDown"}
-                size={18}
+                name="Network"
+                size={14}
+                className="text-primary flex-shrink-0"
               />
-            </Button>
-          </div>
+              <span className="text-foreground">Kubernetes</span>
+              {provider.technicalSpecs.kubernetes.managed && (
+                <Badge className="bg-primary/10 border-primary/30 text-primary border font-semibold text-[10px] px-1 py-0">
+                  managed
+                </Badge>
+              )}
+            </div>
+          )}
 
-          <div
-            className={`overflow-hidden transition-all duration-500 ease-in-out -mx-5 ${
-              showDetails ? "max-h-[10000px] opacity-100" : "max-h-0 opacity-0"
-            }`}
-          >
-            <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
-              {/* Раздел "О провайдере" - на всю ширину */}
-              {renderCompanyDescription()}
+          {provider.technicalSpecs.supports1C && (
+            <div className="flex items-center gap-1.5 text-sm">
+              <Icon
+                name="Database"
+                size={14}
+                className="text-primary flex-shrink-0"
+              />
+              <span className="text-foreground">1С</span>
+            </div>
+          )}
+        </div>
 
-              {/* Первый ряд: Соответствие 152-ФЗ и ФСТЭК */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {provider.fz152Compliant && (
-                  <div className="bg-card border border-border rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <Icon
-                          name="ShieldCheck"
-                          size={18}
-                          className="text-blue-500"
-                        />
-                      </div>
-                      <h4 className="text-base font-bold text-foreground">
-                        {t("card.fz152")}
-                      </h4>
-                      {provider.fz152Level && (
-                        <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 ml-auto">
-                          {provider.fz152Level}
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-foreground leading-relaxed">
-                      {t("card.fz152Description")}
-                    </p>
-                  </div>
-                )}
-
-                {provider.fstekCertifications &&
-                  provider.fstekCertifications.length > 0 && (
-                    <div className="bg-card border border-border rounded-2xl p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                          <Icon
-                            name="ShieldAlert"
-                            size={18}
-                            className="text-blue-500"
-                          />
-                        </div>
-                        <h4 className="text-base font-bold text-foreground">
-                          ФСТЭК
-                        </h4>
-                        {provider.fstekLevel && (
-                          <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 ml-auto">
-                            {provider.fstekLevel}
-                          </Badge>
-                        )}
-                      </div>
-
-                      {renderFstekCertifications()}
-                    </div>
-                  )}
-              </div>
-
-              {/* Второй ряд: Размещение КИИ и Дополнительные услуги */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {provider.kiiPlacement && (
-                  <div className="bg-card border border-border rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <Icon
-                          name="Building2"
-                          size={18}
-                          className="text-blue-500"
-                        />
-                      </div>
-                      <h4 className="text-base font-bold text-foreground">
-                        Размещение КИИ
-                      </h4>
-                    </div>
-                    <p className="text-sm text-foreground leading-relaxed">
-                      Провайдер допускает размещение объектов КИИ на своей
-                      инфраструктуре. Объекты критической информационной
-                      инфраструктуры (КИИ) — это системы, сети и базы данных, от
-                      функционирования которых зависит безопасность государства,
-                      национальная экономика и благосостояние граждан. Защита
-                      КИИ — ключевой элемент информационной безопасности страны,
-                      поскольку любые нарушения в их работе могут привести к
-                      серьёзным последствиям для всего общества.
-                    </p>
-                  </div>
-                )}
-
-                {renderAdditionalServices()}
-              </div>
-
-              {/* Третий ряд: Заказ услуг и Данные для регистрации */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {renderOrderServicesSection()}
-                {renderRegistrationData()}
-              </div>
-
-              {/* Четвертый ряд: Поддерживаемые типы клиентов и Мобильное приложение */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {renderClientTypes()}
-                {renderMobileAppSection()}
-              </div>
-
-              {/* Пятый ряд: Поддержка GPU и Доступные ОС */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {renderGpuSection()}
-                {renderOsSection()}
-              </div>
-
-              {/* Шестой ряд: Технические характеристики и Поддержка 1С */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-card border border-border rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-violet-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="Settings"
-                        size={18}
-                        className="text-violet-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">
-                      Технические характеристики
-                    </h4>
-                  </div>
-                  <TechnicalSpecsSection provider={provider} />
-                </div>
-                {render1CSection()}
-              </div>
-
-              {/* Ряд для поддержки AI */}
-              {renderAISection()}
-
-              {/* Остальные секции */}
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-orange-500/20 rounded-xl flex items-center justify-center">
-                    <Icon name="Award" size={18} className="text-orange-500" />
-                  </div>
-                  <h4 className="text-base font-bold text-foreground">
-                    Гарантии обслуживания
-                  </h4>
-                </div>
-                <ServiceGuaranteesSection provider={provider} />
-              </div>
-
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                    <Icon
-                      name="Package"
-                      size={18}
-                      className="text-emerald-500"
-                    />
-                  </div>
-                  <h4 className="text-base font-bold text-foreground">
-                    Дополнительные услуги
-                  </h4>
-                </div>
-                <AdditionalServicesSection provider={provider} />
-              </div>
-
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-rose-500/20 rounded-xl flex items-center justify-center">
-                    <Icon
-                      name="CreditCard"
-                      size={18}
-                      className="text-rose-500"
-                    />
-                  </div>
-                  <h4 className="text-base font-bold text-foreground">
-                    Способы оплаты
-                  </h4>
-                </div>
-                <PaymentMethodsSection provider={provider} />
-              </div>
-
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-sky-500/20 rounded-xl flex items-center justify-center">
-                    <Icon name="Briefcase" size={18} className="text-sky-500" />
-                  </div>
-                  <h4 className="text-base font-bold text-foreground">Кейсы</h4>
-                </div>
-                <CaseStudiesSection provider={provider} />
-              </div>
-
-              {/* Плюсы и минусы */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="Check"
-                        size={18}
-                        className="text-emerald-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">
-                      {t("card.pros")}
-                    </h4>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {provider.pros.map((pro, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-emerald-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon
-                            name="Plus"
-                            size={12}
-                            className="text-emerald-500"
-                          />
-                        </div>
-                        <span className="text-sm text-foreground font-medium">
-                          {pro}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-rose-500/5 border border-rose-500/20 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-rose-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="AlertCircle"
-                        size={18}
-                        className="text-rose-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">
-                      {t("card.cons")}
-                    </h4>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {provider.cons.map((con, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-rose-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon
-                            name="Minus"
-                            size={12}
-                            className="text-rose-500"
-                          />
-                        </div>
-                        <span className="text-sm text-foreground font-medium">
-                          {con}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Разделы для провайдера с id:1 - контакты и реферальная программа */}
-              {provider.id === 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {renderContactsSection()}
-                  {renderReferralProgram()}
+        <div className="flex flex-col items-end gap-2 pr-3">
+          <div className="flex flex-col items-end">
+            <div className="flex items-baseline whitespace-nowrap">
+              {provider.basePrice !== 0 ? (
+                <>
+                  <span className="text-2xl font-black text-primary mr-2">
+                    {t("common.from")}
+                  </span>
+                  <span className="text-2xl font-black text-primary">
+                    {priceText}
+                  </span>
+                </>
+              ) : (
+                <div className="text-right">
+                  <span
+                    className="text-xl font-bold"
+                    style={{ color: "rgb(255, 143, 51)" }}
+                  >
+                    {priceText}
+                  </span>
                 </div>
               )}
-
-              <ProviderReviews
-                provider={provider}
-                reviewsToShow={reviewsToShow}
-                onLoadMoreReviews={onLoadMoreReviews}
-              />
             </div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex items-center gap-1.5 text-sm">
+            <Icon
+              name="Gift"
+              size={14}
+              className={
+                provider.trialDays ? "text-primary" : "text-muted-foreground"
+              }
+            />
+            <span className="text-foreground text-xs truncate">
+              {provider.trialDays
+                ? typeof provider.trialDays === "number" &&
+                  provider.trialDays > 0
+                  ? `${provider.trialDays} ${provider.trialDays === 1 ? t("common.day") : provider.trialDays < 5 ? t("common.daysGenitive") : t("common.days")} ${t("common.free")}`
+                  : provider.trialDays
+                : "Тест по запросу"}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ТОЛЬКО НИЖНИЕ БЕЙДЖИ ИМЕЮТ ЦВЕТА */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {provider.serviceGuarantees.supportResponseTime &&
+          (() => {
+            const speedColor = getSupportSpeedColor(
+              provider.serviceGuarantees.supportResponseTime,
+            );
+            return (
+              <Badge
+                className={`${speedColor.bg} ${speedColor.border} ${speedColor.text} border font-semibold text-xs px-2 py-1 transition-all duration-300 hover:scale-105 hover:shadow-md`}
+              >
+                <Icon
+                  name={speedColor.icon as any}
+                  size={12}
+                  className="mr-1"
+                />
+                Поддержка: {provider.serviceGuarantees.supportResponseTime}
+              </Badge>
+            );
+          })()}
+        {provider.fz152Compliant && (
+          <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="ShieldCheck" size={12} className="text-blue-500 mr-1" />
+            152-ФЗ
+          </Badge>
+        )}
+        {provider.fstekCertifications &&
+          provider.fstekCertifications.length > 0 && (
+            <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-600 border font-semibold text-xs px-2 py-1">
+              <Icon
+                name="ShieldAlert"
+                size={12}
+                className="text-blue-500 mr-1"
+              />
+              ФСТЭК
+              {provider.fstekCertifications.length > 0 && (
+                <span className="ml-1 font-normal">
+                  ({provider.fstekCertifications.length})
+                </span>
+              )}
+            </Badge>
+          )}
+        {provider.kiiPlacement && (
+          <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Building2" size={12} className="text-blue-500 mr-1" />
+            КИИ
+          </Badge>
+        )}
+        {provider.technicalSpecs.supports1C && (
+          <Badge className="bg-green-500/10 border-green-500/30 text-green-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Database" size={12} className="text-green-500 mr-1" />
+            1С
+          </Badge>
+        )}
+        {provider.uptime30days && (
+          <Badge className="bg-orange-500/10 border-orange-500/30 text-orange-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Activity" size={12} className="text-orange-500 mr-1" />
+            {t("common.uptime")}: {provider.uptime30days}%
+          </Badge>
+        )}
+        {provider.technicalSpecs.gpuModels &&
+          provider.technicalSpecs.gpuModels.length > 0 && (
+            <Badge className="bg-indigo-500/10 border-indigo-500/30 text-indigo-600 border font-semibold text-xs px-2 py-1">
+              <Icon name="Cpu" size={12} className="text-indigo-500 mr-1" />
+              GPU: {provider.technicalSpecs.gpuModels.length}
+            </Badge>
+          )}
+      </div>
     </div>
   );
 };

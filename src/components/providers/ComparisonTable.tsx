@@ -112,7 +112,6 @@ export const ComparisonTable = ({
     // Добавляем новые строки
     { label: t("common.gpu"), key: "gpu", icon: "Cpu" },
     { label: t("common.supports1C"), key: "supports1C", icon: "Database" },
-    { label: "AI/ML", key: "ai", icon: "Brain" },
   ];
 
   // Функция для получения текста цены
@@ -242,11 +241,6 @@ export const ComparisonTable = ({
                             GPU
                           </Badge>
                         )}
-                      {provider.technicalSpecs.supportsAI && (
-                        <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px] px-1.5 py-0.5">
-                          AI
-                        </Badge>
-                      )}
                     </div>
                   </div>
                 );
@@ -696,46 +690,6 @@ export const ComparisonTable = ({
                                 <Badge className="bg-green-500/20 text-green-500 border-0 text-xs">
                                   1С
                                 </Badge>
-                              </div>
-                            ) : (
-                              <div className="flex flex-col items-center gap-1">
-                                <Icon
-                                  name="X"
-                                  size={20}
-                                  className="text-red-500"
-                                />
-                                <Badge className="bg-red-500/20 text-red-500 border-0 text-xs">
-                                  {t("card.no")}
-                                </Badge>
-                              </div>
-                            );
-                            break;
-                          case "ai":
-                            content = provider.technicalSpecs.supportsAI ? (
-                              <div className="flex flex-col items-center gap-1">
-                                <Icon
-                                  name="Check"
-                                  size={20}
-                                  className="text-purple-500"
-                                />
-                                <Badge className="bg-purple-500/20 text-purple-500 border-0 text-xs">
-                                  AI/ML
-                                </Badge>
-                                {provider.technicalSpecs.aiServices &&
-                                  provider.technicalSpecs.aiServices.length >
-                                    0 && (
-                                    <div className="text-xs text-center text-muted-foreground mt-1">
-                                      {
-                                        provider.technicalSpecs.aiServices
-                                          .length
-                                      }{" "}
-                                      сервис
-                                      {provider.technicalSpecs.aiServices
-                                        .length === 1
-                                        ? ""
-                                        : "ов"}
-                                    </div>
-                                  )}
                               </div>
                             ) : (
                               <div className="flex flex-col items-center gap-1">

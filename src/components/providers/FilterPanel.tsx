@@ -50,9 +50,6 @@ interface FilterPanelProps {
   setFilterHasGPU: (value: boolean) => void;
   filter1C: boolean;
   setFilter1C: (value: boolean) => void;
-  // Добавляем фильтр AI
-  filterAI: boolean;
-  setFilterAI: (value: boolean) => void;
 
   allLocations: string[];
   allVirtualizations: string[];
@@ -109,9 +106,6 @@ export const FilterPanel = ({
   setFilterHasGPU, // Новый фильтр
   filter1C,
   setFilter1C,
-  // Добавляем фильтр AI
-  filterAI,
-  setFilterAI,
 
   allLocations,
   allVirtualizations,
@@ -185,8 +179,7 @@ export const FilterPanel = ({
     filterClientType.length > 0 ||
     filterGPU.length > 0 ||
     filterHasGPU || // Добавляем новый фильтр
-    filter1C ||
-    filterAI; // Добавляем фильтр AI
+    filter1C;
 
   const activeFiltersCount = [
     filterFZ152,
@@ -208,7 +201,6 @@ export const FilterPanel = ({
     filterGPU.length > 0,
     filterHasGPU, // Добавляем новый фильтр
     filter1C,
-    filterAI, // Добавляем фильтр AI
   ].filter(Boolean).length;
 
   const clearFilters = () => {
@@ -231,7 +223,6 @@ export const FilterPanel = ({
     setFilterGPU([]);
     setFilterHasGPU(false); // Сбрасываем новый фильтр
     setFilter1C(false);
-    setFilterAI(false); // Сбрасываем фильтр AI
   };
 
   const [datacentersValue, setDatacentersValue] = useState(
@@ -1077,7 +1068,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              {/* Чекбокс для 1С */}
+              {/* Чекбокс для 1С с той же иконкой, что и в фильтрах */}
               <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
@@ -1108,41 +1099,6 @@ export const FilterPanel = ({
                   />
                   <span className="text-xs font-medium text-foreground">
                     1С
-                  </span>
-                </label>
-              </div>
-
-              {/* Чекбокс для AI */}
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    id="supportsAI"
-                    checked={filterAI}
-                    onChange={(e) => setFilterAI(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
-                    {filterAI && (
-                      <Icon
-                        name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
-                      />
-                    )}
-                  </div>
-                </div>
-                <label
-                  htmlFor="supportsAI"
-                  className="flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Icon
-                    name="Brain"
-                    size={10}
-                    className="text-purple-500 w-3 h-3"
-                  />
-                  <span className="text-xs font-medium text-foreground">
-                    AI/ML
                   </span>
                 </label>
               </div>
