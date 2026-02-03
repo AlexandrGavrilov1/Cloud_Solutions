@@ -4950,7 +4950,7 @@ export const providers: Provider[] = [
     uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
-      backupPrice: 70,
+      backupPrice: 120,
       monitoring: true,
       snapshots: true,
       customOS: false,
