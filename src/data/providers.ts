@@ -4963,7 +4963,7 @@ export const providers: Provider[] = [
       paymentMethods: ["Банковская карта", "WebMoney", "ЮMoney", "Bitcoin", "PayPal", "Безналичный расчет"],
       minPrice: 150,
     },
-    popularity: 20000,
+    popularity: 0,
     promoText: "Самыое выгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[54] || [],
