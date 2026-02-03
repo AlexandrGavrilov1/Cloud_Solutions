@@ -4914,7 +4914,8 @@ export const providers: Provider[] = [
       guaranteedResources: true,
       ipv4: true,
       ipv6: true,
-      availableOS: ["Ubuntu 24.04",
+      availableOS: [
+    "Ubuntu 24.04",
     "Ubuntu 22.04",
     "Ubuntu 20.04",
     "Windows Server 2025",
@@ -4931,11 +4932,12 @@ export const providers: Provider[] = [
     "Debian 11",
     "Debian 10",
     "Oracle 10",
-    "Oracle 9"],
+    "Oracle 9"
+    ],
       
       apiAccess: true,
       ddosProtection: "Неограниченно",
-      cpuModels: ["Intel E5", "AMD 4.5GHz"],
+      cpuModels: [],
       kubernetes: {
         available: false,
         managed: false,
