@@ -4878,7 +4878,7 @@ export const providers: Provider[] = [
   {
     id: 54,
     name: "VDSina",
-    logo: "providers_logo/53_One_Dash.jpg",
+    logo: "providers_logo/54_VDSina.jpg",
     rating: 8.8,
     basePrice: 149,
     cpuPrice: 100,
