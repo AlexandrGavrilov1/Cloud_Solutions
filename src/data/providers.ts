@@ -4930,7 +4930,7 @@ export const providers: Provider[] = [
         "Oracle 10",
         "Oracle 9",
       ],
-      controlPanel: "OVH Manager",
+      controlPanel: "",
       apiAccess: true,
       ddosProtection: "Неограниченно",
       cpuModels: ["Intel E5", "AMD 4.5GHz"],
