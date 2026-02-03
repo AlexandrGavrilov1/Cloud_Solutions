@@ -79,6 +79,39 @@ export const providers: Provider[] = [
         "A6000",
         "Tesla T4",
       ],
+    supportsAI: true,
+      aiServices: [
+        "GPU серверы для ML",
+        "Предобученные модели",
+        "Инференс-сервисы",
+        "MLOps инструменты",
+        "TensorFlow/PyTorch поддержка"
+      ],
+    },
+    
+    // Добавляем информацию о компании
+    companyDescription: "Timeweb Cloud — один из крупнейших российских облачных провайдеров, специализирующийся на предоставлении VPS/VDS, выделенных серверов, облачных решений и хостинга. Компания известна высоким качеством обслуживания, современной инфраструктурой и быстрой технической поддержкой.",
+    foundedYear: 2006,
+    employeesCount: "500+",
+    headquarters: "Санкт-Петербург, Россия",
+    
+    // Добавляем контакты
+    contacts: [
+      {
+        type: "phone",
+        value: "+7 (812) 409-41-10",
+        link: "tel:+78124094110"
+      },
+      {
+        type: "email",
+        value: "support@timeweb.cloud",
+        link: "mailto:support@timeweb.cloud"
+      },
+            {
+        type: "address",
+        value: "Санкт-Петербург, ул. Рубинштейна, 36"
+      }
+    ],
       // Добавляем поддержку 1С
       supports1C: true,
     },
