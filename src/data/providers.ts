@@ -4934,7 +4934,7 @@ export const providers: Provider[] = [
         "RTX 4090",
         "RTX 5090",
       ],
-      // Добавляем поддержку 1С
+      
       supports1C: false,
     },
     serviceGuarantees: {
