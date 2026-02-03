@@ -4934,7 +4934,7 @@ export const providers: Provider[] = [
     "Oracle 10",
     "Oracle 9"
     ],
-      
+      controlPanel: "" ,
       apiAccess: true,
       ddosProtection: "Неограниченно",
       cpuModels: [],
