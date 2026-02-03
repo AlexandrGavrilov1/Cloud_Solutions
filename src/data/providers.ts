@@ -4845,7 +4845,7 @@ export const providers: Provider[] = [
         "RTX 4090",
         "RTX 5090",
       ],
-      // Добавляем поддержку 1Ссс
+      // Добавляем поддержку 1С
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4875,38 +4875,38 @@ export const providers: Provider[] = [
     reviews: reviewsData[53] || [],
   },
 
- {
+  {
     id: 54,
     name: "VDSina",
-    logo: "providers_logo\54_VDSina.jpg",
+    logo: "providers_logo/53_One_Dash.jpg",
     rating: 8.8,
-    basePrice: 150,
+    basePrice: 149,
     cpuPrice: 100,
     ramPrice: 40,
     storagePrice: 10,
     features: [
       "NVMe диски",
       "Резервное копирование",
-      "SSH",
-      "ISO",
+      "GPU",
+      "Низкая стоимость",
     ],
-    locations: ["Москва", "Амстердам"],
-    trialDays: 0,
-    url: "https://vdsina.ru/?partner=p1dj8tzwb6rw",
+    locations: ["Россия", "Германия", "Нидерланды", "США"],
+    trialDays: "7 дней за 49 рублей",
+    url: "https://rdp-onedash.ru/r/e63eaa",
     pros: ["Низкая цена", "NVMe диски"],
-    cons: ["Низкая вариативность серверов"],
+    cons: ["Низкая вариативность серверов", "отсутвие виртуализации"],
 
     fz152Compliant: true,
     fz152Level: "",
-    fstekCompliant: true,
-    fstekCertifications: ["ФСТЭК-21"],
+    fstekCompliant: false,
+    fstekCertifications: [],
     fstekLevel: "",
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: [],
     registrationData: ["Email"],
-    supportedClientTypes: ["Физлицо"],
+    supportedClientTypes: ["Физлицо", "Юрлицо"],
 
     technicalSpecs: {
       diskType: "NVMe",
@@ -4934,7 +4934,7 @@ export const providers: Provider[] = [
         "RTX 4090",
         "RTX 5090",
       ],
-      
+      // Добавляем поддержку 1С
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4963,5 +4963,4 @@ export const providers: Provider[] = [
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[54] || [],
   },
-
 ];
