@@ -4906,7 +4906,7 @@ export const providers: Provider[] = [
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
-      // virtualization: [],
+      virtualization: [],
       guaranteedResources: true,
       ipv4: true,
       ipv6: true,
@@ -4930,7 +4930,7 @@ export const providers: Provider[] = [
         "Oracle 10",
         "Oracle 9",
       ],
-      //controlPanel: "",
+      controlPanel: "",
       apiAccess: true,
       ddosProtection: "Неограниченно",
       cpuModels: ["Intel E5", "AMD 4.5GHz"],
