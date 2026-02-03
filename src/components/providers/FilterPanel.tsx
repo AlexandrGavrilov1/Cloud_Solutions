@@ -42,7 +42,7 @@ interface FilterPanelProps {
   setFilterRegistrationData: (value: string[]) => void;
   filterClientType: string[];
   setFilterClientType: (value: string[]) => void;
-  // Добавляем новые фильтры
+  // Добавляем новые фильтрыs
   filterGPU: string[];
   setFilterGPU: (value: string[]) => void;
   filterHasGPU: boolean; // Новый фильтр: есть ли GPU вообще
