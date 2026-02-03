@@ -4931,7 +4931,7 @@ export const providers: Provider[] = [
         "Oracle 9",
       ],
       controlPanel: "Собственная панель",
-      apiAccess: true,
+      apiAccess: false,
       ddosProtection: "Неограниченно",
       cpuModels: [],
       kubernetes: {
@@ -4939,7 +4939,7 @@ export const providers: Provider[] = [
         managed: false,
       },
       gpuModels: ["L40S", "L4"],
-      // Добавляем поддержку 1С
+      // Добавляем поддержку 1Сcc
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4947,7 +4947,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.92,
+    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 70,
@@ -4960,8 +4960,15 @@ export const providers: Provider[] = [
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: ["Банковская карта"],
-      minPrice: 149,
+      paymentMethods: [
+        "Банковская карта",
+        "WebMoney",
+        "ЮMoney",
+        "Bitcoin",
+        "PayPal",
+        "Безналичный расчет",
+      ],
+      minPrice: 150,
     },
     popularity: 20000,
     promoText: "Самыое выгодное соотношение цены и качества",
