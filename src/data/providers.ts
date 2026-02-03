@@ -4939,7 +4939,7 @@ export const providers: Provider[] = [
         managed: false,
       },
       gpuModels: ["L40S", "L4"],
-      // Добавляем поддержку 1Сcc
+      // Добавляем поддержку 1Сccc
       supports1C: false,
     },
     serviceGuarantees: {
