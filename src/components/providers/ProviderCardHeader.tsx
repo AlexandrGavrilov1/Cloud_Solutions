@@ -444,17 +444,6 @@ export const ProviderCardHeader = ({
               )}
             </div>
           )}
-
-          {provider.technicalSpecs.supports1C && (
-            <div className="flex items-center gap-1.5 text-sm">
-              <Icon
-                name="Database"
-                size={14}
-                className="text-primary flex-shrink-0"
-              />
-              <span className="text-foreground">1С</span>
-            </div>
-          )}
         </div>
 
         <div className="flex flex-col items-end gap-2 pr-3">
