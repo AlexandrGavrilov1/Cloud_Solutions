@@ -161,13 +161,26 @@ export const FilterPanel = ({
   });
 
   const filterPanelRef = useRef<HTMLDivElement>(null);
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Закрытие фильтров при клике вне компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      // Проверяем, был ли клик внутри любого дропдауна
+      let clickedInsideDropdown = false;
+      Object.values(dropdownRefs.current).forEach((ref) => {
+        if (ref && ref.contains(target)) {
+          clickedInsideDropdown = true;
+        }
+      });
+
+      // Если клик был вне всей панели фильтров, закрываем её
       if (
         filterPanelRef.current &&
-        !filterPanelRef.current.contains(event.target as Node)
+        !filterPanelRef.current.contains(target) &&
+        !clickedInsideDropdown
       ) {
         setIsExpanded(false);
         // Закрываем все дропдауны
@@ -344,20 +357,33 @@ export const FilterPanel = ({
     setDropdownsOpen(newState);
   };
 
-  const handleDropdownClick = (dropdown: string) => {
-    toggleDropdown(dropdown);
-    closeOtherDropdowns(dropdown);
+  const handleDropdownClick = (dropdown: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Останавливаем всплытие события
+    const isCurrentlyOpen = dropdownsOpen[dropdown];
+
+    // Сначала закрываем все дропдауны
+    const newState = { ...dropdownsOpen };
+    Object.keys(newState).forEach((key) => {
+      newState[key] = false;
+    });
+
+    // Если текущий дропдаун был закрыт, открываем его
+    if (!isCurrentlyOpen) {
+      newState[dropdown] = true;
+    }
+
+    setDropdownsOpen(newState);
   };
 
   const FstekDropdown = () => {
     const isOpen = dropdownsOpen.fstek;
 
     return (
-      <div className="group">
+      <div className="group" ref={(el) => (dropdownRefs.current.fstek = el)}>
         <div className="relative">
           <button
             type="button"
-            onClick={() => handleDropdownClick("fstek")}
+            onClick={(e) => handleDropdownClick("fstek", e)}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -433,7 +459,10 @@ export const FilterPanel = ({
     const isOpen = dropdownsOpen.additionalServices;
 
     return (
-      <div className="group">
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current.additionalServices = el)}
+      >
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <Icon name="Briefcase" size={10} className="text-primary w-3 h-3" />
           <span className="text-xs">Дополнительные услуги</span>
@@ -441,7 +470,7 @@ export const FilterPanel = ({
         <div className="relative">
           <button
             type="button"
-            onClick={() => handleDropdownClick("additionalServices")}
+            onClick={(e) => handleDropdownClick("additionalServices", e)}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -517,7 +546,10 @@ export const FilterPanel = ({
     const isOpen = dropdownsOpen.registrationData;
 
     return (
-      <div className="group">
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current.registrationData = el)}
+      >
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <Icon name="UserPlus" size={10} className="text-primary w-3 h-3" />
           <span className="text-xs">Данные для регистрации</span>
@@ -525,7 +557,7 @@ export const FilterPanel = ({
         <div className="relative">
           <button
             type="button"
-            onClick={() => handleDropdownClick("registrationData")}
+            onClick={(e) => handleDropdownClick("registrationData", e)}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -601,7 +633,10 @@ export const FilterPanel = ({
     const isOpen = dropdownsOpen.clientType;
 
     return (
-      <div className="group">
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current.clientType = el)}
+      >
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <Icon name="Users" size={10} className="text-primary w-3 h-3" />
           <span className="text-xs">Тип клиента</span>
@@ -609,7 +644,7 @@ export const FilterPanel = ({
         <div className="relative">
           <button
             type="button"
-            onClick={() => handleDropdownClick("clientType")}
+            onClick={(e) => handleDropdownClick("clientType", e)}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -681,7 +716,7 @@ export const FilterPanel = ({
     const isOpen = dropdownsOpen.gpu;
 
     return (
-      <div className="group">
+      <div className="group" ref={(el) => (dropdownRefs.current.gpu = el)}>
         <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
           <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
           <span className="text-xs">GPU</span>
@@ -689,7 +724,7 @@ export const FilterPanel = ({
         <div className="relative">
           <button
             type="button"
-            onClick={() => handleDropdownClick("gpu")}
+            onClick={(e) => handleDropdownClick("gpu", e)}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -809,7 +844,10 @@ export const FilterPanel = ({
     const isOpen = dropdownsOpen[dropdownKey];
 
     return (
-      <div className="group">
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
+      >
         {labelText && (
           <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
             <Icon name={iconName} size={10} className="text-primary w-3 h-3" />
@@ -819,7 +857,7 @@ export const FilterPanel = ({
         <div className="relative">
           <button
             type="button"
-            onClick={() => handleDropdownClick(dropdownKey)}
+            onClick={(e) => handleDropdownClick(dropdownKey, e)}
             className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
           >
             <div className="flex items-center gap-2 overflow-hidden">
@@ -927,7 +965,10 @@ export const FilterPanel = ({
       </div>
 
       {isExpanded && (
-        <div className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-[500px] sm:max-w-[450px] md:max-w-[510px] bg-card border border-primary/20 rounded-xl shadow-xl z-[100]">
+        <div
+          className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-[500px] sm:max-w-[450px] md:max-w-[510px] bg-card border border-primary/20 rounded-xl shadow-xl z-[100]"
+          onClick={(e) => e.stopPropagation()} // Останавливаем всплытие кликов внутри панели
+        >
           {hasActiveFilters && (
             <div className="flex items-center justify-end px-3 pt-3 pb-2">
               <Button
