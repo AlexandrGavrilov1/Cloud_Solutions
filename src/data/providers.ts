@@ -4960,14 +4960,7 @@ export const providers: Provider[] = [
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: [
-        "Банковская карта",
-        "WebMoney",
-        "ЮMoney",
-        "Bitcoin",
-        "PayPal",
-        "Безналичный расчет",
-      ],
+      paymentMethods: ["Банковская карта", "WebMoney", "ЮMoney", "Bitcoin", "PayPal", "Безналичный расчет"],
       minPrice: 150,
     },
     popularity: 20000,
