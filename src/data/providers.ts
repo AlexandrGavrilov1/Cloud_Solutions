@@ -530,7 +530,7 @@ export const providers: Provider[] = [
     storagePrice: 8,
     features: ["SSD диски", "Панель ISPmanager", "DDoS защита", "IPv6"],
     locations: ["Москва", "Санкт-Петербург", "Казань", "Франкфурт"],
-    trialDays: "По запросу",
+    trialDays: 0,
     url: "https://firstvds.ru/?from=1197983",
     pros: [
       "Стабильная работа",
