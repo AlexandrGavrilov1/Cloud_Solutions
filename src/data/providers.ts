@@ -4906,7 +4906,7 @@ export const providers: Provider[] = [
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
-      virtualization: [KVM],
+      virtualization: ["KVM"],
       guaranteedResources: true,
       ipv4: true,
       ipv6: true,
@@ -4933,7 +4933,7 @@ export const providers: Provider[] = [
       controlPanel: "Собственная панель",
       apiAccess: true,
       ddosProtection: "Неограниченно",
-      cpuModels: ["Intel E5", "AMD 4.5GHz"],
+      cpuModels: [],
       kubernetes: {
         available: false,
         managed: false,
