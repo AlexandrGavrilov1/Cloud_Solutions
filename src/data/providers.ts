@@ -4932,7 +4932,7 @@ export const providers: Provider[] = [
     "Debian 10",
     "Oracle 10",
     "Oracle 9"],
-      //controlPanel: "",
+      
       apiAccess: true,
       ddosProtection: "Неограниченно",
       cpuModels: ["Intel E5", "AMD 4.5GHz"],
