@@ -60,8 +60,17 @@ export const ProviderCard = ({
     description: "",
   });
 
+  const [aiTooltip, setAiTooltip] = useState<{
+    show: boolean;
+    features: string[];
+  }>({
+    show: false,
+    features: [],
+  });
+
   const gpuTooltipRef = useRef<HTMLDivElement>(null);
   const osTooltipRef = useRef<HTMLDivElement>(null);
+  const aiTooltipRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const adjustTooltipPosition = (
@@ -201,6 +210,21 @@ export const ProviderCard = ({
 
   const hideOsTooltip = () => {
     setOsTooltip({ show: false, os: "", description: "" });
+  };
+
+  const showAiTooltip = () => {
+    if (provider.technicalSpecs.aiFeatures) {
+      setAiTooltip({
+        show: true,
+        features: provider.technicalSpecs.aiFeatures,
+      });
+
+      setTimeout(() => adjustTooltipPosition(aiTooltipRef), 10);
+    }
+  };
+
+  const hideAiTooltip = () => {
+    setAiTooltip({ show: false, features: [] });
   };
 
   const renderFstekCertifications = () => {
@@ -519,6 +543,89 @@ export const ProviderCard = ({
     );
   };
 
+  const renderAISection = () => {
+    if (!provider.technicalSpecs.supportsAI) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-pink-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Cpu" size={18} className="text-pink-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">
+            Поддержка AI/ML
+          </h4>
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
+            Провайдер предоставляет инфраструктуру для проектов искусственного
+            интеллекта и машинного обучения:
+          </p>
+          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1 mb-4">
+            <li>Выделенные серверы с GPU для обучения моделей</li>
+            <li>Поддержка популярных ML-фреймворков</li>
+            <li>Готовые образы с предустановленным ПО</li>
+            <li>Инструменты для мониторинга и управления ресурсами</li>
+          </ul>
+
+          {provider.technicalSpecs.aiFeatures &&
+            provider.technicalSpecs.aiFeatures.length > 0 && (
+              <div>
+                <div className="text-sm font-medium text-foreground mb-2">
+                  AI/ML возможности:
+                </div>
+                <div className="relative">
+                  <div
+                    className="flex flex-wrap gap-2"
+                    onMouseEnter={showAiTooltip}
+                    onMouseLeave={hideAiTooltip}
+                  >
+                    {provider.technicalSpecs.aiFeatures
+                      .slice(0, 3)
+                      .map((feature, idx) => (
+                        <Badge
+                          key={idx}
+                          className="bg-pink-500/10 text-pink-600 border-pink-500/30 cursor-help"
+                        >
+                          {feature}
+                        </Badge>
+                      ))}
+                    {provider.technicalSpecs.aiFeatures.length > 3 && (
+                      <Badge className="bg-pink-500/10 text-pink-600 border-pink-500/30 cursor-help">
+                        +{provider.technicalSpecs.aiFeatures.length - 3}
+                      </Badge>
+                    )}
+                  </div>
+
+                  {aiTooltip.show && (
+                    <div
+                      ref={aiTooltipRef}
+                      className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64"
+                      style={{ transformOrigin: "center bottom" }}
+                    >
+                      <div className="text-xs font-semibold text-pink-600 mb-1">
+                        Все AI/ML возможности:
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        <ul className="list-disc pl-3 space-y-1">
+                          {aiTooltip.features.map((feature, idx) => (
+                            <li key={idx}>{feature}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+        </div>
+      </div>
+    );
+  };
+
   const renderMobileAppSection = () => {
     return (
       <div className="bg-card border border-border rounded-2xl p-4">
@@ -583,6 +690,249 @@ export const ProviderCard = ({
     );
   };
 
+  // Новая секция: О провайдере
+  const renderAboutSection = () => {
+    if (!provider.about) {
+      return null;
+    }
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4 col-span-full">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+            <Icon name="Info" size={18} className="text-primary" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">О провайдере</h4>
+        </div>
+        <div className="space-y-3">
+          <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">
+            {provider.about}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  // Новая секция: Контакты
+  const renderContactsSection = () => {
+    if (!provider.contactInfo) {
+      return null;
+    }
+
+    const contact = provider.contactInfo;
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Phone" size={18} className="text-blue-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">Контакты</h4>
+        </div>
+        <div className="space-y-3">
+          {contact.website && (
+            <div className="flex items-start gap-2">
+              <Icon name="Globe" size={16} className="text-primary mt-0.5" />
+              <div>
+                <div className="text-sm font-medium text-foreground">Сайт</div>
+                <a
+                  href={contact.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline"
+                >
+                  {contact.website.replace(/^https?:\/\//, "")}
+                </a>
+              </div>
+            </div>
+          )}
+
+          {contact.email && (
+            <div className="flex items-start gap-2">
+              <Icon name="Mail" size={16} className="text-primary mt-0.5" />
+              <div>
+                <div className="text-sm font-medium text-foreground">Email</div>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {contact.email}
+                </a>
+              </div>
+            </div>
+          )}
+
+          {contact.phone && (
+            <div className="flex items-start gap-2">
+              <Icon
+                name="PhoneCall"
+                size={16}
+                className="text-primary mt-0.5"
+              />
+              <div>
+                <div className="text-sm font-medium text-foreground">
+                  Телефон
+                </div>
+                <a
+                  href={`tel:${contact.phone}`}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {contact.phone}
+                </a>
+              </div>
+            </div>
+          )}
+
+          {contact.supportEmail && (
+            <div className="flex items-start gap-2">
+              <Icon
+                name="Headphones"
+                size={16}
+                className="text-primary mt-0.5"
+              />
+              <div>
+                <div className="text-sm font-medium text-foreground">
+                  Поддержка
+                </div>
+                <a
+                  href={`mailto:${contact.supportEmail}`}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {contact.supportEmail}
+                </a>
+              </div>
+            </div>
+          )}
+
+          {contact.workingHours && (
+            <div className="flex items-start gap-2">
+              <Icon name="Clock" size={16} className="text-primary mt-0.5" />
+              <div>
+                <div className="text-sm font-medium text-foreground">
+                  Часы работы
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {contact.workingHours}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {contact.socialMedia && (
+            <div className="pt-2">
+              <div className="text-sm font-medium text-foreground mb-2">
+                Социальные сети
+              </div>
+              <div className="flex gap-2">
+                {contact.socialMedia.telegram && (
+                  <a
+                    href={contact.socialMedia.telegram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center hover:bg-blue-500/30 transition-colors"
+                    title="Telegram"
+                  >
+                    <Icon name="Send" size={14} className="text-blue-500" />
+                  </a>
+                )}
+                {contact.socialMedia.vkontakte && (
+                  <a
+                    href={contact.socialMedia.vkontakte}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center hover:bg-blue-500/30 transition-colors"
+                    title="VKontakte"
+                  >
+                    <Icon
+                      name="MessageSquare"
+                      size={14}
+                      className="text-blue-500"
+                    />
+                  </a>
+                )}
+                {contact.socialMedia.youtube && (
+                  <a
+                    href={contact.socialMedia.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center hover:bg-red-500/30 transition-colors"
+                    title="YouTube"
+                  >
+                    <Icon name="Youtube" size={14} className="text-red-500" />
+                  </a>
+                )}
+                {contact.socialMedia.habr && (
+                  <a
+                    href={contact.socialMedia.habr}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-blue-700/20 rounded-lg flex items-center justify-center hover:bg-blue-700/30 transition-colors"
+                    title="Habr"
+                  >
+                    <Icon name="BookOpen" size={14} className="text-blue-700" />
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Новая секция: Реферальная программа
+  const renderReferralProgramSection = () => {
+    if (!provider.referralProgram || !provider.referralProgram.available) {
+      return null;
+    }
+
+    const program = provider.referralProgram;
+
+    return (
+      <div className="bg-card border border-border rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
+            <Icon name="Users" size={18} className="text-green-500" />
+          </div>
+          <h4 className="text-base font-bold text-foreground">
+            Партнерская программа
+          </h4>
+        </div>
+        <div className="space-y-3">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
+            Партнерское вознаграждение за привлечение клиентов:
+          </p>
+
+          <div className="space-y-2">
+            {program.commissionRules.map((rule, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between p-2 bg-background/50 rounded-lg border border-border"
+              >
+                <span className="text-sm text-foreground">{rule.service}</span>
+                <Badge className="bg-green-500/10 text-green-600 border-green-500/30">
+                  {rule.commission}
+                </Badge>
+              </div>
+            ))}
+          </div>
+
+          {program.minPayout && (
+            <div className="text-sm text-muted-foreground">
+              Минимальная выплата: {program.minPayout} ₽
+            </div>
+          )}
+
+          {program.payoutMethods && program.payoutMethods.length > 0 && (
+            <div className="text-sm text-muted-foreground">
+              Способы выплат: {program.payoutMethods.join(", ")}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       ref={cardRef}
@@ -632,6 +982,9 @@ export const ProviderCard = ({
             }`}
           >
             <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
+              {/* Секция "О провайдере" (первая, на всю ширину) */}
+              {renderAboutSection()}
+
               {/* Первый ряд: Соответствие 152-ФЗ и ФСТЭК */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {provider.fz152Compliant && (
@@ -755,19 +1108,28 @@ export const ProviderCard = ({
                 {render1CSection()}
               </div>
 
-              {/* Остальные секции */}
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-orange-500/20 rounded-xl flex items-center justify-center">
-                    <Icon name="Award" size={18} className="text-orange-500" />
+              {/* Седьмой ряд: Поддержка AI и Гарантии обслуживания */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {renderAISection()}
+
+                <div className="bg-card border border-border rounded-2xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                      <Icon
+                        name="Award"
+                        size={18}
+                        className="text-orange-500"
+                      />
+                    </div>
+                    <h4 className="text-base font-bold text-foreground">
+                      Гарантии обслуживания
+                    </h4>
                   </div>
-                  <h4 className="text-base font-bold text-foreground">
-                    Гарантии обслуживания
-                  </h4>
+                  <ServiceGuaranteesSection provider={provider} />
                 </div>
-                <ServiceGuaranteesSection provider={provider} />
               </div>
 
+              {/* Остальные секции */}
               <div className="bg-card border border-border rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
@@ -808,6 +1170,12 @@ export const ProviderCard = ({
                   <h4 className="text-base font-bold text-foreground">Кейсы</h4>
                 </div>
                 <CaseStudiesSection provider={provider} />
+              </div>
+
+              {/* Восьмой ряд: Контакты и Реферальная программа (рядом) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {renderContactsSection()}
+                {renderReferralProgramSection()}
               </div>
 
               {/* Плюсы и минусы */}

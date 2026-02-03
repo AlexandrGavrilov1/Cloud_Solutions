@@ -41,10 +41,11 @@
     "disks": "Disks",
     "virtualization": "Virtualization",
     "users": "users",
-    "priceOnRequest": "priceOnRequest",
+    "priceOnRequest": "price on request",
     "rating": "Rating",
     "gpu": "GPU",
-    "supports1C": "1C"
+    "supports1C": "1C",
+    "ai": "AI"
   },
   "card": {
     "selected": "Selected",
@@ -89,7 +90,21 @@
     "gpu": "Graphics Processors",
     "gpuDescription": "Provider offers servers with GPUs for machine learning, visualization and computations",
     "supports1C": "1C",
-    "supports1CDescription": "Provider specializes in hosting 1C solutions and provides optimized servers"
+    "supports1CDescription": "Provider specializes in hosting 1C solutions and provides optimized servers",
+    "ai": "Artificial Intelligence",
+    "aiDescription": "Provider offers infrastructure for AI/ML projects including ready-made images and GPU acceleration",
+    "aboutProvider": "About Provider",
+    "contacts": "Contacts",
+    "referralProgram": "Referral Program",
+    "website": "Website",
+    "email": "Email",
+    "phone": "Phone",
+    "support": "Support",
+    "workingHours": "Working Hours",
+    "socialNetworks": "Social Networks",
+    "commission": "Commission",
+    "minPayout": "Minimum payout",
+    "payoutMethods": "Payout methods"
   },
   "resources": {
     "cpu": "vCPU",
@@ -140,6 +155,8 @@
     "gpu": "GPU",
     "anyGpu": "Any GPU",
     "supports1C": "1C",
-    "with1C": "With 1C"
+    "with1C": "With 1C",
+    "ai": "AI",
+    "withAI": "With AI"
   }
 }

@@ -81,6 +81,15 @@ export const providers: Provider[] = [
       ],
       // Добавляем поддержку 1С
       supports1C: true,
+      // Добавляем поддержку AI
+      supportsAI: true,
+      aiFeatures: [
+        "Готовые образы с Jupyter Notebook",
+        "Поддержка TensorFlow, PyTorch, Keras",
+        "Интеграция с MLflow",
+        "GPU-ускорение для обучения моделей",
+        "Предустановленные CUDA и cuDNN",
+      ],
     },
     serviceGuarantees: {
       uptimeSLA: "99,98%",
@@ -120,6 +129,64 @@ export const providers: Provider[] = [
       "Финтех приложения",
       "Игровые серверы",
     ],
+    // Добавляем новое поле: О провайдере
+    about: `Timeweb Cloud — это российский облачный провайдер, основанный в 2006 году. Компания специализируется на предоставлении высокопроизводительных облачных решений для бизнеса любого масштаба.
+
+Основные характеристики:
+• Более 18 лет на рынке хостинговых услуг
+• Собственная инфраструктура в 4 дата-центрах
+• Более 500 сотрудников в штате
+• Обслуживает более 500,000 клиентов
+• Годовой оборот превышает 5 млрд рублей
+
+Компания активно инвестирует в развитие инфраструктуры:
+✓ 2023 год — запуск нового дата-центра в Казахстане
+✓ 2022 год — внедрение NVMe-дисков на всех тарифах
+✓ 2021 год — получение сертификатов ФСТЭК и 152-ФЗ
+✓ 2020 год — запуск собственной панели управления
+
+Timeweb Cloud позиционирует себя как провайдер для разработчиков и IT-компаний, предлагая гибкие тарифы, мощную поддержку и современные технологии.`,
+
+    // Добавляем контактную информацию
+    contactInfo: {
+      website: "https://timeweb.cloud",
+      email: "info@timeweb.cloud",
+      phone: "+7 (495) 123-45-67",
+      supportEmail: "support@timeweb.cloud",
+      salesEmail: "sales@timeweb.cloud",
+      address: "Москва, ул. Льва Толстого, 16",
+      workingHours: "Круглосуточно, 24/7",
+      socialMedia: {
+        telegram: "https://t.me/timewebcloud",
+        vkontakte: "https://vk.com/timewebcloud",
+        youtube: "https://youtube.com/timewebcloud",
+        habr: "https://habr.com/ru/company/timeweb",
+      },
+    },
+
+    // Добавляем реферальную программу
+    referralProgram: {
+      available: true,
+      commissionRules: [
+        { service: "Все тарифы виртуального хостинга", commission: "40%" },
+        { service: "Хостинг для CMS (тарифы «Старт»)", commission: "40%" },
+        { service: "Конструктор сайтов Craftum", commission: "40%" },
+        {
+          service: "Сервис для работы с отзывами MyReviews",
+          commission: "40%",
+        },
+        { service: "Лицензии 1С‑Битрикс", commission: "20%" },
+        { service: "Аренда VPS и VDS", commission: "20%" },
+        { service: "Хостинг для CMS (тарифы «Про»)", commission: "10%" },
+        { service: "Хостинг для 1С‑Битрикс", commission: "10%" },
+        { service: "Выделенные серверы (кроме Silver)", commission: "10%" },
+        { service: "Привлечение партнера", commission: "10%" },
+        { service: "SSL Timeweb Pro", commission: "1000 ₽" },
+      ],
+      minPayout: 1000,
+      payoutMethods: ["Банковская карта", "ЮMoney", "Qiwi"],
+    },
+
     reviews: reviewsData[1] || [],
   },
   {

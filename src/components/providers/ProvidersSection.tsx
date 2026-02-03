@@ -1,4 +1,3 @@
-// ProvidersSection.tsx
 import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -126,6 +125,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const [filter1C, setFilter1C] = useState<boolean>(() => {
     const saved = localStorage.getItem("filter1C");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  // Новый фильтр: поддержка AI
+  const [filterAI, setFilterAI] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterAI");
     return saved ? JSON.parse(saved) : false;
   });
 
@@ -331,6 +336,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("filter1C", JSON.stringify(filter1C));
   }, [filter1C]);
 
+  // Сохраняем фильтр AI
+  useEffect(() => {
+    localStorage.setItem("filterAI", JSON.stringify(filterAI));
+  }, [filterAI]);
+
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
@@ -517,6 +527,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       // Фильтр 1С
       if (filter1C && !p.technicalSpecs.supports1C) return false;
 
+      // Фильтр AI
+      if (filterAI && !p.technicalSpecs.supportsAI) return false;
+
       return true;
     });
 
@@ -567,6 +580,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterGPU,
     filterHasGPU, // Добавляем новый фильтр
     filter1C,
+    filterAI, // Добавляем фильтр AI
     sortBy,
   ]);
 
@@ -650,6 +664,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterHasGPU={setFilterHasGPU} // Новый фильтр
                   filter1C={filter1C}
                   setFilter1C={setFilter1C}
+                  filterAI={filterAI} // Новый фильтр
+                  setFilterAI={setFilterAI} // Новый фильтр
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}
@@ -742,6 +758,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   setFilterHasGPU={setFilterHasGPU} // Новый фильтр
                   filter1C={filter1C}
                   setFilter1C={setFilter1C}
+                  filterAI={filterAI} // Новый фильтр
+                  setFilterAI={setFilterAI} // Новый фильтр
                   allLocations={allLocations}
                   allVirtualizations={allVirtualizations}
                   allDiskTypes={allDiskTypes}

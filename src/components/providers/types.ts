@@ -28,6 +28,9 @@ export interface TechnicalSpecs {
   gpuModels?: string[];
   // Добавляем поддержку 1C
   supports1C?: boolean;
+  // Добавляем поддержку AI
+  supportsAI?: boolean;
+  aiFeatures?: string[];
 }
 
 export interface ServiceGuarantees {
@@ -85,6 +88,34 @@ export type AdditionalServiceType =
   | "Аттестация по ФСТЭК"
   | "Другие гос. лицензии";
 
+// Добавляем интерфейс для реферальной программы
+export interface ReferralProgram {
+  available: boolean;
+  commissionRules: {
+    service: string;
+    commission: string;
+  }[];
+  minPayout?: number;
+  payoutMethods?: string[];
+}
+
+// Добавляем интерфейс для контактов
+export interface ContactInfo {
+  website?: string;
+  email?: string;
+  phone?: string;
+  supportEmail?: string;
+  salesEmail?: string;
+  address?: string;
+  workingHours?: string;
+  socialMedia?: {
+    telegram?: string;
+    vkontakte?: string;
+    youtube?: string;
+    habr?: string;
+  };
+}
+
 export interface Provider {
   id: number;
   name: string;
@@ -118,11 +149,8 @@ export interface Provider {
   caseStudies?: string[];
   uptime30days?: number;
   monthlyUptimeData?: MonthlyUptime[];
+  // Добавляем новые поля
+  about?: string; // Описание провайдера
+  contactInfo?: ContactInfo; // Контактная информация
+  referralProgram?: ReferralProgram; // Реферальная программа
 }
-
-// УДАЛЯЕМ интерфейс ResourceConfig
-// export interface ResourceConfig {
-//   cpu: number;
-//   ram: number;
-//   storage: number;
-// }

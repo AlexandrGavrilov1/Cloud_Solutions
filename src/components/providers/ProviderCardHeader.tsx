@@ -41,6 +41,14 @@ export const ProviderCardHeader = ({
     description: "",
   });
 
+  const [aiTooltip, setAiTooltip] = useState<{
+    show: boolean;
+    features: string[];
+  }>({
+    show: false,
+    features: [],
+  });
+
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
     e.preventDefault();
     onProviderClick();
@@ -131,6 +139,19 @@ export const ProviderCardHeader = ({
     setGpuTooltip({ show: false, model: "", description: "" });
   };
 
+  const showAiTooltip = () => {
+    if (provider.technicalSpecs.aiFeatures) {
+      setAiTooltip({
+        show: true,
+        features: provider.technicalSpecs.aiFeatures,
+      });
+    }
+  };
+
+  const hideAiTooltip = () => {
+    setAiTooltip({ show: false, features: [] });
+  };
+
   return (
     <div className="flex flex-col gap-3 flex-1">
       <div className="flex items-start justify-between gap-3">
@@ -185,6 +206,36 @@ export const ProviderCardHeader = ({
                 {provider.technicalSpecs.supports1C && (
                   <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center">
                     <Icon name="Database" size={10} className="text-primary" />
+                  </div>
+                )}
+
+                {provider.technicalSpecs.supportsAI && (
+                  <div
+                    className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center relative"
+                    onMouseEnter={showAiTooltip}
+                    onMouseLeave={hideAiTooltip}
+                  >
+                    <Icon name="Cpu" size={10} className="text-primary" />
+
+                    {aiTooltip.show && (
+                      <div className="absolute z-50 top-full left-1/2 transform -translate-x-1/2 mt-2 p-2 bg-background border border-border rounded-lg shadow-lg w-64">
+                        <div className="text-xs font-semibold text-foreground mb-1">
+                          AI/ML возможности:
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          <ul className="list-disc pl-3 space-y-1">
+                            {aiTooltip.features
+                              .slice(0, 3)
+                              .map((feature, idx) => (
+                                <li key={idx}>{feature}</li>
+                              ))}
+                            {aiTooltip.features.length > 3 && (
+                              <li>... и ещё {aiTooltip.features.length - 3}</li>
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -367,6 +418,17 @@ export const ProviderCardHeader = ({
               </div>
             )}
 
+          {provider.technicalSpecs.supportsAI && (
+            <div className="flex items-center gap-1.5 text-sm">
+              <Icon
+                name="Cpu"
+                size={14}
+                className="text-primary flex-shrink-0"
+              />
+              <span className="text-foreground">AI/ML</span>
+            </div>
+          )}
+
           {provider.technicalSpecs.kubernetes?.available && (
             <div className="flex items-center gap-1.5 text-sm">
               <Icon
@@ -491,6 +553,12 @@ export const ProviderCardHeader = ({
           <Badge className="bg-green-500/10 border-green-500/30 text-green-600 border font-semibold text-xs px-2 py-1">
             <Icon name="Database" size={12} className="text-green-500 mr-1" />
             1С
+          </Badge>
+        )}
+        {provider.technicalSpecs.supportsAI && (
+          <Badge className="bg-purple-500/10 border-purple-500/30 text-purple-600 border font-semibold text-xs px-2 py-1">
+            <Icon name="Cpu" size={12} className="text-purple-500 mr-1" />
+            AI/ML
           </Badge>
         )}
         {provider.uptime30days && (
