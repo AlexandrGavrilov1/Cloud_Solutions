@@ -4875,26 +4875,26 @@ export const providers: Provider[] = [
     reviews: reviewsData[53] || [],
   },
 
-  {
+ {
     id: 54,
-    name: "One Dash",
-    logo: "providers_logo/53_One_Dash.jpg",
+    name: "VDSina",
+    logo: "providers_logo\54_VDSina.jpg",
     rating: 8.8,
-    basePrice: 149,
+    basePrice: 150,
     cpuPrice: 100,
     ramPrice: 40,
     storagePrice: 10,
     features: [
       "NVMe диски",
       "Резервное копирование",
-      "GPU",
-      "Низкая стоимость",
+      "SSH",
+      "ISO",
     ],
-    locations: ["Россия", "Германия", "Нидерланды", "США"],
-    trialDays: "7 дней за 49 рублей",
-    url: "https://rdp-onedash.ru/r/e63eaa",
+    locations: ["Москва", "Амстердам"],
+    trialDays: 0,
+    url: "https://vdsina.ru/?partner=p1dj8tzwb6rw",
     pros: ["Низкая цена", "NVMe диски"],
-    cons: ["Низкая вариативность серверов", "отсутвие виртуализации"],
+    cons: ["Низкая вариативность серверов"],
 
     fz152Compliant: true,
     fz152Level: "",
@@ -4963,4 +4963,5 @@ export const providers: Provider[] = [
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[54] || [],
   },
+
 ];
