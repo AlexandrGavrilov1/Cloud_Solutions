@@ -149,16 +149,14 @@ Timeweb Cloud позиционирует себя как провайдер дл
 
     // Добавляем контактную информацию
     contactInfo: {
-      website: "https://timeweb.cloud",
       email: "info@timeweb.cloud",
-      phone: "+7 (495) 123-45-67",
+      phone: "8 800 700-32-92",
       supportEmail: "support@timeweb.cloud",
       salesEmail: "sales@timeweb.cloud",
-      address: "Москва, ул. Льва Толстого, 16",
+      address: "Санкт-Петербург, Заставская улица, 22, корпус 2",
       workingHours: "Круглосуточно, 24/7",
       socialMedia: {
         telegram: "https://t.me/timewebcloud",
-        vkontakte: "https://vk.com/timewebcloud",
         youtube: "https://youtube.com/timewebcloud",
         habr: "https://habr.com/ru/company/timeweb",
       },
