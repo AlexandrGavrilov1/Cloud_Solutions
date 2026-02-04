@@ -73,7 +73,7 @@ const Promo = () => {
 
   const handleProviderClick = async (provider: (typeof providers)[0]) => {
     if (provider.url) {
-      // Яндекс.Метрика - добавляем трекинг
+      // Яндекс.Метрика - добавляем трекингг
       if (typeof window !== "undefined" && (window as any).ym) {
         (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
           provider_id: provider.id,
