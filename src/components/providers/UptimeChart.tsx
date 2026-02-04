@@ -81,7 +81,7 @@ export const UptimeChart = ({
 
     // Яндекс.Метрика
     if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "ClickOnUptime", {
+      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
         provider_id: provider.id,
         provider_name: provider.name,
       });

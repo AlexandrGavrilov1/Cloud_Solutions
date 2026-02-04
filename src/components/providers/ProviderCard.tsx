@@ -103,7 +103,7 @@ export const ProviderCard = ({
 
   const handleProviderClick = async () => {
     if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "ClickOnProviderCard", {
+      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
         provider_id: provider.id,
         provider_name: provider.name,
       });
