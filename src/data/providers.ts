@@ -5013,7 +5013,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.99,
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 120,
