@@ -1,19 +1,11 @@
-import { useState, useEffect } from "react";
-
 interface MonthlyData {
   month: string;
   uptime: number;
   downtime: number;
-  year?: number;
-}
-
-interface YearlyData {
-  year: number;
-  data: MonthlyData[];
 }
 
 interface MonthlyUptimeGraphProps {
-  data: YearlyData[];
+  data: MonthlyData[];
   providerId: number;
 }
 
@@ -21,59 +13,11 @@ export const MonthlyUptimeGraph = ({
   data,
   providerId,
 }: MonthlyUptimeGraphProps) => {
-  const [selectedYear, setSelectedYear] = useState<number>(
-    data[0]?.year || 2025,
-  );
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200,
-  );
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  if (!data || data.length === 0) return null;
-
-  // Получаем данные для выбранного года
-  const selectedYearData =
-    data.find((y) => y.year === selectedYear)?.data || [];
-  const availableYears = data.map((y) => y.year).sort((a, b) => b - a);
-  const hasMultipleYears = availableYears.length > 1;
-
-  // Определяем отображение в зависимости от ширины экрана
-  const isDesktop = windowWidth >= 768;
-
   return (
     <div className="border-t border-border pt-3 md:pt-4">
-      {/* Заголовок с переключателем лет */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 md:mb-4">
-        <h4 className="text-xs md:text-sm font-bold text-foreground">
-          График Uptime по месяцам {selectedYear}
-        </h4>
-
-        {hasMultipleYears && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Год:</span>
-            <div className="flex bg-accent rounded-lg p-0.5">
-              {availableYears.map((year) => (
-                <button
-                  key={year}
-                  onClick={() => setSelectedYear(year)}
-                  className={`px-2 py-1 rounded-md transition-colors text-xs ${
-                    selectedYear === year
-                      ? "bg-background text-foreground font-semibold shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {year}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      <h4 className="text-xs md:text-sm font-bold text-foreground mb-3 md:mb-4">
+        График Uptime по месяцам 2025
+      </h4>
 
       <div className="relative h-48 md:h-64 mb-2">
         {/* Ось Y */}
@@ -104,13 +48,13 @@ export const MonthlyUptimeGraph = ({
               preserveAspectRatio="none"
             >
               {/* Вертикальные линии от точек до оси X (только десктоп) */}
-              {selectedYearData.map((dataPoint, idx) => {
+              {data.map((dataPoint, idx) => {
                 const minUptime = 99.5;
                 const maxUptime = 100.3;
                 const normalizedHeight =
                   ((dataPoint.uptime - minUptime) / (maxUptime - minUptime)) *
                   100;
-                const segmentWidth = 1000 / selectedYearData.length;
+                const segmentWidth = 1000 / data.length;
                 const x = segmentWidth * idx + segmentWidth / 2;
                 const y = 200 - (normalizedHeight / 100) * 200;
 
@@ -133,7 +77,7 @@ export const MonthlyUptimeGraph = ({
 
               {/* Соединительная линия для мобильных */}
               <polyline
-                points={selectedYearData
+                points={data
                   .map((dataPoint, idx) => {
                     const minUptime = 99.5;
                     const maxUptime = 100.3;
@@ -141,7 +85,7 @@ export const MonthlyUptimeGraph = ({
                       ((dataPoint.uptime - minUptime) /
                         (maxUptime - minUptime)) *
                       100;
-                    const segmentWidth = 1000 / selectedYearData.length;
+                    const segmentWidth = 1000 / data.length;
                     const x = segmentWidth * idx + segmentWidth / 2;
                     let y = 200 - (normalizedHeight / 100) * 200;
                     if (dataPoint.uptime < 99.5) {
@@ -160,13 +104,13 @@ export const MonthlyUptimeGraph = ({
               />
 
               {/* Точки на графике */}
-              {selectedYearData.map((dataPoint, idx) => {
+              {data.map((dataPoint, idx) => {
                 const minUptime = 99.5;
                 const maxUptime = 100.3;
                 const normalizedHeight =
                   ((dataPoint.uptime - minUptime) / (maxUptime - minUptime)) *
                   100;
-                const segmentWidth = 1000 / selectedYearData.length;
+                const segmentWidth = 1000 / data.length;
                 const x = segmentWidth * idx + segmentWidth / 2;
                 let y = 200 - (normalizedHeight / 100) * 200;
 
@@ -178,6 +122,13 @@ export const MonthlyUptimeGraph = ({
                 if (dataPoint.uptime < 99.5) {
                   y = 200;
                 }
+                // if (
+                //   isProvider14JuneOrSeptember ||
+                //   isProvider15 ||
+                //   isProvider7May
+                // ) {
+                //   y = 200;
+                // }
 
                 let fillColor = "rgb(0, 128, 0)";
                 if (dataPoint.uptime < 99.5) {
@@ -215,7 +166,7 @@ export const MonthlyUptimeGraph = ({
                       {dataPoint.uptime}
                     </text>
                     <title>
-                      {dataPoint.month} {selectedYear}: {dataPoint.uptime}%
+                      {dataPoint.month}: {dataPoint.uptime}%
                     </title>
                   </g>
                 );
@@ -226,7 +177,7 @@ export const MonthlyUptimeGraph = ({
 
         {/* Ось X - месяцы */}
         <div className="absolute left-[44px] md:left-[68px] right-0 bottom-0 flex justify-around text-[9px] md:text-xs text-muted-foreground">
-          {selectedYearData.map((dataPoint, idx) => (
+          {data.map((dataPoint, idx) => (
             <div key={idx} className="flex flex-col items-center flex-1">
               <span className="font-semibold">
                 {dataPoint.month.slice(0, 3)}
@@ -256,23 +207,6 @@ export const MonthlyUptimeGraph = ({
           <span className="text-muted-foreground">&lt; 99.5%</span>
         </div>
       </div>
-
-      {/* Выбор года для мобильных */}
-      {hasMultipleYears && !isDesktop && (
-        <div className="mt-3">
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-            className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm"
-          >
-            {availableYears.map((year) => (
-              <option key={year} value={year}>
-                {year} год
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
 
       <style>{`
         @keyframes lineGrow {
