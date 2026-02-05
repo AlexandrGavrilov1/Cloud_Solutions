@@ -508,7 +508,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
             )}
           </div>
 
-         {shouldShowGraph && (
+{shouldShowGraph && (
   <div className={`${
     isMobile ? 'pt-2' : 'pt-4'
   } border-t border-border/50`}>
@@ -516,8 +516,8 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
       data={yearlyData}
       providerId={provider.id}
     />
-          )}
-        </div>
+  </div>
+)}
       )}
     </div>
   );
