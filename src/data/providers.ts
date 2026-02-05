@@ -81,7 +81,7 @@ export const providers: Provider[] = [
       ],
       // Добавляем поддержку 1С
       supports1C: true,
-      // Добавляем поддержку AI
+      // Добавляем поддержку AIа
       supportsAI: true,
       aiFeatures: [
         "Готовые образы с Jupyter Notebook",
