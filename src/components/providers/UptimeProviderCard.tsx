@@ -508,11 +508,14 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
             )}
           </div>
 
-          {shouldShowGraph && isExpanded && (
-            <MonthlyUptimeGraph
-              data={getStaticMonthlyData(provider.id)}
-              providerId={provider.id}
-            />
+          {shouldShowGraph && (
+            <div
+              className={`${
+                isMobile ? "pt-2" : "pt-4"
+              } border-t border-border/50`}
+            >
+              <MonthlyUptimeGraph data={yearlyData} providerId={provider.id} />
+            </div>
           )}
         </div>
       )}
