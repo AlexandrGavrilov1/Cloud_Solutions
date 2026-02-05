@@ -96,7 +96,7 @@ export const providers: Provider[] = [
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 7,
     },
-    uptime30days: 99.98,
+    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 150,
@@ -358,7 +358,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 30,
     },
-    uptime30days: 99.92,
+    uptime30days: 99.93,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -548,7 +548,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 15 мин",
       moneyBackGuarantee: 3,
     },
-    uptime30days: 99.79,
+    uptime30days: 99.82,
     additionalServices: {
       autoBackups: true,
       backupPrice: 80,
@@ -758,7 +758,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.74,
+    uptime30days: 99.78,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -1042,7 +1042,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 120 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.98,
+    uptime30days: 99.97,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -1418,7 +1418,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.87,
+    uptime30days: 99.88,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -1530,7 +1530,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 10 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.41,
+    uptime30days: 99.5,
     additionalServices: {
       autoBackups: true,
       backupPrice: 50,
@@ -1898,7 +1898,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 60 мин",
       moneyBackGuarantee: 0,
     },
-    uptime30days: 99.97,
+    uptime30days: 99.98,
     additionalServices: {
       autoBackups: true,
       backupPrice: 0,
@@ -3184,6 +3184,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 7,
     },
+    uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
       backupPrice: 100,
@@ -3208,7 +3209,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
       "Малый и средний бизнес",
     ],
-    uptime30days: 99.99,
+
     reviews: reviewsData[32] || [],
   },
 
@@ -4475,7 +4476,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "<  4 часа",
       moneyBackGuarantee: 3,
     },
-    uptime30days: 99.44,
+    uptime30days: 99.53,
 
     additionalServices: {
       autoBackups: true,
