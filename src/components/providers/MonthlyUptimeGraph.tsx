@@ -24,15 +24,6 @@ export const MonthlyUptimeGraph = ({
   const [selectedYear, setSelectedYear] = useState<number>(
     data[0]?.year || 2025,
   );
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200,
-  );
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   if (!data || data.length === 0) return null;
 
@@ -41,9 +32,6 @@ export const MonthlyUptimeGraph = ({
     data.find((y) => y.year === selectedYear)?.data || [];
   const availableYears = data.map((y) => y.year).sort((a, b) => b - a);
   const hasMultipleYears = availableYears.length > 1;
-
-  // Определяем отображение в зависимости от ширины экрана
-  const isDesktop = windowWidth >= 768;
 
   return (
     <div className="border-t border-border pt-3 md:pt-4">
@@ -170,11 +158,6 @@ export const MonthlyUptimeGraph = ({
                 const x = segmentWidth * idx + segmentWidth / 2;
                 let y = 200 - (normalizedHeight / 100) * 200;
 
-                const isProvider14JuneOrSeptember =
-                  providerId === 14 && (idx === 5 || idx === 8);
-                const isProvider15 = providerId === 15 && idx >= 7;
-                const isProvider7May = providerId === 7 && idx === 4;
-
                 if (dataPoint.uptime < 99.5) {
                   y = 200;
                 }
@@ -257,9 +240,9 @@ export const MonthlyUptimeGraph = ({
         </div>
       </div>
 
-      {/* Выбор года для мобильных */}
-      {hasMultipleYears && !isDesktop && (
-        <div className="mt-3">
+      {/* Выбор года для мобильных (дополнительно) */}
+      {hasMultipleYears && (
+        <div className="mt-3 md:hidden">
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
