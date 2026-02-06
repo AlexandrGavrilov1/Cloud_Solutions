@@ -21,10 +21,10 @@ export const UptimeChartHeader = ({
           </span>
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground px-4">
-          Uptime провайдеров за 2025 год
+          Uptime провайдеров за 2025-2026 годы
         </h2>
         <p className="text-base md:text-xl text-muted-foreground px-4">
-          Реальная статистика доступности серверов
+          Реальная статистика доступности серверов по месяцам
         </p>
       </div>
 
@@ -33,6 +33,9 @@ export const UptimeChartHeader = ({
           <div>
             <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground flex items-center gap-2">
               Топ провайдеров по Uptime
+              <span className="text-xs md:text-sm text-muted-foreground font-normal">
+                (30 дней)
+              </span>
             </h3>
             {lastCheckTime && (
               <p className="text-xs md:text-sm text-muted-foreground mt-1">

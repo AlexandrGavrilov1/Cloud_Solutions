@@ -1,6 +1,7 @@
 import { Provider } from "./types";
 import Icon from "@/components/ui/icon";
 import { MonthlyUptimeGraph } from "./MonthlyUptimeGraph";
+import { useState } from "react";
 
 interface UptimeProviderCardProps {
   provider: Provider;
@@ -11,7 +12,8 @@ interface UptimeProviderCardProps {
   getDowntimeMinutes: (uptime: number) => string;
 }
 
-export const getStaticMonthlyData = (providerId: number) => {
+// Данные за 2025 год
+const get2025Data = (providerId: number) => {
   if (providerId === 1) {
     return [
       { month: "Январь", uptime: 99.99, downtime: 3 },
@@ -115,6 +117,7 @@ export const getStaticMonthlyData = (providerId: number) => {
       { month: "Сентябрь", uptime: 99.99, downtime: 3 },
       { month: "Октябрь", uptime: 99.99, downtime: 6 },
       { month: "Ноябрь", uptime: 99.98, downtime: 9 },
+      { month: "Декабрь", uptime: 99.99, downtime: 3 },
     ];
   } else if (providerId === 10) {
     return [
@@ -330,8 +333,324 @@ export const getStaticMonthlyData = (providerId: number) => {
   return [];
 };
 
-export const calculateTotalDowntime = (providerId: number): number => {
-  const monthlyData = getStaticMonthlyData(providerId);
+// Данные за 2026 год (такая же структура как для 2025)
+const get2026Data = (providerId: number) => {
+  const monthlyData: {
+    [key: number]: Array<{ month: string; uptime: number; downtime: number }>;
+  } = {
+    1: [
+      { month: "Январь", uptime: 99.99, downtime: 3 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    2: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    3: [
+      { month: "Январь", uptime: 99.93, downtime: 30 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    5: [
+      { month: "Январь", uptime: 99.95, downtime: 21 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    6: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    7: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    9: [
+      { month: "Январь", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    10: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    11: [
+      { month: "Январь", uptime: 99.99, downtime: 3 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    12: [
+      { month: "Январь", uptime: 99.97, downtime: 15 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    13: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    14: [
+      { month: "Январь", uptime: 99.99, downtime: 6 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    15: [
+      { month: "Январь", uptime: 99.99, downtime: 6 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    18: [
+      { month: "Январь", uptime: 99.99, downtime: 6 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    19: [
+      { month: "Январь", uptime: 99.98, downtime: 9 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    20: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    21: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    22: [
+      { month: "Январь", uptime: 99.96, downtime: 18 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    23: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    32: [
+      { month: "Январь", uptime: 99.99, downtime: 6 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+    49: [
+      { month: "Январь", uptime: 100, downtime: 0 },
+      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Март", uptime: 0, downtime: 0 },
+      { month: "Апрель", uptime: 0, downtime: 0 },
+      { month: "Май", uptime: 0, downtime: 0 },
+      { month: "Июнь", uptime: 0, downtime: 0 },
+      { month: "Июль", uptime: 0, downtime: 0 },
+      { month: "Август", uptime: 0, downtime: 0 },
+      { month: "Сентябрь", uptime: 0, downtime: 0 },
+      { month: "Октябрь", uptime: 0, downtime: 0 },
+      { month: "Ноябрь", uptime: 0, downtime: 0 },
+      { month: "Декабрь", uptime: 0, downtime: 0 },
+    ],
+  };
+
+  return monthlyData[providerId] || [];
+};
+
+export const getMonthlyData = (providerId: number, year: number = 2025) => {
+  if (year === 2025) {
+    return get2025Data(providerId);
+  } else if (year === 2026) {
+    return get2026Data(providerId);
+  }
+  return [];
+};
+
+export const calculateTotalDowntime = (
+  providerId: number,
+  year: number = 2025,
+): number => {
+  const monthlyData = getMonthlyData(providerId, year);
   if (!monthlyData || !Array.isArray(monthlyData) || monthlyData.length === 0)
     return 0;
   return monthlyData.reduce((sum, month) => sum + month.downtime, 0);
@@ -345,6 +664,8 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
   onProviderClick,
   getDowntimeMinutes,
 }) => {
+  const [selectedYear, setSelectedYear] = useState<number>(2025);
+
   const getUptimeColorClass = (uptime: number) => {
     if (uptime >= 99.99) return "text-green-400";
     if (uptime >= 99.9) return "text-green-300";
@@ -361,12 +682,9 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
     return "bg-red-500";
   };
 
-  const monthlyData = getStaticMonthlyData(provider.id);
+  const monthlyData = getMonthlyData(provider.id, selectedYear);
   const uptime = provider.uptime30days ?? 0;
-  const totalDowntime =
-    monthlyData && Array.isArray(monthlyData)
-      ? monthlyData.reduce((sum, month) => sum + month.downtime, 0)
-      : 0;
+  const totalDowntime = calculateTotalDowntime(provider.id, selectedYear);
 
   const shouldShowGraph =
     provider.id === 1 ||
@@ -390,6 +708,15 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
     provider.id === 23 ||
     provider.id === 32 ||
     provider.id === 49;
+
+  // Получаем цвет для текста uptime
+  const getUptimeTextColor = (uptimeValue: number) => {
+    if (uptimeValue >= 99.95) return "text-green-500";
+    if (uptimeValue >= 99.5) return "text-orange-500";
+    return "text-red-500";
+  };
+
+  const uptimeTextColor = getUptimeTextColor(uptime);
 
   return (
     <div
@@ -467,7 +794,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
         </div>
 
         <div className="flex items-center gap-2 md:gap-3">
-          <div className="text-base md:text-xl font-black text-foreground">
+          <div className={`text-base md:text-xl font-black ${uptimeTextColor}`}>
             {uptime.toFixed(2)}%
           </div>
           <button
@@ -500,7 +827,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
             </div>
             {totalDowntime > 0 && (
               <div className="flex justify-between py-1">
-                <span>Суммарное время простоя:</span>
+                <span>Суммарное время простоя за {selectedYear}:</span>
                 <span className="font-semibold text-foreground">
                   {totalDowntime} мин
                 </span>
@@ -508,11 +835,47 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
             )}
           </div>
 
-          {shouldShowGraph && isExpanded && (
+          {/* Селектор года */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs md:text-sm font-medium text-muted-foreground">
+              Выберите год:
+            </span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setSelectedYear(2025)}
+                className={`px-3 py-1 text-xs md:text-sm font-medium rounded-lg transition-colors ${
+                  selectedYear === 2025
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                2025
+              </button>
+              <button
+                onClick={() => setSelectedYear(2026)}
+                className={`px-3 py-1 text-xs md:text-sm font-medium rounded-lg transition-colors ${
+                  selectedYear === 2026
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                2026
+              </button>
+            </div>
+          </div>
+
+          {shouldShowGraph && isExpanded && monthlyData.length > 0 && (
             <MonthlyUptimeGraph
-              data={getStaticMonthlyData(provider.id)}
+              data={monthlyData}
               providerId={provider.id}
+              year={selectedYear}
             />
+          )}
+
+          {shouldShowGraph && monthlyData.length === 0 && (
+            <div className="text-center py-4 text-muted-foreground text-sm">
+              Данные за {selectedYear} год пока недоступны
+            </div>
           )}
         </div>
       )}

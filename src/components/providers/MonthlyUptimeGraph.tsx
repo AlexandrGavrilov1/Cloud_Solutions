@@ -7,16 +7,18 @@ interface MonthlyData {
 interface MonthlyUptimeGraphProps {
   data: MonthlyData[];
   providerId: number;
+  year: number;
 }
 
 export const MonthlyUptimeGraph = ({
   data,
   providerId,
+  year,
 }: MonthlyUptimeGraphProps) => {
   return (
     <div className="border-t border-border pt-3 md:pt-4">
       <h4 className="text-xs md:text-sm font-bold text-foreground mb-3 md:mb-4">
-        График Uptime по месяцам 2025
+        График Uptime по месяцам {year}
       </h4>
 
       <div className="relative h-48 md:h-64 mb-2">
@@ -122,13 +124,6 @@ export const MonthlyUptimeGraph = ({
                 if (dataPoint.uptime < 99.5) {
                   y = 200;
                 }
-                // if (
-                //   isProvider14JuneOrSeptember ||
-                //   isProvider15 ||
-                //   isProvider7May
-                // ) {
-                //   y = 200;
-                // }
 
                 let fillColor = "rgb(0, 128, 0)";
                 if (dataPoint.uptime < 99.5) {
@@ -157,7 +152,7 @@ export const MonthlyUptimeGraph = ({
                       textAnchor="middle"
                       fontSize="9"
                       className="hidden md:block md:text-[10px]"
-                      fill="currentColor"
+                      fill={fillColor}
                       fontWeight="600"
                       style={{
                         animation: `pointAppear 0.4s ease-out ${idx * 0.05 + 0.3}s both`,
