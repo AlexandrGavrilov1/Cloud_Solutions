@@ -10,6 +10,8 @@ interface UptimeProviderCardProps {
   onToggleExpand: () => void;
   onProviderClick: () => void;
   getDowntimeMinutes: (uptime: number) => string;
+  isTopThree: boolean;
+  place?: number;
 }
 
 // Данные за 2025 год
@@ -663,6 +665,8 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
   onToggleExpand,
   onProviderClick,
   getDowntimeMinutes,
+  isTopThree,
+  place,
 }) => {
   const [selectedYear, setSelectedYear] = useState<number>(2025);
 
@@ -725,39 +729,39 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
         isExpanded ? "md:col-span-2" : ""
       }`}
     >
-      {index < 3 && (
+      {isTopThree && place && (
         <div className="absolute -top-2 -left-2 md:-top-3 md:-left-3 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg">
           <div className="relative flex items-center justify-center">
             <Icon
               name="Cloud"
               size={32}
               className={
-                index === 0
+                place === 1
                   ? "text-yellow-500 md:w-[37px] md:h-[37px]"
-                  : index === 1
+                  : place === 2
                     ? "text-gray-400 md:w-[37px] md:h-[37px]"
                     : "text-amber-700 md:w-[37px] md:h-[37px]"
               }
               style={{
                 filter:
-                  index === 0
+                  place === 1
                     ? "drop-shadow(0 0 10px rgba(234, 179, 8, 0.7))"
-                    : index === 1
+                    : place === 2
                       ? "drop-shadow(0 0 10px rgba(156, 163, 175, 0.7))"
                       : "drop-shadow(0 0 10px rgba(180, 83, 9, 0.7))",
               }}
             />
             <span
               className={`absolute text-[10px] md:text-xs font-bold ${
-                index === 0
+                place === 1
                   ? "text-yellow-600"
-                  : index === 1
+                  : place === 2
                     ? "text-gray-500"
                     : "text-amber-800"
               }`}
               style={{ marginTop: "2px", marginLeft: "-10%" }}
             >
-              {index + 1}
+              {place}
             </span>
           </div>
         </div>
@@ -766,7 +770,7 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
       <div className="flex items-center justify-between">
         <div
           className="flex items-center gap-2 md:gap-3 flex-1 min-w-0"
-          style={{ marginLeft: "28px" }}
+          style={{ marginLeft: isTopThree ? "28px" : "0" }}
         >
           <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg overflow-hidden bg-white border border-primary/10 flex items-center justify-center">
             <img
