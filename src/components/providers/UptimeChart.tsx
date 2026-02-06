@@ -192,11 +192,7 @@ export const UptimeChart = ({
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-gray-400"></div>
-                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
-                    Нет данных
-                  </span>
-                </div>
+                  
                 <div className="text-xs md:text-sm text-foreground">
                   Неизвестно
                 </div>
