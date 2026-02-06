@@ -39,8 +39,14 @@ export const UptimeChart = ({
       return calculateTotalDowntime(a.id) - calculateTotalDowntime(b.id);
     });
 
-  // Определяем топ-3 провайдеров по uptime из отфильтрованного списка
-  const topThreeProviders = providersWithUptime.slice(0, 3);
+  // Определяем ID топ-3 провайдеров по uptime из отфильтрованного списка
+  const topThreeProviderIds = providersWithUptime.slice(0, 3).map((p) => p.id);
+
+  // Функция для определения места провайдера в топ-3
+  const getProviderPlace = (providerId: number) => {
+    const index = topThreeProviderIds.indexOf(providerId);
+    return index !== -1 ? index + 1 : undefined;
+  };
 
   const getUptimeColor = (uptime: number) => {
     if (uptime >= 99.95) return "rgb(0, 128, 0)";
@@ -122,10 +128,8 @@ export const UptimeChart = ({
           <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               {providersWithUptime.map((provider, index) => {
-                const isTopThree = topThreeProviders.includes(provider);
-                const place = isTopThree
-                  ? topThreeProviders.indexOf(provider) + 1
-                  : undefined;
+                const isTopThree = topThreeProviderIds.includes(provider.id);
+                const place = getProviderPlace(provider.id);
 
                 return (
                   <UptimeProviderCard
