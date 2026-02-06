@@ -670,22 +670,6 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
 }) => {
   const [selectedYear, setSelectedYear] = useState<number>(2025);
 
-  const getUptimeColorClass = (uptime: number) => {
-    if (uptime >= 99.99) return "text-green-400";
-    if (uptime >= 99.9) return "text-green-300";
-    if (uptime >= 99.5) return "text-yellow-400";
-    if (uptime >= 99) return "text-orange-400";
-    return "text-red-400";
-  };
-
-  const getUptimeBarColorClass = (uptime: number) => {
-    if (uptime >= 99.99) return "bg-green-500";
-    if (uptime >= 99.9) return "bg-green-400";
-    if (uptime >= 99.5) return "bg-yellow-400";
-    if (uptime >= 99) return "bg-orange-400";
-    return "bg-red-500";
-  };
-
   const monthlyData = getMonthlyData(provider.id, selectedYear);
   const uptime = provider.uptime30days ?? 0;
   const totalDowntime = calculateTotalDowntime(provider.id, selectedYear);
