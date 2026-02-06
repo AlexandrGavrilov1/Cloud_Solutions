@@ -31,7 +31,7 @@ export const MonthlyUptimeGraph = ({
             ))}
         </div>
 
-        {/* График */}
+        {/* Графикк */}
         <div className="absolute left-[44px] md:left-[68px] right-0 top-0 bottom-6 md:bottom-8 border-l border-b border-border md:border-l-2 md:border-b-2">
           {/* Горизонтальные линии сетки */}
           {Array.from({ length: 11 }, (_, i) => i * 10).map((percent) => (
