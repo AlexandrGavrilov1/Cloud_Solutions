@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Provider } from "./types";
 import { UptimeChartHeader } from "./UptimeChartHeader";
 import {
@@ -30,6 +30,25 @@ export const UptimeChart = ({
     new Set(),
   );
 
+  // Определяем глобальный топ-3 провайдеров по uptime (из всех провайдеров)
+  const globalTopThreeProviderIds = useMemo(() => {
+    return providers
+      .filter((p) => p.uptime30days !== undefined)
+      .sort((a, b) => {
+        const uptimeDiff = (b.uptime30days || 0) - (a.uptime30days || 0);
+        if (uptimeDiff !== 0) return uptimeDiff;
+        return calculateTotalDowntime(a.id) - calculateTotalDowntime(b.id);
+      })
+      .slice(0, 3)
+      .map((p) => p.id);
+  }, [providers]);
+
+  // Функция для определения места провайдера в глобальном топ-3
+  const getProviderPlace = (providerId: number) => {
+    const index = globalTopThreeProviderIds.indexOf(providerId);
+    return index !== -1 ? index + 1 : undefined;
+  };
+
   const providersWithUptime = providers
     .filter((p) => p.uptime30days !== undefined)
     .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -38,15 +57,6 @@ export const UptimeChart = ({
       if (uptimeDiff !== 0) return uptimeDiff;
       return calculateTotalDowntime(a.id) - calculateTotalDowntime(b.id);
     });
-
-  // Определяем ID топ-3 провайдеров по uptime из отфильтрованного списка
-  const topThreeProviderIds = providersWithUptime.slice(0, 3).map((p) => p.id);
-
-  // Функция для определения места провайдера в топ-3
-  const getProviderPlace = (providerId: number) => {
-    const index = topThreeProviderIds.indexOf(providerId);
-    return index !== -1 ? index + 1 : undefined;
-  };
 
   const getUptimeColor = (uptime: number) => {
     if (uptime >= 99.95) return "rgb(0, 128, 0)";
@@ -128,7 +138,9 @@ export const UptimeChart = ({
           <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               {providersWithUptime.map((provider, index) => {
-                const isTopThree = topThreeProviderIds.includes(provider.id);
+                const isTopThree = globalTopThreeProviderIds.includes(
+                  provider.id,
+                );
                 const place = getProviderPlace(provider.id);
 
                 return (
