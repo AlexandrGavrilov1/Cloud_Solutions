@@ -39,9 +39,6 @@ export const UptimeChart = ({
       return calculateTotalDowntime(a.id) - calculateTotalDowntime(b.id);
     });
 
-  // Определяем топ-3 провайдеров по uptime из отфильтрованного списка
-  const topThreeProviders = providersWithUptime.slice(0, 3);
-
   const getUptimeColor = (uptime: number) => {
     if (uptime >= 99.95) return "rgb(0, 128, 0)";
     if (uptime >= 99.9) return "rgb(251, 146, 60)";
@@ -121,26 +118,17 @@ export const UptimeChart = ({
 
           <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-              {providersWithUptime.map((provider, index) => {
-                const isTopThree = topThreeProviders.includes(provider);
-                const place = isTopThree
-                  ? topThreeProviders.indexOf(provider) + 1
-                  : undefined;
-
-                return (
-                  <UptimeProviderCard
-                    key={provider.id}
-                    provider={provider}
-                    index={index}
-                    isExpanded={expandedProviders.has(provider.id)}
-                    onToggleExpand={() => handleToggleExpand(provider.id)}
-                    onProviderClick={() => handleProviderClick(provider)}
-                    getDowntimeMinutes={getDowntimeMinutes}
-                    isTopThree={isTopThree}
-                    place={place}
-                  />
-                );
-              })}
+              {providersWithUptime.map((provider, index) => (
+                <UptimeProviderCard
+                  key={provider.id}
+                  provider={provider}
+                  index={index}
+                  isExpanded={expandedProviders.has(provider.id)}
+                  onToggleExpand={() => handleToggleExpand(provider.id)}
+                  onProviderClick={() => handleProviderClick(provider)}
+                  getDowntimeMinutes={getDowntimeMinutes}
+                />
+              ))}
             </div>
 
             <div className="mt-4 md:mt-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
