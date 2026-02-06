@@ -60,7 +60,8 @@ export const UptimeChart = ({
 
   const getUptimeColor = (uptime: number) => {
     if (uptime >= 99.95) return "rgb(0, 128, 0)";
-    if (uptime >= 99.5) return "rgb(251, 146, 60)";
+    if (uptime >= 99.9) return "rgb(251, 146, 60)";
+    if (uptime >= 99.5) return "rgb(253, 186, 116)";
     return "rgb(239, 68, 68)";
   };
 
@@ -161,7 +162,7 @@ export const UptimeChart = ({
             <div className="mt-4 md:mt-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500"></div>
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-600"></div>
                   <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
                     ≥ 99.95%
                   </span>
@@ -172,9 +173,20 @@ export const UptimeChart = ({
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-400"></div>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
+                    ≥ 99.9%
+                  </span>
+                </div>
+                <div className="text-xs md:text-sm text-foreground">
+                  Хороший
+                </div>
+              </div>
+              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
                   <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-orange-500"></div>
                   <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
-                    99.5% - 99.94%
+                    ≥ 99.5%
                   </span>
                 </div>
                 <div className="text-xs md:text-sm text-foreground">
@@ -189,17 +201,6 @@ export const UptimeChart = ({
                   </span>
                 </div>
                 <div className="text-xs md:text-sm text-foreground">Низкий</div>
-              </div>
-              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
-                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-gray-400"></div>
-                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
-                    Нет данных
-                  </span>
-                </div>
-                <div className="text-xs md:text-sm text-foreground">
-                  Неизвестно
-                </div>
               </div>
             </div>
           </div>

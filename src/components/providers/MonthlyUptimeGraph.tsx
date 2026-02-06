@@ -31,7 +31,7 @@ export const MonthlyUptimeGraph = ({
             ))}
         </div>
 
-        {/* График */}
+        {/* Графикк */}
         <div className="absolute left-[44px] md:left-[68px] right-0 top-0 bottom-6 md:bottom-8 border-l border-b border-border md:border-l-2 md:border-b-2">
           {/* Горизонтальные линии сетки */}
           {Array.from({ length: 11 }, (_, i) => i * 10).map((percent) => (
@@ -116,6 +116,11 @@ export const MonthlyUptimeGraph = ({
                 const x = segmentWidth * idx + segmentWidth / 2;
                 let y = 200 - (normalizedHeight / 100) * 200;
 
+                const isProvider14JuneOrSeptember =
+                  providerId === 14 && (idx === 5 || idx === 8);
+                const isProvider15 = providerId === 15 && idx >= 7;
+                const isProvider7May = providerId === 7 && idx === 4;
+
                 if (dataPoint.uptime < 99.5) {
                   y = 200;
                 }
@@ -186,11 +191,11 @@ export const MonthlyUptimeGraph = ({
       <div className="flex flex-wrap items-center gap-2 md:gap-4 text-[10px] md:text-xs mt-3 md:mt-4 pt-2 border-t border-border">
         <div className="flex items-center gap-1 md:gap-1.5">
           <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-green-500"></div>
-          <span className="text-muted-foreground">≥ 99.95%</span>
+          <span className="text-muted-foreground">100%</span>
         </div>
         <div className="flex items-center gap-1 md:gap-1.5">
           <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-orange-500"></div>
-          <span className="text-muted-foreground">99.5% - 99.94%</span>
+          <span className="text-muted-foreground">99.5-99.99%</span>
         </div>
         <div className="flex items-center gap-1 md:gap-1.5">
           <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-red-500"></div>
