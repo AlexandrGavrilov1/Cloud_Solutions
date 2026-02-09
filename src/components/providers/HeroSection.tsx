@@ -11,7 +11,7 @@ export const HeroSection = () => {
     <section
       className="relative py-24 overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #FF931F 0%, #FFB366 25%, #FFC999 50%, #FFE4CC 75%, #FFF5EB 100%)'
+        background: 'linear-gradient(90deg, #FF931F 0%, #FFB366 20%, #FFC999 40%, #FFE4CC 70%, #F5E6D3 100%)'
       }}
       itemScope
       itemType="https://schema.org/WebPageElement"
