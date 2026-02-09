@@ -167,9 +167,8 @@ export const ProviderCardHeader = ({
 
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <div className="text-[40px] font-bold text-gray-900 leading-none">
-            от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}
-            <span className="text-[24px] font-normal text-gray-900">/мес</span>
+          <div className="text-[40px] font-bold text-gray-900 leading-none whitespace-nowrap">
+            от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}<span className="text-[24px] font-normal text-gray-900">/мес</span>
           </div>
           
           {provider.trialDays > 0 && (
