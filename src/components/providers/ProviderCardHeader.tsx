@@ -53,7 +53,7 @@ export const ProviderCardHeader = ({
           </div>
         </div>
 
-        <div className="flex-1 min-w-0 flex flex-col gap-4">
+        <div className="flex-1 min-w-0 flex flex-col gap-2">
           <div className="flex items-start justify-between gap-3">
             <h3 className="text-[32px] font-bold text-gray-900 leading-tight">
               {provider.name}
