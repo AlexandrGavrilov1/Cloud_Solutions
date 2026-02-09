@@ -103,7 +103,7 @@ export const ProviderCardHeader = ({
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <Icon name="MapPin" size={24} className="text-orange-500 flex-shrink-0" />
-          <span className="text-[18px] text-gray-900">
+          <span className="text-[18px] text-gray-900 dark:text-white">
             {provider.locations.slice(0, 2).join(", ")}
             {provider.locations.length > 2 && (
               <>
@@ -144,7 +144,7 @@ export const ProviderCardHeader = ({
               <Icon name="Shield" size={24} className="text-orange-500" />
               <Icon name="Check" size={12} className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
-            <span className="text-[18px] text-gray-900">
+            <span className="text-[18px] text-gray-900 dark:text-white">
               {[
                 provider.fz152Compliant && "152-ФЗ",
                 provider.fstekCompliant && "ФСТЭК",
@@ -159,7 +159,7 @@ export const ProviderCardHeader = ({
         {provider.technicalSpecs.diskType && (
           <div className="flex items-center gap-3">
             <Icon name="Settings" size={24} className="text-orange-500 flex-shrink-0" />
-            <span className="text-[18px] text-gray-900">
+            <span className="text-[18px] text-gray-900 dark:text-white">
               {provider.technicalSpecs.virtualization
                 ? provider.technicalSpecs.virtualization.join(", ")
                 : provider.technicalSpecs.diskType}
@@ -171,7 +171,7 @@ export const ProviderCardHeader = ({
         {provider.serviceGuarantees && (
           <div className="flex items-center gap-3">
             <Icon name="User" size={24} className="text-orange-500 flex-shrink-0" />
-            <span className="text-[18px] text-gray-900">
+            <span className="text-[18px] text-gray-900 dark:text-white">
               Uptime {provider.serviceGuarantees.uptimeSLA}, поддержка{" "}
               {provider.serviceGuarantees.supportResponseTime}
             </span>
@@ -182,7 +182,7 @@ export const ProviderCardHeader = ({
           provider.technicalSpecs.gpuModels.length > 0 && (
             <div className="flex items-center gap-3">
               <Icon name="Cpu" size={24} className="text-orange-500 flex-shrink-0" />
-              <span className="text-[18px] text-gray-900">
+              <span className="text-[18px] text-gray-900 dark:text-white">
                 GPU {provider.technicalSpecs.gpuModels.length}, Агенты
               </span>
             </div>
@@ -191,14 +191,14 @@ export const ProviderCardHeader = ({
 
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <div className="text-[40px] font-bold text-gray-900 leading-none whitespace-nowrap">
-            от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}<span className="text-[24px] font-normal text-gray-900">/мес</span>
+          <div className="text-[40px] font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
+            от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}<span className="text-[24px] font-normal text-gray-900 dark:text-white">/мес</span>
           </div>
           
           {provider.trialDays > 0 && (
             <div className="flex items-center gap-3">
               <Icon name="Gift" size={24} className="text-orange-500 flex-shrink-0" />
-              <span className="text-[18px] text-gray-900">
+              <span className="text-[18px] text-gray-900 dark:text-white">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
             </div>
