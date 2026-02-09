@@ -68,7 +68,7 @@ export const ProviderCardHeader = ({
 
         <div className="flex-1 min-w-0 flex flex-col gap-0">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="text-[32px] font-bold text-gray-900 leading-tight">
+            <h3 className="text-[32px] font-bold text-gray-900 dark:text-white leading-tight">
               {provider.name}
             </h3>
             {onCompareClick && (
@@ -95,7 +95,7 @@ export const ProviderCardHeader = ({
 
           <div className="flex items-center gap-2">
             <Icon name="Star" size={24} className="fill-orange-500 text-orange-500" />
-            <span className="text-[24px] font-medium text-gray-900">{avgRating.toFixed(1)}</span>
+            <span className="text-[24px] font-medium text-gray-900 dark:text-white">{avgRating.toFixed(1)}</span>
           </div>
         </div>
       </div>
