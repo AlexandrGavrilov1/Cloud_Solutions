@@ -10,42 +10,38 @@ export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-card/60 border-b border-border">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#2B3038] border-b border-[#2B3038]">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16">
           <a href="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img 
-              src={theme === 'dark' 
-                ? "https://cdn.poehali.dev/files/58a4ec73-d599-4708-9d67-43780b87fd56.png"
-                : "https://cdn.poehali.dev/files/8f328ff2-4310-4457-a129-5e42f69ef566.png"
-              }
+              src="https://cdn.poehali.dev/files/58a4ec73-d599-4708-9d67-43780b87fd56.png"
               alt="TopCloudHub Logo" 
-              className="h-[56px] w-auto transition-opacity duration-300"
+              className="h-[40px] w-auto transition-opacity duration-300"
             />
           </a>
           <div className="hidden md:flex items-center gap-8">
-            <a href="/gaming" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
-              <Icon name="Gamepad2" size={14} />
+            <a href="/" className="text-sm font-medium text-[#FF931F] hover:text-[#FF931F]/80 transition-colors">
+              Как выбрать
+            </a>
+            <a href="/gaming" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
               Игровые
             </a>
-            <a href="/blog" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
-              <Icon name="BookOpen" size={14} />
+            <a href="/blog" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
               Блог
             </a>
-            <a href="/uptime" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
-              <Icon name="Activity" size={14} />
+            <a href="/uptime" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
               {t('header.uptime')}
             </a>
-            <a href="/promo" className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors flex items-center gap-1">
-              <Icon name="Tag" size={14} />
+            <a href="/promo" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
               Акции
             </a>
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:border-primary/50 hover:bg-accent transition-all"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-all"
               aria-label="Toggle theme"
             >
-              <Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={18} className="text-foreground/70" />
+              <Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={18} className="text-white" />
             </button>
           </div>
 
