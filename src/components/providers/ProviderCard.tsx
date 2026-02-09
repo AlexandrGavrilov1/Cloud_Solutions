@@ -941,7 +941,7 @@ export const ProviderCard = ({
       }`}
     >
       <Card
-        className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift
+        className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift h-full
           ${
             isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : ""
           } transition-all`}
