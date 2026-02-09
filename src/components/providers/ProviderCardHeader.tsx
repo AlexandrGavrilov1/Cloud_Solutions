@@ -57,7 +57,7 @@ export const ProviderCardHeader = ({
             </h3>
             {onCompareClick && (
               <button
-                className={`flex-shrink-0 transition-colors ${
+                className={`flex-shrink-0 transition-colors relative ${
                   isComparing
                     ? "text-orange-500 hover:text-orange-600"
                     : "text-gray-400 hover:text-gray-600"
@@ -68,6 +68,11 @@ export const ProviderCardHeader = ({
                 }}
               >
                 <Icon name="GitCompareArrows" size={24} />
+                {isComparing && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Icon name="Check" size={14} className="text-white bg-orange-500 rounded-full p-0.5" />
+                  </div>
+                )}
               </button>
             )}
           </div>
