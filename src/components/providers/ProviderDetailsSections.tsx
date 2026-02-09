@@ -35,7 +35,7 @@ export const TechnicalSpecsSection = ({
         <div className="flex items-start gap-3">
           <Icon name="Wifi" size={16} className="text-blue-500 mt-0.5" />
           <div>
-            <div className="text-xs text-muted-foreground mb-0.5">
+            <div className="text-xs text-muted-foreground dark:text-gray-400 mb-0.5">
               {t("card.networkSpeed")}
             </div>
             <Badge className="bg-blue-500/10 border border-blue-500/30 text-blue-600 font-bold text-xs transition-all duration-300 hover:bg-blue-500/20 hover:scale-105 hover:shadow-md cursor-default">
@@ -49,7 +49,7 @@ export const TechnicalSpecsSection = ({
         <div className="flex items-start gap-3">
           <Icon name="Box" size={16} className="text-cyan-500 mt-0.5" />
           <div>
-            <div className="text-xs text-muted-foreground mb-0.5">
+            <div className="text-xs text-muted-foreground dark:text-gray-400 mb-0.5">
               {t("common.virtualization")}
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -70,7 +70,7 @@ export const TechnicalSpecsSection = ({
         <div className="flex items-start gap-3">
           <Icon name="Shield" size={16} className="text-amber-500 mt-0.5" />
           <div>
-            <div className="text-xs text-muted-foreground mb-0.5">
+            <div className="text-xs text-muted-foreground dark:text-gray-400 mb-0.5">
               {t("card.ddosProtection")}
             </div>
             <Badge className="bg-amber-500/10 border border-amber-500/30 text-amber-600 font-bold text-xs transition-all duration-300 hover:bg-amber-500/20 hover:scale-105 hover:shadow-md cursor-default">
@@ -84,7 +84,7 @@ export const TechnicalSpecsSection = ({
         <div className="flex items-start gap-3">
           <Icon name="Layout" size={16} className="text-purple-500 mt-0.5" />
           <div>
-            <div className="text-xs text-muted-foreground mb-0.5">
+            <div className="text-xs text-muted-foreground dark:text-gray-400 mb-0.5">
               {t("card.controlPanel")}
             </div>
             <Badge className="bg-purple-500/10 border border-purple-500/30 text-purple-600 font-bold text-xs transition-all duration-300 hover:bg-purple-500/20 hover:scale-105 hover:shadow-md cursor-default">
@@ -98,7 +98,7 @@ export const TechnicalSpecsSection = ({
         <div className="flex items-start gap-3">
           <Icon name="Network" size={16} className="text-indigo-500 mt-0.5" />
           <div>
-            <div className="text-xs text-muted-foreground mb-0.5">IP</div>
+            <div className="text-xs text-muted-foreground dark:text-gray-400 mb-0.5">IP</div>
             <div className="flex gap-1.5">
               {technicalSpecs.ipv4 && (
                 <Badge className="bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 text-xs">
