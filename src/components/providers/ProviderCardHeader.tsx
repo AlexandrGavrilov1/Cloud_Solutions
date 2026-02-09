@@ -40,16 +40,13 @@ export const ProviderCardHeader = ({
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-start gap-6">
-        <div className="relative flex-shrink-0">
+        <div className="flex-shrink-0">
           <div className="w-[62px] h-[62px] sm:w-[73px] sm:h-[73px] rounded-xl overflow-hidden bg-white border border-primary/10 shadow-soft flex items-center justify-center">
             <img
               src={provider.logo}
               alt={provider.name}
               className="w-[52px] h-[52px] sm:w-[62px] sm:h-[62px] object-contain"
             />
-          </div>
-          <div className="absolute -bottom-1 -right-1 w-[31px] h-[31px] bg-primary rounded-lg flex items-center justify-center shadow-lg text-background text-sm font-bold">
-            {index + 1}
           </div>
         </div>
 
