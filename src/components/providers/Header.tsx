@@ -21,7 +21,7 @@ export const Header = () => {
             />
           </a>
           <div className="hidden md:flex items-center gap-8 ml-12">
-            <a href="/" className="text-sm font-medium text-[#FF931F] hover:text-[#FF931F]/80 transition-colors">
+            <a href="/" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
               Как выбрать
             </a>
             <a href="/gaming" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
