@@ -76,8 +76,8 @@ export const ProviderCardHeader = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <Icon name="Star" size={28} className="fill-orange-500 text-orange-500" />
-            <span className="text-[28px] font-medium text-gray-900">{avgRating.toFixed(1)}</span>
+            <Icon name="Star" size={24} className="fill-orange-500 text-orange-500" />
+            <span className="text-[24px] font-medium text-gray-900">{avgRating.toFixed(1)}</span>
           </div>
         </div>
       </div>
