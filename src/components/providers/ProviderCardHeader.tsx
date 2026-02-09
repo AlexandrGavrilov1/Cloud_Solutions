@@ -190,15 +190,15 @@ export const ProviderCardHeader = ({
       </div>
 
       <div className="flex items-center justify-between gap-4">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <div className="text-[40px] font-bold text-gray-900 leading-none whitespace-nowrap">
             от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}<span className="text-[24px] font-normal text-gray-900">/мес</span>
           </div>
           
           {provider.trialDays > 0 && (
-            <div className="flex items-center gap-2">
-              <Icon name="Gift" size={20} className="text-orange-500 flex-shrink-0" />
-              <span className="text-[18px] text-orange-500 font-medium">
+            <div className="flex items-center gap-3">
+              <Icon name="Gift" size={24} className="text-orange-500 flex-shrink-0" />
+              <span className="text-[18px] text-gray-900">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
             </div>
