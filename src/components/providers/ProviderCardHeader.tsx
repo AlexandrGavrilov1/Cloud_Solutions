@@ -171,6 +171,15 @@ export const ProviderCardHeader = ({
               </span>
             </div>
           )}
+
+        {provider.trialDays > 0 && (
+          <div className="flex items-center gap-3">
+            <Icon name="Gift" size={24} className="text-orange-500 flex-shrink-0" />
+            <span className="text-[18px] text-gray-900">
+              {provider.trialDays} дня бесплатно
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center justify-between gap-4">
@@ -178,15 +187,6 @@ export const ProviderCardHeader = ({
           <div className="text-[40px] font-bold text-gray-900 leading-none whitespace-nowrap">
             от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}<span className="text-[24px] font-normal text-gray-900">/мес</span>
           </div>
-          
-          {provider.trialDays > 0 && (
-            <div className="flex items-center gap-2 text-orange-500">
-              <Icon name="Gift" size={20} />
-              <span className="text-[16px] font-medium">
-                {provider.trialDays} дня бесплатно
-              </span>
-            </div>
-          )}
         </div>
 
         <Button
