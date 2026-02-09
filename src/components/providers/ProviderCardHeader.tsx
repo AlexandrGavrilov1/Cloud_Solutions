@@ -37,6 +37,22 @@ export const ProviderCardHeader = ({
     }
   };
 
+  const getDaysWord = (days: number) => {
+    const lastDigit = days % 10;
+    const lastTwoDigits = days % 100;
+    
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+      return "дней";
+    }
+    if (lastDigit === 1) {
+      return "день";
+    }
+    if (lastDigit >= 2 && lastDigit <= 4) {
+      return "дня";
+    }
+    return "дней";
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-start gap-6">
@@ -183,7 +199,7 @@ export const ProviderCardHeader = ({
             <div className="flex items-center gap-3">
               <Icon name="Gift" size={24} className="text-orange-500 flex-shrink-0" />
               <span className="text-[18px] text-gray-900">
-                {provider.trialDays} дня бесплатно
+                {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
             </div>
           )}
