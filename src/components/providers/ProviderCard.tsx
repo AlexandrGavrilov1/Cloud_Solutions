@@ -943,7 +943,7 @@ export const ProviderCard = ({
       <Card
         className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift h-full
           ${
-            isSelected ? "border-primary/50 shadow-lg shadow-primary/30" : ""
+            isSelected ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30" : "border-[#FF931F]/20"
           } transition-all`}
       >
         <CardHeader className="p-5">
