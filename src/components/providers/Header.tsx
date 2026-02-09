@@ -12,7 +12,7 @@ export const Header = () => {
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#2B3038] border-b border-[#2B3038]">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center h-16">
           <a href="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img 
               src="https://cdn.poehali.dev/files/58a4ec73-d599-4708-9d67-43780b87fd56.png"
@@ -20,7 +20,7 @@ export const Header = () => {
               className="h-[40px] w-auto transition-opacity duration-300"
             />
           </a>
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 ml-12">
             <a href="/" className="text-sm font-medium text-[#FF931F] hover:text-[#FF931F]/80 transition-colors">
               Как выбрать
             </a>
@@ -36,6 +36,8 @@ export const Header = () => {
             <a href="/promo" className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors">
               Акции
             </a>
+          </div>
+          <div className="hidden md:flex items-center ml-auto">
             <button
               onClick={toggleTheme}
               className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-all"
