@@ -183,11 +183,11 @@ export const ProviderCardHeader = ({
 
         <Button
           size="lg"
-          className="bg-orange-500 hover:bg-orange-600 text-white text-[18px] font-medium px-8 py-6 rounded-full flex items-center gap-2 h-auto"
+          className="bg-orange-500 hover:bg-orange-600 text-white text-[16px] font-medium px-6 py-4 rounded-full flex items-center gap-2 h-auto flex-shrink-0"
           onClick={handleProviderClickWithTracking}
         >
           Попробовать
-          <Icon name="ArrowRight" size={20} />
+          <Icon name="ArrowRight" size={18} />
         </Button>
       </div>
     </div>
