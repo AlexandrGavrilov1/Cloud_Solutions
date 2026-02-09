@@ -102,8 +102,8 @@ export const ProviderCard = ({
   };
 
   const handleProviderClick = async () => {
-    if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+    if (typeof window !== "undefined" && (window as unknown as { ym?: (...args: unknown[]) => void }).ym) {
+      ((window as unknown as { ym: (...args: unknown[]) => void }).ym)(105466349, "reachGoal", "handleProviderClick", {
         provider_id: provider.id,
         provider_name: provider.name,
       });
@@ -237,7 +237,7 @@ export const ProviderCard = ({
 
     return (
       <div className="space-y-2">
-        <div className="text-sm font-medium text-foreground">
+        <div className="text-sm font-medium text-gray-900 dark:text-white">
           Сертификации ФСТЭК:
         </div>
         <div className="space-y-2">
@@ -250,7 +250,7 @@ export const ProviderCard = ({
                 <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/30 mb-1">
                   {cert}
                 </Badge>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600 dark:text-gray-300">
                   {cert === "ФСТЭК-17" &&
                     "Требования о защите информации, не составляющей государственную тайну, содержащейся в государственных информационных системах"}
                   {cert === "ФСТЭК-21" &&
@@ -277,13 +277,13 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-indigo-500/20 rounded-xl flex items-center justify-center">
             <Icon name="UserPlus" size={18} className="text-indigo-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
             Данные для регистрации
           </h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Для регистрации требуется предоставить:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -315,12 +315,12 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Briefcase" size={18} className="text-purple-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
             Дополнительные услуги
           </h4>
         </div>
         <div className="space-y-2">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Предоставляемые дополнительные услуги:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -352,7 +352,7 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-teal-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Users" size={18} className="text-teal-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
             Поддерживаемые типы клиентов
           </h4>
         </div>
@@ -372,7 +372,7 @@ export const ProviderCard = ({
               </Badge>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Провайдер работает{" "}
             {provider.supportedClientTypes.length === 2
               ? "как с физическими, так и с юридическими лицами"
@@ -399,14 +399,14 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Cpu" size={18} className="text-purple-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">Поддержка GPU</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">Поддержка GPU</h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Провайдер предоставляет серверы с графическими процессорами для:
           </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1 mb-4">
+          <ul className="list-disc pl-5 text-sm text-gray-900 dark:text-white leading-relaxed space-y-1 mb-4">
             <li>Машинного обучения и искусственного интеллекта</li>
             <li>Визуализации и рендеринга</li>
             <li>Научных вычислений и моделирования</li>
@@ -414,7 +414,7 @@ export const ProviderCard = ({
           </ul>
 
           <div>
-            <div className="text-sm font-medium text-foreground mb-2">
+            <div className="text-sm font-medium text-gray-900 dark:text-white mb-2">
               Доступные модели GPU:
             </div>
             <div className="flex flex-wrap gap-2">
@@ -438,7 +438,7 @@ export const ProviderCard = ({
                       <div className="text-xs font-semibold text-indigo-600 mb-1">
                         {gpuTooltip.model}
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-gray-600 dark:text-gray-300">
                         {gpuTooltip.description}
                       </div>
                     </div>
@@ -466,16 +466,16 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-cyan-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Monitor" size={18} className="text-cyan-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">Доступные ОС</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">Доступные ОС</h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Провайдер поддерживает следующие операционные системы:
           </p>
 
           <div>
-            <div className="text-sm font-medium text-foreground mb-2">
+            <div className="text-sm font-medium text-gray-900 dark:text-white mb-2">
               Доступные операционные системы:
             </div>
             <div className="flex flex-wrap gap-2">
@@ -499,7 +499,7 @@ export const ProviderCard = ({
                       <div className="text-xs font-semibold text-emerald-600 mb-1">
                         {osTooltip.os}
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-gray-600 dark:text-gray-300">
                         {osTooltip.description}
                       </div>
                     </div>
@@ -524,14 +524,14 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Database" size={18} className="text-green-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">Поддержка 1С</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">Поддержка 1С</h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Провайдер специализируется на размещении решений 1С и предоставляет:
           </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1">
+          <ul className="list-disc pl-5 text-sm text-gray-900 dark:text-white leading-relaxed space-y-1">
             <li>Оптимизированные серверы для 1С:Предприятие 8</li>
             <li>Выделенные серверы для баз данных 1С</li>
             <li>Автоматическое резервное копирование конфигураций</li>
@@ -554,17 +554,17 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-pink-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Cpu" size={18} className="text-pink-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
             Поддержка AI/ML
           </h4>
         </div>
 
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Провайдер предоставляет инфраструктуру для проектов искусственного
             интеллекта и машинного обучения:
           </p>
-          <ul className="list-disc pl-5 text-sm text-foreground leading-relaxed space-y-1 mb-4">
+          <ul className="list-disc pl-5 text-sm text-gray-900 dark:text-white leading-relaxed space-y-1 mb-4">
             <li>Выделенные серверы с GPU для обучения моделей</li>
             <li>Поддержка популярных ML-фреймворков</li>
             <li>Готовые образы с предустановленным ПО</li>
@@ -574,7 +574,7 @@ export const ProviderCard = ({
           {provider.technicalSpecs.aiFeatures &&
             provider.technicalSpecs.aiFeatures.length > 0 && (
               <div>
-                <div className="text-sm font-medium text-foreground mb-2">
+                <div className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                   AI/ML возможности:
                 </div>
                 <div className="relative">
@@ -609,7 +609,7 @@ export const ProviderCard = ({
                       <div className="text-xs font-semibold text-pink-600 mb-1">
                         Все AI/ML возможности:
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-gray-600 dark:text-gray-300">
                         <ul className="list-disc pl-3 space-y-1">
                           {aiTooltip.features.map((feature, idx) => (
                             <li key={idx}>{feature}</li>
@@ -635,11 +635,11 @@ export const ProviderCard = ({
               name={provider.mobileApp ? "Smartphone" : "SmartphoneOff"}
               size={18}
               className={
-                provider.mobileApp ? "text-pink-500" : "text-muted-foreground"
+                provider.mobileApp ? "text-pink-500" : "text-gray-600 dark:text-gray-300"
               }
             />
           </div>
-          <h4 className="text-base font-bold text-foreground">
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
             Мобильное приложение
           </h4>
           <Badge
@@ -652,7 +652,7 @@ export const ProviderCard = ({
             {provider.mobileApp ? "Доступно" : "Отсутствует"}
           </Badge>
         </div>
-        <p className="text-sm text-foreground leading-relaxed">
+        <p className="text-sm text-gray-900 dark:text-white leading-relaxed">
           {provider.mobileApp
             ? "Провайдер предоставляет мобильное приложение для управления серверами и мониторинга"
             : "Провайдер не предоставляет мобильное приложение"}
@@ -668,7 +668,7 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-amber-500/20 rounded-xl flex items-center justify-center">
             <Icon name="ClipboardCheck" size={18} className="text-amber-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">Заказ услуг</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">Заказ услуг</h4>
           <Badge
             className={
               provider.orderBeforeRegistration
@@ -681,7 +681,7 @@ export const ProviderCard = ({
               : "После регистрации"}
           </Badge>
         </div>
-        <p className="text-sm text-foreground leading-relaxed">
+        <p className="text-sm text-gray-900 dark:text-white leading-relaxed">
           {provider.orderBeforeRegistration
             ? "Возможность заказать услуги и настроить сервер до создания учетной записи"
             : "Требуется регистрация и создание учетной записи перед заказом услуг"}
@@ -702,10 +702,10 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Info" size={18} className="text-primary" />
           </div>
-          <h4 className="text-base font-bold text-foreground">О провайдере</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">О провайдере</h4>
         </div>
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed whitespace-pre-line">
             {provider.about}
           </p>
         </div>
@@ -727,14 +727,14 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Phone" size={18} className="text-blue-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">Контакты</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">Контакты</h4>
         </div>
         <div className="space-y-3">
           {contact.website && (
             <div className="flex items-start gap-2">
               <Icon name="Globe" size={16} className="text-primary mt-0.5" />
               <div>
-                <div className="text-sm font-medium text-foreground">Сайт</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">Сайт</div>
                 <a
                   href={contact.website}
                   target="_blank"
@@ -751,7 +751,7 @@ export const ProviderCard = ({
             <div className="flex items-start gap-2">
               <Icon name="Mail" size={16} className="text-primary mt-0.5" />
               <div>
-                <div className="text-sm font-medium text-foreground">Email</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">Email</div>
                 <a
                   href={`mailto:${contact.email}`}
                   className="text-sm text-primary hover:underline"
@@ -770,7 +770,7 @@ export const ProviderCard = ({
                 className="text-primary mt-0.5"
               />
               <div>
-                <div className="text-sm font-medium text-foreground">
+                <div className="text-sm font-medium text-gray-900 dark:text-white">
                   Телефон
                 </div>
                 <a
@@ -791,7 +791,7 @@ export const ProviderCard = ({
                 className="text-primary mt-0.5"
               />
               <div>
-                <div className="text-sm font-medium text-foreground">
+                <div className="text-sm font-medium text-gray-900 dark:text-white">
                   Поддержка
                 </div>
                 <a
@@ -808,10 +808,10 @@ export const ProviderCard = ({
             <div className="flex items-start gap-2">
               <Icon name="Clock" size={16} className="text-primary mt-0.5" />
               <div>
-                <div className="text-sm font-medium text-foreground">
+                <div className="text-sm font-medium text-gray-900 dark:text-white">
                   Часы работы
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-600 dark:text-gray-300">
                   {contact.workingHours}
                 </div>
               </div>
@@ -820,7 +820,7 @@ export const ProviderCard = ({
 
           {contact.socialMedia && (
             <div className="pt-2">
-              <div className="text-sm font-medium text-foreground mb-2">
+              <div className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                 Социальные сети
               </div>
               <div className="flex gap-2">
@@ -894,12 +894,12 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Users" size={18} className="text-green-500" />
           </div>
-          <h4 className="text-base font-bold text-foreground">
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
             Партнерская программа
           </h4>
         </div>
         <div className="space-y-3">
-          <p className="text-sm text-foreground leading-relaxed mb-2">
+          <p className="text-sm text-gray-900 dark:text-white leading-relaxed mb-2">
             Партнерское вознаграждение за привлечение клиентов:
           </p>
 
@@ -909,7 +909,7 @@ export const ProviderCard = ({
                 key={idx}
                 className="flex items-center justify-between p-2 bg-background/50 rounded-lg border border-border"
               >
-                <span className="text-sm text-foreground">{rule.service}</span>
+                <span className="text-sm text-gray-900 dark:text-white">{rule.service}</span>
                 <Badge className="bg-green-500/10 text-green-600 border-green-500/30">
                   {rule.commission}
                 </Badge>
@@ -918,13 +918,13 @@ export const ProviderCard = ({
           </div>
 
           {program.minPayout && (
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600 dark:text-gray-300">
               Минимальная выплата: {program.minPayout} ₽
             </div>
           )}
 
           {program.payoutMethods && program.payoutMethods.length > 0 && (
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600 dark:text-gray-300">
               Способы выплат: {program.payoutMethods.join(", ")}
             </div>
           )}
@@ -997,7 +997,7 @@ export const ProviderCard = ({
                           className="text-blue-500"
                         />
                       </div>
-                      <h4 className="text-base font-bold text-foreground">
+                      <h4 className="text-base font-bold text-gray-900 dark:text-white">
                         {t("card.fz152")}
                       </h4>
                       {provider.fz152Level && (
@@ -1006,7 +1006,7 @@ export const ProviderCard = ({
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-foreground leading-relaxed">
+                    <p className="text-sm text-gray-900 dark:text-white leading-relaxed">
                       {t("card.fz152Description")}
                     </p>
                   </div>
@@ -1023,7 +1023,7 @@ export const ProviderCard = ({
                             className="text-blue-500"
                           />
                         </div>
-                        <h4 className="text-base font-bold text-foreground">
+                        <h4 className="text-base font-bold text-gray-900 dark:text-white">
                           ФСТЭК
                         </h4>
                         {provider.fstekLevel && (
@@ -1050,11 +1050,11 @@ export const ProviderCard = ({
                           className="text-blue-500"
                         />
                       </div>
-                      <h4 className="text-base font-bold text-foreground">
+                      <h4 className="text-base font-bold text-gray-900 dark:text-white">
                         Размещение КИИ
                       </h4>
                     </div>
-                    <p className="text-sm text-foreground leading-relaxed">
+                    <p className="text-sm text-gray-900 dark:text-white leading-relaxed">
                       Провайдер допускает размещение объектов КИИ на своей
                       инфраструктуре. Объекты критической информационной
                       инфраструктуры (КИИ) — это системы, сети и базы данных, от
@@ -1099,7 +1099,7 @@ export const ProviderCard = ({
                         className="text-violet-500"
                       />
                     </div>
-                    <h4 className="text-base font-bold text-foreground">
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
                       Технические характеристики
                     </h4>
                   </div>
@@ -1121,7 +1121,7 @@ export const ProviderCard = ({
                         className="text-orange-500"
                       />
                     </div>
-                    <h4 className="text-base font-bold text-foreground">
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
                       Гарантии обслуживания
                     </h4>
                   </div>
@@ -1139,7 +1139,7 @@ export const ProviderCard = ({
                       className="text-emerald-500"
                     />
                   </div>
-                  <h4 className="text-base font-bold text-foreground">
+                  <h4 className="text-base font-bold text-gray-900 dark:text-white">
                     Дополнительные услуги
                   </h4>
                 </div>
@@ -1155,7 +1155,7 @@ export const ProviderCard = ({
                       className="text-rose-500"
                     />
                   </div>
-                  <h4 className="text-base font-bold text-foreground">
+                  <h4 className="text-base font-bold text-gray-900 dark:text-white">
                     Способы оплаты
                   </h4>
                 </div>
@@ -1167,7 +1167,7 @@ export const ProviderCard = ({
                   <div className="w-9 h-9 bg-sky-500/20 rounded-xl flex items-center justify-center">
                     <Icon name="Briefcase" size={18} className="text-sky-500" />
                   </div>
-                  <h4 className="text-base font-bold text-foreground">Кейсы</h4>
+                  <h4 className="text-base font-bold text-gray-900 dark:text-white">Кейсы</h4>
                 </div>
                 <CaseStudiesSection provider={provider} />
               </div>
@@ -1189,7 +1189,7 @@ export const ProviderCard = ({
                         className="text-emerald-500"
                       />
                     </div>
-                    <h4 className="text-base font-bold text-foreground">
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
                       {t("card.pros")}
                     </h4>
                   </div>
@@ -1203,7 +1203,7 @@ export const ProviderCard = ({
                             className="text-emerald-500"
                           />
                         </div>
-                        <span className="text-sm text-foreground font-medium">
+                        <span className="text-sm text-gray-900 dark:text-white font-medium">
                           {pro}
                         </span>
                       </li>
@@ -1220,7 +1220,7 @@ export const ProviderCard = ({
                         className="text-rose-500"
                       />
                     </div>
-                    <h4 className="text-base font-bold text-foreground">
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
                       {t("card.cons")}
                     </h4>
                   </div>
@@ -1234,7 +1234,7 @@ export const ProviderCard = ({
                             className="text-rose-500"
                           />
                         </div>
-                        <span className="text-sm text-foreground font-medium">
+                        <span className="text-sm text-gray-900 dark:text-white font-medium">
                           {con}
                         </span>
                       </li>
