@@ -25,7 +25,7 @@ export const HeroSection = () => {
           </h1>
 
           <p className="text-xl md:text-2xl text-[#2B3038] max-w-2xl leading-relaxed" style={{ fontFamily: "'TT Travels Next Trl', sans-serif" }}>
-            Сравни характеристики, цены и отзывы. Выбери лучшее решение<br />за пару минут
+            Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару минут
           </p>
 
           <div className="pt-4">
