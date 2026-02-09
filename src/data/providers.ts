@@ -4654,7 +4654,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Япония",
     ],
     trialDays: 0,
-    url: "https://the.hosting/ru/",
+    url: "https://the.hosting/?from=1009456",
     pros: [
       "Анонимная регистрация без документов",
       "Оплата криптовалютой",
