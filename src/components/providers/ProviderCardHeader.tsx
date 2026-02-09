@@ -196,9 +196,9 @@ export const ProviderCardHeader = ({
           </div>
           
           {provider.trialDays > 0 && (
-            <div className="flex items-center gap-2">
-              <Icon name="Gift" size={16} className="text-orange-500 flex-shrink-0" />
-              <span className="text-xs text-muted-foreground">
+            <div className="flex items-center gap-3">
+              <Icon name="Gift" size={24} className="text-orange-500 flex-shrink-0" />
+              <span className="text-[18px] text-gray-900">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
             </div>
