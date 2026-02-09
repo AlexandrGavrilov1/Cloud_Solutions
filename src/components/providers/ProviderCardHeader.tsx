@@ -124,7 +124,10 @@ export const ProviderCardHeader = ({
           provider.fstekCompliant ||
           provider.kiiPlacement) && (
           <div className="flex items-center gap-3">
-            <Icon name="Shield" size={24} className="text-orange-500 flex-shrink-0" />
+            <div className="relative flex-shrink-0">
+              <Icon name="Shield" size={24} className="text-orange-500" />
+              <Icon name="Check" size={12} className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            </div>
             <span className="text-[18px] text-gray-900">
               {[
                 provider.fz152Compliant && "152-ФЗ",
