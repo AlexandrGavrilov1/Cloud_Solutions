@@ -55,15 +55,21 @@ export const ProviderCardHeader = ({
             <h3 className="text-[32px] font-bold text-gray-900 leading-tight">
               {provider.name}
             </h3>
-            <button
-              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                onProviderClick();
-              }}
-            >
-              <Icon name="ExternalLink" size={24} />
-            </button>
+            {onCompareClick && (
+              <button
+                className={`flex-shrink-0 transition-colors ${
+                  isComparing
+                    ? "text-orange-500 hover:text-orange-600"
+                    : "text-gray-400 hover:text-gray-600"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCompareClick();
+                }}
+              >
+                <Icon name="GitCompareArrows" size={24} />
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
