@@ -18,7 +18,7 @@ export const HeroSection = () => {
     >
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto space-y-8">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tight">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tight" style={{ fontFamily: "'TT Travels Next Trl', sans-serif" }}>
             <span className="block text-[#2B3038]">НАЙДИ</span>
             <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
             <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
