@@ -266,6 +266,7 @@ export const FilterPanelAlwaysOpen = ({
   ].filter(Boolean).length;
 
   const clearFilters = useCallback(() => {
+    console.log("clearFilters called");
     setFilterFZ152(false);
     setFilterFSTEK([]);
     setFilterTrialPeriod(false);
@@ -374,79 +375,93 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // Простые обработчики чекбоксов
-  const handleFZ152Change = useCallback(() => {
-    setFilterFZ152(!filterFZ152);
-  }, [filterFZ152, setFilterFZ152]);
-
-  const handle1CChange = useCallback(() => {
-    setFilter1C(!filter1C);
-  }, [filter1C, setFilter1C]);
-
-  const handleTrialPeriodChange = useCallback(() => {
-    setFilterTrialPeriod(!filterTrialPeriod);
-  }, [filterTrialPeriod, setFilterTrialPeriod]);
-
-  const handleKIIChange = useCallback(() => {
-    setFilterKII(!filterKII);
-  }, [filterKII, setFilterKII]);
-
-  const handleAIChange = useCallback(() => {
-    setFilterAI(!filterAI);
-  }, [filterAI, setFilterAI]);
-
-  const handleMobileAppChange = useCallback(() => {
-    setFilterMobileApp(!filterMobileApp);
-  }, [filterMobileApp, setFilterMobileApp]);
-
-  const handleHasGPUChange = useCallback(() => {
-    const newValue = !filterHasGPU;
-    setFilterHasGPU(newValue);
-    if (newValue) {
-      setFilterGPU([]);
-    }
-  }, [filterHasGPU, setFilterGPU]);
-
   // Верхняя секция чекбоксов с круглыми радиокнопками
   const CheckboxSection = () => {
-    // Используем простые обработчики без stopPropagation для тестирования
-    const handleFZ152Click = () => {
-      console.log("FZ152 clicked");
-      setFilterFZ152(!filterFZ152);
-    };
+    console.log("CheckboxSection rendering", {
+      filterFZ152,
+      filter1C,
+      activeFiltersCount,
+    });
 
-    const handle1CClick = () => {
-      console.log("1C clicked");
-      setFilter1C(!filter1C);
-    };
+    // Обработчики с использованием useCallback
+    const handleFZ152Click = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("FZ152 clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        setFilterFZ152(!filterFZ152);
+      },
+      [filterFZ152, setFilterFZ152],
+    );
 
-    const handleTrialPeriodClick = () => {
-      console.log("Trial period clicked");
-      setFilterTrialPeriod(!filterTrialPeriod);
-    };
+    const handle1CClick = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("1C clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        setFilter1C(!filter1C);
+      },
+      [filter1C, setFilter1C],
+    );
 
-    const handleKIIClick = () => {
-      console.log("KII clicked");
-      setFilterKII(!filterKII);
-    };
+    const handleTrialPeriodClick = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("Trial period clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        setFilterTrialPeriod(!filterTrialPeriod);
+      },
+      [filterTrialPeriod, setFilterTrialPeriod],
+    );
 
-    const handleAIClick = () => {
-      console.log("AI clicked");
-      setFilterAI(!filterAI);
-    };
+    const handleKIIClick = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("KII clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        setFilterKII(!filterKII);
+      },
+      [filterKII, setFilterKII],
+    );
 
-    const handleMobileAppClick = () => {
-      console.log("Mobile app clicked");
-      setFilterMobileApp(!filterMobileApp);
-    };
+    const handleAIClick = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("AI clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        setFilterAI(!filterAI);
+      },
+      [filterAI, setFilterAI],
+    );
 
-    const handleClearFiltersClick = () => {
-      console.log("Clear filters clicked");
-      clearFilters();
-    };
+    const handleMobileAppClick = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("Mobile app clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        setFilterMobileApp(!filterMobileApp);
+      },
+      [filterMobileApp, setFilterMobileApp],
+    );
+
+    const handleClearFiltersClick = useCallback(
+      (e: React.MouseEvent) => {
+        console.log("Clear filters clicked", e);
+        e.preventDefault();
+        e.stopPropagation();
+        clearFilters();
+      },
+      [clearFilters],
+    );
 
     return (
-      <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
+      <div
+        className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700"
+        onClick={(e) => {
+          console.log("CheckboxSection container clicked");
+          e.stopPropagation();
+        }}
+      >
         {/* Заголовок */}
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-1.5">
@@ -465,8 +480,7 @@ export const FilterPanelAlwaysOpen = ({
             <button
               type="button"
               onClick={handleClearFiltersClick}
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
-              style={{ cursor: "pointer" }}
+              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               Сбросить
             </button>
@@ -479,9 +493,9 @@ export const FilterPanelAlwaysOpen = ({
           <div className="space-y-1">
             {/* 152-ФЗ */}
             <div
-              className="flex items-center gap-1.5 w-full select-none"
-              onClick={handleFZ152Click}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
               style={{ cursor: "pointer" }}
+              onClick={handleFZ152Click}
             >
               <div
                 className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
@@ -501,9 +515,9 @@ export const FilterPanelAlwaysOpen = ({
 
             {/* 1С */}
             <div
-              className="flex items-center gap-1.5 w-full select-none"
-              onClick={handle1CClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
               style={{ cursor: "pointer" }}
+              onClick={handle1CClick}
             >
               <div
                 className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
@@ -521,9 +535,9 @@ export const FilterPanelAlwaysOpen = ({
 
             {/* Тестовый период */}
             <div
-              className="flex items-center gap-1.5 w-full select-none"
-              onClick={handleTrialPeriodClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
               style={{ cursor: "pointer" }}
+              onClick={handleTrialPeriodClick}
             >
               <div
                 className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
@@ -546,9 +560,9 @@ export const FilterPanelAlwaysOpen = ({
           <div className="space-y-1">
             {/* КИИ */}
             <div
-              className="flex items-center gap-1.5 w-full select-none"
-              onClick={handleKIIClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
               style={{ cursor: "pointer" }}
+              onClick={handleKIIClick}
             >
               <div
                 className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
@@ -566,9 +580,9 @@ export const FilterPanelAlwaysOpen = ({
 
             {/* AI */}
             <div
-              className="flex items-center gap-1.5 w-full select-none"
-              onClick={handleAIClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
               style={{ cursor: "pointer" }}
+              onClick={handleAIClick}
             >
               <div
                 className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
@@ -586,9 +600,9 @@ export const FilterPanelAlwaysOpen = ({
 
             {/* Моб. приложение */}
             <div
-              className="flex items-center gap-1.5 w-full select-none"
-              onClick={handleMobileAppClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
               style={{ cursor: "pointer" }}
+              onClick={handleMobileAppClick}
             >
               <div
                 className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
@@ -634,7 +648,7 @@ export const FilterPanelAlwaysOpen = ({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left cursor-pointer"
+        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors"
       >
         <span className="text-sm font-medium text-gray-900 dark:text-white">
           {title}
@@ -839,7 +853,7 @@ export const FilterPanelAlwaysOpen = ({
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
           <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
             onClick={() => setFilterHasGPU(!filterHasGPU)}
           >
             <div
@@ -1106,7 +1120,13 @@ export const FilterPanelAlwaysOpen = ({
   };
 
   return (
-    <div className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto">
+    <div
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto relative z-50"
+      onClick={(e) => {
+        console.log("FilterPanel container clicked");
+        e.stopPropagation();
+      }}
+    >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
           width: 4px;
