@@ -384,17 +384,17 @@ export const FilterPanel = ({
           <button
             type="button"
             onClick={(e) => handleDropdownClick("fstek", e)}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
                 <Icon
                   name="ShieldAlert"
-                  size={10}
-                  className="text-primary w-3 h-3"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
                 />
               </div>
-              <span className="truncate">
+              <span className="truncate text-xs">
                 {filterFSTEK.length === 0
                   ? "ФСТЭК"
                   : filterFSTEK.length === 1
@@ -404,18 +404,18 @@ export const FilterPanel = ({
             </div>
             <Icon
               name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
                 <button
                   type="button"
                   onClick={() => setFilterFSTEK([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
                     filterFSTEK.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
@@ -426,11 +426,11 @@ export const FilterPanel = ({
                 {fstekOptions.map((option) => (
                   <div
                     key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                     onClick={() => handleFstekChange(option)}
                   >
                     <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                         filterFSTEK.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
@@ -439,12 +439,12 @@ export const FilterPanel = ({
                       {filterFSTEK.includes(option) && (
                         <Icon
                           name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
+                          size={6}
+                          className="text-background w-2 h-2"
                         />
                       )}
                     </div>
-                    <span className="text-sm">{option}</span>
+                    <span className="text-xs">{option}</span>
                   </div>
                 ))}
               </div>
@@ -463,25 +463,29 @@ export const FilterPanel = ({
         className="group"
         ref={(el) => (dropdownRefs.current.additionalServices = el)}
       >
-        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-          <Icon name="Briefcase" size={10} className="text-primary w-3 h-3" />
-          <span className="text-xs">Дополнительные услуги</span>
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon
+            name="Briefcase"
+            size={8}
+            className="text-primary w-2.5 h-2.5"
+          />
+          <span className="text-xs">Доп. услуги</span>
         </label>
         <div className="relative">
           <button
             type="button"
             onClick={(e) => handleDropdownClick("additionalServices", e)}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
                 <Icon
                   name="Briefcase"
-                  size={10}
-                  className="text-primary w-3 h-3"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
                 />
               </div>
-              <span className="truncate">
+              <span className="truncate text-xs">
                 {filterAdditionalServices.length === 0
                   ? "Любые услуги"
                   : filterAdditionalServices.length === 1
@@ -491,18 +495,18 @@ export const FilterPanel = ({
             </div>
             <Icon
               name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
                 <button
                   type="button"
                   onClick={() => setFilterAdditionalServices([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
                     filterAdditionalServices.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
@@ -513,11 +517,11 @@ export const FilterPanel = ({
                 {additionalServicesOptions.map((option) => (
                   <div
                     key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                     onClick={() => handleAdditionalServicesChange(option)}
                   >
                     <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                         filterAdditionalServices.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
@@ -526,12 +530,12 @@ export const FilterPanel = ({
                       {filterAdditionalServices.includes(option) && (
                         <Icon
                           name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
+                          size={6}
+                          className="text-background w-2 h-2"
                         />
                       )}
                     </div>
-                    <span className="text-sm">{option}</span>
+                    <span className="text-xs">{option}</span>
                   </div>
                 ))}
               </div>
@@ -550,25 +554,25 @@ export const FilterPanel = ({
         className="group"
         ref={(el) => (dropdownRefs.current.registrationData = el)}
       >
-        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-          <Icon name="UserPlus" size={10} className="text-primary w-3 h-3" />
-          <span className="text-xs">Данные для регистрации</span>
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon name="UserPlus" size={8} className="text-primary w-2.5 h-2.5" />
+          <span className="text-xs">Данные регистрации</span>
         </label>
         <div className="relative">
           <button
             type="button"
             onClick={(e) => handleDropdownClick("registrationData", e)}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
                 <Icon
                   name="UserPlus"
-                  size={10}
-                  className="text-primary w-3 h-3"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
                 />
               </div>
-              <span className="truncate">
+              <span className="truncate text-xs">
                 {filterRegistrationData.length === 0
                   ? "Любые данные"
                   : filterRegistrationData.length === 1
@@ -578,18 +582,18 @@ export const FilterPanel = ({
             </div>
             <Icon
               name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
                 <button
                   type="button"
                   onClick={() => setFilterRegistrationData([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
                     filterRegistrationData.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
@@ -600,11 +604,11 @@ export const FilterPanel = ({
                 {registrationDataOptions.map((option) => (
                   <div
                     key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                     onClick={() => handleRegistrationDataChange(option)}
                   >
                     <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                         filterRegistrationData.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
@@ -613,12 +617,12 @@ export const FilterPanel = ({
                       {filterRegistrationData.includes(option) && (
                         <Icon
                           name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
+                          size={6}
+                          className="text-background w-2 h-2"
                         />
                       )}
                     </div>
-                    <span className="text-sm">{option}</span>
+                    <span className="text-xs">{option}</span>
                   </div>
                 ))}
               </div>
@@ -637,21 +641,25 @@ export const FilterPanel = ({
         className="group"
         ref={(el) => (dropdownRefs.current.clientType = el)}
       >
-        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-          <Icon name="Users" size={10} className="text-primary w-3 h-3" />
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon name="Users" size={8} className="text-primary w-2.5 h-2.5" />
           <span className="text-xs">Тип клиента</span>
         </label>
         <div className="relative">
           <button
             type="button"
             onClick={(e) => handleDropdownClick("clientType", e)}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon name="Users" size={10} className="text-primary w-3 h-3" />
+                <Icon
+                  name="Users"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
               </div>
-              <span className="truncate">
+              <span className="truncate text-xs">
                 {filterClientType.length === 0
                   ? "Любой тип"
                   : filterClientType.length === 1
@@ -661,18 +669,18 @@ export const FilterPanel = ({
             </div>
             <Icon
               name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
                 <button
                   type="button"
                   onClick={() => setFilterClientType([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
                     filterClientType.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
@@ -683,11 +691,11 @@ export const FilterPanel = ({
                 {clientTypeOptions.map((option) => (
                   <div
                     key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                     onClick={() => handleClientTypeChange(option)}
                   >
                     <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                         filterClientType.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
@@ -696,12 +704,12 @@ export const FilterPanel = ({
                       {filterClientType.includes(option) && (
                         <Icon
                           name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
+                          size={6}
+                          className="text-background w-2 h-2"
                         />
                       )}
                     </div>
-                    <span className="text-sm">{option}</span>
+                    <span className="text-xs">{option}</span>
                   </div>
                 ))}
               </div>
@@ -717,21 +725,25 @@ export const FilterPanel = ({
 
     return (
       <div className="group" ref={(el) => (dropdownRefs.current.gpu = el)}>
-        <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-          <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon name="Cpu" size={8} className="text-primary w-2.5 h-2.5" />
           <span className="text-xs">GPU</span>
         </label>
         <div className="relative">
           <button
             type="button"
             onClick={(e) => handleDropdownClick("gpu", e)}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+                <Icon
+                  name="Cpu"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
               </div>
-              <span className="truncate">
+              <span className="truncate text-xs">
                 {filterGPU.length === 0
                   ? filterHasGPU
                     ? "Любой GPU"
@@ -743,16 +755,16 @@ export const FilterPanel = ({
             </div>
             <Icon
               name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
                 <div
-                  className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                  className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                   onClick={() => {
                     setFilterHasGPU(!filterHasGPU);
                     if (!filterHasGPU) {
@@ -761,7 +773,7 @@ export const FilterPanel = ({
                   }}
                 >
                   <div
-                    className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                    className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                       filterHasGPU && filterGPU.length === 0
                         ? "bg-primary border-primary"
                         : "border-primary/50"
@@ -770,20 +782,20 @@ export const FilterPanel = ({
                     {filterHasGPU && filterGPU.length === 0 && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
-                  <span className="text-sm">Любой GPU (есть GPU)</span>
+                  <span className="text-xs">Любой GPU (есть GPU)</span>
                 </div>
 
-                <div className="border-t border-border my-2"></div>
+                <div className="border-t border-border my-1.5"></div>
 
                 <button
                   type="button"
                   onClick={() => setFilterGPU([])}
-                  className={`w-full text-left px-3 py-2 rounded text-sm mb-1 ${
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs mb-1 ${
                     filterGPU.length === 0 && !filterHasGPU
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
@@ -795,11 +807,11 @@ export const FilterPanel = ({
                 {allGPUs.map((option) => (
                   <div
                     key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                     onClick={() => handleGpuChange(option)}
                   >
                     <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                         filterGPU.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
@@ -808,12 +820,12 @@ export const FilterPanel = ({
                       {filterGPU.includes(option) && (
                         <Icon
                           name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
+                          size={6}
+                          className="text-background w-2 h-2"
                         />
                       )}
                     </div>
-                    <span className="text-sm">{option}</span>
+                    <span className="text-xs">{option}</span>
                   </div>
                 ))}
               </div>
@@ -849,8 +861,12 @@ export const FilterPanel = ({
         ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
       >
         {labelText && (
-          <label className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-            <Icon name={iconName} size={10} className="text-primary w-3 h-3" />
+          <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+            <Icon
+              name={iconName}
+              size={8}
+              className="text-primary w-2.5 h-2.5"
+            />
             <span className="text-xs">{labelText}</span>
           </label>
         )}
@@ -858,17 +874,17 @@ export const FilterPanel = ({
           <button
             type="button"
             onClick={(e) => handleDropdownClick(dropdownKey, e)}
-            className="w-full h-8 rounded-lg border border-input bg-background text-foreground text-sm font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-8 pr-7 flex items-center justify-between"
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex items-center gap-1.5 overflow-hidden">
               <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
                 <Icon
                   name={iconName}
-                  size={10}
-                  className="text-primary w-3 h-3"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
                 />
               </div>
-              <span className="truncate">
+              <span className="truncate text-xs">
                 {value.length === 0
                   ? placeholder
                   : value.length === 1
@@ -878,18 +894,18 @@ export const FilterPanel = ({
             </div>
             <Icon
               name={isOpen ? "ChevronUp" : "ChevronDown"}
-              size={10}
-              className="text-muted-foreground w-3 h-3 flex-shrink-0"
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
             />
           </button>
 
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-              <div className="p-2">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
                 <button
                   type="button"
                   onClick={() => onChange("all")}
-                  className={`w-full text-left px-3 py-2 rounded text-sm ${
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
                     value.length === 0
                       ? "bg-primary/10 text-primary font-medium"
                       : "hover:bg-primary/5"
@@ -900,11 +916,11 @@ export const FilterPanel = ({
                 {options.map((option) => (
                   <div
                     key={option}
-                    className="flex items-center px-3 py-2 hover:bg-primary/5 cursor-pointer rounded"
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
                     onClick={() => onChange(option)}
                   >
                     <div
-                      className={`w-4 h-4 rounded-sm border-2 mr-3 flex items-center justify-center ${
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
                         value.includes(option)
                           ? "bg-primary border-primary"
                           : "border-primary/50"
@@ -913,12 +929,12 @@ export const FilterPanel = ({
                       {value.includes(option) && (
                         <Icon
                           name="Check"
-                          size={8}
-                          className="text-background w-2.5 h-2.5"
+                          size={6}
+                          className="text-background w-2 h-2"
                         />
                       )}
                     </div>
-                    <span className="text-sm">{option}</span>
+                    <span className="text-xs">{option}</span>
                   </div>
                 ))}
               </div>
@@ -931,34 +947,34 @@ export const FilterPanel = ({
 
   return (
     <div ref={filterPanelRef} className="relative">
-      <div className="w-full max-w-[115px] sm:max-w-[120px] md:max-w-[151px]">
+      <div className="w-full max-w-[85px]">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full px-3 py-1.5 sm:px-2.5 sm:py-2 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-xl bg-card border border-primary/20 shadow-md z-40 relative"
+          className="w-full px-2 py-1 flex items-center justify-between hover:bg-primary/5 transition-colors rounded-md bg-card border border-primary/20 shadow-sm z-40 relative"
         >
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary/20 rounded-lg flex items-center justify-center relative">
+          <div className="flex items-center gap-1">
+            <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center relative">
               <Icon
                 name="Filter"
-                size={10}
-                className="text-primary w-3 h-3 sm:w-3.5 sm:h-3.5"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
               />
 
               {activeFiltersCount > 0 && (
-                <div className="absolute -top-1 -right-1 bg-primary text-background text-[8px] sm:text-[9px] font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center border-2 border-card">
+                <div className="absolute -top-1 -right-1 bg-primary text-background text-[7px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center border border-card">
                   {activeFiltersCount}
                 </div>
               )}
             </div>
-            <h3 className="text-xs sm:text-sm font-bold text-foreground">
+            <span className="text-xs font-bold text-foreground">
               {t("filters.title")}
-            </h3>
+            </span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             <Icon
               name={isExpanded ? "ChevronUp" : "ChevronDown"}
-              size={12}
-              className="text-muted-foreground transition-transform w-3 h-3 sm:w-3.5 sm:h-3.5"
+              size={8}
+              className="text-muted-foreground transition-transform w-2.5 h-2.5"
             />
           </div>
         </button>
@@ -966,26 +982,26 @@ export const FilterPanel = ({
 
       {isExpanded && (
         <div
-          className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-[500px] sm:max-w-[450px] md:max-w-[510px] bg-card border border-primary/20 rounded-xl shadow-xl z-[100]"
-          onClick={(e) => e.stopPropagation()} // Останавливаем всплытие кликов внутри панели
+          className="absolute top-full left-0 mt-1 w-[340px] max-w-[340px] bg-card border border-primary/20 rounded-md shadow-lg z-[100]"
+          onClick={(e) => e.stopPropagation()}
         >
           {hasActiveFilters && (
-            <div className="flex items-center justify-end px-3 pt-3 pb-2">
+            <div className="flex items-center justify-end px-2 pt-2 pb-1">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={clearFilters}
-                className="text-[9px] sm:text-[10px] font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow hover:shadow-sm h-6 px-2"
+                className="text-[8px] font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow hover:shadow-sm h-5 px-1.5"
               >
-                <Icon name="X" size={8} className="w-2.5 h-2.5" />
-                <span className="ml-1">{t("filters.resetAll")}</span>
+                <Icon name="X" size={6} className="w-2 h-2" />
+                <span className="ml-0.5">{t("filters.resetAll")}</span>
               </Button>
             </div>
           )}
 
-          <div className="space-y-4 p-3 max-h-[70vh] overflow-y-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+          <div className="space-y-3 p-2 max-h-[65vh] overflow-y-auto">
+            <div className="grid grid-cols-2 gap-1.5">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -994,24 +1010,24 @@ export const FilterPanel = ({
                     onChange={(e) => setFilterFZ152(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filterFZ152 && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="fz152"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   <Icon
                     name="ShieldCheck"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
                   <span className="text-xs font-medium text-foreground">
                     152-ФЗ
@@ -1019,11 +1035,11 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="col-span-1 sm:col-span-2">
+              <div className="col-span-1">
                 <FstekDropdown />
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -1032,24 +1048,24 @@ export const FilterPanel = ({
                     onChange={(e) => setFilterTrialPeriod(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filterTrialPeriod && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="trial"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   <Icon
                     name="Gift"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
                   <span className="text-xs font-medium text-foreground">
                     {t("filters.trialPeriod")}
@@ -1057,7 +1073,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -1066,24 +1082,24 @@ export const FilterPanel = ({
                     onChange={(e) => setFilterKII(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filterKII && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="kii"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   <Icon
                     name="Building2"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
                   <span className="text-xs font-medium text-foreground">
                     КИИ
@@ -1091,7 +1107,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -1100,24 +1116,24 @@ export const FilterPanel = ({
                     onChange={(e) => setFilterMobileApp(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filterMobileApp && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="mobileApp"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   <Icon
                     name="Smartphone"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
                   <span className="text-xs font-medium text-foreground">
                     Моб. приложение
@@ -1125,7 +1141,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -1136,24 +1152,24 @@ export const FilterPanel = ({
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filterOrderBeforeRegistration && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="orderBeforeReg"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   <Icon
                     name="ClipboardCheck"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
                   <span className="text-xs font-medium text-foreground">
                     Заказ до регистрации
@@ -1161,7 +1177,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -1170,24 +1186,24 @@ export const FilterPanel = ({
                     onChange={(e) => setFilter1C(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filter1C && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="supports1C"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
                   <Icon
                     name="Database"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
                   <span className="text-xs font-medium text-foreground">
                     1С
@@ -1195,7 +1211,7 @@ export const FilterPanel = ({
                 </label>
               </div>
 
-              <div className="flex items-center space-x-1.5 p-2 bg-background/50 rounded-lg border border-border hover:border-primary/30 transition-colors">
+              <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -1204,21 +1220,25 @@ export const FilterPanel = ({
                     onChange={(e) => setFilterAI(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-4 h-4 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
                     {filterAI && (
                       <Icon
                         name="Check"
-                        size={8}
-                        className="text-background w-2.5 h-2.5"
+                        size={6}
+                        className="text-background w-2 h-2"
                       />
                     )}
                   </div>
                 </div>
                 <label
                   htmlFor="supportsAI"
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1 cursor-pointer"
                 >
-                  <Icon name="Cpu" size={10} className="text-primary w-3 h-3" />
+                  <Icon
+                    name="Cpu"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
+                  />
                   <span className="text-xs font-medium text-foreground">
                     AI
                   </span>
@@ -1226,7 +1246,7 @@ export const FilterPanel = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-2">
               <MultiSelect
                 value={filterLocation}
                 onChange={(value) =>
@@ -1317,39 +1337,31 @@ export const FilterPanel = ({
                 labelText={t("filters.paymentMethod")}
               />
 
-              <div className="col-span-1 sm:col-span-2">
-                <AdditionalServicesDropdown />
-              </div>
-
-              <div className="col-span-1 sm:col-span-2">
-                <RegistrationDataDropdown />
-              </div>
-
-              <div className="col-span-1 sm:col-span-2">
-                <ClientTypeDropdown />
-              </div>
+              <AdditionalServicesDropdown />
+              <RegistrationDataDropdown />
+              <ClientTypeDropdown />
             </div>
 
-            <div className="space-y-3 p-3 bg-background/50 rounded-lg border border-border">
+            <div className="space-y-2 p-2 bg-background/50 rounded-md border border-border">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <Icon
                     name="Server"
-                    size={10}
-                    className="text-primary w-3 h-3"
+                    size={8}
+                    className="text-primary w-2.5 h-2.5"
                   />
-                  <h4 className="text-sm font-bold text-foreground">
+                  <h4 className="text-xs font-bold text-foreground">
                     {t("filters.minDatacenters")}
                   </h4>
                 </div>
-                <span className="text-sm font-bold text-primary">
+                <span className="text-xs font-bold text-primary">
                   {datacentersValue > 0
                     ? `${datacentersValue}`
                     : t("filters.anyAmount")}
                 </span>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {popularValues.map((value) => (
                   <Button
                     key={value}
@@ -1357,14 +1369,14 @@ export const FilterPanel = ({
                     variant={datacentersValue === value ? "default" : "outline"}
                     size="sm"
                     onClick={() => handleDatacentersChange(value)}
-                    className="text-xs h-7 px-3 min-w-[50px]"
+                    className="text-xs h-6 px-2 min-w-[40px]"
                   >
                     {value === 0 ? t("filters.anyAmount") : value}
                   </Button>
                 ))}
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Slider
                   value={[datacentersValue]}
                   onValueChange={(value) => handleDatacentersChange(value[0])}

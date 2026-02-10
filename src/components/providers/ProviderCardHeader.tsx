@@ -55,27 +55,30 @@ export const ProviderCardHeader = ({
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex items-start gap-6">
+    <div className="flex flex-col gap-2">
+      {/* Заголовок с логотипом */}
+      <div className="flex items-start gap-2">
+        {/* Логотип */}
         <div className="flex-shrink-0">
-          <div className="w-[62px] h-[62px] sm:w-[73px] sm:h-[73px] rounded-xl overflow-hidden bg-white border border-primary/10 shadow-soft flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg overflow-hidden bg-white border border-primary/10 shadow-sm flex items-center justify-center">
             <img
               src={provider.logo}
               alt={provider.name}
-              className="w-[52px] h-[52px] sm:w-[62px] sm:h-[62px] object-contain"
+              className="w-10 h-10 object-contain"
             />
           </div>
         </div>
 
-        <div className="flex-1 min-w-0 flex flex-col gap-0">
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="text-[32px] font-bold text-gray-900 dark:text-white leading-tight">
+        {/* Информация о провайдере */}
+        <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+          <div className="flex items-start justify-between gap-1">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
               {provider.name}
             </h3>
             {onCompareClick && (
-              <div className="relative">
+              <div className="relative flex-shrink-0">
                 <button
-                  className={`flex-shrink-0 transition-colors ${
+                  className={`transition-colors ${
                     isComparing
                       ? "text-orange-500 hover:text-orange-600"
                       : "text-gray-400 hover:text-gray-600"
@@ -88,10 +91,10 @@ export const ProviderCardHeader = ({
                   onMouseLeave={() => setShowCompareTooltip(false)}
                   aria-label="Сравнить"
                 >
-                  <Icon name="GitCompareArrows" size={24} />
+                  <Icon name="GitCompareArrows" size={14} />
                 </button>
                 {showCompareTooltip && (
-                  <div className="absolute z-10 top-full right-0 mt-2 px-3 py-1.5 bg-gray-900 text-white text-sm font-medium rounded-lg whitespace-nowrap shadow-lg">
+                  <div className="absolute z-10 top-full right-0 mt-1 px-2 py-1 bg-gray-900 text-white text-xs font-medium rounded whitespace-nowrap shadow">
                     Сравнить
                     <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
                   </div>
@@ -100,27 +103,30 @@ export const ProviderCardHeader = ({
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Рейтинг */}
+          <div className="flex items-center gap-1">
             <Icon
               name="Star"
-              size={24}
+              size={12}
               className="fill-orange-500 text-orange-500"
             />
-            <span className="text-[24px] font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-gray-900 dark:text-white">
               {avgRating.toFixed(1)}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
+      {/* Детальная информация */}
+      <div className="space-y-1.5">
+        {/* Локации */}
+        <div className="flex items-center gap-1.5">
           <Icon
             name="MapPin"
-            size={24}
+            size={12}
             className="text-orange-500 flex-shrink-0"
           />
-          <span className="text-[18px] text-gray-900 dark:text-white">
+          <span className="text-xs text-gray-900 dark:text-white truncate">
             {provider.locations.slice(0, 2).join(", ")}
             {provider.locations.length > 2 && (
               <>
@@ -128,7 +134,7 @@ export const ProviderCardHeader = ({
                   <>
                     , {provider.locations.slice(2).join(", ")}
                     <button
-                      className="ml-1 text-orange-500 hover:underline font-medium"
+                      className="ml-1 text-orange-500 hover:underline text-xs"
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowAllLocations(false);
@@ -139,7 +145,7 @@ export const ProviderCardHeader = ({
                   </>
                 ) : (
                   <button
-                    className="ml-1 text-orange-500 font-medium hover:underline"
+                    className="ml-1 text-orange-500 text-xs hover:underline"
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowAllLocations(true);
@@ -153,19 +159,20 @@ export const ProviderCardHeader = ({
           </span>
         </div>
 
+        {/* Комплаенс */}
         {(provider.fz152Compliant ||
           provider.fstekCompliant ||
           provider.kiiPlacement) && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
             <div className="relative flex-shrink-0">
-              <Icon name="Shield" size={24} className="text-orange-500" />
+              <Icon name="Shield" size={12} className="text-orange-500" />
               <Icon
                 name="Check"
-                size={12}
+                size={6}
                 className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               />
             </div>
-            <span className="text-[18px] text-gray-900 dark:text-white">
+            <span className="text-xs text-gray-900 dark:text-white truncate">
               {[
                 provider.fz152Compliant && "152-ФЗ",
                 provider.fstekCompliant && "ФСТЭК",
@@ -177,14 +184,15 @@ export const ProviderCardHeader = ({
           </div>
         )}
 
+        {/* Технические характеристики */}
         {provider.technicalSpecs.diskType && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
             <Icon
               name="Settings"
-              size={24}
+              size={12}
               className="text-orange-500 flex-shrink-0"
             />
-            <span className="text-[18px] text-gray-900 dark:text-white">
+            <span className="text-xs text-gray-900 dark:text-white truncate">
               {provider.technicalSpecs.virtualization
                 ? provider.technicalSpecs.virtualization.join(", ")
                 : provider.technicalSpecs.diskType}
@@ -193,66 +201,69 @@ export const ProviderCardHeader = ({
           </div>
         )}
 
+        {/* Гарантии сервиса */}
         {provider.serviceGuarantees && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
             <Icon
               name="User"
-              size={24}
+              size={12}
               className="text-orange-500 flex-shrink-0"
             />
-            <span className="text-[18px] text-gray-900 dark:text-white">
+            <span className="text-xs text-gray-900 dark:text-white truncate">
               Uptime {provider.serviceGuarantees.uptimeSLA}, поддержка{" "}
               {provider.serviceGuarantees.supportResponseTime}
             </span>
           </div>
         )}
 
+        {/* GPU */}
         {provider.technicalSpecs.gpuModels &&
           provider.technicalSpecs.gpuModels.length > 0 && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
               <Icon
                 name="Cpu"
-                size={24}
+                size={12}
                 className="text-orange-500 flex-shrink-0"
               />
-              <span className="text-[18px] text-gray-900 dark:text-white">
+              <span className="text-xs text-gray-900 dark:text-white truncate">
                 GPU {provider.technicalSpecs.gpuModels.length}, Агенты
               </span>
             </div>
           )}
       </div>
 
-      <div className="flex flex-col min-[460px]:flex-row min-[460px]:items-center min-[460px]:justify-between gap-6">
-        <div className="flex flex-col gap-2">
-          <div className="text-[40px] font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
+      {/* Цена и кнопка */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-1">
+        <div className="flex flex-col gap-1">
+          <div className="text-2xl font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
             от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}
-            <span className="text-[24px] font-normal text-gray-900 dark:text-white">
+            <span className="text-base font-normal text-gray-900 dark:text-white ml-0.5">
               /мес
             </span>
           </div>
 
           {provider.trialDays > 0 && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
               <Icon
                 name="Gift"
-                size={24}
+                size={12}
                 className="text-orange-500 flex-shrink-0"
               />
-              <span className="text-[18px] text-gray-900 dark:text-white">
+              <span className="text-xs text-gray-900 dark:text-white">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
             </div>
           )}
         </div>
 
-        <div className="w-full min-[460px]:w-auto">
+        <div className="w-full sm:w-auto">
           <Button
-            size="lg"
-            className="bg-orange-500 hover:bg-orange-600 text-white text-[16px] font-medium px-6 py-4 rounded-full flex items-center justify-center gap-2 h-auto w-full min-[460px]:w-auto"
+            size="sm"
+            className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 w-full sm:w-auto"
             onClick={handleProviderClickWithTracking}
           >
             Попробовать
-            <Icon name="ArrowRight" size={18} />
+            <Icon name="ArrowRight" size={12} />
           </Button>
         </div>
       </div>

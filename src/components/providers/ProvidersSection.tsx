@@ -580,11 +580,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="container mx-auto px-4 py-8">
+    <section id="providers" className="container mx-auto px-2 py-4">
       {/* Десктопный вид - новая структура */}
-      <div className="hidden lg:flex gap-6">
-        {/* Левая часть: фильтры (всегда открытые) */}
-        <div className="w-[280px] flex-shrink-0">
+      <div className="hidden lg:flex gap-4">
+        {/* Левая часть: фильтры (всегда открытые) - ширина 8.5 см */}
+        <div className="w-[340px] flex-shrink-0">
           <FilterPanelAlwaysOpen
             filterFZ152={filterFZ152}
             setFilterFZ152={setFilterFZ152}
@@ -643,15 +643,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         {/* Правая часть: контент */}
         <div className="flex-1">
           {/* Верхняя панель управления */}
-          <div className="mb-6">
-            <div className="flex justify-between items-start gap-4">
+          <div className="mb-4">
+            <div className="flex justify-between items-start gap-3">
               {/* Левая колонка: поиск и счетчик */}
-              <div className="space-y-3 flex-1 max-w-[600px]">
+              <div className="space-y-2 flex-1 max-w-[500px]">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}
                   placeholder="Поиск..."
-                  className="w-full max-w-[400px]"
+                  className="w-full max-w-[300px]"
                 />
                 <ProvidersCounter
                   currentCount={Math.min(
@@ -664,7 +664,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               </div>
 
               {/* Правая колонка: сортировка */}
-              <div className="mt-1">
+              <div className="mt-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
             </div>
@@ -672,11 +672,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
           {/* Карточки провайдеров */}
           {searchQuery && filteredProviders.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-muted-foreground text-lg mb-2">
+            <div className="text-center py-8">
+              <div className="text-muted-foreground text-base mb-1.5">
                 По запросу "{searchQuery}" ничего не найдено
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs text-muted-foreground">
                 Попробуйте изменить поисковый запрос или сбросить фильтры
               </div>
             </div>
@@ -694,17 +694,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
               {(filteredProviders.length > providersToShow ||
                 providersToShow > 9) && (
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
                       onClick={() => setProvidersToShow((prev) => prev + 9)}
-                      className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <span className="relative flex items-center justify-center gap-2">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="relative flex items-center justify-center gap-1.5">
                         Показать ещё 9
                         <svg
-                          className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                          className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -733,15 +733,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                           setProvidersToShow(filteredProviders.length);
                         }
                       }}
-                      className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <span className="relative flex items-center justify-center gap-2">
+                      <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="relative flex items-center justify-center gap-1.5">
                         {providersToShow === filteredProviders.length
                           ? "Скрыть"
                           : "Показать всех "}
                         <svg
-                          className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
+                          className={`w-4 h-4 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"}`}
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -775,8 +775,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
       {/* Мобильный/планшетный вид - старая структура */}
       <div className="lg:hidden">
-        <div className="mb-4">
-          <div className="flex flex-col sm:flex-row gap-2">
+        <div className="mb-3">
+          <div className="flex flex-col sm:flex-row gap-1.5">
             <SearchInput
               value={searchQuery}
               onChange={setSearchQuery}
@@ -784,7 +784,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               className="w-full sm:w-auto"
             />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <ProvidersCounter
                 currentCount={Math.min(
                   providersToShow,
@@ -799,7 +799,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
 
           {/* Для мобильной версии используем старую панель фильтров */}
-          <div className="mt-2">
+          <div className="mt-1.5">
             <FilterPanel
               filterFZ152={filterFZ152}
               setFilterFZ152={setFilterFZ152}
@@ -860,11 +860,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
         {/* Мобильная версия карточек */}
         {searchQuery && filteredProviders.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-muted-foreground text-lg mb-2">
+          <div className="text-center py-8">
+            <div className="text-muted-foreground text-base mb-1.5">
               По запросу "{searchQuery}" ничего не найдено
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs text-muted-foreground">
               Попробуйте изменить поисковый запрос или сбросить фильтры
             </div>
           </div>
@@ -882,17 +882,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
             {(filteredProviders.length > providersToShow ||
               providersToShow > 9) && (
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                 {filteredProviders.length > providersToShow && (
                   <button
                     onClick={() => setProvidersToShow((prev) => prev + 9)}
-                    className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <span className="relative flex items-center justify-center gap-2">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span className="relative flex items-center justify-center gap-1.5">
                       Показать ещё 9
                       <svg
-                        className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                        className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -918,15 +918,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                         setProvidersToShow(filteredProviders.length);
                       }
                     }}
-                    className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <span className="relative flex items-center justify-center gap-2">
+                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span className="relative flex items-center justify-center gap-1.5">
                       {providersToShow === filteredProviders.length
                         ? "Скрыть"
                         : "Показать всех "}
                       <svg
-                        className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
+                        className={`w-4 h-4 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"}`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
