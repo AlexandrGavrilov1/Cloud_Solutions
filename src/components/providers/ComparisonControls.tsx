@@ -6,7 +6,7 @@ import { useState } from "react";
 interface ComparisonControlsProps {
   selectedForComparison: number[];
   compareProviders: () => void;
-  onCancelComparison?: () => void; // Новый пропс для отмены сравнения
+  onCancelComparison?: () => void; // Новый пропс для отмены сравненияв
 }
 
 export const ComparisonControls = ({

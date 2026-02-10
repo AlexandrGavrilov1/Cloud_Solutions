@@ -28,6 +28,7 @@ export const ProviderCardHeader = ({
     provider.reviews.reduce((sum, r) => sum + r.rating, 0) /
     provider.reviews.length;
   const [showAllLocations, setShowAllLocations] = useState(false);
+  const [showCompareTooltip, setShowCompareTooltip] = useState(false);
 
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -40,7 +41,7 @@ export const ProviderCardHeader = ({
   const getDaysWord = (days: number) => {
     const lastDigit = days % 10;
     const lastTwoDigits = days % 100;
-    
+
     if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
       return "дней";
     }
@@ -72,37 +73,62 @@ export const ProviderCardHeader = ({
               {provider.name}
             </h3>
             {onCompareClick && (
-              <button
-                className={`flex-shrink-0 transition-colors relative ${
-                  isComparing
-                    ? "text-orange-500 hover:text-orange-600"
-                    : "text-gray-400 hover:text-gray-600"
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onCompareClick();
-                }}
-              >
-                <Icon name="GitCompareArrows" size={24} />
-                {isComparing && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Icon name="Check" size={14} className="text-white bg-orange-500 rounded-full p-0.5" />
+              <div className="relative">
+                <button
+                  className={`flex-shrink-0 transition-colors relative ${
+                    isComparing
+                      ? "text-orange-500 hover:text-orange-600"
+                      : "text-gray-400 hover:text-gray-600"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCompareClick();
+                  }}
+                  onMouseEnter={() => setShowCompareTooltip(true)}
+                  onMouseLeave={() => setShowCompareTooltip(false)}
+                  aria-label="Сравнить"
+                >
+                  <Icon name="GitCompareArrows" size={24} />
+                  {isComparing && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Icon
+                        name="Check"
+                        size={14}
+                        className="text-white bg-orange-500 rounded-full p-0.5"
+                      />
+                    </div>
+                  )}
+                </button>
+                {showCompareTooltip && (
+                  <div className="absolute z-10 top-full right-0 mt-2 px-3 py-1.5 bg-gray-900 text-white text-sm font-medium rounded-lg whitespace-nowrap shadow-lg">
+                    Сравнить
+                    <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
                   </div>
                 )}
-              </button>
+              </div>
             )}
           </div>
 
           <div className="flex items-center gap-2">
-            <Icon name="Star" size={24} className="fill-orange-500 text-orange-500" />
-            <span className="text-[24px] font-medium text-gray-900 dark:text-white">{avgRating.toFixed(1)}</span>
+            <Icon
+              name="Star"
+              size={24}
+              className="fill-orange-500 text-orange-500"
+            />
+            <span className="text-[24px] font-medium text-gray-900 dark:text-white">
+              {avgRating.toFixed(1)}
+            </span>
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <Icon name="MapPin" size={24} className="text-orange-500 flex-shrink-0" />
+          <Icon
+            name="MapPin"
+            size={24}
+            className="text-orange-500 flex-shrink-0"
+          />
           <span className="text-[18px] text-gray-900 dark:text-white">
             {provider.locations.slice(0, 2).join(", ")}
             {provider.locations.length > 2 && (
@@ -142,7 +168,11 @@ export const ProviderCardHeader = ({
           <div className="flex items-center gap-3">
             <div className="relative flex-shrink-0">
               <Icon name="Shield" size={24} className="text-orange-500" />
-              <Icon name="Check" size={12} className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+              <Icon
+                name="Check"
+                size={12}
+                className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              />
             </div>
             <span className="text-[18px] text-gray-900 dark:text-white">
               {[
@@ -158,7 +188,11 @@ export const ProviderCardHeader = ({
 
         {provider.technicalSpecs.diskType && (
           <div className="flex items-center gap-3">
-            <Icon name="Settings" size={24} className="text-orange-500 flex-shrink-0" />
+            <Icon
+              name="Settings"
+              size={24}
+              className="text-orange-500 flex-shrink-0"
+            />
             <span className="text-[18px] text-gray-900 dark:text-white">
               {provider.technicalSpecs.virtualization
                 ? provider.technicalSpecs.virtualization.join(", ")
@@ -170,7 +204,11 @@ export const ProviderCardHeader = ({
 
         {provider.serviceGuarantees && (
           <div className="flex items-center gap-3">
-            <Icon name="User" size={24} className="text-orange-500 flex-shrink-0" />
+            <Icon
+              name="User"
+              size={24}
+              className="text-orange-500 flex-shrink-0"
+            />
             <span className="text-[18px] text-gray-900 dark:text-white">
               Uptime {provider.serviceGuarantees.uptimeSLA}, поддержка{" "}
               {provider.serviceGuarantees.supportResponseTime}
@@ -181,7 +219,11 @@ export const ProviderCardHeader = ({
         {provider.technicalSpecs.gpuModels &&
           provider.technicalSpecs.gpuModels.length > 0 && (
             <div className="flex items-center gap-3">
-              <Icon name="Cpu" size={24} className="text-orange-500 flex-shrink-0" />
+              <Icon
+                name="Cpu"
+                size={24}
+                className="text-orange-500 flex-shrink-0"
+              />
               <span className="text-[18px] text-gray-900 dark:text-white">
                 GPU {provider.technicalSpecs.gpuModels.length}, Агенты
               </span>
@@ -189,15 +231,22 @@ export const ProviderCardHeader = ({
           )}
       </div>
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
         <div className="flex flex-col gap-2">
           <div className="text-[40px] font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
-            от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}<span className="text-[24px] font-normal text-gray-900 dark:text-white">/мес</span>
+            от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}
+            <span className="text-[24px] font-normal text-gray-900 dark:text-white">
+              /мес
+            </span>
           </div>
-          
+
           {provider.trialDays > 0 && (
             <div className="flex items-center gap-3">
-              <Icon name="Gift" size={24} className="text-orange-500 flex-shrink-0" />
+              <Icon
+                name="Gift"
+                size={24}
+                className="text-orange-500 flex-shrink-0"
+              />
               <span className="text-[18px] text-gray-900 dark:text-white">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
@@ -205,14 +254,16 @@ export const ProviderCardHeader = ({
           )}
         </div>
 
-        <Button
-          size="lg"
-          className="bg-orange-500 hover:bg-orange-600 text-white text-[16px] font-medium px-6 py-4 rounded-full flex items-center gap-2 h-auto flex-shrink-0"
-          onClick={handleProviderClickWithTracking}
-        >
-          Попробовать
-          <Icon name="ArrowRight" size={18} />
-        </Button>
+        <div className="w-full sm:w-auto">
+          <Button
+            size="lg"
+            className="bg-orange-500 hover:bg-orange-600 text-white text-[16px] font-medium px-6 py-4 rounded-full flex items-center justify-center gap-2 h-auto w-full sm:w-auto max-w-[460px] mx-auto sm:mx-0"
+            onClick={handleProviderClickWithTracking}
+          >
+            Попробовать
+            <Icon name="ArrowRight" size={18} />
+          </Button>
+        </div>
       </div>
     </div>
   );
