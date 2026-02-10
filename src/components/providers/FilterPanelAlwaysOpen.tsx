@@ -387,64 +387,8 @@ export const FilterPanelAlwaysOpen = ({
       activeFiltersCount,
     });
 
-    // Обработчики кликов
-    const handleFZ152Click = (e: React.MouseEvent) => {
-      console.log("🔥 FZ152 clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      setFilterFZ152(!filterFZ152);
-    };
-
-    const handle1CClick = (e: React.MouseEvent) => {
-      console.log("🔥 1C clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      setFilter1C(!filter1C);
-    };
-
-    const handleTrialPeriodClick = (e: React.MouseEvent) => {
-      console.log("🔥 Trial period clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      setFilterTrialPeriod(!filterTrialPeriod);
-    };
-
-    const handleKIIClick = (e: React.MouseEvent) => {
-      console.log("🔥 KII clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      setFilterKII(!filterKII);
-    };
-
-    const handleAIClick = (e: React.MouseEvent) => {
-      console.log("🔥 AI clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      setFilterAI(!filterAI);
-    };
-
-    const handleMobileAppClick = (e: React.MouseEvent) => {
-      console.log("🔥 Mobile app clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      setFilterMobileApp(!filterMobileApp);
-    };
-
-    const handleClearFiltersClick = (e: React.MouseEvent) => {
-      console.log("🔥 Clear filters clicked!");
-      e.preventDefault();
-      e.stopPropagation();
-      clearFilters();
-    };
-
     return (
-      <div
-        className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700"
-        onClick={(e) => {
-          console.log("📦 CheckboxSection container clicked");
-          e.stopPropagation();
-        }}
-      >
+      <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
         {/* Заголовок */}
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-1.5">
@@ -462,7 +406,7 @@ export const FilterPanelAlwaysOpen = ({
           {hasActiveFilters && (
             <button
               type="button"
-              onClick={handleClearFiltersClick}
+              onClick={clearFilters}
               className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               Сбросить
@@ -475,133 +419,151 @@ export const FilterPanelAlwaysOpen = ({
           {/* Колонка 1 */}
           <div className="space-y-1">
             {/* 152-ФЗ */}
-            <button
-              type="button"
-              onClick={handleFZ152Click}
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-            >
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                  filterFZ152
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 bg-transparent"
-                }`}
-              >
-                {filterFZ152 && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
+            <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="fz152-desktop"
+                  checked={filterFZ152}
+                  onChange={(e) => setFilterFZ152(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                  {filterFZ152 && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  )}
+                </div>
               </div>
-              <span className="text-xs text-gray-900 dark:text-white">
+              <label
+                htmlFor="fz152-desktop"
+                className="text-xs text-gray-900 dark:text-white cursor-pointer"
+              >
                 152-ФЗ
-              </span>
-            </button>
+              </label>
+            </div>
 
             {/* 1С */}
-            <button
-              type="button"
-              onClick={handle1CClick}
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-            >
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                  filter1C
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 bg-transparent"
-                }`}
-              >
-                {filter1C && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
+            <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="1c-desktop"
+                  checked={filter1C}
+                  onChange={(e) => setFilter1C(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                  {filter1C && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  )}
+                </div>
               </div>
-              <span className="text-xs text-gray-900 dark:text-white">1С</span>
-            </button>
+              <label
+                htmlFor="1c-desktop"
+                className="text-xs text-gray-900 dark:text-white cursor-pointer"
+              >
+                1С
+              </label>
+            </div>
 
             {/* Тестовый период */}
-            <button
-              type="button"
-              onClick={handleTrialPeriodClick}
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-            >
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                  filterTrialPeriod
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 bg-transparent"
-                }`}
-              >
-                {filterTrialPeriod && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
+            <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="trial-desktop"
+                  checked={filterTrialPeriod}
+                  onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                  {filterTrialPeriod && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  )}
+                </div>
               </div>
-              <span className="text-xs text-gray-900 dark:text-white">
+              <label
+                htmlFor="trial-desktop"
+                className="text-xs text-gray-900 dark:text-white cursor-pointer"
+              >
                 Тестовый период
-              </span>
-            </button>
+              </label>
+            </div>
           </div>
 
           {/* Колонка 2 */}
           <div className="space-y-1">
             {/* КИИ */}
-            <button
-              type="button"
-              onClick={handleKIIClick}
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-            >
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                  filterKII
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 bg-transparent"
-                }`}
-              >
-                {filterKII && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
+            <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="kii-desktop"
+                  checked={filterKII}
+                  onChange={(e) => setFilterKII(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                  {filterKII && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  )}
+                </div>
               </div>
-              <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
-            </button>
+              <label
+                htmlFor="kii-desktop"
+                className="text-xs text-gray-900 dark:text-white cursor-pointer"
+              >
+                КИИ
+              </label>
+            </div>
 
             {/* AI */}
-            <button
-              type="button"
-              onClick={handleAIClick}
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-            >
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                  filterAI
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 bg-transparent"
-                }`}
-              >
-                {filterAI && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
+            <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="ai-desktop"
+                  checked={filterAI}
+                  onChange={(e) => setFilterAI(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                  {filterAI && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  )}
+                </div>
               </div>
-              <span className="text-xs text-gray-900 dark:text-white">AI</span>
-            </button>
+              <label
+                htmlFor="ai-desktop"
+                className="text-xs text-gray-900 dark:text-white cursor-pointer"
+              >
+                AI
+              </label>
+            </div>
 
             {/* Моб. приложение */}
-            <button
-              type="button"
-              onClick={handleMobileAppClick}
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-            >
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                  filterMobileApp
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 bg-transparent"
-                }`}
-              >
-                {filterMobileApp && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
+            <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="mobileapp-desktop"
+                  checked={filterMobileApp}
+                  onChange={(e) => setFilterMobileApp(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                  {filterMobileApp && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  )}
+                </div>
               </div>
-              <span className="text-xs text-gray-900 dark:text-white">
+              <label
+                htmlFor="mobileapp-desktop"
+                className="text-xs text-gray-900 dark:text-white cursor-pointer"
+              >
                 Моб. приложение
-              </span>
-            </button>
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -835,26 +797,28 @@ export const FilterPanelAlwaysOpen = ({
       >
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
-          <button
-            type="button"
-            onClick={() => setFilterHasGPU(!filterHasGPU)}
-            className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
-                filterHasGPU
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
-            >
-              {filterHasGPU && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
+          <div className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="hasgpu-desktop"
+                checked={filterHasGPU}
+                onChange={(e) => setFilterHasGPU(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3 h-3 rounded-full border-2 border-gray-400 dark:border-gray-500 peer-checked:border-orange-500 peer-checked:bg-orange-500 transition-colors flex items-center justify-center flex-shrink-0">
+                {filterHasGPU && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
             </div>
-            <span className="text-xs text-gray-900 dark:text-white">
+            <label
+              htmlFor="hasgpu-desktop"
+              className="text-xs text-gray-900 dark:text-white cursor-pointer"
+            >
               Есть GPU
-            </span>
-          </button>
+            </label>
+          </div>
 
           {/* Конкретные модели GPU */}
           <div className="mt-1">
@@ -1104,13 +1068,7 @@ export const FilterPanelAlwaysOpen = ({
   };
 
   return (
-    <div
-      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto"
-      onClick={(e) => {
-        console.log("🎯 Main FilterPanel container clicked");
-        e.stopPropagation();
-      }}
-    >
+    <div className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto">
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
           width: 4px;
@@ -1136,6 +1094,27 @@ export const FilterPanelAlwaysOpen = ({
 
         .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
           background-color: #6b7280;
+        }
+
+        /* Стили для скрытого input */
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+
+        .peer:checked ~ .peer-checked\\:border-orange-500 {
+          border-color: #f97316;
+        }
+
+        .peer:checked ~ .peer-checked\\:bg-orange-500 {
+          background-color: #f97316;
         }
       `}</style>
 
