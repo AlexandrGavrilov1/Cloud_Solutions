@@ -265,7 +265,7 @@ export const FilterPanelAlwaysOpen = ({
     filterAI,
   ].filter(Boolean).length;
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setFilterFZ152(false);
     setFilterFSTEK([]);
     setFilterTrialPeriod(false);
@@ -286,7 +286,28 @@ export const FilterPanelAlwaysOpen = ({
     setFilterHasGPU(false);
     setFilter1C(false);
     setFilterAI(false);
-  };
+  }, [
+    setFilterFZ152,
+    setFilterFSTEK,
+    setFilterTrialPeriod,
+    setFilterLocation,
+    setFilterVirtualization,
+    setFilterMinDatacenters,
+    setFilterDiskType,
+    setFilterPaymentMethod,
+    setFilterOS,
+    setFilterCPU,
+    setFilterKII,
+    setFilterMobileApp,
+    setFilterOrderBeforeRegistration,
+    setFilterAdditionalServices,
+    setFilterRegistrationData,
+    setFilterClientType,
+    setFilterGPU,
+    setFilterHasGPU,
+    setFilter1C,
+    setFilterAI,
+  ]);
 
   const handleMultiSelectChange = (
     value: string,
@@ -353,38 +374,38 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // Обработчики чекбоксов с использованием прямых функций
-  const handleFZ152Change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterFZ152(e.target.checked);
-  };
+  // Простые обработчики чекбоксов
+  const handleFZ152Change = useCallback(() => {
+    setFilterFZ152(!filterFZ152);
+  }, [filterFZ152, setFilterFZ152]);
 
-  const handle1CChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter1C(e.target.checked);
-  };
+  const handle1CChange = useCallback(() => {
+    setFilter1C(!filter1C);
+  }, [filter1C, setFilter1C]);
 
-  const handleTrialPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterTrialPeriod(e.target.checked);
-  };
+  const handleTrialPeriodChange = useCallback(() => {
+    setFilterTrialPeriod(!filterTrialPeriod);
+  }, [filterTrialPeriod, setFilterTrialPeriod]);
 
-  const handleKIIChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterKII(e.target.checked);
-  };
+  const handleKIIChange = useCallback(() => {
+    setFilterKII(!filterKII);
+  }, [filterKII, setFilterKII]);
 
-  const handleAIChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterAI(e.target.checked);
-  };
+  const handleAIChange = useCallback(() => {
+    setFilterAI(!filterAI);
+  }, [filterAI, setFilterAI]);
 
-  const handleMobileAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterMobileApp(e.target.checked);
-  };
+  const handleMobileAppChange = useCallback(() => {
+    setFilterMobileApp(!filterMobileApp);
+  }, [filterMobileApp, setFilterMobileApp]);
 
-  const handleHasGPUChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setFilterHasGPU(checked);
-    if (checked) {
+  const handleHasGPUChange = useCallback(() => {
+    const newValue = !filterHasGPU;
+    setFilterHasGPU(newValue);
+    if (newValue) {
       setFilterGPU([]);
     }
-  };
+  }, [filterHasGPU, setFilterGPU]);
 
   // Верхняя секция чекбоксов с круглыми радиокнопками
   const CheckboxSection = () => (
@@ -418,14 +439,17 @@ export const FilterPanelAlwaysOpen = ({
         {/* Колонка 1 */}
         <div className="space-y-1">
           {/* 152-ФЗ */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filterFZ152}
-              onChange={handleFZ152Change}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handleFZ152Change}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filterFZ152
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filterFZ152 && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
@@ -433,33 +457,39 @@ export const FilterPanelAlwaysOpen = ({
             <span className="text-xs text-gray-900 dark:text-white">
               152-ФЗ
             </span>
-          </label>
+          </div>
 
           {/* 1С */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filter1C}
-              onChange={handle1CChange}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handle1CChange}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filter1C
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filter1C && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
             </div>
             <span className="text-xs text-gray-900 dark:text-white">1С</span>
-          </label>
+          </div>
 
           {/* Тестовый период */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filterTrialPeriod}
-              onChange={handleTrialPeriodChange}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handleTrialPeriodChange}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filterTrialPeriod
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filterTrialPeriod && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
@@ -467,52 +497,61 @@ export const FilterPanelAlwaysOpen = ({
             <span className="text-xs text-gray-900 dark:text-white">
               Тестовый период
             </span>
-          </label>
+          </div>
         </div>
 
         {/* Колонка 2 */}
         <div className="space-y-1">
           {/* КИИ */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filterKII}
-              onChange={handleKIIChange}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handleKIIChange}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filterKII
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filterKII && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
             </div>
             <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
-          </label>
+          </div>
 
           {/* AI */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filterAI}
-              onChange={handleAIChange}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handleAIChange}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filterAI
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filterAI && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
             </div>
             <span className="text-xs text-gray-900 dark:text-white">AI</span>
-          </label>
+          </div>
 
           {/* Моб. приложение */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filterMobileApp}
-              onChange={handleMobileAppChange}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handleMobileAppChange}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filterMobileApp
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filterMobileApp && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
@@ -520,7 +559,7 @@ export const FilterPanelAlwaysOpen = ({
             <span className="text-xs text-gray-900 dark:text-white">
               Моб. приложение
             </span>
-          </label>
+          </div>
         </div>
       </div>
     </div>
@@ -691,7 +730,7 @@ export const FilterPanelAlwaysOpen = ({
 
             {/* Ползунок */}
             <div
-              className="relative h-4"
+              className="relative h-4 cursor-pointer"
               onMouseDown={(e) => {
                 e.preventDefault();
                 const slider = e.currentTarget;
@@ -753,14 +792,17 @@ export const FilterPanelAlwaysOpen = ({
       >
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
-          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
-            <input
-              type="checkbox"
-              checked={filterHasGPU}
-              onChange={handleHasGPUChange}
-              className="sr-only peer"
-            />
-            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
+            onClick={handleHasGPUChange}
+          >
+            <div
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                filterHasGPU
+                  ? "border-orange-500 bg-orange-500"
+                  : "border-gray-400 bg-transparent"
+              }`}
+            >
               {filterHasGPU && (
                 <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               )}
@@ -768,7 +810,7 @@ export const FilterPanelAlwaysOpen = ({
             <span className="text-xs text-gray-900 dark:text-white">
               Есть GPU
             </span>
-          </label>
+          </div>
 
           {/* Конкретные модели GPU */}
           <div className="mt-1">
