@@ -176,7 +176,7 @@ export const FilterPanelAlwaysOpen = ({
     setDatacentersValue(value);
   }, []);
 
-  // Применение значения после изменения (с задержкой для плавности)
+  // Применение значения после изменения
   const applyDatacentersValue = useCallback(
     (value: number) => {
       setFilterMinDatacenters(value > 0 ? value : null);
@@ -353,6 +353,39 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
+  // Обработчики чекбоксов с использованием прямых функций
+  const handleFZ152Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterFZ152(e.target.checked);
+  };
+
+  const handle1CChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter1C(e.target.checked);
+  };
+
+  const handleTrialPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterTrialPeriod(e.target.checked);
+  };
+
+  const handleKIIChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterKII(e.target.checked);
+  };
+
+  const handleAIChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterAI(e.target.checked);
+  };
+
+  const handleMobileAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterMobileApp(e.target.checked);
+  };
+
+  const handleHasGPUChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setFilterHasGPU(checked);
+    if (checked) {
+      setFilterGPU([]);
+    }
+  };
+
   // Верхняя секция чекбоксов с круглыми радиокнопками
   const CheckboxSection = () => (
     <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
@@ -373,7 +406,7 @@ export const FilterPanelAlwaysOpen = ({
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer"
+            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none"
           >
             Сбросить
           </button>
@@ -389,7 +422,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filterFZ152}
-              onChange={(e) => setFilterFZ152(e.target.checked)}
+              onChange={handleFZ152Change}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -407,7 +440,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filter1C}
-              onChange={(e) => setFilter1C(e.target.checked)}
+              onChange={handle1CChange}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -423,7 +456,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filterTrialPeriod}
-              onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+              onChange={handleTrialPeriodChange}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -444,7 +477,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filterKII}
-              onChange={(e) => setFilterKII(e.target.checked)}
+              onChange={handleKIIChange}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -460,7 +493,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filterAI}
-              onChange={(e) => setFilterAI(e.target.checked)}
+              onChange={handleAIChange}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -476,7 +509,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filterMobileApp}
-              onChange={(e) => setFilterMobileApp(e.target.checked)}
+              onChange={handleMobileAppChange}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -541,18 +574,16 @@ export const FilterPanelAlwaysOpen = ({
     options,
     selectedValues,
     onChange,
-    renderOption = (option) => option,
   }: {
     options: string[];
     selectedValues: string[];
     onChange: (option: string) => void;
-    renderOption?: (option: string) => React.ReactNode;
   }) => {
     const hasManyOptions = options.length > 4;
 
     return (
       <div
-        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1" : ""}`}
+        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1 scrollbar-thin" : ""}`}
       >
         <div className="flex flex-wrap gap-1">
           {options.map((option) => (
@@ -566,7 +597,7 @@ export const FilterPanelAlwaysOpen = ({
                   : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
               }`}
             >
-              {renderOption(option)}
+              {option}
             </button>
           ))}
         </div>
@@ -654,19 +685,48 @@ export const FilterPanelAlwaysOpen = ({
             </span>
             <span className="text-gray-600 dark:text-gray-400">15</span>
           </div>
-          <Slider
-            value={[datacentersValue]}
-            onValueChange={(value) => {
-              handleDatacentersChange(value[0]);
-            }}
-            onValueCommit={(value) => {
-              applyDatacentersValue(value[0]);
-            }}
-            min={0}
-            max={15}
-            step={1}
-            className="cursor-pointer"
-          />
+          <div className="relative py-2">
+            {/* Тонкая линия ползунка */}
+            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 dark:bg-gray-600 -translate-y-1/2"></div>
+
+            {/* Ползунок */}
+            <div
+              className="relative h-4"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                const slider = e.currentTarget;
+                const rect = slider.getBoundingClientRect();
+
+                const handleMove = (moveEvent: MouseEvent) => {
+                  const x = moveEvent.clientX - rect.left;
+                  const percent = Math.max(0, Math.min(1, x / rect.width));
+                  const value = Math.round(percent * 15);
+                  handleDatacentersChange(value);
+                };
+
+                const handleUp = () => {
+                  document.removeEventListener("mousemove", handleMove);
+                  document.removeEventListener("mouseup", handleUp);
+                  applyDatacentersValue(datacentersValue);
+                };
+
+                document.addEventListener("mousemove", handleMove);
+                document.addEventListener("mouseup", handleUp);
+
+                // Инициализируем клик
+                const x = e.clientX - rect.left;
+                const percent = Math.max(0, Math.min(1, x / rect.width));
+                const value = Math.round(percent * 15);
+                handleDatacentersChange(value);
+              }}
+            >
+              {/* Маркер ползунка */}
+              <div
+                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full cursor-pointer shadow"
+                style={{ left: `${(datacentersValue / 15) * 100}%` }}
+              />
+            </div>
+          </div>
         </div>
       </AccordionSection>
     );
@@ -697,12 +757,7 @@ export const FilterPanelAlwaysOpen = ({
             <input
               type="checkbox"
               checked={filterHasGPU}
-              onChange={(e) => {
-                setFilterHasGPU(e.target.checked);
-                if (!filterHasGPU) {
-                  setFilterGPU([]);
-                }
-              }}
+              onChange={handleHasGPUChange}
               className="sr-only peer"
             />
             <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
@@ -964,6 +1019,34 @@ export const FilterPanelAlwaysOpen = ({
 
   return (
     <div className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto">
+      <style jsx global>{`
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: #d1d5db;
+          border-radius: 2px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: #9ca3af;
+        }
+
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: #4b5563;
+        }
+
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: #6b7280;
+        }
+      `}</style>
+
       <CheckboxSection />
 
       <div className="space-y-0">
