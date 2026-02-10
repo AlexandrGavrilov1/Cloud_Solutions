@@ -160,6 +160,7 @@ export const FilterPanelAlwaysOpen = ({
   });
 
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // Оптимизация: мемоизация значений для линейки
   const [datacentersValue, setDatacentersValue] = useState(
@@ -184,34 +185,33 @@ export const FilterPanelAlwaysOpen = ({
     [setFilterMinDatacenters],
   );
 
-  // Закрытие дропдаунов при клике вне компонента
+  // Закрытие дропдаунов при клике вне компонента - ТОЛЬКО ВНЕ ВСЕЙ ПАНЕЛИ
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
-      let clickedInsideDropdown = false;
-      Object.values(dropdownRefs.current).forEach((ref) => {
-        if (ref && ref.contains(target)) {
-          clickedInsideDropdown = true;
-        }
-      });
-
-      if (!clickedInsideDropdown) {
-        setDropdownsOpen({
-          fstek: false,
-          location: false,
-          datacenters: false,
-          gpu: false,
-          virtualization: false,
-          diskType: false,
-          cpu: false,
-          os: false,
-          additionalServices: false,
-          paymentMethod: false,
-          registrationData: false,
-          clientType: false,
-        });
+      // Если клик внутри всей панели фильтров - НЕ закрываем дропдауны
+      if (panelRef.current && panelRef.current.contains(target)) {
+        // Проверяем, кликнули ли мы на заголовок аккордеона
+        // Если клик не на заголовке аккордеона и не внутри открытого дропдауна, оставляем как есть
+        return;
       }
+
+      // Если клик вне всей панели - закрываем все дропдауны
+      setDropdownsOpen({
+        fstek: false,
+        location: false,
+        datacenters: false,
+        gpu: false,
+        virtualization: false,
+        diskType: false,
+        cpu: false,
+        os: false,
+        additionalServices: false,
+        paymentMethod: false,
+        registrationData: false,
+        clientType: false,
+      });
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -364,13 +364,12 @@ export const FilterPanelAlwaysOpen = ({
 
     const newState = { ...dropdownsOpen };
     Object.keys(newState).forEach((key) => {
-      newState[key] = false;
+      if (key !== dropdown) {
+        newState[key] = false;
+      }
     });
 
-    if (!isCurrentlyOpen) {
-      newState[dropdown] = true;
-    }
-
+    newState[dropdown] = !isCurrentlyOpen;
     setDropdownsOpen(newState);
   };
 
@@ -396,7 +395,6 @@ export const FilterPanelAlwaysOpen = ({
           type="checkbox"
           checked={checked}
           onChange={(e) => {
-            console.log(`${id} clicked`, e.target.checked);
             onChange(e.target.checked);
           }}
           className="sr-only"
@@ -680,10 +678,12 @@ export const FilterPanelAlwaysOpen = ({
               className="relative h-4 cursor-pointer"
               onMouseDown={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 const slider = e.currentTarget;
                 const rect = slider.getBoundingClientRect();
 
                 const handleMove = (moveEvent: MouseEvent) => {
+                  moveEvent.preventDefault();
                   const x = moveEvent.clientX - rect.left;
                   const percent = Math.max(0, Math.min(1, x / rect.width));
                   const value = Math.round(percent * 15);
@@ -1001,7 +1001,10 @@ export const FilterPanelAlwaysOpen = ({
   };
 
   return (
-    <div className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto">
+    <div
+      ref={panelRef}
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto"
+    >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
           width: 4px;
