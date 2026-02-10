@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useRef, useEffect } from "react";
 import {
   RegistrationDataField,
   ClientType,
@@ -166,6 +167,7 @@ export const FilterPanelAlwaysOpen = ({
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
+      // Проверяем, был ли клик внутри любого дропдауна
       let clickedInsideDropdown = false;
       Object.values(dropdownRefs.current).forEach((ref) => {
         if (ref && ref.contains(target)) {
@@ -173,6 +175,7 @@ export const FilterPanelAlwaysOpen = ({
         }
       });
 
+      // Если клик был вне дропдауна, закрываем все
       if (!clickedInsideDropdown) {
         setDropdownsOpen({
           fstek: false,
@@ -281,7 +284,9 @@ export const FilterPanelAlwaysOpen = ({
     currentValues: string[],
     setter: (values: string[]) => void,
   ) => {
-    if (currentValues.includes(value)) {
+    if (value === "all") {
+      setter([]);
+    } else if (currentValues.includes(value)) {
       setter(currentValues.filter((v) => v !== value));
     } else {
       setter([...currentValues, value]);
@@ -323,22 +328,25 @@ export const FilterPanelAlwaysOpen = ({
     setFilterGPU(newValue);
   };
 
-  const toggleDropdown = (dropdown: string) => {
-    setDropdownsOpen((prev) => {
-      const newState = { ...prev };
-      // Закрываем все другие дропдауны
-      Object.keys(newState).forEach((key) => {
-        if (key !== dropdown) {
-          newState[key] = false;
-        }
-      });
-      // Переключаем текущий
-      newState[dropdown] = !prev[dropdown];
-      return newState;
+  const handleDropdownClick = (dropdown: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const isCurrentlyOpen = dropdownsOpen[dropdown];
+
+    // Сначала закрываем все дропдауны
+    const newState = { ...dropdownsOpen };
+    Object.keys(newState).forEach((key) => {
+      newState[key] = false;
     });
+
+    // Если текущий дропдаун был закрыт, открываем его
+    if (!isCurrentlyOpen) {
+      newState[dropdown] = true;
+    }
+
+    setDropdownsOpen(newState);
   };
 
-  // Компонент для круглых чекбоксов
+  // Компонент для круглых чекбоксов (новый стиль)
   const RoundCheckbox = ({
     id,
     checked,
@@ -357,9 +365,7 @@ export const FilterPanelAlwaysOpen = ({
             type="checkbox"
             id={id}
             checked={checked}
-            onChange={(e) => {
-              onChange(e.target.checked);
-            }}
+            onChange={(e) => onChange(e.target.checked)}
             className="sr-only"
           />
           <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center transition-colors">
@@ -373,7 +379,7 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // Компонент для секций с выпадающими списками
+  // Компонент для секций с выпадающими списками (новый стиль)
   const FilterSection = ({
     title,
     selectedValues,
@@ -400,7 +406,7 @@ export const FilterPanelAlwaysOpen = ({
       <div className="py-3 border-b border-border last:border-b-0">
         <div
           className="flex items-center justify-between cursor-pointer"
-          onClick={() => toggleDropdown(dropdownKey)}
+          onClick={(e) => handleDropdownClick(dropdownKey, e)}
         >
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-foreground">{title}</h3>
@@ -440,7 +446,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Компонент для выбора опций в выпадающих списках
+  // Компонент для выбора опций в выпадающих списках (новый стиль)
   const OptionItem = ({
     label,
     selected,
@@ -459,6 +465,7 @@ export const FilterPanelAlwaysOpen = ({
       }`}
       onClick={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         onChange();
       }}
     >
@@ -466,9 +473,9 @@ export const FilterPanelAlwaysOpen = ({
     </button>
   );
 
-  // Компонент для GPU
+  // Компонент для GPU (новый стиль)
   const GpuOptions = () => (
-    <div className="space-y-2">
+    <div className="space-y-2" ref={(el) => (dropdownRefs.current.gpu = el)}>
       <button
         type="button"
         className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all w-full text-left ${
@@ -478,6 +485,7 @@ export const FilterPanelAlwaysOpen = ({
         }`}
         onClick={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           setFilterHasGPU(!filterHasGPU);
           if (!filterHasGPU) {
             setFilterGPU([]);
@@ -505,7 +513,7 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // Компонент для количества ЦОД
+  // Компонент для количества ЦОД (новый стиль)
   const DatacentersSection = () => {
     const isOpen = dropdownsOpen.datacenters;
     const displayText =
@@ -515,7 +523,7 @@ export const FilterPanelAlwaysOpen = ({
       <div className="py-3 border-b border-border">
         <div
           className="flex items-center justify-between cursor-pointer"
-          onClick={() => toggleDropdown("datacenters")}
+          onClick={(e) => handleDropdownClick("datacenters", e)}
         >
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-foreground">
@@ -549,6 +557,7 @@ export const FilterPanelAlwaysOpen = ({
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     handleDatacentersChange(value);
                   }}
                 >
@@ -583,6 +592,86 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
+  // Старый MultiSelect компонент (оставляем логику, но обновляем стиль)
+  const MultiSelect = ({
+    value,
+    onChange,
+    options,
+    placeholder,
+    iconName,
+    dropdownKey,
+    labelText,
+  }: {
+    value: string[];
+    onChange: (val: string) => void;
+    options: string[];
+    placeholder: string;
+    iconName: string;
+    dropdownKey: string;
+    labelText?: string;
+  }) => {
+    const isOpen = dropdownsOpen[dropdownKey];
+
+    const displayText =
+      value.length === 0
+        ? placeholder
+        : value.length === 1
+          ? value[0]
+          : `${value.length} выбрано`;
+
+    return (
+      <div className="py-3 border-b border-border last:border-b-0">
+        <div
+          className="flex items-center justify-between cursor-pointer"
+          onClick={(e) => handleDropdownClick(dropdownKey, e)}
+        >
+          <div className="flex-1">
+            <h3 className="text-sm font-semibold text-foreground">
+              {labelText || placeholder}
+            </h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">{displayText}</span>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={12}
+              className="text-muted-foreground w-3 h-3"
+            />
+          </div>
+        </div>
+
+        {isOpen && (
+          <div
+            className="mt-3 space-y-2"
+            ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onChange("all");
+              }}
+              className="text-xs text-primary hover:text-primary/80 mb-2 block"
+            >
+              {placeholder}
+            </button>
+            <div className="flex flex-wrap gap-2">
+              {options.map((option) => (
+                <OptionItem
+                  key={option}
+                  label={option}
+                  selected={value.includes(option)}
+                  onChange={() => onChange(option)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="w-[340px] flex-shrink-0 bg-card border border-primary/20 rounded-md shadow-sm p-5 h-full overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
@@ -607,7 +696,7 @@ export const FilterPanelAlwaysOpen = ({
       </div>
 
       <div className="space-y-6">
-        {/* Верхняя секция с круглыми чекбоксами */}
+        {/* Верхняя секция с круглыми чекбоксами (новый стиль) */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-3">
           <RoundCheckbox
             id="fz152"
@@ -645,6 +734,12 @@ export const FilterPanelAlwaysOpen = ({
             onChange={setFilterMobileApp}
             label="Моб. приложение"
           />
+          <RoundCheckbox
+            id="orderBeforeReg"
+            checked={filterOrderBeforeRegistration}
+            onChange={setFilterOrderBeforeRegistration}
+            label="Заказ до регистрации"
+          />
         </div>
 
         {/* Секция ФСТЭК */}
@@ -668,30 +763,17 @@ export const FilterPanelAlwaysOpen = ({
         </FilterSection>
 
         {/* Секция Локация ЦОД */}
-        <FilterSection
-          title="Локация ЦОД"
-          selectedValues={filterLocation}
-          isOpen={dropdownsOpen.location}
+        <MultiSelect
+          value={filterLocation}
+          onChange={(value) =>
+            handleMultiSelectChange(value, filterLocation, setFilterLocation)
+          }
+          options={allLocations}
+          placeholder="Любая локация"
+          iconName="Globe"
           dropdownKey="location"
-          onClear={() => setFilterLocation([])}
-        >
-          <div className="flex flex-wrap gap-2">
-            {allLocations.map((option) => (
-              <OptionItem
-                key={option}
-                label={option}
-                selected={filterLocation.includes(option)}
-                onChange={() =>
-                  handleMultiSelectChange(
-                    option,
-                    filterLocation,
-                    setFilterLocation,
-                  )
-                }
-              />
-            ))}
-          </div>
-        </FilterSection>
+          labelText="Локация ЦОД"
+        />
 
         {/* Секция Количество ЦОД */}
         <DatacentersSection />
@@ -711,100 +793,60 @@ export const FilterPanelAlwaysOpen = ({
         </FilterSection>
 
         {/* Секция Виртуализация */}
-        <FilterSection
-          title="Виртуализация"
-          selectedValues={filterVirtualization}
-          isOpen={dropdownsOpen.virtualization}
+        <MultiSelect
+          value={filterVirtualization}
+          onChange={(value) =>
+            handleMultiSelectChange(
+              value,
+              filterVirtualization,
+              setFilterVirtualization,
+            )
+          }
+          options={allVirtualizations}
+          placeholder="Любая виртуализация"
+          iconName="Box"
           dropdownKey="virtualization"
-          onClear={() => setFilterVirtualization([])}
-        >
-          <div className="flex flex-wrap gap-2">
-            {allVirtualizations.map((option) => (
-              <OptionItem
-                key={option}
-                label={option}
-                selected={filterVirtualization.includes(option)}
-                onChange={() =>
-                  handleMultiSelectChange(
-                    option,
-                    filterVirtualization,
-                    setFilterVirtualization,
-                  )
-                }
-              />
-            ))}
-          </div>
-        </FilterSection>
+          labelText="Виртуализация"
+        />
 
         {/* Секция Тип дисков */}
-        <FilterSection
-          title="Тип дисков"
-          selectedValues={filterDiskType}
-          isOpen={dropdownsOpen.diskType}
+        <MultiSelect
+          value={filterDiskType}
+          onChange={(value) =>
+            handleMultiSelectChange(value, filterDiskType, setFilterDiskType)
+          }
+          options={allDiskTypes}
+          placeholder="Любой тип диска"
+          iconName="Database"
           dropdownKey="diskType"
-          onClear={() => setFilterDiskType([])}
-        >
-          <div className="flex flex-wrap gap-2">
-            {allDiskTypes.map((option) => (
-              <OptionItem
-                key={option}
-                label={option}
-                selected={filterDiskType.includes(option)}
-                onChange={() =>
-                  handleMultiSelectChange(
-                    option,
-                    filterDiskType,
-                    setFilterDiskType,
-                  )
-                }
-              />
-            ))}
-          </div>
-        </FilterSection>
+          labelText="Тип дисков"
+        />
 
         {/* Секция Процессор */}
-        <FilterSection
-          title="Процессор"
-          selectedValues={filterCPU}
-          isOpen={dropdownsOpen.cpu}
+        <MultiSelect
+          value={filterCPU}
+          onChange={(value) =>
+            handleMultiSelectChange(value, filterCPU, setFilterCPU)
+          }
+          options={allCPUs}
+          placeholder="Любой процессор"
+          iconName="Cpu"
           dropdownKey="cpu"
-          onClear={() => setFilterCPU([])}
-        >
-          <div className="flex flex-wrap gap-2">
-            {allCPUs.map((option) => (
-              <OptionItem
-                key={option}
-                label={option}
-                selected={filterCPU.includes(option)}
-                onChange={() =>
-                  handleMultiSelectChange(option, filterCPU, setFilterCPU)
-                }
-              />
-            ))}
-          </div>
-        </FilterSection>
+          labelText="Процессор"
+        />
 
         {/* Секция Операционная система */}
-        <FilterSection
-          title="Операционная система"
-          selectedValues={filterOS}
-          isOpen={dropdownsOpen.os}
+        <MultiSelect
+          value={filterOS}
+          onChange={(value) =>
+            handleMultiSelectChange(value, filterOS, setFilterOS)
+          }
+          options={allOS}
+          placeholder="Любая ОС"
+          iconName="Terminal"
           dropdownKey="os"
-          onClear={() => setFilterOS([])}
-        >
-          <div className="flex flex-wrap gap-2">
-            {allOS.map((option) => (
-              <OptionItem
-                key={option}
-                label={option}
-                selected={filterOS.includes(option)}
-                onChange={() =>
-                  handleMultiSelectChange(option, filterOS, setFilterOS)
-                }
-              />
-            ))}
-          </div>
-        </FilterSection>
+          labelText="Операционная система"
+        />
 
         {/* Секция Дополнительные услуги */}
         <FilterSection
@@ -827,30 +869,21 @@ export const FilterPanelAlwaysOpen = ({
         </FilterSection>
 
         {/* Секция Способы оплаты */}
-        <FilterSection
-          title="Способы оплаты"
-          selectedValues={filterPaymentMethod}
-          isOpen={dropdownsOpen.paymentMethod}
+        <MultiSelect
+          value={filterPaymentMethod}
+          onChange={(value) =>
+            handleMultiSelectChange(
+              value,
+              filterPaymentMethod,
+              setFilterPaymentMethod,
+            )
+          }
+          options={allPaymentMethods}
+          placeholder="Любой способ оплаты"
+          iconName="Wallet"
           dropdownKey="paymentMethod"
-          onClear={() => setFilterPaymentMethod([])}
-        >
-          <div className="flex flex-wrap gap-2">
-            {allPaymentMethods.map((option) => (
-              <OptionItem
-                key={option}
-                label={option}
-                selected={filterPaymentMethod.includes(option)}
-                onChange={() =>
-                  handleMultiSelectChange(
-                    option,
-                    filterPaymentMethod,
-                    setFilterPaymentMethod,
-                  )
-                }
-              />
-            ))}
-          </div>
-        </FilterSection>
+          labelText="Способы оплаты"
+        />
 
         {/* Секция Данные для регистрации */}
         <FilterSection
