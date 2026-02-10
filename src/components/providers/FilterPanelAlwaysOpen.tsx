@@ -282,48 +282,42 @@ export const FilterPanelAlwaysOpen = ({
     currentValues: string[],
     setter: (values: string[]) => void,
   ) => {
-    if (value === "all") {
-      setter([]);
-    } else if (currentValues.includes(value)) {
+    if (currentValues.includes(value)) {
       setter(currentValues.filter((v) => v !== value));
     } else {
       setter([...currentValues, value]);
     }
   };
+  const handleClearAll = (setter: (values: string[]) => void) => {
+    setter([]);
+  };
 
   const handleFstekChange = (option: string) => {
-    const newValue = filterFSTEK.includes(option)
-      ? filterFSTEK.filter((v) => v !== option)
-      : [...filterFSTEK, option];
-    setFilterFSTEK(newValue);
+    handleMultiSelectChange(option, filterFSTEK, setFilterFSTEK);
   };
 
   const handleAdditionalServicesChange = (option: string) => {
-    const newValue = filterAdditionalServices.includes(option)
-      ? filterAdditionalServices.filter((v) => v !== option)
-      : [...filterAdditionalServices, option];
-    setFilterAdditionalServices(newValue);
+    handleMultiSelectChange(
+      option,
+      filterAdditionalServices,
+      setFilterAdditionalServices,
+    );
   };
 
   const handleRegistrationDataChange = (option: string) => {
-    const newValue = filterRegistrationData.includes(option)
-      ? filterRegistrationData.filter((v) => v !== option)
-      : [...filterRegistrationData, option];
-    setFilterRegistrationData(newValue);
+    handleMultiSelectChange(
+      option,
+      filterRegistrationData,
+      setFilterRegistrationData,
+    );
   };
 
   const handleClientTypeChange = (option: string) => {
-    const newValue = filterClientType.includes(option)
-      ? filterClientType.filter((v) => v !== option)
-      : [...filterClientType, option];
-    setFilterClientType(newValue);
+    handleMultiSelectChange(option, filterClientType, setFilterClientType);
   };
 
   const handleGpuChange = (option: string) => {
-    const newValue = filterGPU.includes(option)
-      ? filterGPU.filter((v) => v !== option)
-      : [...filterGPU, option];
-    setFilterGPU(newValue);
+    handleMultiSelectChange(option, filterGPU, setFilterGPU);
   };
 
   const handleDropdownClick = (dropdown: string, e: React.MouseEvent) => {
@@ -386,6 +380,7 @@ export const FilterPanelAlwaysOpen = ({
     dropdownKey,
     onOpen,
     children,
+    onClear,
   }: {
     title: string;
     selectedValues: string[];
@@ -393,6 +388,7 @@ export const FilterPanelAlwaysOpen = ({
     dropdownKey: string;
     onOpen: (e: React.MouseEvent) => void;
     children: React.ReactNode;
+    onClear?: () => void;
   }) => {
     const displayText =
       selectedValues.length === 0
@@ -425,6 +421,18 @@ export const FilterPanelAlwaysOpen = ({
             className="mt-3 space-y-2"
             ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
           >
+            {onClear && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClear();
+                }}
+                className="text-xs text-primary hover:text-primary/80 mb-2"
+              >
+                Очистить все
+              </button>
+            )}
             {children}
           </div>
         )}
@@ -446,9 +454,12 @@ export const FilterPanelAlwaysOpen = ({
       className={`inline-flex items-center px-3 py-1.5 rounded-full border cursor-pointer transition-all ${
         selected
           ? "border-primary bg-primary/10 text-primary"
-          : "border-gray-300 text-foreground hover:border-primary"
+          : "border-border text-foreground hover:border-primary"
       }`}
-      onClick={onChange}
+      onClick={(e) => {
+        e.stopPropagation();
+        onChange();
+      }}
     >
       <span className="text-sm">{label}</span>
     </div>
@@ -459,7 +470,8 @@ export const FilterPanelAlwaysOpen = ({
     <div className="space-y-2">
       <div
         className="inline-flex items-center px-3 py-1.5 rounded-full border cursor-pointer transition-all"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setFilterHasGPU(!filterHasGPU);
           if (!filterHasGPU) {
             setFilterGPU([]);
@@ -527,9 +539,12 @@ export const FilterPanelAlwaysOpen = ({
                   className={`px-3 py-1.5 rounded-full border text-sm transition-all ${
                     datacentersValue === value
                       ? "border-primary bg-primary/10 text-primary"
-                      : "border-gray-300 text-foreground hover:border-primary"
+                      : "border-border text-foreground hover:border-primary"
                   }`}
-                  onClick={() => handleDatacentersChange(value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDatacentersChange(value);
+                  }}
                 >
                   {value === 0 ? "Любое" : `${value}+`}
                 </button>
@@ -578,7 +593,7 @@ export const FilterPanelAlwaysOpen = ({
             onClick={clearFilters}
             className="text-sm text-primary hover:text-primary/80 transition-colors"
           >
-            Сбросить
+            Сбросить все
           </button>
         )}
       </div>
@@ -631,6 +646,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.fstek}
           dropdownKey="fstek"
           onOpen={(e) => handleDropdownClick("fstek", e)}
+          onClear={() => setFilterFSTEK([])}
         >
           <div className="flex flex-wrap gap-2">
             {fstekOptions.map((option) => (
@@ -651,6 +667,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.location}
           dropdownKey="location"
           onOpen={(e) => handleDropdownClick("location", e)}
+          onClear={() => setFilterLocation([])}
         >
           <div className="flex flex-wrap gap-2">
             {allLocations.map((option) => (
@@ -680,6 +697,10 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.gpu}
           dropdownKey="gpu"
           onOpen={(e) => handleDropdownClick("gpu", e)}
+          onClear={() => {
+            setFilterGPU([]);
+            setFilterHasGPU(false);
+          }}
         >
           <GpuOptions />
         </FilterSection>
@@ -691,6 +712,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.virtualization}
           dropdownKey="virtualization"
           onOpen={(e) => handleDropdownClick("virtualization", e)}
+          onClear={() => setFilterVirtualization([])}
         >
           <div className="flex flex-wrap gap-2">
             {allVirtualizations.map((option) => (
@@ -717,6 +739,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.diskType}
           dropdownKey="diskType"
           onOpen={(e) => handleDropdownClick("diskType", e)}
+          onClear={() => setFilterDiskType([])}
         >
           <div className="flex flex-wrap gap-2">
             {allDiskTypes.map((option) => (
@@ -743,6 +766,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.cpu}
           dropdownKey="cpu"
           onOpen={(e) => handleDropdownClick("cpu", e)}
+          onClear={() => setFilterCPU([])}
         >
           <div className="flex flex-wrap gap-2">
             {allCPUs.map((option) => (
@@ -765,6 +789,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.os}
           dropdownKey="os"
           onOpen={(e) => handleDropdownClick("os", e)}
+          onClear={() => setFilterOS([])}
         >
           <div className="flex flex-wrap gap-2">
             {allOS.map((option) => (
@@ -787,6 +812,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.additionalServices}
           dropdownKey="additionalServices"
           onOpen={(e) => handleDropdownClick("additionalServices", e)}
+          onClear={() => setFilterAdditionalServices([])}
         >
           <div className="flex flex-wrap gap-2">
             {additionalServicesOptions.map((option) => (
@@ -807,6 +833,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.paymentMethod}
           dropdownKey="paymentMethod"
           onOpen={(e) => handleDropdownClick("paymentMethod", e)}
+          onClear={() => setFilterPaymentMethod([])}
         >
           <div className="flex flex-wrap gap-2">
             {allPaymentMethods.map((option) => (
@@ -833,6 +860,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.registrationData}
           dropdownKey="registrationData"
           onOpen={(e) => handleDropdownClick("registrationData", e)}
+          onClear={() => setFilterRegistrationData([])}
         >
           <div className="flex flex-wrap gap-2">
             {registrationDataOptions.map((option) => (
@@ -853,6 +881,7 @@ export const FilterPanelAlwaysOpen = ({
           isOpen={dropdownsOpen.clientType}
           dropdownKey="clientType"
           onOpen={(e) => handleDropdownClick("clientType", e)}
+          onClear={() => setFilterClientType([])}
         >
           <div className="flex flex-wrap gap-2">
             {clientTypeOptions.map((option) => (

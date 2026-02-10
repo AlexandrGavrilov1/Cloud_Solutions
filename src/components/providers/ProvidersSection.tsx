@@ -1,5 +1,3 @@
-//ProvidersSection.tsx
-
 import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
@@ -434,23 +432,28 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
+      // Поиск по названию
       if (
         searchQuery &&
         !p.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
         return false;
 
+      // Фильтр 152-ФЗ
       if (filterFZ152 && !p.fz152Compliant) return false;
 
+      // Фильтр ФСТЭК
       if (filterFSTEK.length > 0) {
-        const hasMatchingFSTEK = filterFSTEK.some(
-          (cert) => p.fstekCertifications?.includes(cert) || false,
+        const hasMatchingFSTEK = filterFSTEK.some((cert) =>
+          p.fstekCertifications?.includes(cert),
         );
         if (!hasMatchingFSTEK) return false;
       }
 
+      // Тестовый период
       if (filterTrialPeriod && p.trialDays === 0) return false;
 
+      // Локация
       if (filterLocation.length > 0) {
         const hasMatchingLocation = filterLocation.some((location) =>
           p.locations.includes(location),
@@ -458,23 +461,27 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingLocation) return false;
       }
 
+      // Виртуализация
       if (filterVirtualization.length > 0) {
         const hasMatchingVirtualization = filterVirtualization.some((virt) =>
-          p.technicalSpecs.virtualization.includes(virt as any),
+          p.technicalSpecs.virtualization.includes(virt),
         );
         if (!hasMatchingVirtualization) return false;
       }
 
+      // Количество ЦОД
       if (
         filterMinDatacenters !== null &&
         p.locations.length < filterMinDatacenters
       )
         return false;
 
+      // Тип диска
       if (filterDiskType.length > 0) {
         if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
       }
 
+      // Способы оплаты
       if (filterPaymentMethod.length > 0) {
         const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
           p.pricingDetails.paymentMethods.includes(method),
@@ -482,6 +489,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingPaymentMethod) return false;
       }
 
+      // Операционные системы
       if (filterOS.length > 0) {
         const hasMatchingOS = filterOS.some((os) =>
           p.technicalSpecs.availableOS.includes(os),
@@ -489,54 +497,64 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingOS) return false;
       }
 
+      // Процессоры
       if (filterCPU.length > 0) {
         const cpuModels = p.technicalSpecs.cpuModels || [];
         const hasMatchingCPU = filterCPU.some((cpu) => cpuModels.includes(cpu));
         if (!hasMatchingCPU) return false;
       }
 
+      // КИИ
       if (filterKII && !p.kiiPlacement) return false;
 
+      // Мобильное приложение
       if (filterMobileApp && !p.mobileApp) return false;
 
+      // Заказ до регистрации
       if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
         return false;
 
+      // Дополнительные услуги
       if (filterAdditionalServices.length > 0) {
-        const hasMatchingService = filterAdditionalServices.some(
-          (service) =>
-            p.additionalServicesList?.includes(service as any) || false,
+        const hasMatchingService = filterAdditionalServices.some((service) =>
+          p.additionalServicesList?.includes(service),
         );
         if (!hasMatchingService) return false;
       }
 
+      // Данные для регистрации
       if (filterRegistrationData.length > 0) {
         const hasMatchingRegistrationData = filterRegistrationData.some(
-          (field) => p.registrationData?.includes(field as any) || false,
+          (field) => p.registrationData?.includes(field),
         );
         if (!hasMatchingRegistrationData) return false;
       }
 
+      // Тип клиента
       if (filterClientType.length > 0) {
-        const hasMatchingClientType = filterClientType.some(
-          (type) => p.supportedClientTypes?.includes(type as any) || false,
+        const hasMatchingClientType = filterClientType.some((type) =>
+          p.supportedClientTypes?.includes(type),
         );
         if (!hasMatchingClientType) return false;
       }
 
+      // GPU
       if (filterHasGPU) {
         const hasAnyGPU = (p.technicalSpecs.gpuModels || []).length > 0;
         if (!hasAnyGPU) return false;
       }
 
+      // Конкретные модели GPU
       if (filterGPU.length > 0) {
         const gpuModels = p.technicalSpecs.gpuModels || [];
         const hasMatchingGPU = filterGPU.some((gpu) => gpuModels.includes(gpu));
         if (!hasMatchingGPU) return false;
       }
 
+      // 1С
       if (filter1C && !p.technicalSpecs.supports1C) return false;
 
+      // AI
       if (filterAI && !p.technicalSpecs.supportsAI) return false;
 
       return true;
