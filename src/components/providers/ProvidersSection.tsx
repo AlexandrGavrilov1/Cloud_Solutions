@@ -565,6 +565,31 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     sortBy,
   ]);
 
+  // Определяем количество карточек для загрузки в зависимости от брейкпоинта
+  const loadMoreCount = useMemo(() => {
+    // Проверяем ширину экрана
+    if (typeof window !== "undefined") {
+      if (window.innerWidth >= 1024) {
+        return 9; // 3 в ряд
+      } else if (window.innerWidth >= 768) {
+        return 10; // 2 в ряд
+      } else {
+        return 9; // 1 в ряд или мобильная версия
+      }
+    }
+    return 9; // значение по умолчанию
+  }, []);
+
+  // Эффект для обновления количества при изменении размера окна
+  useEffect(() => {
+    const handleResize = () => {
+      // Количество карточек при загрузке "еще" будет пересчитываться динамически
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
       selectedForComparison.includes(p.id),
@@ -581,8 +606,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-2 py-4">
-      {/* Десктопный вид - новая структура */}
-      <div className="hidden lg:flex gap-4">
+      {/* Планшетный и десктопный вид (от 640px) - открытая панель фильтров */}
+      <div className="hidden md:flex gap-4">
         {/* Левая часть: фильтры (всегда открытые) - ширина 8.5 см */}
         <div className="w-[340px] flex-shrink-0">
           <FilterPanelAlwaysOpen
@@ -697,12 +722,20 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
-                      onClick={() => setProvidersToShow((prev) => prev + 9)}
+                      onClick={() => {
+                        const additionalCount =
+                          window.innerWidth >= 768 && window.innerWidth < 1024
+                            ? 10
+                            : 9;
+                        setProvidersToShow((prev) => prev + additionalCount);
+                      }}
                       className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="relative flex items-center justify-center gap-1.5">
-                        Показать ещё 9
+                        {window.innerWidth >= 768 && window.innerWidth < 1024
+                          ? "Показать ещё 10"
+                          : "Показать ещё 9"}
                         <svg
                           className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
                           fill="none"
@@ -773,8 +806,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       </div>
 
-      {/* Мобильный/планшетный вид - старая структура */}
-      <div className="lg:hidden">
+      {/* Мобильный вид (до 640px) - раскрывающаяся панель фильтров */}
+      <div className="md:hidden">
         <div className="mb-3">
           <div className="flex flex-col sm:flex-row gap-1.5">
             <SearchInput
