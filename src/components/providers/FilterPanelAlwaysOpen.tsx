@@ -401,7 +401,7 @@ export const FilterPanelAlwaysOpen = ({
           className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
             checked
               ? "border-orange-500 bg-orange-500"
-              : "border-orange-400 dark:border-orange-500 bg-transparent"
+              : "border-orange-400 dark:border-orange-400 bg-transparent"
           }`}
         >
           {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
@@ -1001,36 +1001,8 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-[calc(100vh-120px)] max-h-[640px] overflow-y-auto border-r border-gray-200 dark:border-gray-800"
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3"
     >
-      <style jsx global>{`
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 4px;
-          height: 4px;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: #d1d5db;
-          border-radius: 2px;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: #9ca3af;
-        }
-
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: #4b5563;
-        }
-
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: #6b7280;
-        }
-      `}</style>
-
       <CheckboxSection />
 
       <div className="space-y-0">
