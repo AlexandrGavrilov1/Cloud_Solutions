@@ -374,6 +374,47 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
+  // Компонент Checkbox для повторного использования
+  const FilterCheckbox = ({
+    checked,
+    onChange,
+    label,
+    id,
+  }: {
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+    label: string;
+    id: string;
+  }) => (
+    <label
+      htmlFor={id}
+      className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+    >
+      <div className="relative flex items-center">
+        <input
+          id={id}
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => {
+            console.log(`${id} clicked`, e.target.checked);
+            onChange(e.target.checked);
+          }}
+          className="sr-only"
+        />
+        <div
+          className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 ${
+            checked
+              ? "border-orange-500 bg-orange-500"
+              : "border-gray-400 dark:border-gray-500 bg-transparent"
+          }`}
+        >
+          {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
+        </div>
+      </div>
+      <span className="text-xs text-gray-900 dark:text-white">{label}</span>
+    </label>
+  );
+
   // Верхняя секция чекбоксов
   const CheckboxSection = () => {
     return (
@@ -408,175 +449,63 @@ export const FilterPanelAlwaysOpen = ({
           {/* Колонка 1 */}
           <div className="space-y-1">
             {/* 152-ФЗ */}
-            <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={filterFZ152}
-                  onChange={(e) => {
-                    console.log("FZ152 clicked", e.target.checked);
-                    setFilterFZ152(e.target.checked);
-                  }}
-                  className="opacity-0 absolute w-3 h-3 cursor-pointer"
-                />
-                <div
-                  className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                    filterFZ152
-                      ? "border-orange-500 bg-orange-500"
-                      : "border-gray-400 dark:border-gray-500 bg-transparent"
-                  }`}
-                >
-                  {filterFZ152 && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                  )}
-                </div>
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">
-                152-ФЗ
-              </span>
-            </label>
+            <FilterCheckbox
+              id="filter-fz152"
+              checked={filterFZ152}
+              onChange={setFilterFZ152}
+              label="152-ФЗ"
+            />
 
             {/* 1С */}
-            <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={filter1C}
-                  onChange={(e) => {
-                    console.log("1C clicked", e.target.checked);
-                    setFilter1C(e.target.checked);
-                  }}
-                  className="opacity-0 absolute w-3 h-3 cursor-pointer"
-                />
-                <div
-                  className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                    filter1C
-                      ? "border-orange-500 bg-orange-500"
-                      : "border-gray-400 dark:border-gray-500 bg-transparent"
-                  }`}
-                >
-                  {filter1C && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                  )}
-                </div>
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">1С</span>
-            </label>
+            <FilterCheckbox
+              id="filter-1c"
+              checked={filter1C}
+              onChange={setFilter1C}
+              label="1С"
+            />
 
             {/* Тестовый период */}
-            <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={filterTrialPeriod}
-                  onChange={(e) => {
-                    console.log("Trial clicked", e.target.checked);
-                    setFilterTrialPeriod(e.target.checked);
-                  }}
-                  className="opacity-0 absolute w-3 h-3 cursor-pointer"
-                />
-                <div
-                  className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                    filterTrialPeriod
-                      ? "border-orange-500 bg-orange-500"
-                      : "border-gray-400 dark:border-gray-500 bg-transparent"
-                  }`}
-                >
-                  {filterTrialPeriod && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                  )}
-                </div>
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">
-                Тестовый период
-              </span>
-            </label>
+            <FilterCheckbox
+              id="filter-trial"
+              checked={filterTrialPeriod}
+              onChange={setFilterTrialPeriod}
+              label="Тестовый период"
+            />
+
+            {/* Заказ до регистрации */}
+            <FilterCheckbox
+              id="filter-order-before-registration"
+              checked={filterOrderBeforeRegistration}
+              onChange={setFilterOrderBeforeRegistration}
+              label="Заказ до регистрации"
+            />
           </div>
 
           {/* Колонка 2 */}
           <div className="space-y-1">
             {/* КИИ */}
-            <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={filterKII}
-                  onChange={(e) => {
-                    console.log("KII clicked", e.target.checked);
-                    setFilterKII(e.target.checked);
-                  }}
-                  className="opacity-0 absolute w-3 h-3 cursor-pointer"
-                />
-                <div
-                  className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                    filterKII
-                      ? "border-orange-500 bg-orange-500"
-                      : "border-gray-400 dark:border-gray-500 bg-transparent"
-                  }`}
-                >
-                  {filterKII && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                  )}
-                </div>
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
-            </label>
+            <FilterCheckbox
+              id="filter-kii"
+              checked={filterKII}
+              onChange={setFilterKII}
+              label="КИИ"
+            />
 
             {/* AI */}
-            <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={filterAI}
-                  onChange={(e) => {
-                    console.log("AI clicked", e.target.checked);
-                    setFilterAI(e.target.checked);
-                  }}
-                  className="opacity-0 absolute w-3 h-3 cursor-pointer"
-                />
-                <div
-                  className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                    filterAI
-                      ? "border-orange-500 bg-orange-500"
-                      : "border-gray-400 dark:border-gray-500 bg-transparent"
-                  }`}
-                >
-                  {filterAI && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                  )}
-                </div>
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">AI</span>
-            </label>
+            <FilterCheckbox
+              id="filter-ai"
+              checked={filterAI}
+              onChange={setFilterAI}
+              label="AI"
+            />
 
             {/* Моб. приложение */}
-            <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={filterMobileApp}
-                  onChange={(e) => {
-                    console.log("MobileApp clicked", e.target.checked);
-                    setFilterMobileApp(e.target.checked);
-                  }}
-                  className="opacity-0 absolute w-3 h-3 cursor-pointer"
-                />
-                <div
-                  className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                    filterMobileApp
-                      ? "border-orange-500 bg-orange-500"
-                      : "border-gray-400 dark:border-gray-500 bg-transparent"
-                  }`}
-                >
-                  {filterMobileApp && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                  )}
-                </div>
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">
-                Моб. приложение
-              </span>
-            </label>
+            <FilterCheckbox
+              id="filter-mobile-app"
+              checked={filterMobileApp}
+              onChange={setFilterMobileApp}
+              label="Моб. приложение"
+            />
           </div>
         </div>
       </div>
@@ -810,45 +739,28 @@ export const FilterPanelAlwaysOpen = ({
       >
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
-          <label className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-            <div className="relative">
-              <input
-                type="checkbox"
-                checked={filterHasGPU}
-                onChange={(e) => {
-                  console.log("HasGPU clicked", e.target.checked);
-                  setFilterHasGPU(e.target.checked);
-                  if (e.target.checked) {
-                    setFilterGPU([]);
-                  }
-                }}
-                className="opacity-0 absolute w-3 h-3 cursor-pointer"
-              />
-              <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center ${
-                  filterHasGPU
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-400 dark:border-gray-500 bg-transparent"
-                }`}
-              >
-                {filterHasGPU && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">
-              Есть GPU
-            </span>
-          </label>
+          <FilterCheckbox
+            id="filter-has-gpu"
+            checked={filterHasGPU}
+            onChange={(checked) => {
+              setFilterHasGPU(checked);
+              if (checked) {
+                setFilterGPU([]);
+              }
+            }}
+            label="Есть GPU"
+          />
 
           {/* Конкретные модели GPU */}
-          <div className="mt-1">
-            <OptionsGrid
-              options={allGPUs}
-              selectedValues={filterGPU}
-              onChange={handleGpuChange}
-            />
-          </div>
+          {allGPUs.length > 0 && (
+            <div className="mt-1">
+              <OptionsGrid
+                options={allGPUs}
+                selectedValues={filterGPU}
+                onChange={handleGpuChange}
+              />
+            </div>
+          )}
         </div>
       </AccordionSection>
     );
