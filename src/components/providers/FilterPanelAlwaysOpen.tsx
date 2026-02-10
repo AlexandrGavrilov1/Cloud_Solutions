@@ -349,22 +349,25 @@ export const FilterPanelAlwaysOpen = ({
     label: string;
   }) => (
     <div className="flex items-center">
-      <label htmlFor={id} className="flex items-center cursor-pointer">
-        <div className="relative">
-          <input
-            type="checkbox"
-            id={id}
-            checked={checked}
-            onChange={(e) => onChange(e.target.checked)}
-            className="sr-only"
-          />
-          <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center transition-colors">
-            {checked && <div className="w-2 h-2 rounded-full bg-primary"></div>}
-          </div>
+      <input
+        type="checkbox"
+        id={id}
+        checked={checked}
+        onChange={(e) => {
+          e.stopPropagation();
+          onChange(e.target.checked);
+        }}
+        className="sr-only"
+      />
+      <label
+        htmlFor={id}
+        className="flex items-center cursor-pointer"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center transition-colors mr-2">
+          {checked && <div className="w-2 h-2 rounded-full bg-primary"></div>}
         </div>
-        <span className="ml-2 text-sm font-medium text-foreground">
-          {label}
-        </span>
+        <span className="text-sm font-medium text-foreground">{label}</span>
       </label>
     </div>
   );
@@ -392,11 +395,17 @@ export const FilterPanelAlwaysOpen = ({
           ? selectedValues[0]
           : `${selectedValues.length} выбрано`;
 
+    const handleHeaderClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleDropdown(dropdownKey);
+    };
+
     return (
       <div className="py-3 border-b border-border last:border-b-0">
         <div
           className="flex items-center justify-between cursor-pointer"
-          onClick={() => toggleDropdown(dropdownKey)}
+          onClick={handleHeaderClick}
         >
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-foreground">{title}</h3>
@@ -415,6 +424,7 @@ export const FilterPanelAlwaysOpen = ({
           <div
             className="mt-3 space-y-2"
             ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
+            onClick={(e) => e.stopPropagation()}
           >
             {onClear && (
               <button
@@ -444,61 +454,69 @@ export const FilterPanelAlwaysOpen = ({
     label: string;
     selected: boolean;
     onChange: () => void;
-  }) => (
-    <button
-      type="button"
-      className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all ${
-        selected
-          ? "border-primary bg-primary/10 text-primary"
-          : "border-border text-foreground hover:border-primary"
-      }`}
-      onClick={(e) => {
-        e.stopPropagation();
-        onChange();
-      }}
-    >
-      <span className="text-sm">{label}</span>
-    </button>
-  );
+  }) => {
+    const handleClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onChange();
+    };
 
-  // Компонент для GPU
-  const GpuOptions = () => (
-    <div className="space-y-2">
+    return (
       <button
         type="button"
-        className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all w-full text-left ${
-          filterHasGPU
+        className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all ${
+          selected
             ? "border-primary bg-primary/10 text-primary"
             : "border-border text-foreground hover:border-primary"
         }`}
-        onClick={(e) => {
-          e.stopPropagation();
-          setFilterHasGPU(!filterHasGPU);
-          if (!filterHasGPU) {
-            setFilterGPU([]);
-          }
-        }}
+        onClick={handleClick}
       >
-        <div className="w-4 h-4 rounded-full border-2 border-primary mr-2 flex items-center justify-center flex-shrink-0">
-          {filterHasGPU && (
-            <div className="w-2 h-2 rounded-full bg-primary"></div>
-          )}
-        </div>
-        <span className="text-sm">Любой GPU (есть GPU)</span>
+        <span className="text-sm">{label}</span>
       </button>
+    );
+  };
 
-      <div className="flex flex-wrap gap-2">
-        {allGPUs.map((option) => (
-          <OptionItem
-            key={option}
-            label={option}
-            selected={filterGPU.includes(option)}
-            onChange={() => handleGpuChange(option)}
-          />
-        ))}
+  // Компонент для GPU
+  const GpuOptions = () => {
+    const handleGpuToggle = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setFilterHasGPU(!filterHasGPU);
+      if (!filterHasGPU) {
+        setFilterGPU([]);
+      }
+    };
+
+    return (
+      <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+        <button
+          type="button"
+          className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all w-full text-left ${
+            filterHasGPU
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-border text-foreground hover:border-primary"
+          }`}
+          onClick={handleGpuToggle}
+        >
+          <div className="w-4 h-4 rounded-full border-2 border-primary mr-2 flex items-center justify-center flex-shrink-0">
+            {filterHasGPU && (
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
+            )}
+          </div>
+          <span className="text-sm">Любой GPU (есть GPU)</span>
+        </button>
+
+        <div className="flex flex-wrap gap-2">
+          {allGPUs.map((option) => (
+            <OptionItem
+              key={option}
+              label={option}
+              selected={filterGPU.includes(option)}
+              onChange={() => handleGpuChange(option)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // Компонент для количества ЦОД
   const DatacentersSection = () => {
@@ -506,11 +524,17 @@ export const FilterPanelAlwaysOpen = ({
     const displayText =
       datacentersValue > 0 ? `${datacentersValue}+` : "Любое количество";
 
+    const handleHeaderClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleDropdown("datacenters");
+    };
+
     return (
       <div className="py-3 border-b border-border">
         <div
           className="flex items-center justify-between cursor-pointer"
-          onClick={() => toggleDropdown("datacenters")}
+          onClick={handleHeaderClick}
         >
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-foreground">
@@ -531,6 +555,7 @@ export const FilterPanelAlwaysOpen = ({
           <div
             className="mt-3 space-y-3"
             ref={(el) => (dropdownRefs.current.datacenters = el)}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-wrap gap-2">
               {popularValues.map((value) => (
@@ -553,14 +578,16 @@ export const FilterPanelAlwaysOpen = ({
             </div>
 
             <div className="space-y-2">
-              <Slider
-                value={[datacentersValue]}
-                onValueChange={(value) => handleDatacentersChange(value[0])}
-                min={0}
-                max={15}
-                step={1}
-                className="cursor-pointer"
-              />
+              <div onClick={(e) => e.stopPropagation()}>
+                <Slider
+                  value={[datacentersValue]}
+                  onValueChange={(value) => handleDatacentersChange(value[0])}
+                  min={0}
+                  max={15}
+                  step={1}
+                  className="cursor-pointer"
+                />
+              </div>
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>0</span>
                 <span>3</span>
@@ -577,7 +604,10 @@ export const FilterPanelAlwaysOpen = ({
   };
 
   return (
-    <div className="w-[340px] flex-shrink-0 bg-card border border-primary/20 rounded-md shadow-sm p-5 h-full overflow-y-auto">
+    <div
+      className="w-[340px] flex-shrink-0 bg-card border border-primary/20 rounded-md shadow-sm p-5 h-full overflow-y-auto"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-bold text-foreground">Фильтры</h2>
@@ -591,7 +621,10 @@ export const FilterPanelAlwaysOpen = ({
         {hasActiveFilters && (
           <button
             type="button"
-            onClick={clearFilters}
+            onClick={(e) => {
+              e.stopPropagation();
+              clearFilters();
+            }}
             className="text-sm text-primary hover:text-primary/80 transition-colors"
           >
             Сбросить все
@@ -599,7 +632,7 @@ export const FilterPanelAlwaysOpen = ({
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
         {/* Верхняя секция с круглыми чекбоксами */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-3">
           <RoundCheckbox
