@@ -1001,7 +1001,7 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-[calc(100vh-180px)] max-h-[680px] border-r border-gray-200 dark:border-gray-800"
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 border-r border-gray-200 dark:border-gray-800"
     >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
