@@ -166,7 +166,7 @@ export const FilterPanelAlwaysOpen = ({
     filterMinDatacenters || 0,
   );
 
-  // Синхронизация с внешним состояние
+  // Синхронизация с внешним состоянием
   useEffect(() => {
     setDatacentersValue(filterMinDatacenters || 0);
   }, [filterMinDatacenters]);
@@ -380,85 +380,68 @@ export const FilterPanelAlwaysOpen = ({
     console.log("CheckboxSection rendering", {
       filterFZ152,
       filter1C,
+      filterTrialPeriod,
+      filterKII,
+      filterAI,
+      filterMobileApp,
       activeFiltersCount,
     });
 
-    // Обработчики с использованием useCallback
-    const handleFZ152Click = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("FZ152 clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        setFilterFZ152(!filterFZ152);
-      },
-      [filterFZ152, setFilterFZ152],
-    );
+    // Обработчики кликов
+    const handleFZ152Click = (e: React.MouseEvent) => {
+      console.log("🔥 FZ152 clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      setFilterFZ152(!filterFZ152);
+    };
 
-    const handle1CClick = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("1C clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        setFilter1C(!filter1C);
-      },
-      [filter1C, setFilter1C],
-    );
+    const handle1CClick = (e: React.MouseEvent) => {
+      console.log("🔥 1C clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      setFilter1C(!filter1C);
+    };
 
-    const handleTrialPeriodClick = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("Trial period clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        setFilterTrialPeriod(!filterTrialPeriod);
-      },
-      [filterTrialPeriod, setFilterTrialPeriod],
-    );
+    const handleTrialPeriodClick = (e: React.MouseEvent) => {
+      console.log("🔥 Trial period clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      setFilterTrialPeriod(!filterTrialPeriod);
+    };
 
-    const handleKIIClick = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("KII clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        setFilterKII(!filterKII);
-      },
-      [filterKII, setFilterKII],
-    );
+    const handleKIIClick = (e: React.MouseEvent) => {
+      console.log("🔥 KII clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      setFilterKII(!filterKII);
+    };
 
-    const handleAIClick = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("AI clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        setFilterAI(!filterAI);
-      },
-      [filterAI, setFilterAI],
-    );
+    const handleAIClick = (e: React.MouseEvent) => {
+      console.log("🔥 AI clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      setFilterAI(!filterAI);
+    };
 
-    const handleMobileAppClick = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("Mobile app clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        setFilterMobileApp(!filterMobileApp);
-      },
-      [filterMobileApp, setFilterMobileApp],
-    );
+    const handleMobileAppClick = (e: React.MouseEvent) => {
+      console.log("🔥 Mobile app clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      setFilterMobileApp(!filterMobileApp);
+    };
 
-    const handleClearFiltersClick = useCallback(
-      (e: React.MouseEvent) => {
-        console.log("Clear filters clicked", e);
-        e.preventDefault();
-        e.stopPropagation();
-        clearFilters();
-      },
-      [clearFilters],
-    );
+    const handleClearFiltersClick = (e: React.MouseEvent) => {
+      console.log("🔥 Clear filters clicked!");
+      e.preventDefault();
+      e.stopPropagation();
+      clearFilters();
+    };
 
     return (
       <div
         className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700"
         onClick={(e) => {
-          console.log("CheckboxSection container clicked");
+          console.log("📦 CheckboxSection container clicked");
           e.stopPropagation();
         }}
       >
@@ -492,13 +475,13 @@ export const FilterPanelAlwaysOpen = ({
           {/* Колонка 1 */}
           <div className="space-y-1">
             {/* 152-ФЗ */}
-            <div
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
-              style={{ cursor: "pointer" }}
+            <button
+              type="button"
               onClick={handleFZ152Click}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
             >
               <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                   filterFZ152
                     ? "border-orange-500 bg-orange-500"
                     : "border-gray-400 bg-transparent"
@@ -511,16 +494,16 @@ export const FilterPanelAlwaysOpen = ({
               <span className="text-xs text-gray-900 dark:text-white">
                 152-ФЗ
               </span>
-            </div>
+            </button>
 
             {/* 1С */}
-            <div
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
-              style={{ cursor: "pointer" }}
+            <button
+              type="button"
               onClick={handle1CClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
             >
               <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                   filter1C
                     ? "border-orange-500 bg-orange-500"
                     : "border-gray-400 bg-transparent"
@@ -531,16 +514,16 @@ export const FilterPanelAlwaysOpen = ({
                 )}
               </div>
               <span className="text-xs text-gray-900 dark:text-white">1С</span>
-            </div>
+            </button>
 
             {/* Тестовый период */}
-            <div
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
-              style={{ cursor: "pointer" }}
+            <button
+              type="button"
               onClick={handleTrialPeriodClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
             >
               <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                   filterTrialPeriod
                     ? "border-orange-500 bg-orange-500"
                     : "border-gray-400 bg-transparent"
@@ -553,19 +536,19 @@ export const FilterPanelAlwaysOpen = ({
               <span className="text-xs text-gray-900 dark:text-white">
                 Тестовый период
               </span>
-            </div>
+            </button>
           </div>
 
           {/* Колонка 2 */}
           <div className="space-y-1">
             {/* КИИ */}
-            <div
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
-              style={{ cursor: "pointer" }}
+            <button
+              type="button"
               onClick={handleKIIClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
             >
               <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                   filterKII
                     ? "border-orange-500 bg-orange-500"
                     : "border-gray-400 bg-transparent"
@@ -576,16 +559,16 @@ export const FilterPanelAlwaysOpen = ({
                 )}
               </div>
               <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
-            </div>
+            </button>
 
             {/* AI */}
-            <div
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
-              style={{ cursor: "pointer" }}
+            <button
+              type="button"
               onClick={handleAIClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
             >
               <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                   filterAI
                     ? "border-orange-500 bg-orange-500"
                     : "border-gray-400 bg-transparent"
@@ -596,16 +579,16 @@ export const FilterPanelAlwaysOpen = ({
                 )}
               </div>
               <span className="text-xs text-gray-900 dark:text-white">AI</span>
-            </div>
+            </button>
 
             {/* Моб. приложение */}
-            <div
-              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
-              style={{ cursor: "pointer" }}
+            <button
+              type="button"
               onClick={handleMobileAppClick}
+              className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
             >
               <div
-                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                   filterMobileApp
                     ? "border-orange-500 bg-orange-500"
                     : "border-gray-400 bg-transparent"
@@ -618,7 +601,7 @@ export const FilterPanelAlwaysOpen = ({
               <span className="text-xs text-gray-900 dark:text-white">
                 Моб. приложение
               </span>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -648,7 +631,7 @@ export const FilterPanelAlwaysOpen = ({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors"
+        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors focus:outline-none focus:ring-1 focus:ring-orange-500"
       >
         <span className="text-sm font-medium text-gray-900 dark:text-white">
           {title}
@@ -690,7 +673,7 @@ export const FilterPanelAlwaysOpen = ({
               key={option}
               type="button"
               onClick={() => onChange(option)}
-              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer ${
+              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 ${
                 selectedValues.includes(option)
                   ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
                   : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
@@ -852,12 +835,13 @@ export const FilterPanelAlwaysOpen = ({
       >
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
+          <button
+            type="button"
             onClick={() => setFilterHasGPU(!filterHasGPU)}
+            className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 border-none bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-orange-500"
           >
             <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
                 filterHasGPU
                   ? "border-orange-500 bg-orange-500"
                   : "border-gray-400 bg-transparent"
@@ -870,7 +854,7 @@ export const FilterPanelAlwaysOpen = ({
             <span className="text-xs text-gray-900 dark:text-white">
               Есть GPU
             </span>
-          </div>
+          </button>
 
           {/* Конкретные модели GPU */}
           <div className="mt-1">
@@ -1121,9 +1105,9 @@ export const FilterPanelAlwaysOpen = ({
 
   return (
     <div
-      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto relative z-50"
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto"
       onClick={(e) => {
-        console.log("FilterPanel container clicked");
+        console.log("🎯 Main FilterPanel container clicked");
         e.stopPropagation();
       }}
     >
