@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   RegistrationDataField,
   ClientType,
@@ -162,6 +161,29 @@ export const FilterPanelAlwaysOpen = ({
 
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  // Оптимизация: мемоизация значений для линейки
+  const [datacentersValue, setDatacentersValue] = useState(
+    filterMinDatacenters || 0,
+  );
+
+  // Синхронизация с внешним состоянием
+  useEffect(() => {
+    setDatacentersValue(filterMinDatacenters || 0);
+  }, [filterMinDatacenters]);
+
+  // Оптимизированный обработчик изменения количества ЦОД
+  const handleDatacentersChange = useCallback((value: number) => {
+    setDatacentersValue(value);
+  }, []);
+
+  // Применение значения после изменения (с задержкой для плавности)
+  const applyDatacentersValue = useCallback(
+    (value: number) => {
+      setFilterMinDatacenters(value > 0 ? value : null);
+    },
+    [setFilterMinDatacenters],
+  );
+
   // Закрытие дропдаунов при клике вне компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -266,15 +288,6 @@ export const FilterPanelAlwaysOpen = ({
     setFilterAI(false);
   };
 
-  const [datacentersValue, setDatacentersValue] = useState(
-    filterMinDatacenters || 0,
-  );
-
-  const handleDatacentersChange = (value: number) => {
-    setDatacentersValue(value);
-    setFilterMinDatacenters(value > 0 ? value : null);
-  };
-
   const handleMultiSelectChange = (
     value: string,
     currentValues: string[],
@@ -345,15 +358,24 @@ export const FilterPanelAlwaysOpen = ({
     <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
       {/* Заголовок */}
       <div className="flex items-center justify-between mb-1.5">
-        <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-          Фильтры
-        </h3>
+        <div className="flex items-center gap-1.5">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+            Фильтры
+          </h3>
+          {activeFiltersCount > 0 && (
+            <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">
+                {activeFiltersCount}
+              </span>
+            </div>
+          )}
+        </div>
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer"
           >
-            Сбросить все
+            Сбросить
           </button>
         )}
       </div>
@@ -363,121 +385,109 @@ export const FilterPanelAlwaysOpen = ({
         {/* Колонка 1 */}
         <div className="space-y-1">
           {/* 152-ФЗ */}
-          <div className="flex items-center">
-            <label className="flex items-center gap-1.5 cursor-pointer w-full">
-              <input
-                type="checkbox"
-                checked={filterFZ152}
-                onChange={(e) => setFilterFZ152(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
-                {filterFZ152 && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">
-                152-ФЗ
-              </span>
-            </label>
-          </div>
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filterFZ152}
+              onChange={(e) => setFilterFZ152(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filterFZ152 && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">
+              152-ФЗ
+            </span>
+          </label>
 
           {/* 1С */}
-          <div className="flex items-center">
-            <label className="flex items-center gap-1.5 cursor-pointer w-full">
-              <input
-                type="checkbox"
-                checked={filter1C}
-                onChange={(e) => setFilter1C(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
-                {filter1C && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">1С</span>
-            </label>
-          </div>
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filter1C}
+              onChange={(e) => setFilter1C(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filter1C && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">1С</span>
+          </label>
 
           {/* Тестовый период */}
-          <div className="flex items-center">
-            <label className="flex items-center gap-1.5 cursor-pointer w-full">
-              <input
-                type="checkbox"
-                checked={filterTrialPeriod}
-                onChange={(e) => setFilterTrialPeriod(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
-                {filterTrialPeriod && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">
-                Тестовый период
-              </span>
-            </label>
-          </div>
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filterTrialPeriod}
+              onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filterTrialPeriod && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">
+              Тестовый период
+            </span>
+          </label>
         </div>
 
         {/* Колонка 2 */}
         <div className="space-y-1">
           {/* КИИ */}
-          <div className="flex items-center">
-            <label className="flex items-center gap-1.5 cursor-pointer w-full">
-              <input
-                type="checkbox"
-                checked={filterKII}
-                onChange={(e) => setFilterKII(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
-                {filterKII && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
-            </label>
-          </div>
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filterKII}
+              onChange={(e) => setFilterKII(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filterKII && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
+          </label>
 
           {/* AI */}
-          <div className="flex items-center">
-            <label className="flex items-center gap-1.5 cursor-pointer w-full">
-              <input
-                type="checkbox"
-                checked={filterAI}
-                onChange={(e) => setFilterAI(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
-                {filterAI && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">AI</span>
-            </label>
-          </div>
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filterAI}
+              onChange={(e) => setFilterAI(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filterAI && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">AI</span>
+          </label>
 
           {/* Моб. приложение */}
-          <div className="flex items-center">
-            <label className="flex items-center gap-1.5 cursor-pointer w-full">
-              <input
-                type="checkbox"
-                checked={filterMobileApp}
-                onChange={(e) => setFilterMobileApp(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
-                {filterMobileApp && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-                )}
-              </div>
-              <span className="text-xs text-gray-900 dark:text-white">
-                Моб. приложение
-              </span>
-            </label>
-          </div>
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filterMobileApp}
+              onChange={(e) => setFilterMobileApp(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filterMobileApp && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">
+              Моб. приложение
+            </span>
+          </label>
         </div>
       </div>
     </div>
@@ -506,7 +516,7 @@ export const FilterPanelAlwaysOpen = ({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left"
+        className="w-full flex items-center justify-between py-1 text-left cursor-pointer"
       >
         <span className="text-sm font-medium text-gray-900 dark:text-white">
           {title}
@@ -526,6 +536,44 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
+  // Общий компонент для отображения элементов построчно с прокруткой
+  const OptionsGrid = ({
+    options,
+    selectedValues,
+    onChange,
+    renderOption = (option) => option,
+  }: {
+    options: string[];
+    selectedValues: string[];
+    onChange: (option: string) => void;
+    renderOption?: (option: string) => React.ReactNode;
+  }) => {
+    const hasManyOptions = options.length > 4;
+
+    return (
+      <div
+        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1" : ""}`}
+      >
+        <div className="flex flex-wrap gap-1">
+          {options.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => onChange(option)}
+              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer ${
+                selectedValues.includes(option)
+                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
+                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
+              }`}
+            >
+              {renderOption(option)}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // ФСТЭК аккордеон
   const FstekAccordion = () => {
     const isOpen = dropdownsOpen.fstek;
@@ -544,22 +592,11 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="fstek"
       >
-        <div className="space-y-1">
-          {fstekOptions.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => handleFstekChange(option)}
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterFSTEK.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={fstekOptions}
+          selectedValues={filterFSTEK}
+          onChange={handleFstekChange}
+        />
       </AccordionSection>
     );
   };
@@ -582,28 +619,13 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="location"
       >
-        <div className="space-y-1">
-          {allLocations.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() =>
-                handleMultiSelectChange(
-                  option,
-                  filterLocation,
-                  setFilterLocation,
-                )
-              }
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterLocation.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={allLocations}
+          selectedValues={filterLocation}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterLocation, setFilterLocation)
+          }
+        />
       </AccordionSection>
     );
   };
@@ -634,7 +656,12 @@ export const FilterPanelAlwaysOpen = ({
           </div>
           <Slider
             value={[datacentersValue]}
-            onValueChange={(value) => handleDatacentersChange(value[0])}
+            onValueChange={(value) => {
+              handleDatacentersChange(value[0]);
+            }}
+            onValueCommit={(value) => {
+              applyDatacentersValue(value[0]);
+            }}
             min={0}
             max={15}
             step={1}
@@ -649,7 +676,7 @@ export const FilterPanelAlwaysOpen = ({
   const GpuAccordion = () => {
     const isOpen = dropdownsOpen.gpu;
     const valueText = filterHasGPU
-      ? "Любой GPU"
+      ? "Есть GPU"
       : filterGPU.length === 0
         ? "Любой"
         : filterGPU.length === 1
@@ -665,42 +692,37 @@ export const FilterPanelAlwaysOpen = ({
         dropdownKey="gpu"
       >
         <div className="space-y-1">
-          {/* Опция "Любой GPU (есть GPU)" */}
-          <button
-            type="button"
-            onClick={() => {
-              setFilterHasGPU(!filterHasGPU);
-              if (!filterHasGPU) {
-                setFilterGPU([]);
-              }
-            }}
-            className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-              filterHasGPU && filterGPU.length === 0
-                ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-            }`}
-          >
-            Любой GPU (есть GPU)
-          </button>
-
-          {/* Разделитель */}
-          <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+          {/* Опция "Есть GPU" */}
+          <label className="flex items-center gap-1.5 cursor-pointer w-full select-none">
+            <input
+              type="checkbox"
+              checked={filterHasGPU}
+              onChange={(e) => {
+                setFilterHasGPU(e.target.checked);
+                if (!filterHasGPU) {
+                  setFilterGPU([]);
+                }
+              }}
+              className="sr-only peer"
+            />
+            <div className="w-3 h-3 rounded-full border border-gray-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 flex items-center justify-center transition-all">
+              {filterHasGPU && (
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              )}
+            </div>
+            <span className="text-xs text-gray-900 dark:text-white">
+              Есть GPU
+            </span>
+          </label>
 
           {/* Конкретные модели GPU */}
-          {allGPUs.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => handleGpuChange(option)}
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterGPU.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
+          <div className="mt-1">
+            <OptionsGrid
+              options={allGPUs}
+              selectedValues={filterGPU}
+              onChange={handleGpuChange}
+            />
+          </div>
         </div>
       </AccordionSection>
     );
@@ -724,28 +746,17 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="virtualization"
       >
-        <div className="space-y-1">
-          {allVirtualizations.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() =>
-                handleMultiSelectChange(
-                  option,
-                  filterVirtualization,
-                  setFilterVirtualization,
-                )
-              }
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterVirtualization.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={allVirtualizations}
+          selectedValues={filterVirtualization}
+          onChange={(option) =>
+            handleMultiSelectChange(
+              option,
+              filterVirtualization,
+              setFilterVirtualization,
+            )
+          }
+        />
       </AccordionSection>
     );
   };
@@ -768,28 +779,13 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="diskType"
       >
-        <div className="space-y-1">
-          {allDiskTypes.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() =>
-                handleMultiSelectChange(
-                  option,
-                  filterDiskType,
-                  setFilterDiskType,
-                )
-              }
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterDiskType.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={allDiskTypes}
+          selectedValues={filterDiskType}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterDiskType, setFilterDiskType)
+          }
+        />
       </AccordionSection>
     );
   };
@@ -812,24 +808,13 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="cpu"
       >
-        <div className="space-y-1">
-          {allCPUs.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() =>
-                handleMultiSelectChange(option, filterCPU, setFilterCPU)
-              }
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterCPU.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={allCPUs}
+          selectedValues={filterCPU}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterCPU, setFilterCPU)
+          }
+        />
       </AccordionSection>
     );
   };
@@ -852,24 +837,13 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="os"
       >
-        <div className="space-y-1">
-          {allOS.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() =>
-                handleMultiSelectChange(option, filterOS, setFilterOS)
-              }
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterOS.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={allOS}
+          selectedValues={filterOS}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterOS, setFilterOS)
+          }
+        />
       </AccordionSection>
     );
   };
@@ -892,22 +866,11 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="additionalServices"
       >
-        <div className="space-y-1">
-          {additionalServicesOptions.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => handleAdditionalServicesChange(option)}
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterAdditionalServices.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={additionalServicesOptions}
+          selectedValues={filterAdditionalServices}
+          onChange={handleAdditionalServicesChange}
+        />
       </AccordionSection>
     );
   };
@@ -930,28 +893,17 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="paymentMethod"
       >
-        <div className="space-y-1">
-          {allPaymentMethods.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() =>
-                handleMultiSelectChange(
-                  option,
-                  filterPaymentMethod,
-                  setFilterPaymentMethod,
-                )
-              }
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterPaymentMethod.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={allPaymentMethods}
+          selectedValues={filterPaymentMethod}
+          onChange={(option) =>
+            handleMultiSelectChange(
+              option,
+              filterPaymentMethod,
+              setFilterPaymentMethod,
+            )
+          }
+        />
       </AccordionSection>
     );
   };
@@ -974,22 +926,11 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="registrationData"
       >
-        <div className="space-y-1">
-          {registrationDataOptions.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => handleRegistrationDataChange(option)}
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterRegistrationData.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={registrationDataOptions}
+          selectedValues={filterRegistrationData}
+          onChange={handleRegistrationDataChange}
+        />
       </AccordionSection>
     );
   };
@@ -1012,22 +953,11 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="clientType"
       >
-        <div className="space-y-1">
-          {clientTypeOptions.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => handleClientTypeChange(option)}
-              className={`w-full text-left px-2 py-1 text-xs rounded-full border transition-colors ${
-                filterClientType.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+        <OptionsGrid
+          options={clientTypeOptions}
+          selectedValues={filterClientType}
+          onChange={handleClientTypeChange}
+        />
       </AccordionSection>
     );
   };
