@@ -231,7 +231,7 @@ export const ProviderCardHeader = ({
           )}
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div className="flex flex-col min-[460px]:flex-row min-[460px]:items-center min-[460px]:justify-between gap-6">
         <div className="flex flex-col gap-2">
           <div className="text-[40px] font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
             от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}
@@ -254,10 +254,10 @@ export const ProviderCardHeader = ({
           )}
         </div>
 
-        <div className="w-full sm:w-auto">
+        <div className="w-full min-[460px]:w-auto">
           <Button
             size="lg"
-            className="bg-orange-500 hover:bg-orange-600 text-white text-[16px] font-medium px-6 py-4 rounded-full flex items-center justify-center gap-2 h-auto w-full sm:w-auto max-w-[460px] mx-auto sm:mx-0"
+            className="bg-orange-500 hover:bg-orange-600 text-white text-[16px] font-medium px-6 py-4 rounded-full flex items-center justify-center gap-2 h-auto w-full min-[460px]:w-auto"
             onClick={handleProviderClickWithTracking}
           >
             Попробовать
