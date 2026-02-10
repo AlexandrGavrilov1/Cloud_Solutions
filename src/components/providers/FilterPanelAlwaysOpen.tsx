@@ -192,8 +192,6 @@ export const FilterPanelAlwaysOpen = ({
 
       // Если клик внутри всей панели фильтров - НЕ закрываем дропдауны
       if (panelRef.current && panelRef.current.contains(target)) {
-        // Проверяем, кликнули ли мы на заголовок аккордеона
-        // Если клик не на заголовке аккордеона и не внутри открытого дропдауна, оставляем как есть
         return;
       }
 
@@ -373,7 +371,7 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // Компонент Checkbox для повторного использования
+  // Компонент Checkbox для повторного использования с оранжевыми границами
   const FilterCheckbox = ({
     checked,
     onChange,
@@ -400,10 +398,10 @@ export const FilterPanelAlwaysOpen = ({
           className="sr-only"
         />
         <div
-          className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 ${
+          className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
             checked
               ? "border-orange-500 bg-orange-500"
-              : "border-gray-400 dark:border-gray-500 bg-transparent"
+              : "border-orange-400 dark:border-orange-500 bg-transparent"
           }`}
         >
           {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
@@ -1003,7 +1001,7 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto"
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-[calc(100vh-120px)] max-h-[640px] overflow-y-auto border-r border-gray-200 dark:border-gray-800"
     >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
