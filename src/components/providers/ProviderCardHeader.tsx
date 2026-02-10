@@ -55,7 +55,7 @@ export const ProviderCardHeader = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 h-full">
+    <div className="flex flex-col gap-2">
       {/* Заголовок с логотипом */}
       <div className="flex items-start gap-2">
         {/* Логотип */}
@@ -118,7 +118,7 @@ export const ProviderCardHeader = ({
       </div>
 
       {/* Детальная информация */}
-      <div className="space-y-1.5 flex-1">
+      <div className="space-y-1.5">
         {/* Локации */}
         <div className="flex items-center gap-1.5">
           <Icon
@@ -232,8 +232,8 @@ export const ProviderCardHeader = ({
           )}
       </div>
 
-      {/* Цена и кнопка - для экранов >= 460px кнопка справа, для меньших - внизу */}
-      <div className="flex flex-col min-[460px]:flex-row min-[460px]:items-center min-[460px]:justify-between gap-2 mt-auto">
+      {/* Цена и кнопка */}
+      <div className="flex items-center justify-between gap-3 mt-1">
         <div className="flex flex-col gap-1">
           <div className="text-2xl font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
             от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}
@@ -256,17 +256,14 @@ export const ProviderCardHeader = ({
           )}
         </div>
 
-        {/* Для экранов < 460px кнопка занимает всю ширину и располагается под ценой */}
-        <div className="w-full min-[460px]:w-auto">
-          <Button
-            size="sm"
-            className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 w-full min-[460px]:w-auto"
-            onClick={handleProviderClickWithTracking}
-          >
-            Попробовать
-            <Icon name="ArrowRight" size={12} />
-          </Button>
-        </div>
+        <Button
+          size="sm"
+          className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8"
+          onClick={handleProviderClickWithTracking}
+        >
+          Попробовать
+          <Icon name="ArrowRight" size={12} />
+        </Button>
       </div>
     </div>
   );
