@@ -144,29 +144,17 @@ export const FilterPanelAlwaysOpen = ({
   clientTypeOptions = ["Физлицо", "Юрлицо"],
 }: FilterPanelAlwaysOpenProps) => {
   const { t } = useLanguage();
-  const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
-    fstek: false,
-    location: false,
-    virtualization: false,
-    diskType: false,
-    paymentMethod: false,
-    os: false,
-    cpu: false,
-    gpu: false,
-    additionalServices: false,
-    registrationData: false,
-    clientType: false,
-    datacenters: false,
-  });
-
+  const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>(
+    {},
+  );
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Закрытие дропдаунов при клике вне компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-
       let clickedInsideDropdown = false;
+
       Object.values(dropdownRefs.current).forEach((ref) => {
         if (ref && ref.contains(target)) {
           clickedInsideDropdown = true;
@@ -174,20 +162,7 @@ export const FilterPanelAlwaysOpen = ({
       });
 
       if (!clickedInsideDropdown) {
-        setDropdownsOpen({
-          fstek: false,
-          location: false,
-          virtualization: false,
-          diskType: false,
-          paymentMethod: false,
-          os: false,
-          cpu: false,
-          gpu: false,
-          additionalServices: false,
-          registrationData: false,
-          clientType: false,
-          datacenters: false,
-        });
+        setDropdownsOpen({});
       }
     };
 
@@ -324,19 +299,13 @@ export const FilterPanelAlwaysOpen = ({
   };
 
   const toggleDropdown = (dropdown: string) => {
-    setDropdownsOpen((prev) => {
-      const newState = { ...prev };
-      Object.keys(newState).forEach((key) => {
-        if (key !== dropdown) {
-          newState[key] = false;
-        }
-      });
-      newState[dropdown] = !prev[dropdown];
-      return newState;
-    });
+    setDropdownsOpen((prev) => ({
+      ...prev,
+      [dropdown]: !prev[dropdown],
+    }));
   };
 
-  // Компонент для круглых чекбоксов
+  // Компонент для круглых чекбоксов - упрощенный вариант
   const RoundCheckbox = ({
     id,
     checked,
@@ -347,32 +316,24 @@ export const FilterPanelAlwaysOpen = ({
     checked: boolean;
     onChange: (checked: boolean) => void;
     label: string;
-  }) => (
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id={id}
-        checked={checked}
-        onChange={(e) => {
-          e.stopPropagation();
-          onChange(e.target.checked);
-        }}
-        className="sr-only"
-      />
-      <label
-        htmlFor={id}
-        className="flex items-center cursor-pointer"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center transition-colors mr-2">
-          {checked && <div className="w-2 h-2 rounded-full bg-primary"></div>}
-        </div>
-        <span className="text-sm font-medium text-foreground">{label}</span>
-      </label>
-    </div>
-  );
+  }) => {
+    return (
+      <div className="flex items-center">
+        <button
+          type="button"
+          onClick={() => onChange(!checked)}
+          className="flex items-center cursor-pointer"
+        >
+          <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center transition-colors mr-2">
+            {checked && <div className="w-2 h-2 rounded-full bg-primary"></div>}
+          </div>
+          <span className="text-sm font-medium text-foreground">{label}</span>
+        </button>
+      </div>
+    );
+  };
 
-  // Компонент для секций с выпадающими списками
+  // Упрощенный компонент для секций с выпадающими списками
   const FilterSection = ({
     title,
     selectedValues,
@@ -395,19 +356,14 @@ export const FilterPanelAlwaysOpen = ({
           ? selectedValues[0]
           : `${selectedValues.length} выбрано`;
 
-    const handleHeaderClick = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-      toggleDropdown(dropdownKey);
-    };
-
     return (
       <div className="py-3 border-b border-border last:border-b-0">
-        <div
-          className="flex items-center justify-between cursor-pointer"
-          onClick={handleHeaderClick}
+        <button
+          type="button"
+          className="flex items-center justify-between w-full cursor-pointer"
+          onClick={() => toggleDropdown(dropdownKey)}
         >
-          <div className="flex-1">
+          <div className="flex-1 text-left">
             <h3 className="text-sm font-semibold text-foreground">{title}</h3>
           </div>
           <div className="flex items-center gap-2">
@@ -418,20 +374,18 @@ export const FilterPanelAlwaysOpen = ({
               className="text-muted-foreground w-3 h-3"
             />
           </div>
-        </div>
+        </button>
 
         {isOpen && (
           <div
             className="mt-3 space-y-2"
             ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
-            onClick={(e) => e.stopPropagation()}
           >
             {onClear && (
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClear();
+                onClick={() => {
+                  if (onClear) onClear();
                 }}
                 className="text-xs text-primary hover:text-primary/80 mb-2 block"
               >
@@ -445,7 +399,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Компонент для выбора опций в выпадающих списках
+  // Простой компонент для выбора опций
   const OptionItem = ({
     label,
     selected,
@@ -455,53 +409,45 @@ export const FilterPanelAlwaysOpen = ({
     selected: boolean;
     onChange: () => void;
   }) => {
-    const handleClick = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      onChange();
-    };
-
     return (
       <button
         type="button"
-        className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all ${
+        className={`inline-flex items-center px-3 py-1.5 rounded-full border text-sm transition-all ${
           selected
             ? "border-primary bg-primary/10 text-primary"
             : "border-border text-foreground hover:border-primary"
         }`}
-        onClick={handleClick}
+        onClick={onChange}
       >
-        <span className="text-sm">{label}</span>
+        {label}
       </button>
     );
   };
 
-  // Компонент для GPU
+  // Простой компонент для GPU
   const GpuOptions = () => {
-    const handleGpuToggle = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setFilterHasGPU(!filterHasGPU);
-      if (!filterHasGPU) {
-        setFilterGPU([]);
-      }
-    };
-
     return (
-      <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+      <div className="space-y-2">
         <button
           type="button"
-          className={`inline-flex items-center px-3 py-1.5 rounded-full border transition-all w-full text-left ${
+          className={`inline-flex items-center px-3 py-1.5 rounded-full border w-full text-left text-sm transition-all ${
             filterHasGPU
               ? "border-primary bg-primary/10 text-primary"
               : "border-border text-foreground hover:border-primary"
           }`}
-          onClick={handleGpuToggle}
+          onClick={() => {
+            setFilterHasGPU(!filterHasGPU);
+            if (!filterHasGPU) {
+              setFilterGPU([]);
+            }
+          }}
         >
           <div className="w-4 h-4 rounded-full border-2 border-primary mr-2 flex items-center justify-center flex-shrink-0">
             {filterHasGPU && (
               <div className="w-2 h-2 rounded-full bg-primary"></div>
             )}
           </div>
-          <span className="text-sm">Любой GPU (есть GPU)</span>
+          <span>Любой GPU (есть GPU)</span>
         </button>
 
         <div className="flex flex-wrap gap-2">
@@ -518,25 +464,20 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Компонент для количества ЦОД
+  // Простой компонент для количества ЦОД
   const DatacentersSection = () => {
-    const isOpen = dropdownsOpen.datacenters;
+    const isOpen = dropdownsOpen.datacenters || false;
     const displayText =
       datacentersValue > 0 ? `${datacentersValue}+` : "Любое количество";
 
-    const handleHeaderClick = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-      toggleDropdown("datacenters");
-    };
-
     return (
       <div className="py-3 border-b border-border">
-        <div
-          className="flex items-center justify-between cursor-pointer"
-          onClick={handleHeaderClick}
+        <button
+          type="button"
+          className="flex items-center justify-between w-full cursor-pointer"
+          onClick={() => toggleDropdown("datacenters")}
         >
-          <div className="flex-1">
+          <div className="flex-1 text-left">
             <h3 className="text-sm font-semibold text-foreground">
               Количество ЦОД
             </h3>
@@ -549,13 +490,12 @@ export const FilterPanelAlwaysOpen = ({
               className="text-muted-foreground w-3 h-3"
             />
           </div>
-        </div>
+        </button>
 
         {isOpen && (
           <div
             className="mt-3 space-y-3"
             ref={(el) => (dropdownRefs.current.datacenters = el)}
-            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-wrap gap-2">
               {popularValues.map((value) => (
@@ -567,10 +507,7 @@ export const FilterPanelAlwaysOpen = ({
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border text-foreground hover:border-primary"
                   }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDatacentersChange(value);
-                  }}
+                  onClick={() => handleDatacentersChange(value)}
                 >
                   {value === 0 ? "Любое" : `${value}+`}
                 </button>
@@ -578,16 +515,14 @@ export const FilterPanelAlwaysOpen = ({
             </div>
 
             <div className="space-y-2">
-              <div onClick={(e) => e.stopPropagation()}>
-                <Slider
-                  value={[datacentersValue]}
-                  onValueChange={(value) => handleDatacentersChange(value[0])}
-                  min={0}
-                  max={15}
-                  step={1}
-                  className="cursor-pointer"
-                />
-              </div>
+              <Slider
+                value={[datacentersValue]}
+                onValueChange={(value) => handleDatacentersChange(value[0])}
+                min={0}
+                max={15}
+                step={1}
+                className="cursor-pointer"
+              />
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>0</span>
                 <span>3</span>
@@ -604,10 +539,7 @@ export const FilterPanelAlwaysOpen = ({
   };
 
   return (
-    <div
-      className="w-[340px] flex-shrink-0 bg-card border border-primary/20 rounded-md shadow-sm p-5 h-full overflow-y-auto"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className="w-[340px] flex-shrink-0 bg-card border border-primary/20 rounded-md shadow-sm p-5 h-full overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-bold text-foreground">Фильтры</h2>
@@ -621,10 +553,7 @@ export const FilterPanelAlwaysOpen = ({
         {hasActiveFilters && (
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              clearFilters();
-            }}
+            onClick={clearFilters}
             className="text-sm text-primary hover:text-primary/80 transition-colors"
           >
             Сбросить все
@@ -632,7 +561,7 @@ export const FilterPanelAlwaysOpen = ({
         )}
       </div>
 
-      <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
+      <div className="space-y-6">
         {/* Верхняя секция с круглыми чекбоксами */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-3">
           <RoundCheckbox
@@ -683,7 +612,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="ФСТЭК"
           selectedValues={filterFSTEK}
-          isOpen={dropdownsOpen.fstek}
+          isOpen={!!dropdownsOpen.fstek}
           dropdownKey="fstek"
           onClear={() => setFilterFSTEK([])}
         >
@@ -703,7 +632,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Локация ЦОД"
           selectedValues={filterLocation}
-          isOpen={dropdownsOpen.location}
+          isOpen={!!dropdownsOpen.location}
           dropdownKey="location"
           onClear={() => setFilterLocation([])}
         >
@@ -732,7 +661,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="GPU"
           selectedValues={filterGPU}
-          isOpen={dropdownsOpen.gpu}
+          isOpen={!!dropdownsOpen.gpu}
           dropdownKey="gpu"
           onClear={() => {
             setFilterGPU([]);
@@ -746,7 +675,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Виртуализация"
           selectedValues={filterVirtualization}
-          isOpen={dropdownsOpen.virtualization}
+          isOpen={!!dropdownsOpen.virtualization}
           dropdownKey="virtualization"
           onClear={() => setFilterVirtualization([])}
         >
@@ -772,7 +701,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Тип дисков"
           selectedValues={filterDiskType}
-          isOpen={dropdownsOpen.diskType}
+          isOpen={!!dropdownsOpen.diskType}
           dropdownKey="diskType"
           onClear={() => setFilterDiskType([])}
         >
@@ -798,7 +727,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Процессор"
           selectedValues={filterCPU}
-          isOpen={dropdownsOpen.cpu}
+          isOpen={!!dropdownsOpen.cpu}
           dropdownKey="cpu"
           onClear={() => setFilterCPU([])}
         >
@@ -820,7 +749,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Операционная система"
           selectedValues={filterOS}
-          isOpen={dropdownsOpen.os}
+          isOpen={!!dropdownsOpen.os}
           dropdownKey="os"
           onClear={() => setFilterOS([])}
         >
@@ -842,7 +771,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Дополнительные услуги"
           selectedValues={filterAdditionalServices}
-          isOpen={dropdownsOpen.additionalServices}
+          isOpen={!!dropdownsOpen.additionalServices}
           dropdownKey="additionalServices"
           onClear={() => setFilterAdditionalServices([])}
         >
@@ -862,7 +791,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Способы оплаты"
           selectedValues={filterPaymentMethod}
-          isOpen={dropdownsOpen.paymentMethod}
+          isOpen={!!dropdownsOpen.paymentMethod}
           dropdownKey="paymentMethod"
           onClear={() => setFilterPaymentMethod([])}
         >
@@ -888,7 +817,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Данные для регистрации"
           selectedValues={filterRegistrationData}
-          isOpen={dropdownsOpen.registrationData}
+          isOpen={!!dropdownsOpen.registrationData}
           dropdownKey="registrationData"
           onClear={() => setFilterRegistrationData([])}
         >
@@ -908,7 +837,7 @@ export const FilterPanelAlwaysOpen = ({
         <FilterSection
           title="Тип клиента"
           selectedValues={filterClientType}
-          isOpen={dropdownsOpen.clientType}
+          isOpen={!!dropdownsOpen.clientType}
           dropdownKey="clientType"
           onClear={() => setFilterClientType([])}
         >
