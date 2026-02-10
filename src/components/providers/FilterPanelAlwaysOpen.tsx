@@ -408,162 +408,229 @@ export const FilterPanelAlwaysOpen = ({
   }, [filterHasGPU, setFilterGPU]);
 
   // Верхняя секция чекбоксов с круглыми радиокнопками
-  const CheckboxSection = () => (
-    <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
-      {/* Заголовок */}
-      <div className="flex items-center justify-between mb-1.5">
-        <div className="flex items-center gap-1.5">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-            Фильтры
-          </h3>
-          {activeFiltersCount > 0 && (
-            <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-bold">
-                {activeFiltersCount}
-              </span>
-            </div>
+  const CheckboxSection = () => {
+    // Обработчики для чекбоксов с остановкой всплытия
+    const handleFZ152Click = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setFilterFZ152(!filterFZ152);
+      },
+      [filterFZ152, setFilterFZ152],
+    );
+
+    const handle1CClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setFilter1C(!filter1C);
+      },
+      [filter1C, setFilter1C],
+    );
+
+    const handleTrialPeriodClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setFilterTrialPeriod(!filterTrialPeriod);
+      },
+      [filterTrialPeriod, setFilterTrialPeriod],
+    );
+
+    const handleKIIClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setFilterKII(!filterKII);
+      },
+      [filterKII, setFilterKII],
+    );
+
+    const handleAIClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setFilterAI(!filterAI);
+      },
+      [filterAI, setFilterAI],
+    );
+
+    const handleMobileAppClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setFilterMobileApp(!filterMobileApp);
+      },
+      [filterMobileApp, setFilterMobileApp],
+    );
+
+    const handleClearFiltersClick = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        clearFilters();
+      },
+      [clearFilters],
+    );
+
+    return (
+      <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
+        {/* Заголовок */}
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+              Фильтры
+            </h3>
+            {activeFiltersCount > 0 && (
+              <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+                <span className="text-xs text-white font-bold">
+                  {activeFiltersCount}
+                </span>
+              </div>
+            )}
+          </div>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={handleClearFiltersClick}
+              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none"
+            >
+              Сбросить
+            </button>
           )}
         </div>
-        {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none"
-          >
-            Сбросить
-          </button>
-        )}
-      </div>
 
-      {/* Двухколоночная сетка */}
-      <div className="grid grid-cols-2 gap-1.5">
-        {/* Колонка 1 */}
-        <div className="space-y-1">
-          {/* 152-ФЗ */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handleFZ152Change}
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
-                filterFZ152
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
+        {/* Двухколоночная сетка */}
+        <div className="grid grid-cols-2 gap-1.5">
+          {/* Колонка 1 */}
+          <div className="space-y-1">
+            {/* 152-ФЗ */}
+            <button
+              type="button"
+              onClick={handleFZ152Click}
+              className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
             >
-              {filterFZ152 && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">
-              152-ФЗ
-            </span>
+              <div
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                  filterFZ152
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                {filterFZ152 && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className="text-xs text-gray-900 dark:text-white">
+                152-ФЗ
+              </span>
+            </button>
+
+            {/* 1С */}
+            <button
+              type="button"
+              onClick={handle1CClick}
+              className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
+            >
+              <div
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                  filter1C
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                {filter1C && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className="text-xs text-gray-900 dark:text-white">1С</span>
+            </button>
+
+            {/* Тестовый период */}
+            <button
+              type="button"
+              onClick={handleTrialPeriodClick}
+              className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
+            >
+              <div
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                  filterTrialPeriod
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                {filterTrialPeriod && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className="text-xs text-gray-900 dark:text-white">
+                Тестовый период
+              </span>
+            </button>
           </div>
 
-          {/* 1С */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handle1CChange}
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
-                filter1C
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
+          {/* Колонка 2 */}
+          <div className="space-y-1">
+            {/* КИИ */}
+            <button
+              type="button"
+              onClick={handleKIIClick}
+              className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
             >
-              {filter1C && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">1С</span>
-          </div>
+              <div
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                  filterKII
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                {filterKII && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
+            </button>
 
-          {/* Тестовый период */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handleTrialPeriodChange}
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
-                filterTrialPeriod
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
+            {/* AI */}
+            <button
+              type="button"
+              onClick={handleAIClick}
+              className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
             >
-              {filterTrialPeriod && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">
-              Тестовый период
-            </span>
-          </div>
-        </div>
+              <div
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                  filterAI
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                {filterAI && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className="text-xs text-gray-900 dark:text-white">AI</span>
+            </button>
 
-        {/* Колонка 2 */}
-        <div className="space-y-1">
-          {/* КИИ */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handleKIIChange}
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
-                filterKII
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
+            {/* Моб. приложение */}
+            <button
+              type="button"
+              onClick={handleMobileAppClick}
+              className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
             >
-              {filterKII && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">КИИ</span>
-          </div>
-
-          {/* AI */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handleAIChange}
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
-                filterAI
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
-            >
-              {filterAI && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">AI</span>
-          </div>
-
-          {/* Моб. приложение */}
-          <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handleMobileAppChange}
-          >
-            <div
-              className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
-                filterMobileApp
-                  ? "border-orange-500 bg-orange-500"
-                  : "border-gray-400 bg-transparent"
-              }`}
-            >
-              {filterMobileApp && (
-                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
-              )}
-            </div>
-            <span className="text-xs text-gray-900 dark:text-white">
-              Моб. приложение
-            </span>
+              <div
+                className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                  filterMobileApp
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                {filterMobileApp && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                )}
+              </div>
+              <span className="text-xs text-gray-900 dark:text-white">
+                Моб. приложение
+              </span>
+            </button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // Компонент аккордеона для секций
   const AccordionSection = ({
@@ -588,7 +655,7 @@ export const FilterPanelAlwaysOpen = ({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left cursor-pointer"
+        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors"
       >
         <span className="text-sm font-medium text-gray-900 dark:text-white">
           {title}
@@ -793,8 +860,8 @@ export const FilterPanelAlwaysOpen = ({
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
           <div
-            className="flex items-center gap-1.5 cursor-pointer w-full select-none"
-            onClick={handleHasGPUChange}
+            className="flex items-center gap-1.5 cursor-pointer w-full select-none hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
+            onClick={() => setFilterHasGPU(!filterHasGPU)}
           >
             <div
               className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
