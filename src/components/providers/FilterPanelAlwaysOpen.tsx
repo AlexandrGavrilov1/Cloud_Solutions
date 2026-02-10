@@ -1001,8 +1001,36 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3"
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-[calc(100vh-180px)] max-h-[680px] border-r border-gray-200 dark:border-gray-800"
     >
+      <style jsx global>{`
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: #d1d5db;
+          border-radius: 2px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: #9ca3af;
+        }
+
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: #4b5563;
+        }
+
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: #6b7280;
+        }
+      `}</style>
+
       <CheckboxSection />
 
       <div className="space-y-0">
