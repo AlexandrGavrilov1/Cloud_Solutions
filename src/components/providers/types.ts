@@ -1,3 +1,4 @@
+// types.ts
 export interface Review {
   author: string;
   text: string;
@@ -23,8 +24,11 @@ export interface TechnicalSpecs {
     available: boolean;
     managed: boolean;
   };
+  // Добавляем поддержку GPU
   gpuModels?: string[];
+  // Добавляем поддержку 1C
   supports1C?: boolean;
+  // Добавляем поддержку AI
   supportsAI?: boolean;
   aiFeatures?: string[];
 }
@@ -84,6 +88,7 @@ export type AdditionalServiceType =
   | "Аттестация по ФСТЭК"
   | "Другие гос. лицензии";
 
+// Добавляем интерфейс для реферальной программы
 export interface ReferralProgram {
   available: boolean;
   commissionRules: {
@@ -94,6 +99,7 @@ export interface ReferralProgram {
   payoutMethods?: string[];
 }
 
+// Добавляем интерфейс для контактов
 export interface ContactInfo {
   website?: string;
   email?: string;
@@ -115,7 +121,7 @@ export interface Provider {
   name: string;
   logo: string;
   rating: number;
-  basePrice: number;
+  basePrice: number; // Только число, 0 = "цена по запросу"
   features: string[];
   locations: string[];
   trialDays?: number;
@@ -143,7 +149,8 @@ export interface Provider {
   caseStudies?: string[];
   uptime30days?: number;
   monthlyUptimeData?: MonthlyUptime[];
-  about?: string;
-  contactInfo?: ContactInfo;
-  referralProgram?: ReferralProgram;
+  // Добавляем новые поля
+  about?: string; // Описание провайдера
+  contactInfo?: ContactInfo; // Контактная информация
+  referralProgram?: ReferralProgram; // Реферальная программа
 }

@@ -1,3 +1,4 @@
+// ProvidersList.tsx
 import { useState } from "react";
 import { Provider } from "./types";
 import { ProviderCard } from "./ProviderCard";
@@ -22,7 +23,7 @@ export const ProvidersList = ({
   toggleComparison,
 }: ProvidersListProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 grid-rows-[minmax(0,1fr)]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 grid-rows-[minmax(0,1fr)]">
       {filteredProviders.map((provider, index) => (
         <ProviderCard
           key={provider.id}

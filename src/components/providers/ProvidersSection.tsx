@@ -147,24 +147,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     },
   );
 
-  // Состояние для отслеживания ширины экрана
-  const [windowWidth, setWindowWidth] = useState<number>(
-    typeof window !== "undefined" ? window.innerWidth : 0,
-  );
-
-  // Эффект для отслеживания изменения размера окна
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    if (typeof window !== "undefined") {
-      setWindowWidth(window.innerWidth);
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }
-  }, []);
-
   // Опции для фильтров
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
 
@@ -432,28 +414,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
-      // Поиск по названию
       if (
         searchQuery &&
         !p.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
         return false;
 
-      // Фильтр 152-ФЗ
       if (filterFZ152 && !p.fz152Compliant) return false;
 
-      // Фильтр ФСТЭК
       if (filterFSTEK.length > 0) {
-        const hasMatchingFSTEK = filterFSTEK.some((cert) =>
-          p.fstekCertifications?.includes(cert),
+        const hasMatchingFSTEK = filterFSTEK.some(
+          (cert) => p.fstekCertifications?.includes(cert) || false,
         );
         if (!hasMatchingFSTEK) return false;
       }
 
-      // Тестовый период
       if (filterTrialPeriod && p.trialDays === 0) return false;
 
-      // Локация
       if (filterLocation.length > 0) {
         const hasMatchingLocation = filterLocation.some((location) =>
           p.locations.includes(location),
@@ -461,27 +438,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingLocation) return false;
       }
 
-      // Виртуализация
       if (filterVirtualization.length > 0) {
         const hasMatchingVirtualization = filterVirtualization.some((virt) =>
-          p.technicalSpecs.virtualization.includes(virt),
+          p.technicalSpecs.virtualization.includes(virt as any),
         );
         if (!hasMatchingVirtualization) return false;
       }
 
-      // Количество ЦОД
       if (
         filterMinDatacenters !== null &&
         p.locations.length < filterMinDatacenters
       )
         return false;
 
-      // Тип диска
       if (filterDiskType.length > 0) {
         if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
       }
 
-      // Способы оплаты
       if (filterPaymentMethod.length > 0) {
         const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
           p.pricingDetails.paymentMethods.includes(method),
@@ -489,7 +462,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingPaymentMethod) return false;
       }
 
-      // Операционные системы
       if (filterOS.length > 0) {
         const hasMatchingOS = filterOS.some((os) =>
           p.technicalSpecs.availableOS.includes(os),
@@ -497,64 +469,54 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingOS) return false;
       }
 
-      // Процессоры
       if (filterCPU.length > 0) {
         const cpuModels = p.technicalSpecs.cpuModels || [];
         const hasMatchingCPU = filterCPU.some((cpu) => cpuModels.includes(cpu));
         if (!hasMatchingCPU) return false;
       }
 
-      // КИИ
       if (filterKII && !p.kiiPlacement) return false;
 
-      // Мобильное приложение
       if (filterMobileApp && !p.mobileApp) return false;
 
-      // Заказ до регистрации
       if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
         return false;
 
-      // Дополнительные услуги
       if (filterAdditionalServices.length > 0) {
-        const hasMatchingService = filterAdditionalServices.some((service) =>
-          p.additionalServicesList?.includes(service),
+        const hasMatchingService = filterAdditionalServices.some(
+          (service) =>
+            p.additionalServicesList?.includes(service as any) || false,
         );
         if (!hasMatchingService) return false;
       }
 
-      // Данные для регистрации
       if (filterRegistrationData.length > 0) {
         const hasMatchingRegistrationData = filterRegistrationData.some(
-          (field) => p.registrationData?.includes(field),
+          (field) => p.registrationData?.includes(field as any) || false,
         );
         if (!hasMatchingRegistrationData) return false;
       }
 
-      // Тип клиента
       if (filterClientType.length > 0) {
-        const hasMatchingClientType = filterClientType.some((type) =>
-          p.supportedClientTypes?.includes(type),
+        const hasMatchingClientType = filterClientType.some(
+          (type) => p.supportedClientTypes?.includes(type as any) || false,
         );
         if (!hasMatchingClientType) return false;
       }
 
-      // GPU
       if (filterHasGPU) {
         const hasAnyGPU = (p.technicalSpecs.gpuModels || []).length > 0;
         if (!hasAnyGPU) return false;
       }
 
-      // Конкретные модели GPU
       if (filterGPU.length > 0) {
         const gpuModels = p.technicalSpecs.gpuModels || [];
         const hasMatchingGPU = filterGPU.some((gpu) => gpuModels.includes(gpu));
         if (!hasMatchingGPU) return false;
       }
 
-      // 1С
       if (filter1C && !p.technicalSpecs.supports1C) return false;
 
-      // AI
       if (filterAI && !p.technicalSpecs.supportsAI) return false;
 
       return true;
@@ -603,24 +565,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     sortBy,
   ]);
 
-  // Функция для определения количества карточек для загрузки
-  const getLoadMoreCount = () => {
-    if (windowWidth >= 1024 && windowWidth < 1280) {
-      return 10; // 2 карточки в строке
-    } else {
-      return 9; // 3 или 1 карточка в строке
-    }
-  };
-
-  // Текст для кнопки
-  const getLoadMoreText = () => {
-    if (windowWidth >= 1024 && windowWidth < 1280) {
-      return "Показать ещё 10";
-    } else {
-      return "Показать ещё 9";
-    }
-  };
-
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
       selectedForComparison.includes(p.id),
@@ -637,8 +581,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-2 py-4">
-      {/* Планшетный и десктопный вид (от 640px) - открытая панель фильтров */}
-      <div className="hidden sm:flex gap-4">
+      {/* Десктопный вид - новая структура */}
+      <div className="hidden lg:flex gap-4">
         {/* Левая часть: фильтры (всегда открытые) - ширина 8.5 см */}
         <div className="w-[340px] flex-shrink-0">
           <FilterPanelAlwaysOpen
@@ -753,15 +697,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
-                      onClick={() => {
-                        const additionalCount = getLoadMoreCount();
-                        setProvidersToShow((prev) => prev + additionalCount);
-                      }}
+                      onClick={() => setProvidersToShow((prev) => prev + 9)}
                       className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="relative flex items-center justify-center gap-1.5">
-                        {getLoadMoreText()}
+                        Показать ещё 9
                         <svg
                           className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
                           fill="none"
@@ -832,8 +773,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       </div>
 
-      {/* Мобильный вид (до 640px) - раскрывающаяся панель фильтров */}
-      <div className="sm:hidden">
+      {/* Мобильный/планшетный вид - старая структура */}
+      <div className="lg:hidden">
         <div className="mb-3">
           <div className="flex flex-col sm:flex-row gap-1.5">
             <SearchInput
