@@ -1,3 +1,5 @@
+//ProvidersSection.tsx
+
 import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
