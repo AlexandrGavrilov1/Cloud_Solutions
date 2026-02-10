@@ -20,7 +20,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  // Фильтры
+  // Фильтрыы
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -581,8 +581,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-2 py-4">
-      {/* Десктопный вид - новая структура */}
-      <div className="hidden lg:flex gap-4">
+      {/* Для экранов >= 640px: открытый фильтр + карточки в адаптивной сетке */}
+      <div className="hidden sm:flex gap-4">
         {/* Левая часть: фильтры (всегда открытые) - ширина 8.5 см */}
         <div className="w-[340px] flex-shrink-0">
           <FilterPanelAlwaysOpen
@@ -644,14 +644,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         <div className="flex-1">
           {/* Верхняя панель управления */}
           <div className="mb-4">
-            <div className="flex justify-between items-start gap-3">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-3">
               {/* Левая колонка: поиск и счетчик */}
-              <div className="space-y-2 flex-1 max-w-[500px]">
+              <div className="space-y-2 flex-1 max-w-full md:max-w-[500px]">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}
                   placeholder="Поиск..."
-                  className="w-full max-w-[300px]"
+                  className="w-full max-w-full md:max-w-[300px]"
                 />
                 <ProvidersCounter
                   currentCount={Math.min(
@@ -664,7 +664,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               </div>
 
               {/* Правая колонка: сортировка */}
-              <div className="mt-0">
+              <div className="md:mt-0">
                 <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
               </div>
             </div>
@@ -682,23 +682,33 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
           ) : (
             <>
-              <ProvidersList
-                filteredProviders={filteredProviders.slice(0, providersToShow)}
-                reviewsToShow={reviewsToShow}
-                setReviewsToShow={setReviewsToShow}
-                selectedProvider={selectedProvider}
-                setSelectedProvider={setSelectedProvider}
-                selectedForComparison={selectedForComparison}
-                toggleComparison={toggleComparison}
-              />
+              {/* Адаптивная сетка для карточек:
+                - На экранах 640px-1024px: 1 карточка в столбик (sm:grid-cols-1)
+                - На экранах 1024px-1280px: 2 карточки в ряду (lg:grid-cols-2)  
+                - На экранах ≥1280px: 3 карточки в ряду (xl:grid-cols-3)
+              */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                <ProvidersList
+                  filteredProviders={filteredProviders.slice(
+                    0,
+                    providersToShow,
+                  )}
+                  reviewsToShow={reviewsToShow}
+                  setReviewsToShow={setReviewsToShow}
+                  selectedProvider={selectedProvider}
+                  setSelectedProvider={setSelectedProvider}
+                  selectedForComparison={selectedForComparison}
+                  toggleComparison={toggleComparison}
+                />
+              </div>
 
               {(filteredProviders.length > providersToShow ||
                 providersToShow > 9) && (
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
+                <div className="flex flex-col md:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
                       onClick={() => setProvidersToShow((prev) => prev + 9)}
-                      className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full md:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="relative flex items-center justify-center gap-1.5">
@@ -733,7 +743,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                           setProvidersToShow(filteredProviders.length);
                         }
                       }}
-                      className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full md:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="relative flex items-center justify-center gap-1.5">
@@ -773,15 +783,15 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       </div>
 
-      {/* Мобильный/планшетный вид - старая структура */}
-      <div className="lg:hidden">
+      {/* Для экранов < 640px: обычный FilterPanel и карточки в одну колонку */}
+      <div className="sm:hidden">
         <div className="mb-3">
-          <div className="flex flex-col sm:flex-row gap-1.5">
+          <div className="flex flex-col gap-1.5">
             <SearchInput
               value={searchQuery}
               onChange={setSearchQuery}
               placeholder="Поиск..."
-              className="w-full sm:w-auto"
+              className="w-full"
             />
 
             <div className="flex items-center gap-1.5">
@@ -858,7 +868,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
         </div>
 
-        {/* Мобильная версия карточек */}
+        {/* Мобильная версия карточек - одна колонка */}
         {searchQuery && filteredProviders.length === 0 ? (
           <div className="text-center py-8">
             <div className="text-muted-foreground text-base mb-1.5">
@@ -870,23 +880,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           </div>
         ) : (
           <>
-            <ProvidersList
-              filteredProviders={filteredProviders.slice(0, providersToShow)}
-              reviewsToShow={reviewsToShow}
-              setReviewsToShow={setReviewsToShow}
-              selectedProvider={selectedProvider}
-              setSelectedProvider={setSelectedProvider}
-              selectedForComparison={selectedForComparison}
-              toggleComparison={toggleComparison}
-            />
+            <div className="grid grid-cols-1 gap-4">
+              <ProvidersList
+                filteredProviders={filteredProviders.slice(0, providersToShow)}
+                reviewsToShow={reviewsToShow}
+                setReviewsToShow={setReviewsToShow}
+                selectedProvider={selectedProvider}
+                setSelectedProvider={setSelectedProvider}
+                selectedForComparison={selectedForComparison}
+                toggleComparison={toggleComparison}
+              />
+            </div>
 
             {(filteredProviders.length > providersToShow ||
               providersToShow > 9) && (
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
+              <div className="flex flex-col justify-center items-center gap-1.5 mt-6">
                 {filteredProviders.length > providersToShow && (
                   <button
                     onClick={() => setProvidersToShow((prev) => prev + 9)}
-                    className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <span className="relative flex items-center justify-center gap-1.5">
@@ -918,7 +930,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                         setProvidersToShow(filteredProviders.length);
                       }
                     }}
-                    className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <span className="relative flex items-center justify-center gap-1.5">
