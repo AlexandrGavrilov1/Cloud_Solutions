@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanel } from "./FilterPanel";
+import { FilterPanelAlwaysOpen } from "./FilterPanelAlwaysOpen";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { SearchInput } from "./SearchInput";
@@ -111,13 +112,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Добавляем новые фильтры
   const [filterGPU, setFilterGPU] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterGPU");
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Новый фильтр: есть ли GPU вообще
   const [filterHasGPU, setFilterHasGPU] = useState<boolean>(() => {
     const saved = localStorage.getItem("filterHasGPU");
     return saved ? JSON.parse(saved) : false;
@@ -128,7 +127,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  // Новый фильтр: поддержка AI
   const [filterAI, setFilterAI] = useState<boolean>(() => {
     const saved = localStorage.getItem("filterAI");
     return saved ? JSON.parse(saved) : false;
@@ -319,7 +317,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     }
   }, [filterClientType]);
 
-  // Сохраняем новые фильтры
   useEffect(() => {
     if (filterGPU.length > 0) {
       localStorage.setItem("filterGPU", JSON.stringify(filterGPU));
@@ -336,7 +333,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("filter1C", JSON.stringify(filter1C));
   }, [filter1C]);
 
-  // Сохраняем фильтр AI
   useEffect(() => {
     localStorage.setItem("filterAI", JSON.stringify(filterAI));
   }, [filterAI]);
@@ -408,7 +404,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // Получаем все уникальные GPU из провайдеров
   const allGPUs = useMemo(
     () =>
       Array.from(
@@ -417,7 +412,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // Правильная сортировка по цене с учетом "цены по запросу"
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
       if (
@@ -510,24 +504,19 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (!hasMatchingClientType) return false;
       }
 
-      // Фильтр GPU - работает двумя способами:
-      // 1. Фильтр "есть ли GPU вообще" (булевый фильтр)
       if (filterHasGPU) {
         const hasAnyGPU = (p.technicalSpecs.gpuModels || []).length > 0;
         if (!hasAnyGPU) return false;
       }
 
-      // 2. Фильтр по конкретным моделям GPU
       if (filterGPU.length > 0) {
         const gpuModels = p.technicalSpecs.gpuModels || [];
         const hasMatchingGPU = filterGPU.some((gpu) => gpuModels.includes(gpu));
         if (!hasMatchingGPU) return false;
       }
 
-      // Фильтр 1С
       if (filter1C && !p.technicalSpecs.supports1C) return false;
 
-      // Фильтр AI
       if (filterAI && !p.technicalSpecs.supportsAI) return false;
 
       return true;
@@ -539,22 +528,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
           a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length;
         const avgRatingB =
           b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length;
-        return avgRatingB - avgRatingA; // По убыванию рейтинга
+        return avgRatingB - avgRatingA;
       } else {
-        // Сортировка по цене с учетом "цены по запросу"
         const priceA = a.basePrice;
         const priceB = b.basePrice;
 
-        // Обе цены "по запросу" - равны
         if (priceA === 0 && priceB === 0) return 0;
-
-        // A - цена по запросу, B - реальная цена: B должен быть выше (раньше)
         if (priceA === 0 && priceB > 0) return 1;
-
-        // A - реальная цена, B - цена по запросу: A должен быть выше (раньше)
         if (priceA > 0 && priceB === 0) return -1;
-
-        // Обе реальные цены: сортируем по возрастанию
         return priceA - priceB;
       }
     });
@@ -578,9 +559,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterRegistrationData,
     filterClientType,
     filterGPU,
-    filterHasGPU, // Добавляем новый фильтр
+    filterHasGPU,
     filter1C,
-    filterAI, // Добавляем фильтр AI
+    filterAI,
     sortBy,
   ]);
 
@@ -600,300 +581,381 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-4 py-8">
-      <div className="mb-4">
-        <div className="flex flex-col sm:hidden gap-2">
-          <ProvidersCounter
-            currentCount={Math.min(providersToShow, filteredProviders.length)}
-            totalCount={filteredProviders.length}
-            className="w-full"
+      {/* Десктопный вид - новая структура */}
+      <div className="hidden lg:flex gap-6">
+        {/* Левая часть: фильтры (всегда открытые) */}
+        <div className="w-[280px] flex-shrink-0">
+          <FilterPanelAlwaysOpen
+            filterFZ152={filterFZ152}
+            setFilterFZ152={setFilterFZ152}
+            filterFSTEK={filterFSTEK}
+            setFilterFSTEK={setFilterFSTEK}
+            filterTrialPeriod={filterTrialPeriod}
+            setFilterTrialPeriod={setFilterTrialPeriod}
+            filterLocation={filterLocation}
+            setFilterLocation={setFilterLocation}
+            filterVirtualization={filterVirtualization}
+            setFilterVirtualization={setFilterVirtualization}
+            filterMinDatacenters={filterMinDatacenters}
+            setFilterMinDatacenters={setFilterMinDatacenters}
+            filterDiskType={filterDiskType}
+            setFilterDiskType={setFilterDiskType}
+            filterPaymentMethod={filterPaymentMethod}
+            setFilterPaymentMethod={setFilterPaymentMethod}
+            filterOS={filterOS}
+            setFilterOS={setFilterOS}
+            filterCPU={filterCPU}
+            setFilterCPU={setFilterCPU}
+            filterKII={filterKII}
+            setFilterKII={setFilterKII}
+            filterMobileApp={filterMobileApp}
+            setFilterMobileApp={setFilterMobileApp}
+            filterOrderBeforeRegistration={filterOrderBeforeRegistration}
+            setFilterOrderBeforeRegistration={setFilterOrderBeforeRegistration}
+            filterAdditionalServices={filterAdditionalServices}
+            setFilterAdditionalServices={setFilterAdditionalServices}
+            filterRegistrationData={filterRegistrationData}
+            setFilterRegistrationData={setFilterRegistrationData}
+            filterClientType={filterClientType}
+            setFilterClientType={setFilterClientType}
+            filterGPU={filterGPU}
+            setFilterGPU={setFilterGPU}
+            filterHasGPU={filterHasGPU}
+            setFilterHasGPU={setFilterHasGPU}
+            filter1C={filter1C}
+            setFilter1C={setFilter1C}
+            filterAI={filterAI}
+            setFilterAI={setFilterAI}
+            allLocations={allLocations}
+            allVirtualizations={allVirtualizations}
+            allDiskTypes={allDiskTypes}
+            allPaymentMethods={allPaymentMethods}
+            allOS={allOS}
+            allCPUs={allCPUs}
+            allGPUs={allGPUs}
+            fstekOptions={fstekOptions}
+            additionalServicesOptions={additionalServicesOptions}
+            registrationDataOptions={registrationDataOptions}
+            clientTypeOptions={clientTypeOptions}
           />
-
-          <SearchInput
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Поиск..."
-            className="w-full"
-          />
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-2">
-              <div className="flex-shrink-0">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
-
-              <div className="flex-shrink-0">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
-                  filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-                  setFilterOrderBeforeRegistration={
-                    setFilterOrderBeforeRegistration
-                  }
-                  filterAdditionalServices={filterAdditionalServices}
-                  setFilterAdditionalServices={setFilterAdditionalServices}
-                  filterRegistrationData={filterRegistrationData}
-                  setFilterRegistrationData={setFilterRegistrationData}
-                  filterClientType={filterClientType}
-                  setFilterClientType={setFilterClientType}
-                  // Добавляем новые фильтры
-                  filterGPU={filterGPU}
-                  setFilterGPU={setFilterGPU}
-                  filterHasGPU={filterHasGPU} // Новый фильтр
-                  setFilterHasGPU={setFilterHasGPU} // Новый фильтр
-                  filter1C={filter1C}
-                  setFilter1C={setFilter1C}
-                  filterAI={filterAI} // Новый фильтр
-                  setFilterAI={setFilterAI} // Новый фильтр
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                  allGPUs={allGPUs} // Передаем список GPU
-                  fstekOptions={fstekOptions}
-                  additionalServicesOptions={additionalServicesOptions}
-                  registrationDataOptions={registrationDataOptions}
-                  clientTypeOptions={clientTypeOptions}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex-shrink-0"></div>
-            </div>
-          </div>
         </div>
 
-        <div className="hidden sm:grid sm:grid-cols-12">
-          <div className="col-span-12 flex gap-4 mb-0.5">
-            <div className="w-2/3">
+        {/* Правая часть: контент */}
+        <div className="flex-1">
+          {/* Верхняя панель управления */}
+          <div className="mb-6">
+            <div className="flex justify-between items-start gap-4">
+              {/* Левая колонка: поиск и счетчик */}
+              <div className="space-y-3 flex-1 max-w-[600px]">
+                <SearchInput
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Поиск..."
+                  className="w-full max-w-[400px]"
+                />
+                <ProvidersCounter
+                  currentCount={Math.min(
+                    providersToShow,
+                    filteredProviders.length,
+                  )}
+                  totalCount={filteredProviders.length}
+                  className=""
+                />
+              </div>
+
+              {/* Правая колонка: сортировка */}
+              <div className="mt-1">
+                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+              </div>
+            </div>
+          </div>
+
+          {/* Карточки провайдеров */}
+          {searchQuery && filteredProviders.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-muted-foreground text-lg mb-2">
+                По запросу "{searchQuery}" ничего не найдено
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Попробуйте изменить поисковый запрос или сбросить фильтры
+              </div>
+            </div>
+          ) : (
+            <>
+              <ProvidersList
+                filteredProviders={filteredProviders.slice(0, providersToShow)}
+                reviewsToShow={reviewsToShow}
+                setReviewsToShow={setReviewsToShow}
+                selectedProvider={selectedProvider}
+                setSelectedProvider={setSelectedProvider}
+                selectedForComparison={selectedForComparison}
+                toggleComparison={toggleComparison}
+              />
+
+              {(filteredProviders.length > providersToShow ||
+                providersToShow > 9) && (
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+                  {filteredProviders.length > providersToShow && (
+                    <button
+                      onClick={() => setProvidersToShow((prev) => prev + 9)}
+                      className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="relative flex items-center justify-center gap-2">
+                        Показать ещё 9
+                        <svg
+                          className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  )}
+
+                  {filteredProviders.length > 0 && (
+                    <button
+                      onClick={() => {
+                        if (providersToShow === filteredProviders.length) {
+                          const minToShow = Math.min(
+                            9,
+                            filteredProviders.length,
+                          );
+                          setProvidersToShow(minToShow);
+                        } else {
+                          setProvidersToShow(filteredProviders.length);
+                        }
+                      }}
+                      className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="relative flex items-center justify-center gap-2">
+                        {providersToShow === filteredProviders.length
+                          ? "Скрыть"
+                          : "Показать всех "}
+                        <svg
+                          className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d={
+                              providersToShow === filteredProviders.length
+                                ? "M5 15l7-7 7 7"
+                                : "M19 9l-7 7-7-7"
+                            }
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+
+          <ComparisonControls
+            selectedForComparison={selectedForComparison}
+            compareProviders={compareProviders}
+            onCancelComparison={cancelComparison}
+          />
+        </div>
+      </div>
+
+      {/* Мобильный/планшетный вид - старая структура */}
+      <div className="lg:hidden">
+        <div className="mb-4">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Поиск..."
+              className="w-full sm:w-auto"
+            />
+
+            <div className="flex items-center gap-2">
               <ProvidersCounter
                 currentCount={Math.min(
                   providersToShow,
                   filteredProviders.length,
                 )}
                 totalCount={filteredProviders.length}
-                className="w-full"
+                className="flex-1"
               />
-            </div>
 
-            <div className="w-1/3 flex justify-end">
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Поиск..."
-                className="ml-auto"
-              />
+              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
             </div>
           </div>
 
-          <div className="col-span-12 flex items-center gap-2">
-            <div className="w-2/3 flex items-center">
-              <div className="flex-shrink-0">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
-              <div className="flex-grow ml-1">
-                <FilterPanel
-                  filterFZ152={filterFZ152}
-                  setFilterFZ152={setFilterFZ152}
-                  filterFSTEK={filterFSTEK}
-                  setFilterFSTEK={setFilterFSTEK}
-                  filterTrialPeriod={filterTrialPeriod}
-                  setFilterTrialPeriod={setFilterTrialPeriod}
-                  filterLocation={filterLocation}
-                  setFilterLocation={setFilterLocation}
-                  filterVirtualization={filterVirtualization}
-                  setFilterVirtualization={setFilterVirtualization}
-                  filterMinDatacenters={filterMinDatacenters}
-                  setFilterMinDatacenters={setFilterMinDatacenters}
-                  filterDiskType={filterDiskType}
-                  setFilterDiskType={setFilterDiskType}
-                  filterPaymentMethod={filterPaymentMethod}
-                  setFilterPaymentMethod={setFilterPaymentMethod}
-                  filterOS={filterOS}
-                  setFilterOS={setFilterOS}
-                  filterCPU={filterCPU}
-                  setFilterCPU={setFilterCPU}
-                  filterKII={filterKII}
-                  setFilterKII={setFilterKII}
-                  filterMobileApp={filterMobileApp}
-                  setFilterMobileApp={setFilterMobileApp}
-                  filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-                  setFilterOrderBeforeRegistration={
-                    setFilterOrderBeforeRegistration
-                  }
-                  filterAdditionalServices={filterAdditionalServices}
-                  setFilterAdditionalServices={setFilterAdditionalServices}
-                  filterRegistrationData={filterRegistrationData}
-                  setFilterRegistrationData={setFilterRegistrationData}
-                  filterClientType={filterClientType}
-                  setFilterClientType={setFilterClientType}
-                  // Добавляем новые фильтры
-                  filterGPU={filterGPU}
-                  setFilterGPU={setFilterGPU}
-                  filterHasGPU={filterHasGPU} // Новый фильтр
-                  setFilterHasGPU={setFilterHasGPU} // Новый фильтр
-                  filter1C={filter1C}
-                  setFilter1C={setFilter1C}
-                  filterAI={filterAI} // Новый фильтр
-                  setFilterAI={setFilterAI} // Новый фильтр
-                  allLocations={allLocations}
-                  allVirtualizations={allVirtualizations}
-                  allDiskTypes={allDiskTypes}
-                  allPaymentMethods={allPaymentMethods}
-                  allOS={allOS}
-                  allCPUs={allCPUs}
-                  allGPUs={allGPUs} // Передаем список GPU
-                  fstekOptions={fstekOptions}
-                  additionalServicesOptions={additionalServicesOptions}
-                  registrationDataOptions={registrationDataOptions}
-                  clientTypeOptions={clientTypeOptions}
-                />
-              </div>
-            </div>
-            <div className="w-1/3 flex justify-end">
-              {/* Конфигуратор ресурсов удален */}
-            </div>
+          {/* Для мобильной версии используем старую панель фильтров */}
+          <div className="mt-2">
+            <FilterPanel
+              filterFZ152={filterFZ152}
+              setFilterFZ152={setFilterFZ152}
+              filterFSTEK={filterFSTEK}
+              setFilterFSTEK={setFilterFSTEK}
+              filterTrialPeriod={filterTrialPeriod}
+              setFilterTrialPeriod={setFilterTrialPeriod}
+              filterLocation={filterLocation}
+              setFilterLocation={setFilterLocation}
+              filterVirtualization={filterVirtualization}
+              setFilterVirtualization={setFilterVirtualization}
+              filterMinDatacenters={filterMinDatacenters}
+              setFilterMinDatacenters={setFilterMinDatacenters}
+              filterDiskType={filterDiskType}
+              setFilterDiskType={setFilterDiskType}
+              filterPaymentMethod={filterPaymentMethod}
+              setFilterPaymentMethod={setFilterPaymentMethod}
+              filterOS={filterOS}
+              setFilterOS={setFilterOS}
+              filterCPU={filterCPU}
+              setFilterCPU={setFilterCPU}
+              filterKII={filterKII}
+              setFilterKII={setFilterKII}
+              filterMobileApp={filterMobileApp}
+              setFilterMobileApp={setFilterMobileApp}
+              filterOrderBeforeRegistration={filterOrderBeforeRegistration}
+              setFilterOrderBeforeRegistration={
+                setFilterOrderBeforeRegistration
+              }
+              filterAdditionalServices={filterAdditionalServices}
+              setFilterAdditionalServices={setFilterAdditionalServices}
+              filterRegistrationData={filterRegistrationData}
+              setFilterRegistrationData={setFilterRegistrationData}
+              filterClientType={filterClientType}
+              setFilterClientType={setFilterClientType}
+              filterGPU={filterGPU}
+              setFilterGPU={setFilterGPU}
+              filterHasGPU={filterHasGPU}
+              setFilterHasGPU={setFilterHasGPU}
+              filter1C={filter1C}
+              setFilter1C={setFilter1C}
+              filterAI={filterAI}
+              setFilterAI={setFilterAI}
+              allLocations={allLocations}
+              allVirtualizations={allVirtualizations}
+              allDiskTypes={allDiskTypes}
+              allPaymentMethods={allPaymentMethods}
+              allOS={allOS}
+              allCPUs={allCPUs}
+              allGPUs={allGPUs}
+              fstekOptions={fstekOptions}
+              additionalServicesOptions={additionalServicesOptions}
+              registrationDataOptions={registrationDataOptions}
+              clientTypeOptions={clientTypeOptions}
+            />
           </div>
         </div>
-      </div>
 
-      {searchQuery && (
-        <div className="mb-4 px-2">
-          <div className="text-sm text-muted-foreground">
-            Поиск:{" "}
-            <span className="font-semibold text-foreground">
-              "{searchQuery}"
-            </span>
-            {filteredProviders.length > 0 && (
-              <span className="ml-2">
-                ({filteredProviders.length} провайдер
-                {filteredProviders.length === 1 ? "" : "ов"})
-              </span>
+        {/* Мобильная версия карточек */}
+        {searchQuery && filteredProviders.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-muted-foreground text-lg mb-2">
+              По запросу "{searchQuery}" ничего не найдено
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Попробуйте изменить поисковый запрос или сбросить фильтры
+            </div>
+          </div>
+        ) : (
+          <>
+            <ProvidersList
+              filteredProviders={filteredProviders.slice(0, providersToShow)}
+              reviewsToShow={reviewsToShow}
+              setReviewsToShow={setReviewsToShow}
+              selectedProvider={selectedProvider}
+              setSelectedProvider={setSelectedProvider}
+              selectedForComparison={selectedForComparison}
+              toggleComparison={toggleComparison}
+            />
+
+            {(filteredProviders.length > providersToShow ||
+              providersToShow > 9) && (
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
+                {filteredProviders.length > providersToShow && (
+                  <button
+                    onClick={() => setProvidersToShow((prev) => prev + 9)}
+                    className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span className="relative flex items-center justify-center gap-2">
+                      Показать ещё 9
+                      <svg
+                        className="w-5 h-5 group-hover:translate-y-1 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                )}
+
+                {filteredProviders.length > 0 && (
+                  <button
+                    onClick={() => {
+                      if (providersToShow === filteredProviders.length) {
+                        const minToShow = Math.min(9, filteredProviders.length);
+                        setProvidersToShow(minToShow);
+                      } else {
+                        setProvidersToShow(filteredProviders.length);
+                      }
+                    }}
+                    className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span className="relative flex items-center justify-center gap-2">
+                      {providersToShow === filteredProviders.length
+                        ? "Скрыть"
+                        : "Показать всех "}
+                      <svg
+                        className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d={
+                            providersToShow === filteredProviders.length
+                              ? "M5 15l7-7 7 7"
+                              : "M19 9l-7 7-7-7"
+                          }
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                )}
+              </div>
             )}
-          </div>
-        </div>
-      )}
+          </>
+        )}
 
-      {searchQuery && filteredProviders.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-muted-foreground text-lg mb-2">
-            По запросу "{searchQuery}" ничего не найдено
-          </div>
-          <div className="text-sm text-muted-foreground">
-            Попробуйте изменить поисковый запрос или сбросить фильтры
-          </div>
-        </div>
-      ) : (
-        <>
-          <ProvidersList
-            filteredProviders={filteredProviders.slice(0, providersToShow)}
-            reviewsToShow={reviewsToShow}
-            setReviewsToShow={setReviewsToShow}
-            selectedProvider={selectedProvider}
-            setSelectedProvider={setSelectedProvider}
-            selectedForComparison={selectedForComparison}
-            toggleComparison={toggleComparison}
-          />
-
-          {(filteredProviders.length > providersToShow ||
-            providersToShow > 9) && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-8">
-              {filteredProviders.length > providersToShow && (
-                <button
-                  onClick={() => setProvidersToShow((prev) => prev + 9)}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center justify-center gap-2">
-                    Показать ещё 9
-                    <svg
-                      className="w-5 h-5 group-hover:translate-y-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              )}
-
-              {filteredProviders.length > 0 && (
-                <button
-                  onClick={() => {
-                    if (providersToShow === filteredProviders.length) {
-                      const minToShow = Math.min(9, filteredProviders.length);
-                      setProvidersToShow(minToShow);
-                    } else {
-                      setProvidersToShow(filteredProviders.length);
-                    }
-                  }}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-lg rounded-2xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className="relative flex items-center justify-center gap-2">
-                    {providersToShow === filteredProviders.length
-                      ? "Скрыть"
-                      : "Показать всех "}
-                    <svg
-                      className={`w-5 h-5 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-1" : "group-hover:translate-y-1"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d={
-                          providersToShow === filteredProviders.length
-                            ? "M5 15l7-7 7 7"
-                            : "M19 9l-7 7-7-7"
-                        }
-                      />
-                    </svg>
-                  </span>
-                </button>
-              )}
-            </div>
-          )}
-        </>
-      )}
-
-      <ComparisonControls
-        selectedForComparison={selectedForComparison}
-        compareProviders={compareProviders}
-        onCancelComparison={cancelComparison}
-      />
+        <ComparisonControls
+          selectedForComparison={selectedForComparison}
+          compareProviders={compareProviders}
+          onCancelComparison={cancelComparison}
+        />
+      </div>
     </section>
   );
 };
