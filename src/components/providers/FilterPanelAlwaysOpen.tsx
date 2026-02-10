@@ -166,7 +166,7 @@ export const FilterPanelAlwaysOpen = ({
     filterMinDatacenters || 0,
   );
 
-  // Синхронизация с внешним состоянием
+  // Синхронизация с внешним состояние
   useEffect(() => {
     setDatacentersValue(filterMinDatacenters || 0);
   }, [filterMinDatacenters]);
