@@ -172,9 +172,13 @@ export const FilterPanelAlwaysOpen = ({
   }, [filterMinDatacenters]);
 
   // Оптимизированный обработчик изменения количества ЦОД
-  const handleDatacentersChange = useCallback(
+  const handleDatacentersChange = useCallback((value: number) => {
+    setDatacentersValue(value);
+  }, []);
+
+  // Применение значения после изменения
+  const applyDatacentersValue = useCallback(
     (value: number) => {
-      setDatacentersValue(value);
       setFilterMinDatacenters(value > 0 ? value : null);
     },
     [setFilterMinDatacenters],
@@ -370,7 +374,7 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // Компонент Checkbox из старого рабочего кода
+  // Компонент Checkbox для повторного использования
   const FilterCheckbox = ({
     checked,
     onChange,
@@ -382,34 +386,36 @@ export const FilterPanelAlwaysOpen = ({
     label: string;
     id: string;
   }) => (
-    <div className="flex items-center space-x-1 p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-      <div className="relative">
+    <label
+      htmlFor={id}
+      className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+    >
+      <div className="relative flex items-center">
         <input
-          type="checkbox"
           id={id}
+          type="checkbox"
           checked={checked}
           onChange={(e) => {
             console.log(`${id} clicked`, e.target.checked);
             onChange(e.target.checked);
           }}
-          className="sr-only peer"
+          className="sr-only"
         />
-        <div className="w-3.5 h-3.5 rounded-sm border-2 border-orange-500 peer-checked:bg-orange-500 peer-checked:border-orange-500 transition-colors flex items-center justify-center">
-          {checked && (
-            <Icon name="Check" size={6} className="text-white w-2 h-2" />
-          )}
+        <div
+          className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 ${
+            checked
+              ? "border-orange-500 bg-orange-500"
+              : "border-gray-400 dark:border-gray-500 bg-transparent"
+          }`}
+        >
+          {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
         </div>
       </div>
-      <label
-        htmlFor={id}
-        className="text-xs text-gray-900 dark:text-white cursor-pointer"
-      >
-        {label}
-      </label>
-    </div>
+      <span className="text-xs text-gray-900 dark:text-white">{label}</span>
+    </label>
   );
 
-  // Верхняя секция чекбоксов - новый стиль, старый функционал
+  // Верхняя секция чекбоксов
   const CheckboxSection = () => {
     return (
       <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
@@ -466,6 +472,17 @@ export const FilterPanelAlwaysOpen = ({
               label="Тестовый период"
             />
 
+            {/* Заказ до регистрации */}
+            <FilterCheckbox
+              id="filter-order-before-registration"
+              checked={filterOrderBeforeRegistration}
+              onChange={setFilterOrderBeforeRegistration}
+              label="Заказ до регистрации"
+            />
+          </div>
+
+          {/* Колонка 2 */}
+          <div className="space-y-1">
             {/* КИИ */}
             <FilterCheckbox
               id="filter-kii"
@@ -473,10 +490,7 @@ export const FilterPanelAlwaysOpen = ({
               onChange={setFilterKII}
               label="КИИ"
             />
-          </div>
 
-          {/* Колонка 2 */}
-          <div className="space-y-1">
             {/* AI */}
             <FilterCheckbox
               id="filter-ai"
@@ -492,21 +506,13 @@ export const FilterPanelAlwaysOpen = ({
               onChange={setFilterMobileApp}
               label="Моб. приложение"
             />
-
-            {/* Заказ до регистрации */}
-            <FilterCheckbox
-              id="filter-order-before-registration"
-              checked={filterOrderBeforeRegistration}
-              onChange={setFilterOrderBeforeRegistration}
-              label="Заказ до регистрации"
-            />
           </div>
         </div>
       </div>
     );
   };
 
-  // Компонент аккордеона для секций - новый стиль
+  // Компонент аккордеона для секций
   const AccordionSection = ({
     title,
     isOpen,
@@ -549,57 +555,41 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // Компонент чекбокса внутри дропдауна из старого кода
-  const DropdownCheckbox = ({
-    checked,
+  // Общий компонент для отображения элементов построчно с прокруткой
+  const OptionsGrid = ({
+    options,
+    selectedValues,
     onChange,
-    label,
   }: {
-    checked: boolean;
-    onChange: (checked: boolean) => void;
-    label: string;
-  }) => (
-    <div
-      className="flex items-center px-2 py-1.5 hover:bg-orange-50 dark:hover:bg-orange-500/10 cursor-pointer rounded"
-      onClick={() => onChange(!checked)}
-    >
-      <div
-        className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
-          checked
-            ? "bg-orange-500 border-orange-500"
-            : "border-gray-400 dark:border-gray-500"
-        }`}
-      >
-        {checked && (
-          <Icon name="Check" size={6} className="text-white w-2 h-2" />
-        )}
-      </div>
-      <span className="text-xs text-gray-900 dark:text-white">{label}</span>
-    </div>
-  );
+    options: string[];
+    selectedValues: string[];
+    onChange: (option: string) => void;
+  }) => {
+    const hasManyOptions = options.length > 4;
 
-  // Компонент кнопки внутри дропдауна
-  const DropdownButton = ({
-    onClick,
-    label,
-    isActive,
-  }: {
-    onClick: () => void;
-    label: string;
-    isActive: boolean;
-  }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`w-full text-left px-2 py-1.5 rounded text-xs ${
-        isActive
-          ? "bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-500 font-medium"
-          : "hover:bg-orange-50 dark:hover:bg-orange-500/10 text-gray-700 dark:text-gray-300"
-      }`}
-    >
-      {label}
-    </button>
-  );
+    return (
+      <div
+        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1 scrollbar-thin" : ""}`}
+      >
+        <div className="flex flex-wrap gap-1">
+          {options.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => onChange(option)}
+              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                selectedValues.includes(option)
+                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
+                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   // ФСТЭК аккордеон
   const FstekAccordion = () => {
@@ -619,21 +609,11 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="fstek"
       >
-        <div className="space-y-1">
-          <DropdownButton
-            onClick={() => setFilterFSTEK([])}
-            label="Любой ФСТЭК"
-            isActive={filterFSTEK.length === 0}
-          />
-          {fstekOptions.map((option) => (
-            <DropdownCheckbox
-              key={option}
-              checked={filterFSTEK.includes(option)}
-              onChange={() => handleFstekChange(option)}
-              label={option}
-            />
-          ))}
-        </div>
+        <OptionsGrid
+          options={fstekOptions}
+          selectedValues={filterFSTEK}
+          onChange={handleFstekChange}
+        />
       </AccordionSection>
     );
   };
@@ -656,27 +636,13 @@ export const FilterPanelAlwaysOpen = ({
         valueText={valueText}
         dropdownKey="location"
       >
-        <div className="space-y-1">
-          <DropdownButton
-            onClick={() => setFilterLocation([])}
-            label="Любая локация"
-            isActive={filterLocation.length === 0}
-          />
-          {allLocations.map((option) => (
-            <DropdownCheckbox
-              key={option}
-              checked={filterLocation.includes(option)}
-              onChange={() =>
-                handleMultiSelectChange(
-                  option,
-                  filterLocation,
-                  setFilterLocation,
-                )
-              }
-              label={option}
-            />
-          ))}
-        </div>
+        <OptionsGrid
+          options={allLocations}
+          selectedValues={filterLocation}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterLocation, setFilterLocation)
+          }
+        />
       </AccordionSection>
     );
   };
@@ -705,11 +671,11 @@ export const FilterPanelAlwaysOpen = ({
             </span>
             <span className="text-gray-600 dark:text-gray-400">15</span>
           </div>
-
-          {/* Ползунок из нового кода */}
           <div className="relative py-2">
+            {/* Тонкая линия ползунка */}
             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 dark:bg-gray-600 -translate-y-1/2"></div>
 
+            {/* Ползунок */}
             <div
               className="relative h-4 cursor-pointer"
               onMouseDown={(e) => {
@@ -721,13 +687,13 @@ export const FilterPanelAlwaysOpen = ({
                   const x = moveEvent.clientX - rect.left;
                   const percent = Math.max(0, Math.min(1, x / rect.width));
                   const value = Math.round(percent * 15);
-                  setDatacentersValue(value);
-                  setFilterMinDatacenters(value > 0 ? value : null);
+                  handleDatacentersChange(value);
                 };
 
                 const handleUp = () => {
                   document.removeEventListener("mousemove", handleMove);
                   document.removeEventListener("mouseup", handleUp);
+                  applyDatacentersValue(datacentersValue);
                 };
 
                 document.addEventListener("mousemove", handleMove);
@@ -737,36 +703,15 @@ export const FilterPanelAlwaysOpen = ({
                 const x = e.clientX - rect.left;
                 const percent = Math.max(0, Math.min(1, x / rect.width));
                 const value = Math.round(percent * 15);
-                setDatacentersValue(value);
-                setFilterMinDatacenters(value > 0 ? value : null);
+                handleDatacentersChange(value);
               }}
             >
+              {/* Маркер ползунка */}
               <div
                 className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full cursor-pointer shadow"
                 style={{ left: `${(datacentersValue / 15) * 100}%` }}
               />
             </div>
-          </div>
-
-          {/* Кнопки популярных значений из старого кода */}
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {[0, 1, 3, 5, 10, 15].map((value) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => {
-                  setDatacentersValue(value);
-                  setFilterMinDatacenters(value > 0 ? value : null);
-                }}
-                className={`text-xs h-6 px-2 min-w-[40px] rounded border transition-colors ${
-                  datacentersValue === value
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-orange-500"
-                }`}
-              >
-                {value === 0 ? "Любое" : value}
-              </button>
-            ))}
           </div>
         </div>
       </AccordionSection>
@@ -794,88 +739,263 @@ export const FilterPanelAlwaysOpen = ({
       >
         <div className="space-y-1">
           {/* Опция "Есть GPU" */}
-          <DropdownCheckbox
-            checked={filterHasGPU && filterGPU.length === 0}
+          <FilterCheckbox
+            id="filter-has-gpu"
+            checked={filterHasGPU}
             onChange={(checked) => {
               setFilterHasGPU(checked);
               if (checked) {
                 setFilterGPU([]);
               }
             }}
-            label="Любой GPU (есть GPU)"
+            label="Есть GPU"
           />
 
-          <div className="border-t border-gray-200 dark:border-gray-700 my-1.5"></div>
-
-          <DropdownButton
-            onClick={() => {
-              setFilterGPU([]);
-              setFilterHasGPU(false);
-            }}
-            label="Все модели GPU"
-            isActive={filterGPU.length === 0 && !filterHasGPU}
-          />
-
-          {allGPUs.map((option) => (
-            <DropdownCheckbox
-              key={option}
-              checked={filterGPU.includes(option)}
-              onChange={() => handleGpuChange(option)}
-              label={option}
-            />
-          ))}
+          {/* Конкретные модели GPU */}
+          {allGPUs.length > 0 && (
+            <div className="mt-1">
+              <OptionsGrid
+                options={allGPUs}
+                selectedValues={filterGPU}
+                onChange={handleGpuChange}
+              />
+            </div>
+          )}
         </div>
       </AccordionSection>
     );
   };
 
-  // Общий компонент для мультиселекта
-  const MultiSelectAccordion = ({
-    title,
-    value,
-    onChange,
-    options,
-    placeholder,
-    dropdownKey,
-  }: {
-    title: string;
-    value: string[];
-    onChange: (option: string) => void;
-    options: string[];
-    placeholder: string;
-    dropdownKey: string;
-  }) => {
-    const isOpen = dropdownsOpen[dropdownKey];
+  // Виртуализация аккордеон
+  const VirtualizationAccordion = () => {
+    const isOpen = dropdownsOpen.virtualization;
     const valueText =
-      value.length === 0
-        ? placeholder
-        : value.length === 1
-          ? value[0]
-          : `${value.length} выбрано`;
+      filterVirtualization.length === 0
+        ? "Любая"
+        : filterVirtualization.length === 1
+          ? filterVirtualization[0]
+          : `${filterVirtualization.length} выбрано`;
 
     return (
       <AccordionSection
-        title={title}
+        title="Виртуализация"
         isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick(dropdownKey, e)}
+        onToggle={(e) => handleDropdownClick("virtualization", e)}
         valueText={valueText}
-        dropdownKey={dropdownKey}
+        dropdownKey="virtualization"
       >
-        <div className="space-y-1">
-          <DropdownButton
-            onClick={() => onChange("all")}
-            label={placeholder}
-            isActive={value.length === 0}
-          />
-          {options.map((option) => (
-            <DropdownCheckbox
-              key={option}
-              checked={value.includes(option)}
-              onChange={() => onChange(option)}
-              label={option}
-            />
-          ))}
-        </div>
+        <OptionsGrid
+          options={allVirtualizations}
+          selectedValues={filterVirtualization}
+          onChange={(option) =>
+            handleMultiSelectChange(
+              option,
+              filterVirtualization,
+              setFilterVirtualization,
+            )
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Тип дисков аккордеон
+  const DiskTypeAccordion = () => {
+    const isOpen = dropdownsOpen.diskType;
+    const valueText =
+      filterDiskType.length === 0
+        ? "Любой"
+        : filterDiskType.length === 1
+          ? filterDiskType[0]
+          : `${filterDiskType.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Тип дисков"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("diskType", e)}
+        valueText={valueText}
+        dropdownKey="diskType"
+      >
+        <OptionsGrid
+          options={allDiskTypes}
+          selectedValues={filterDiskType}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterDiskType, setFilterDiskType)
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Процессор аккордеон
+  const CpuAccordion = () => {
+    const isOpen = dropdownsOpen.cpu;
+    const valueText =
+      filterCPU.length === 0
+        ? "Любой"
+        : filterCPU.length === 1
+          ? filterCPU[0]
+          : `${filterCPU.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Процессор"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("cpu", e)}
+        valueText={valueText}
+        dropdownKey="cpu"
+      >
+        <OptionsGrid
+          options={allCPUs}
+          selectedValues={filterCPU}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterCPU, setFilterCPU)
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Операционная система аккордеон
+  const OSAccordion = () => {
+    const isOpen = dropdownsOpen.os;
+    const valueText =
+      filterOS.length === 0
+        ? "Любая"
+        : filterOS.length === 1
+          ? filterOS[0]
+          : `${filterOS.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Операционная система"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("os", e)}
+        valueText={valueText}
+        dropdownKey="os"
+      >
+        <OptionsGrid
+          options={allOS}
+          selectedValues={filterOS}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterOS, setFilterOS)
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Дополнительные услуги аккордеон
+  const AdditionalServicesAccordion = () => {
+    const isOpen = dropdownsOpen.additionalServices;
+    const valueText =
+      filterAdditionalServices.length === 0
+        ? "Любые"
+        : filterAdditionalServices.length === 1
+          ? filterAdditionalServices[0]
+          : `${filterAdditionalServices.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Дополнительные услуги"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("additionalServices", e)}
+        valueText={valueText}
+        dropdownKey="additionalServices"
+      >
+        <OptionsGrid
+          options={additionalServicesOptions}
+          selectedValues={filterAdditionalServices}
+          onChange={handleAdditionalServicesChange}
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Способы оплаты аккордеон
+  const PaymentMethodAccordion = () => {
+    const isOpen = dropdownsOpen.paymentMethod;
+    const valueText =
+      filterPaymentMethod.length === 0
+        ? "Любой"
+        : filterPaymentMethod.length === 1
+          ? filterPaymentMethod[0]
+          : `${filterPaymentMethod.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Способы оплаты"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("paymentMethod", e)}
+        valueText={valueText}
+        dropdownKey="paymentMethod"
+      >
+        <OptionsGrid
+          options={allPaymentMethods}
+          selectedValues={filterPaymentMethod}
+          onChange={(option) =>
+            handleMultiSelectChange(
+              option,
+              filterPaymentMethod,
+              setFilterPaymentMethod,
+            )
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Данные для регистрации аккордеон
+  const RegistrationDataAccordion = () => {
+    const isOpen = dropdownsOpen.registrationData;
+    const valueText =
+      filterRegistrationData.length === 0
+        ? "Любые"
+        : filterRegistrationData.length === 1
+          ? filterRegistrationData[0]
+          : `${filterRegistrationData.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Данные для регистрации"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("registrationData", e)}
+        valueText={valueText}
+        dropdownKey="registrationData"
+      >
+        <OptionsGrid
+          options={registrationDataOptions}
+          selectedValues={filterRegistrationData}
+          onChange={handleRegistrationDataChange}
+        />
+      </AccordionSection>
+    );
+  };
+
+  // Тип клиента аккордеон
+  const ClientTypeAccordion = () => {
+    const isOpen = dropdownsOpen.clientType;
+    const valueText =
+      filterClientType.length === 0
+        ? "Любой"
+        : filterClientType.length === 1
+          ? filterClientType[0]
+          : `${filterClientType.length} выбрано`;
+
+    return (
+      <AccordionSection
+        title="Тип клиента"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("clientType", e)}
+        valueText={valueText}
+        dropdownKey="clientType"
+      >
+        <OptionsGrid
+          options={clientTypeOptions}
+          selectedValues={filterClientType}
+          onChange={handleClientTypeChange}
+        />
       </AccordionSection>
     );
   };
@@ -917,180 +1037,14 @@ export const FilterPanelAlwaysOpen = ({
         <LocationAccordion />
         <DatacentersAccordion />
         <GpuAccordion />
-
-        <MultiSelectAccordion
-          title="Виртуализация"
-          value={filterVirtualization}
-          onChange={(option) =>
-            handleMultiSelectChange(
-              option,
-              filterVirtualization,
-              setFilterVirtualization,
-            )
-          }
-          options={allVirtualizations}
-          placeholder="Любая"
-          dropdownKey="virtualization"
-        />
-
-        <MultiSelectAccordion
-          title="Тип дисков"
-          value={filterDiskType}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterDiskType, setFilterDiskType)
-          }
-          options={allDiskTypes}
-          placeholder="Любой"
-          dropdownKey="diskType"
-        />
-
-        <MultiSelectAccordion
-          title="Процессор"
-          value={filterCPU}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterCPU, setFilterCPU)
-          }
-          options={allCPUs}
-          placeholder="Любой"
-          dropdownKey="cpu"
-        />
-
-        <MultiSelectAccordion
-          title="Операционная система"
-          value={filterOS}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterOS, setFilterOS)
-          }
-          options={allOS}
-          placeholder="Любая"
-          dropdownKey="os"
-        />
-
-        <MultiSelectAccordion
-          title="Способы оплаты"
-          value={filterPaymentMethod}
-          onChange={(option) =>
-            handleMultiSelectChange(
-              option,
-              filterPaymentMethod,
-              setFilterPaymentMethod,
-            )
-          }
-          options={allPaymentMethods}
-          placeholder="Любой"
-          dropdownKey="paymentMethod"
-        />
-
-        {/* Дополнительные услуги аккордеон */}
-        {(() => {
-          const isOpen = dropdownsOpen.additionalServices;
-          const valueText =
-            filterAdditionalServices.length === 0
-              ? "Любые"
-              : filterAdditionalServices.length === 1
-                ? filterAdditionalServices[0]
-                : `${filterAdditionalServices.length} выбрано`;
-
-          return (
-            <AccordionSection
-              title="Дополнительные услуги"
-              isOpen={isOpen}
-              onToggle={(e) => handleDropdownClick("additionalServices", e)}
-              valueText={valueText}
-              dropdownKey="additionalServices"
-            >
-              <div className="space-y-1">
-                <DropdownButton
-                  onClick={() => setFilterAdditionalServices([])}
-                  label="Любые услуги"
-                  isActive={filterAdditionalServices.length === 0}
-                />
-                {additionalServicesOptions.map((option) => (
-                  <DropdownCheckbox
-                    key={option}
-                    checked={filterAdditionalServices.includes(option)}
-                    onChange={() => handleAdditionalServicesChange(option)}
-                    label={option}
-                  />
-                ))}
-              </div>
-            </AccordionSection>
-          );
-        })()}
-
-        {/* Данные для регистрации аккордеон */}
-        {(() => {
-          const isOpen = dropdownsOpen.registrationData;
-          const valueText =
-            filterRegistrationData.length === 0
-              ? "Любые"
-              : filterRegistrationData.length === 1
-                ? filterRegistrationData[0]
-                : `${filterRegistrationData.length} выбрано`;
-
-          return (
-            <AccordionSection
-              title="Данные для регистрации"
-              isOpen={isOpen}
-              onToggle={(e) => handleDropdownClick("registrationData", e)}
-              valueText={valueText}
-              dropdownKey="registrationData"
-            >
-              <div className="space-y-1">
-                <DropdownButton
-                  onClick={() => setFilterRegistrationData([])}
-                  label="Любые данные"
-                  isActive={filterRegistrationData.length === 0}
-                />
-                {registrationDataOptions.map((option) => (
-                  <DropdownCheckbox
-                    key={option}
-                    checked={filterRegistrationData.includes(option)}
-                    onChange={() => handleRegistrationDataChange(option)}
-                    label={option}
-                  />
-                ))}
-              </div>
-            </AccordionSection>
-          );
-        })()}
-
-        {/* Тип клиента аккордеон */}
-        {(() => {
-          const isOpen = dropdownsOpen.clientType;
-          const valueText =
-            filterClientType.length === 0
-              ? "Любой"
-              : filterClientType.length === 1
-                ? filterClientType[0]
-                : `${filterClientType.length} выбрано`;
-
-          return (
-            <AccordionSection
-              title="Тип клиента"
-              isOpen={isOpen}
-              onToggle={(e) => handleDropdownClick("clientType", e)}
-              valueText={valueText}
-              dropdownKey="clientType"
-            >
-              <div className="space-y-1">
-                <DropdownButton
-                  onClick={() => setFilterClientType([])}
-                  label="Любой тип"
-                  isActive={filterClientType.length === 0}
-                />
-                {clientTypeOptions.map((option) => (
-                  <DropdownCheckbox
-                    key={option}
-                    checked={filterClientType.includes(option)}
-                    onChange={() => handleClientTypeChange(option)}
-                    label={option}
-                  />
-                ))}
-              </div>
-            </AccordionSection>
-          );
-        })()}
+        <VirtualizationAccordion />
+        <DiskTypeAccordion />
+        <CpuAccordion />
+        <OSAccordion />
+        <AdditionalServicesAccordion />
+        <PaymentMethodAccordion />
+        <RegistrationDataAccordion />
+        <ClientTypeAccordion />
       </div>
     </div>
   );
