@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   RegistrationDataField,
   ClientType,
@@ -147,48 +148,25 @@ export const FilterPanelAlwaysOpen = ({
   const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
     fstek: false,
     location: false,
-    datacenters: false,
-    gpu: false,
     virtualization: false,
     diskType: false,
-    cpu: false,
-    os: false,
-    additionalServices: false,
     paymentMethod: false,
+    os: false,
+    cpu: false,
+    gpu: false,
+    additionalServices: false,
     registrationData: false,
     clientType: false,
   });
 
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // Оптимизация: мемоизация значений для линейки
-  const [datacentersValue, setDatacentersValue] = useState(
-    filterMinDatacenters || 0,
-  );
-
-  // Синхронизация с внешним состоянием
-  useEffect(() => {
-    setDatacentersValue(filterMinDatacenters || 0);
-  }, [filterMinDatacenters]);
-
-  // Оптимизированный обработчик изменения количества ЦОД
-  const handleDatacentersChange = useCallback((value: number) => {
-    setDatacentersValue(value);
-  }, []);
-
-  // Применение значения после изменения
-  const applyDatacentersValue = useCallback(
-    (value: number) => {
-      setFilterMinDatacenters(value > 0 ? value : null);
-    },
-    [setFilterMinDatacenters],
-  );
-
   // Закрытие дропдаунов при клике вне компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
+      // Проверяем, был ли клик внутри любого дропдауна
       let clickedInsideDropdown = false;
       Object.values(dropdownRefs.current).forEach((ref) => {
         if (ref && ref.contains(target)) {
@@ -196,18 +174,18 @@ export const FilterPanelAlwaysOpen = ({
         }
       });
 
+      // Если клик был вне дропдауна, закрываем все
       if (!clickedInsideDropdown) {
         setDropdownsOpen({
           fstek: false,
           location: false,
-          datacenters: false,
-          gpu: false,
           virtualization: false,
           diskType: false,
-          cpu: false,
-          os: false,
-          additionalServices: false,
           paymentMethod: false,
+          os: false,
+          cpu: false,
+          gpu: false,
+          additionalServices: false,
           registrationData: false,
           clientType: false,
         });
@@ -265,7 +243,7 @@ export const FilterPanelAlwaysOpen = ({
     filterAI,
   ].filter(Boolean).length;
 
-  const clearFilters = useCallback(() => {
+  const clearFilters = () => {
     setFilterFZ152(false);
     setFilterFSTEK([]);
     setFilterTrialPeriod(false);
@@ -286,28 +264,18 @@ export const FilterPanelAlwaysOpen = ({
     setFilterHasGPU(false);
     setFilter1C(false);
     setFilterAI(false);
-  }, [
-    setFilterFZ152,
-    setFilterFSTEK,
-    setFilterTrialPeriod,
-    setFilterLocation,
-    setFilterVirtualization,
-    setFilterMinDatacenters,
-    setFilterDiskType,
-    setFilterPaymentMethod,
-    setFilterOS,
-    setFilterCPU,
-    setFilterKII,
-    setFilterMobileApp,
-    setFilterOrderBeforeRegistration,
-    setFilterAdditionalServices,
-    setFilterRegistrationData,
-    setFilterClientType,
-    setFilterGPU,
-    setFilterHasGPU,
-    setFilter1C,
-    setFilterAI,
-  ]);
+  };
+
+  const [datacentersValue, setDatacentersValue] = useState(
+    filterMinDatacenters || 0,
+  );
+
+  const handleDatacentersChange = (value: number) => {
+    setDatacentersValue(value);
+    setFilterMinDatacenters(value > 0 ? value : null);
+  };
+
+  const popularValues = [0, 1, 3, 5, 10, 15];
 
   const handleMultiSelectChange = (
     value: string,
@@ -362,11 +330,13 @@ export const FilterPanelAlwaysOpen = ({
     e.stopPropagation();
     const isCurrentlyOpen = dropdownsOpen[dropdown];
 
+    // Сначала закрываем все дропдауны
     const newState = { ...dropdownsOpen };
     Object.keys(newState).forEach((key) => {
       newState[key] = false;
     });
 
+    // Если текущий дропдаун был закрыт, открываем его
     if (!isCurrentlyOpen) {
       newState[dropdown] = true;
     }
@@ -374,677 +344,981 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // Компонент Checkbox для повторного использования
-  const FilterCheckbox = ({
-    checked,
-    onChange,
-    label,
-    id,
-  }: {
-    checked: boolean;
-    onChange: (checked: boolean) => void;
-    label: string;
-    id: string;
-  }) => (
-    <label
-      htmlFor={id}
-      className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-    >
-      <div className="relative flex items-center">
-        <input
-          id={id}
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => {
-            console.log(`${id} clicked`, e.target.checked);
-            onChange(e.target.checked);
-          }}
-          className="sr-only"
-        />
-        <div
-          className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 ${
-            checked
-              ? "border-orange-500 bg-orange-500"
-              : "border-gray-400 dark:border-gray-500 bg-transparent"
-          }`}
-        >
-          {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
-        </div>
-      </div>
-      <span className="text-xs text-gray-900 dark:text-white">{label}</span>
-    </label>
-  );
+  const FstekDropdown = () => {
+    const isOpen = dropdownsOpen.fstek;
 
-  // Верхняя секция чекбоксов
-  const CheckboxSection = () => {
     return (
-      <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
-        {/* Заголовок */}
-        <div className="flex items-center justify-between mb-1.5">
-          <div className="flex items-center gap-1.5">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-              Фильтры
-            </h3>
-            {activeFiltersCount > 0 && (
-              <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-                <span className="text-xs text-white font-bold">
-                  {activeFiltersCount}
-                </span>
+      <div className="group" ref={(el) => (dropdownRefs.current.fstek = el)}>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(e) => handleDropdownClick("fstek", e)}
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="ShieldAlert"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
               </div>
-            )}
-          </div>
-          {hasActiveFilters && (
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              Сбросить
-            </button>
+              <span className="truncate text-xs">
+                {filterFSTEK.length === 0
+                  ? "ФСТЭК"
+                  : filterFSTEK.length === 1
+                    ? filterFSTEK[0]
+                    : `ФСТЭК (${filterFSTEK.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
+                <button
+                  type="button"
+                  onClick={() => setFilterFSTEK([])}
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
+                    filterFSTEK.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любой ФСТЭК
+                </button>
+                {fstekOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleFstekChange(option)}
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                        filterFSTEK.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterFSTEK.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={6}
+                          className="text-background w-2 h-2"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
-        </div>
-
-        {/* Двухколоночная сетка */}
-        <div className="grid grid-cols-2 gap-1.5">
-          {/* Колонка 1 */}
-          <div className="space-y-1">
-            {/* 152-ФЗ */}
-            <FilterCheckbox
-              id="filter-fz152"
-              checked={filterFZ152}
-              onChange={setFilterFZ152}
-              label="152-ФЗ"
-            />
-
-            {/* 1С */}
-            <FilterCheckbox
-              id="filter-1c"
-              checked={filter1C}
-              onChange={setFilter1C}
-              label="1С"
-            />
-
-            {/* Тестовый период */}
-            <FilterCheckbox
-              id="filter-trial"
-              checked={filterTrialPeriod}
-              onChange={setFilterTrialPeriod}
-              label="Тестовый период"
-            />
-
-            {/* Заказ до регистрации */}
-            <FilterCheckbox
-              id="filter-order-before-registration"
-              checked={filterOrderBeforeRegistration}
-              onChange={setFilterOrderBeforeRegistration}
-              label="Заказ до регистрации"
-            />
-          </div>
-
-          {/* Колонка 2 */}
-          <div className="space-y-1">
-            {/* КИИ */}
-            <FilterCheckbox
-              id="filter-kii"
-              checked={filterKII}
-              onChange={setFilterKII}
-              label="КИИ"
-            />
-
-            {/* AI */}
-            <FilterCheckbox
-              id="filter-ai"
-              checked={filterAI}
-              onChange={setFilterAI}
-              label="AI"
-            />
-
-            {/* Моб. приложение */}
-            <FilterCheckbox
-              id="filter-mobile-app"
-              checked={filterMobileApp}
-              onChange={setFilterMobileApp}
-              label="Моб. приложение"
-            />
-          </div>
         </div>
       </div>
     );
   };
 
-  // Компонент аккордеона для секций
-  const AccordionSection = ({
-    title,
-    isOpen,
-    onToggle,
-    children,
-    valueText,
-    dropdownKey,
-  }: {
-    title: string;
-    isOpen: boolean;
-    onToggle: (e: React.MouseEvent) => void;
-    children: React.ReactNode;
-    valueText: string;
-    dropdownKey: string;
-  }) => (
-    <div
-      className="border-b border-gray-200 dark:border-gray-700 py-1.5"
-      ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
-    >
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors focus:outline-none focus:ring-1 focus:ring-orange-500"
-      >
-        <span className="text-sm font-medium text-gray-900 dark:text-white">
-          {title}
-        </span>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {valueText}
-          </span>
-          <Icon
-            name={isOpen ? "ChevronUp" : "ChevronDown"}
-            size={12}
-            className="text-gray-400"
-          />
-        </div>
-      </button>
-      {isOpen && <div className="pt-1.5">{children}</div>}
-    </div>
-  );
-
-  // Общий компонент для отображения элементов построчно с прокруткой
-  const OptionsGrid = ({
-    options,
-    selectedValues,
-    onChange,
-  }: {
-    options: string[];
-    selectedValues: string[];
-    onChange: (option: string) => void;
-  }) => {
-    const hasManyOptions = options.length > 4;
+  const AdditionalServicesDropdown = () => {
+    const isOpen = dropdownsOpen.additionalServices;
 
     return (
       <div
-        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1 scrollbar-thin" : ""}`}
+        className="group"
+        ref={(el) => (dropdownRefs.current.additionalServices = el)}
       >
-        <div className="flex flex-wrap gap-1">
-          {options.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => onChange(option)}
-              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 ${
-                selectedValues.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon
+            name="Briefcase"
+            size={8}
+            className="text-primary w-2.5 h-2.5"
+          />
+          <span className="text-xs">Доп. услуги</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(e) => handleDropdownClick("additionalServices", e)}
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="Briefcase"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
+              </div>
+              <span className="truncate text-xs">
+                {filterAdditionalServices.length === 0
+                  ? "Любые услуги"
+                  : filterAdditionalServices.length === 1
+                    ? filterAdditionalServices[0]
+                    : `Услуги (${filterAdditionalServices.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
+                <button
+                  type="button"
+                  onClick={() => setFilterAdditionalServices([])}
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
+                    filterAdditionalServices.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любые услуги
+                </button>
+                {additionalServicesOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleAdditionalServicesChange(option)}
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                        filterAdditionalServices.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterAdditionalServices.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={6}
+                          className="text-background w-2 h-2"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
   };
 
-  // ФСТЭК аккордеон
-  const FstekAccordion = () => {
-    const isOpen = dropdownsOpen.fstek;
-    const valueText =
-      filterFSTEK.length === 0
-        ? "Любой"
-        : filterFSTEK.length === 1
-          ? filterFSTEK[0]
-          : `${filterFSTEK.length} выбрано`;
+  const RegistrationDataDropdown = () => {
+    const isOpen = dropdownsOpen.registrationData;
 
     return (
-      <AccordionSection
-        title="ФСТЭК"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("fstek", e)}
-        valueText={valueText}
-        dropdownKey="fstek"
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current.registrationData = el)}
       >
-        <OptionsGrid
-          options={fstekOptions}
-          selectedValues={filterFSTEK}
-          onChange={handleFstekChange}
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Локация ЦОД аккордеон
-  const LocationAccordion = () => {
-    const isOpen = dropdownsOpen.location;
-    const valueText =
-      filterLocation.length === 0
-        ? "Любая"
-        : filterLocation.length === 1
-          ? filterLocation[0]
-          : `${filterLocation.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Локация ЦОД"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("location", e)}
-        valueText={valueText}
-        dropdownKey="location"
-      >
-        <OptionsGrid
-          options={allLocations}
-          selectedValues={filterLocation}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterLocation, setFilterLocation)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Количество ЦОД аккордеон с ползунком
-  const DatacentersAccordion = () => {
-    const isOpen = dropdownsOpen.datacenters;
-    const valueText =
-      filterMinDatacenters === null || filterMinDatacenters === 0
-        ? "Любое"
-        : `${filterMinDatacenters}`;
-
-    return (
-      <AccordionSection
-        title="Количество ЦОД"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("datacenters", e)}
-        valueText={valueText}
-        dropdownKey="datacenters"
-      >
-        <div className="space-y-2 px-1">
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-600 dark:text-gray-400">0</span>
-            <span className="text-gray-900 dark:text-white font-medium">
-              {datacentersValue} ЦОД
-            </span>
-            <span className="text-gray-600 dark:text-gray-400">15</span>
-          </div>
-          <div className="relative py-2">
-            {/* Тонкая линия ползунка */}
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 dark:bg-gray-600 -translate-y-1/2"></div>
-
-            {/* Ползунок */}
-            <div
-              className="relative h-4 cursor-pointer"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                const slider = e.currentTarget;
-                const rect = slider.getBoundingClientRect();
-
-                const handleMove = (moveEvent: MouseEvent) => {
-                  const x = moveEvent.clientX - rect.left;
-                  const percent = Math.max(0, Math.min(1, x / rect.width));
-                  const value = Math.round(percent * 15);
-                  handleDatacentersChange(value);
-                };
-
-                const handleUp = () => {
-                  document.removeEventListener("mousemove", handleMove);
-                  document.removeEventListener("mouseup", handleUp);
-                  applyDatacentersValue(datacentersValue);
-                };
-
-                document.addEventListener("mousemove", handleMove);
-                document.addEventListener("mouseup", handleUp);
-
-                // Инициализируем клик
-                const x = e.clientX - rect.left;
-                const percent = Math.max(0, Math.min(1, x / rect.width));
-                const value = Math.round(percent * 15);
-                handleDatacentersChange(value);
-              }}
-            >
-              {/* Маркер ползунка */}
-              <div
-                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full cursor-pointer shadow"
-                style={{ left: `${(datacentersValue / 15) * 100}%` }}
-              />
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon name="UserPlus" size={8} className="text-primary w-2.5 h-2.5" />
+          <span className="text-xs">Данные регистрации</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(e) => handleDropdownClick("registrationData", e)}
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="UserPlus"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
+              </div>
+              <span className="truncate text-xs">
+                {filterRegistrationData.length === 0
+                  ? "Любые данные"
+                  : filterRegistrationData.length === 1
+                    ? filterRegistrationData[0]
+                    : `Данные (${filterRegistrationData.length})`}
+              </span>
             </div>
-          </div>
-        </div>
-      </AccordionSection>
-    );
-  };
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
+            />
+          </button>
 
-  // GPU аккордеон
-  const GpuAccordion = () => {
-    const isOpen = dropdownsOpen.gpu;
-    const valueText = filterHasGPU
-      ? "Есть GPU"
-      : filterGPU.length === 0
-        ? "Любой"
-        : filterGPU.length === 1
-          ? filterGPU[0]
-          : `${filterGPU.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="GPU"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("gpu", e)}
-        valueText={valueText}
-        dropdownKey="gpu"
-      >
-        <div className="space-y-1">
-          {/* Опция "Есть GPU" */}
-          <FilterCheckbox
-            id="filter-has-gpu"
-            checked={filterHasGPU}
-            onChange={(checked) => {
-              setFilterHasGPU(checked);
-              if (checked) {
-                setFilterGPU([]);
-              }
-            }}
-            label="Есть GPU"
-          />
-
-          {/* Конкретные модели GPU */}
-          {allGPUs.length > 0 && (
-            <div className="mt-1">
-              <OptionsGrid
-                options={allGPUs}
-                selectedValues={filterGPU}
-                onChange={handleGpuChange}
-              />
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
+                <button
+                  type="button"
+                  onClick={() => setFilterRegistrationData([])}
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
+                    filterRegistrationData.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любые данные
+                </button>
+                {registrationDataOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleRegistrationDataChange(option)}
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                        filterRegistrationData.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterRegistrationData.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={6}
+                          className="text-background w-2 h-2"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs">{option}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
-      </AccordionSection>
+      </div>
     );
   };
 
-  // Виртуализация аккордеон
-  const VirtualizationAccordion = () => {
-    const isOpen = dropdownsOpen.virtualization;
-    const valueText =
-      filterVirtualization.length === 0
-        ? "Любая"
-        : filterVirtualization.length === 1
-          ? filterVirtualization[0]
-          : `${filterVirtualization.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Виртуализация"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("virtualization", e)}
-        valueText={valueText}
-        dropdownKey="virtualization"
-      >
-        <OptionsGrid
-          options={allVirtualizations}
-          selectedValues={filterVirtualization}
-          onChange={(option) =>
-            handleMultiSelectChange(
-              option,
-              filterVirtualization,
-              setFilterVirtualization,
-            )
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Тип дисков аккордеон
-  const DiskTypeAccordion = () => {
-    const isOpen = dropdownsOpen.diskType;
-    const valueText =
-      filterDiskType.length === 0
-        ? "Любой"
-        : filterDiskType.length === 1
-          ? filterDiskType[0]
-          : `${filterDiskType.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Тип дисков"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("diskType", e)}
-        valueText={valueText}
-        dropdownKey="diskType"
-      >
-        <OptionsGrid
-          options={allDiskTypes}
-          selectedValues={filterDiskType}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterDiskType, setFilterDiskType)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Процессор аккордеон
-  const CpuAccordion = () => {
-    const isOpen = dropdownsOpen.cpu;
-    const valueText =
-      filterCPU.length === 0
-        ? "Любой"
-        : filterCPU.length === 1
-          ? filterCPU[0]
-          : `${filterCPU.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Процессор"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("cpu", e)}
-        valueText={valueText}
-        dropdownKey="cpu"
-      >
-        <OptionsGrid
-          options={allCPUs}
-          selectedValues={filterCPU}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterCPU, setFilterCPU)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Операционная система аккордеон
-  const OSAccordion = () => {
-    const isOpen = dropdownsOpen.os;
-    const valueText =
-      filterOS.length === 0
-        ? "Любая"
-        : filterOS.length === 1
-          ? filterOS[0]
-          : `${filterOS.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Операционная система"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("os", e)}
-        valueText={valueText}
-        dropdownKey="os"
-      >
-        <OptionsGrid
-          options={allOS}
-          selectedValues={filterOS}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterOS, setFilterOS)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Дополнительные услуги аккордеон
-  const AdditionalServicesAccordion = () => {
-    const isOpen = dropdownsOpen.additionalServices;
-    const valueText =
-      filterAdditionalServices.length === 0
-        ? "Любые"
-        : filterAdditionalServices.length === 1
-          ? filterAdditionalServices[0]
-          : `${filterAdditionalServices.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Дополнительные услуги"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("additionalServices", e)}
-        valueText={valueText}
-        dropdownKey="additionalServices"
-      >
-        <OptionsGrid
-          options={additionalServicesOptions}
-          selectedValues={filterAdditionalServices}
-          onChange={handleAdditionalServicesChange}
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Способы оплаты аккордеон
-  const PaymentMethodAccordion = () => {
-    const isOpen = dropdownsOpen.paymentMethod;
-    const valueText =
-      filterPaymentMethod.length === 0
-        ? "Любой"
-        : filterPaymentMethod.length === 1
-          ? filterPaymentMethod[0]
-          : `${filterPaymentMethod.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Способы оплаты"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("paymentMethod", e)}
-        valueText={valueText}
-        dropdownKey="paymentMethod"
-      >
-        <OptionsGrid
-          options={allPaymentMethods}
-          selectedValues={filterPaymentMethod}
-          onChange={(option) =>
-            handleMultiSelectChange(
-              option,
-              filterPaymentMethod,
-              setFilterPaymentMethod,
-            )
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Данные для регистрации аккордеон
-  const RegistrationDataAccordion = () => {
-    const isOpen = dropdownsOpen.registrationData;
-    const valueText =
-      filterRegistrationData.length === 0
-        ? "Любые"
-        : filterRegistrationData.length === 1
-          ? filterRegistrationData[0]
-          : `${filterRegistrationData.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Данные для регистрации"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("registrationData", e)}
-        valueText={valueText}
-        dropdownKey="registrationData"
-      >
-        <OptionsGrid
-          options={registrationDataOptions}
-          selectedValues={filterRegistrationData}
-          onChange={handleRegistrationDataChange}
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Тип клиента аккордеон
-  const ClientTypeAccordion = () => {
+  const ClientTypeDropdown = () => {
     const isOpen = dropdownsOpen.clientType;
-    const valueText =
-      filterClientType.length === 0
-        ? "Любой"
-        : filterClientType.length === 1
-          ? filterClientType[0]
-          : `${filterClientType.length} выбрано`;
 
     return (
-      <AccordionSection
-        title="Тип клиента"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("clientType", e)}
-        valueText={valueText}
-        dropdownKey="clientType"
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current.clientType = el)}
       >
-        <OptionsGrid
-          options={clientTypeOptions}
-          selectedValues={filterClientType}
-          onChange={handleClientTypeChange}
-        />
-      </AccordionSection>
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon name="Users" size={8} className="text-primary w-2.5 h-2.5" />
+          <span className="text-xs">Тип клиента</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(e) => handleDropdownClick("clientType", e)}
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="Users"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
+              </div>
+              <span className="truncate text-xs">
+                {filterClientType.length === 0
+                  ? "Любой тип"
+                  : filterClientType.length === 1
+                    ? filterClientType[0]
+                    : `Тип (${filterClientType.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
+                <button
+                  type="button"
+                  onClick={() => setFilterClientType([])}
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
+                    filterClientType.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Любой тип
+                </button>
+                {clientTypeOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleClientTypeChange(option)}
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                        filterClientType.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterClientType.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={6}
+                          className="text-background w-2 h-2"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const GpuDropdown = () => {
+    const isOpen = dropdownsOpen.gpu;
+
+    return (
+      <div className="group" ref={(el) => (dropdownRefs.current.gpu = el)}>
+        <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+          <Icon name="Cpu" size={8} className="text-primary w-2.5 h-2.5" />
+          <span className="text-xs">GPU</span>
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(e) => handleDropdownClick("gpu", e)}
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name="Cpu"
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
+              </div>
+              <span className="truncate text-xs">
+                {filterGPU.length === 0
+                  ? filterHasGPU
+                    ? "Любой GPU"
+                    : "Любой GPU"
+                  : filterGPU.length === 1
+                    ? filterGPU[0]
+                    : `GPU (${filterGPU.length})`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
+                <div
+                  className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                  onClick={() => {
+                    setFilterHasGPU(!filterHasGPU);
+                    if (!filterHasGPU) {
+                      setFilterGPU([]);
+                    }
+                  }}
+                >
+                  <div
+                    className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                      filterHasGPU && filterGPU.length === 0
+                        ? "bg-primary border-primary"
+                        : "border-primary/50"
+                    }`}
+                  >
+                    {filterHasGPU && filterGPU.length === 0 && (
+                      <Icon
+                        name="Check"
+                        size={6}
+                        className="text-background w-2 h-2"
+                      />
+                    )}
+                  </div>
+                  <span className="text-xs">Любой GPU (есть GPU)</span>
+                </div>
+
+                <div className="border-t border-border my-1.5"></div>
+
+                <button
+                  type="button"
+                  onClick={() => setFilterGPU([])}
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs mb-1 ${
+                    filterGPU.length === 0 && !filterHasGPU
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  Все модели GPU
+                </button>
+
+                {allGPUs.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => handleGpuChange(option)}
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                        filterGPU.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {filterGPU.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={6}
+                          className="text-background w-2 h-2"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const MultiSelect = ({
+    value,
+    onChange,
+    options,
+    placeholder,
+    iconName,
+    dropdownKey,
+    labelText,
+  }: {
+    value: string[];
+    onChange: (val: string) => void;
+    options: string[];
+    placeholder: string;
+    iconName: string;
+    dropdownKey: string;
+    labelText?: string;
+  }) => {
+    const isOpen = dropdownsOpen[dropdownKey];
+
+    return (
+      <div
+        className="group"
+        ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
+      >
+        {labelText && (
+          <label className="text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
+            <Icon
+              name={iconName}
+              size={8}
+              className="text-primary w-2.5 h-2.5"
+            />
+            <span className="text-xs">{labelText}</span>
+          </label>
+        )}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(e) => handleDropdownClick(dropdownKey, e)}
+            className="w-full h-7 rounded-md border border-input bg-background text-foreground text-xs font-medium cursor-pointer hover:border-primary/50 hover:shadow-sm focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all pl-7 pr-6 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Icon
+                  name={iconName}
+                  size={8}
+                  className="text-primary w-2.5 h-2.5"
+                />
+              </div>
+              <span className="truncate text-xs">
+                {value.length === 0
+                  ? placeholder
+                  : value.length === 1
+                    ? value[0]
+                    : `${t("filters.found")} ${value.length}`}
+              </span>
+            </div>
+            <Icon
+              name={isOpen ? "ChevronUp" : "ChevronDown"}
+              size={8}
+              className="text-muted-foreground w-2.5 h-2.5 flex-shrink-0"
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-primary/20 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              <div className="p-1.5">
+                <button
+                  type="button"
+                  onClick={() => onChange("all")}
+                  className={`w-full text-left px-2 py-1.5 rounded text-xs ${
+                    value.length === 0
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-primary/5"
+                  }`}
+                >
+                  {placeholder}
+                </button>
+                {options.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center px-2 py-1.5 hover:bg-primary/5 cursor-pointer rounded"
+                    onClick={() => onChange(option)}
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded-sm border-2 mr-2 flex items-center justify-center ${
+                        value.includes(option)
+                          ? "bg-primary border-primary"
+                          : "border-primary/50"
+                      }`}
+                    >
+                      {value.includes(option) && (
+                        <Icon
+                          name="Check"
+                          size={6}
+                          className="text-background w-2 h-2"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     );
   };
 
   return (
-    <div className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 h-full overflow-y-auto">
-      <style jsx global>{`
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 4px;
-          height: 4px;
-        }
+    <div className="w-[340px] flex-shrink-0 bg-card border border-primary/20 rounded-md shadow-sm p-3 h-full overflow-y-auto">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-5 h-5 bg-primary/20 rounded-md flex items-center justify-center relative">
+            <Icon name="Filter" size={8} className="text-primary w-2.5 h-2.5" />
+            {activeFiltersCount > 0 && (
+              <div className="absolute -top-1 -right-1 bg-primary text-background text-[7px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center border border-card">
+                {activeFiltersCount}
+              </div>
+            )}
+          </div>
+          <h3 className="text-xs font-bold text-foreground">
+            {t("filters.title")}
+          </h3>
+        </div>
 
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: transparent;
-        }
+        {hasActiveFilters && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={clearFilters}
+            className="text-[8px] font-bold hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all shadow hover:shadow-sm h-5 px-1.5"
+          >
+            <Icon name="X" size={6} className="w-2 h-2" />
+            <span className="ml-0.5">{t("filters.resetAll")}</span>
+          </Button>
+        )}
+      </div>
 
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: #d1d5db;
-          border-radius: 2px;
-        }
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-1.5">
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="fz152"
+                checked={filterFZ152}
+                onChange={(e) => setFilterFZ152(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterFZ152 && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="fz152"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon
+                name="ShieldCheck"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
+              />
+              <span className="text-xs font-medium text-foreground">
+                152-ФЗ
+              </span>
+            </label>
+          </div>
 
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: #9ca3af;
-        }
+          <div className="col-span-1">
+            <FstekDropdown />
+          </div>
 
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: #4b5563;
-        }
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="trial"
+                checked={filterTrialPeriod}
+                onChange={(e) => setFilterTrialPeriod(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterTrialPeriod && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="trial"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon name="Gift" size={8} className="text-primary w-2.5 h-2.5" />
+              <span className="text-xs font-medium text-foreground">
+                {t("filters.trialPeriod")}
+              </span>
+            </label>
+          </div>
 
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: #6b7280;
-        }
-      `}</style>
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="kii"
+                checked={filterKII}
+                onChange={(e) => setFilterKII(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterKII && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="kii"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon
+                name="Building2"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
+              />
+              <span className="text-xs font-medium text-foreground">КИИ</span>
+            </label>
+          </div>
 
-      <CheckboxSection />
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="mobileApp"
+                checked={filterMobileApp}
+                onChange={(e) => setFilterMobileApp(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterMobileApp && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="mobileApp"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon
+                name="Smartphone"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
+              />
+              <span className="text-xs font-medium text-foreground">
+                Моб. приложение
+              </span>
+            </label>
+          </div>
 
-      <div className="space-y-0">
-        <FstekAccordion />
-        <LocationAccordion />
-        <DatacentersAccordion />
-        <GpuAccordion />
-        <VirtualizationAccordion />
-        <DiskTypeAccordion />
-        <CpuAccordion />
-        <OSAccordion />
-        <AdditionalServicesAccordion />
-        <PaymentMethodAccordion />
-        <RegistrationDataAccordion />
-        <ClientTypeAccordion />
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="orderBeforeReg"
+                checked={filterOrderBeforeRegistration}
+                onChange={(e) =>
+                  setFilterOrderBeforeRegistration(e.target.checked)
+                }
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterOrderBeforeRegistration && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="orderBeforeReg"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon
+                name="ClipboardCheck"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
+              />
+              <span className="text-xs font-medium text-foreground">
+                Заказ до регистрации
+              </span>
+            </label>
+          </div>
+
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="supports1C"
+                checked={filter1C}
+                onChange={(e) => setFilter1C(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filter1C && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="supports1C"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon
+                name="Database"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
+              />
+              <span className="text-xs font-medium text-foreground">1С</span>
+            </label>
+          </div>
+
+          <div className="flex items-center space-x-1 p-1.5 bg-background/50 rounded-md border border-border hover:border-primary/30 transition-colors">
+            <div className="relative">
+              <input
+                type="checkbox"
+                id="supportsAI"
+                checked={filterAI}
+                onChange={(e) => setFilterAI(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-3.5 h-3.5 rounded-sm border-2 border-primary peer-checked:bg-primary peer-checked:border-primary transition-colors flex items-center justify-center">
+                {filterAI && (
+                  <Icon
+                    name="Check"
+                    size={6}
+                    className="text-background w-2 h-2"
+                  />
+                )}
+              </div>
+            </div>
+            <label
+              htmlFor="supportsAI"
+              className="flex items-center gap-1 cursor-pointer"
+            >
+              <Icon name="Cpu" size={8} className="text-primary w-2.5 h-2.5" />
+              <span className="text-xs font-medium text-foreground">AI</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
+          <MultiSelect
+            value={filterLocation}
+            onChange={(value) =>
+              handleMultiSelectChange(value, filterLocation, setFilterLocation)
+            }
+            options={allLocations}
+            placeholder={t("filters.anyLocation")}
+            iconName="Globe"
+            dropdownKey="location"
+            labelText={t("filters.datacenterLocation")}
+          />
+
+          <MultiSelect
+            value={filterVirtualization}
+            onChange={(value) =>
+              handleMultiSelectChange(
+                value,
+                filterVirtualization,
+                setFilterVirtualization,
+              )
+            }
+            options={allVirtualizations}
+            placeholder={t("filters.anyVirtualization")}
+            iconName="Box"
+            dropdownKey="virtualization"
+            labelText={t("common.virtualization")}
+          />
+
+          <MultiSelect
+            value={filterDiskType}
+            onChange={(value) =>
+              handleMultiSelectChange(value, filterDiskType, setFilterDiskType)
+            }
+            options={allDiskTypes}
+            placeholder={t("filters.anyDisk")}
+            iconName="Database"
+            dropdownKey="diskType"
+            labelText={t("filters.diskType")}
+          />
+
+          <GpuDropdown />
+
+          <MultiSelect
+            value={filterOS}
+            onChange={(value) =>
+              handleMultiSelectChange(value, filterOS, setFilterOS)
+            }
+            options={allOS}
+            placeholder={t("filters.anyOS")}
+            iconName="Terminal"
+            dropdownKey="os"
+            labelText={t("filters.operatingSystem")}
+          />
+
+          <MultiSelect
+            value={filterCPU}
+            onChange={(value) =>
+              handleMultiSelectChange(value, filterCPU, setFilterCPU)
+            }
+            options={allCPUs}
+            placeholder="Любой процессор"
+            iconName="Cpu"
+            dropdownKey="cpu"
+            labelText="Процессор"
+          />
+
+          <MultiSelect
+            value={filterPaymentMethod}
+            onChange={(value) =>
+              handleMultiSelectChange(
+                value,
+                filterPaymentMethod,
+                setFilterPaymentMethod,
+              )
+            }
+            options={allPaymentMethods}
+            placeholder={t("filters.anyMethod")}
+            iconName="Wallet"
+            dropdownKey="paymentMethod"
+            labelText={t("filters.paymentMethod")}
+          />
+
+          <AdditionalServicesDropdown />
+          <RegistrationDataDropdown />
+          <ClientTypeDropdown />
+        </div>
+
+        <div className="space-y-2 p-2 bg-background/50 rounded-md border border-border">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <Icon
+                name="Server"
+                size={8}
+                className="text-primary w-2.5 h-2.5"
+              />
+              <h4 className="text-xs font-bold text-foreground">
+                {t("filters.minDatacenters")}
+              </h4>
+            </div>
+            <span className="text-xs font-bold text-primary">
+              {datacentersValue > 0
+                ? `${datacentersValue}`
+                : t("filters.anyAmount")}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5">
+            {popularValues.map((value) => (
+              <Button
+                key={value}
+                type="button"
+                variant={datacentersValue === value ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleDatacentersChange(value)}
+                className="text-xs h-6 px-2 min-w-[40px]"
+              >
+                {value === 0 ? t("filters.anyAmount") : value}
+              </Button>
+            ))}
+          </div>
+
+          <div className="space-y-1.5">
+            <Slider
+              value={[datacentersValue]}
+              onValueChange={(value) => handleDatacentersChange(value[0])}
+              min={0}
+              max={15}
+              step={1}
+              className="cursor-pointer"
+            />
+
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>0</span>
+              <span>3</span>
+              <span>6</span>
+              <span>9</span>
+              <span>12</span>
+              <span>15</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
