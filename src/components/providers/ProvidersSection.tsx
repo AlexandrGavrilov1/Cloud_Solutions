@@ -34,7 +34,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const isMediumDesktop = windowWidth >= 1024 && windowWidth < 1280;
   const incrementCount = isMediumDesktop ? 10 : 9;
 
-  // --- Количество отображаемых карточек (начальное значение зависит от ширины) ---
+  // --- Количество отображаемых карточек (начально-е значение зависит от ширины) ---
   const [providersToShow, setProvidersToShow] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth >= 1024 && window.innerWidth < 1280 ? 10 : 9;
