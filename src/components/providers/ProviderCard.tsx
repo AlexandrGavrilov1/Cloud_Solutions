@@ -980,13 +980,13 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Половина оранжевого круга - градиент, плавно переходящий в карточку */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[90px] opacity-0 group-hover:opacity-90 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-none rounded-b-full">
+        {/* Половина оранжевого круга - максимально размытая, без четких границ */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[100px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-none rounded-b-full">
           <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[160px] rounded-full blur-2xl"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full blur-3xl"
             style={{
               background:
-                "radial-gradient(circle at center 20%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, #FFF5EB 85%, transparent 98%)",
+                "radial-gradient(circle at center 30%, #FF931F 0%, #FFB366 20%, #FFD9B3 40%, rgba(255, 245, 235, 0.8) 70%, rgba(255, 249, 242, 0.3) 85%, transparent 100%)",
             }}
           ></div>
         </div>
