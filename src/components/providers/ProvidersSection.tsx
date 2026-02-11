@@ -2,12 +2,13 @@ import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanelAlwaysOpen } from "./FilterPanelAlwaysOpen";
-import { MobileFilterDrawer } from "./MobileFilterDrawer";
+import { MobileFilterDrawer } from "./MobileFilterDrawer"; // если используете
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
 import { ProvidersCounter } from "./ProvidersCounter";
+import Icon from "@/components/ui/icon"; //
 
 interface ProvidersSectionProps {
   providers: Provider[];
