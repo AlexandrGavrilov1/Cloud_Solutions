@@ -1,1152 +1,764 @@
-import { Slider } from "@/components/ui/slider";
-import Icon from "@/components/ui/icon";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useRef, useEffect, useCallback } from "react";
-import {
-  RegistrationDataField,
-  ClientType,
-  AdditionalServiceType,
-} from "./types";
-import { cn } from "@/lib/utils"; // clsx, classname
+import { useState, useEffect, useMemo } from "react";
+import { Provider } from "./types";
+import { ComparisonTable } from "./ComparisonTable";
+import { FilterPanelAlwaysOpen } from "./FilterPanelAlwaysOpen";
+import { ComparisonControls } from "./ComparisonControls";
+import { ProvidersList } from "./ProvidersList";
+import { SearchInput } from "./SearchInput";
+import { SortPanel } from "./SortPanel";
+import { ProvidersCounter } from "./ProvidersCounter";
 
-interface FilterPanelAlwaysOpenProps {
-  filterFZ152: boolean;
-  setFilterFZ152: (value: boolean) => void;
-  filterFSTEK: string[];
-  setFilterFSTEK: (value: string[]) => void;
-  filterTrialPeriod: boolean;
-  setFilterTrialPeriod: (value: boolean) => void;
-  filterLocation: string[];
-  setFilterLocation: (value: string[]) => void;
-  filterVirtualization: string[];
-  setFilterVirtualization: (value: string[]) => void;
-  filterMinDatacenters: number | null;
-  setFilterMinDatacenters: (value: number | null) => void;
-  filterMaxDatacenters: number | null;
-  setFilterMaxDatacenters: (value: number | null) => void;
-  filterDiskType: string[];
-  setFilterDiskType: (value: string[]) => void;
-  filterPaymentMethod: string[];
-  setFilterPaymentMethod: (value: string[]) => void;
-  filterOS: string[];
-  setFilterOS: (value: string[]) => void;
-  filterCPU: string[];
-  setFilterCPU: (value: string[]) => void;
-  filterKII: boolean;
-  setFilterKII: (value: boolean) => void;
-  filterMobileApp: boolean;
-  setFilterMobileApp: (value: boolean) => void;
-  filterOrderBeforeRegistration: boolean;
-  setFilterOrderBeforeRegistration: (value: boolean) => void;
-  filterAdditionalServices: string[];
-  setFilterAdditionalServices: (value: string[]) => void;
-  filterRegistrationData: string[];
-  setFilterRegistrationData: (value: string[]) => void;
-  filterClientType: string[];
-  setFilterClientType: (value: string[]) => void;
-  filterGPU: string[];
-  setFilterGPU: (value: string[]) => void;
-  filterHasGPU: boolean;
-  setFilterHasGPU: (value: boolean) => void;
-  filter1C: boolean;
-  setFilter1C: (value: boolean) => void;
-  filterAI: boolean;
-  setFilterAI: (value: boolean) => void;
-  className?: string;
-
-  allLocations: string[];
-  allVirtualizations: string[];
-  allDiskTypes: string[];
-  allPaymentMethods: string[];
-  allOS: string[];
-  allCPUs: string[];
-  allGPUs: string[];
-  fstekOptions: string[];
-
-  additionalServicesOptions: AdditionalServiceType[];
-  registrationDataOptions: RegistrationDataField[];
-  clientTypeOptions: ClientType[];
+interface ProvidersSectionProps {
+  providers: Provider[];
 }
 
-export const FilterPanelAlwaysOpen = ({
-  filterFZ152,
-  setFilterFZ152,
-  filterFSTEK,
-  setFilterFSTEK,
-  filterTrialPeriod,
-  setFilterTrialPeriod,
-  filterLocation,
-  setFilterLocation,
-  filterVirtualization,
-  setFilterVirtualization,
-  filterMinDatacenters,
-  setFilterMinDatacenters,
-  filterMaxDatacenters,
-  setFilterMaxDatacenters,
-  filterDiskType,
-  setFilterDiskType,
-  filterPaymentMethod,
-  setFilterPaymentMethod,
-  filterOS,
-  setFilterOS,
-  filterCPU,
-  setFilterCPU,
-  filterKII,
-  setFilterKII,
-  filterMobileApp,
-  setFilterMobileApp,
-  filterOrderBeforeRegistration,
-  setFilterOrderBeforeRegistration,
-  filterAdditionalServices,
-  setFilterAdditionalServices,
-  filterRegistrationData,
-  setFilterRegistrationData,
-  filterClientType,
-  setFilterClientType,
-  filterGPU,
-  setFilterGPU,
-  filterHasGPU,
-  setFilterHasGPU,
-  filter1C,
-  setFilter1C,
-  filterAI,
-  setFilterAI,
-  className = "",
+export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
+  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  allLocations,
-  allVirtualizations,
-  allDiskTypes,
-  allPaymentMethods,
-  allOS,
-  allCPUs,
-  allGPUs = [],
-  fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-
-  additionalServicesOptions = [
-    "Аудит инфраструктуры",
-    "Проектирование инфраструктуры",
-    "Миграция в облако",
-    "Импортозамещение",
-    "Консультация по ИБ",
-    "Аттестация по ФСТЭК",
-    "Другие гос. лицензии",
-  ],
-
-  registrationDataOptions = [
-    "ФИО",
-    "Email",
-    "Телефон",
-    "Страна",
-    "По заявке через менеджера",
-    "ИНН",
-    "Корпоративный email",
-    "Наименование организации",
-    "Адрес организации",
-    "Паспортные данные",
-    "Реквизиты банка",
-    "Регистрация в сторонних сервисах",
-    "Скан удостоверения личности",
-  ],
-
-  clientTypeOptions = ["Физлицо", "Юрлицо"],
-}: FilterPanelAlwaysOpenProps) => {
-  const { t } = useLanguage();
-  const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
-    fstek: false,
-    location: false,
-    datacenters: false,
-    gpu: false,
-    virtualization: false,
-    diskType: false,
-    cpu: false,
-    os: false,
-    additionalServices: false,
-    paymentMethod: false,
-    registrationData: false,
-    clientType: false,
+  // --- Состояние ширины экрана ---
+  const [windowWidth, setWindowWidth] = useState<number>(() => {
+    if (typeof window !== "undefined") return window.innerWidth;
+    return 1024; // fallback даля SSR
   });
 
-  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const panelRef = useRef<HTMLDivElement>(null);
-
-  // Закрытие дропдаунов при клике вне компонента - ТОЛЬКО ВНЕ ВСЕЙ ПАНЕЛИ
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (panelRef.current && panelRef.current.contains(target)) {
-        return;
-      }
-      setDropdownsOpen({
-        fstek: false,
-        location: false,
-        datacenters: false,
-        gpu: false,
-        virtualization: false,
-        diskType: false,
-        cpu: false,
-        os: false,
-        additionalServices: false,
-        paymentMethod: false,
-        registrationData: false,
-        clientType: false,
-      });
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const hasActiveFilters =
-    filterFZ152 ||
-    filterFSTEK.length > 0 ||
-    filterTrialPeriod ||
-    filterLocation.length > 0 ||
-    filterVirtualization.length > 0 ||
-    filterMinDatacenters !== null ||
-    filterMaxDatacenters !== null ||
-    filterDiskType.length > 0 ||
-    filterPaymentMethod.length > 0 ||
-    filterOS.length > 0 ||
-    filterCPU.length > 0 ||
-    filterKII ||
-    filterMobileApp ||
-    filterOrderBeforeRegistration ||
-    filterAdditionalServices.length > 0 ||
-    filterRegistrationData.length > 0 ||
-    filterClientType.length > 0 ||
-    filterGPU.length > 0 ||
-    filterHasGPU ||
-    filter1C ||
-    filterAI;
+  const isMediumDesktop = windowWidth >= 1024 && windowWidth < 1280;
+  const incrementCount = isMediumDesktop ? 10 : 9;
 
-  const activeFiltersCount = [
+  // --- Количество отображаемых карточек (начальное значение зависит от ширины) ---
+  const [providersToShow, setProvidersToShow] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 1024 && window.innerWidth < 1280 ? 10 : 9;
+    }
+    return 9;
+  });
+
+  // --- Все фильтры (сохранение в localStorage) ---
+  const [filterFZ152, setFilterFZ152] = useState(() => {
+    const saved = localStorage.getItem("filterFZ152");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterFSTEK, setFilterFSTEK] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterFSTEK");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterTrialPeriod, setFilterTrialPeriod] = useState(() => {
+    const saved = localStorage.getItem("filterTrialPeriod");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterLocation, setFilterLocation] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterLocation");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterVirtualization, setFilterVirtualization] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterVirtualization");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterMinDatacenters, setFilterMinDatacenters] = useState<number | null>(() => {
+    const saved = localStorage.getItem("filterMinDatacenters");
+    return saved ? parseInt(saved) : null;
+  });
+
+  const [filterMaxDatacenters, setFilterMaxDatacenters] = useState<number | null>(() => {
+    const saved = localStorage.getItem("filterMaxDatacenters");
+    return saved ? parseInt(saved) : null;
+  });
+
+  const [filterDiskType, setFilterDiskType] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterDiskType");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterPaymentMethod, setFilterPaymentMethod] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterPaymentMethod");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterOS, setFilterOS] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterOS");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterCPU, setFilterCPU] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterCPU");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterKII, setFilterKII] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterKII");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterMobileApp, setFilterMobileApp] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterMobileApp");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterOrderBeforeRegistration, setFilterOrderBeforeRegistration] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterOrderBeforeRegistration");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterAdditionalServices, setFilterAdditionalServices] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterAdditionalServices");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterRegistrationData, setFilterRegistrationData] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterRegistrationData");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterClientType, setFilterClientType] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterClientType");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterGPU, setFilterGPU] = useState<string[]>(() => {
+    const saved = localStorage.getItem("filterGPU");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filterHasGPU, setFilterHasGPU] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterHasGPU");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filter1C, setFilter1C] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filter1C");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [filterAI, setFilterAI] = useState<boolean>(() => {
+    const saved = localStorage.getItem("filterAI");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  // --- Сохранение фильтров в localStorage ---
+  useEffect(() => {
+    localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
+  }, [filterFZ152]);
+
+  useEffect(() => {
+    if (filterFSTEK.length > 0) {
+      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
+    } else {
+      localStorage.removeItem("filterFSTEK");
+    }
+  }, [filterFSTEK]);
+
+  useEffect(() => {
+    localStorage.setItem("filterTrialPeriod", JSON.stringify(filterTrialPeriod));
+  }, [filterTrialPeriod]);
+
+  useEffect(() => {
+    if (filterLocation.length > 0) {
+      localStorage.setItem("filterLocation", JSON.stringify(filterLocation));
+    } else {
+      localStorage.removeItem("filterLocation");
+    }
+  }, [filterLocation]);
+
+  useEffect(() => {
+    if (filterVirtualization.length > 0) {
+      localStorage.setItem("filterVirtualization", JSON.stringify(filterVirtualization));
+    } else {
+      localStorage.removeItem("filterVirtualization");
+    }
+  }, [filterVirtualization]);
+
+  useEffect(() => {
+    if (filterMinDatacenters !== null) {
+      localStorage.setItem("filterMinDatacenters", filterMinDatacenters.toString());
+    } else {
+      localStorage.removeItem("filterMinDatacenters");
+    }
+  }, [filterMinDatacenters]);
+
+  useEffect(() => {
+    if (filterMaxDatacenters !== null) {
+      localStorage.setItem("filterMaxDatacenters", filterMaxDatacenters.toString());
+    } else {
+      localStorage.removeItem("filterMaxDatacenters");
+    }
+  }, [filterMaxDatacenters]);
+
+  useEffect(() => {
+    if (filterDiskType.length > 0) {
+      localStorage.setItem("filterDiskType", JSON.stringify(filterDiskType));
+    } else {
+      localStorage.removeItem("filterDiskType");
+    }
+  }, [filterDiskType]);
+
+  useEffect(() => {
+    if (filterPaymentMethod.length > 0) {
+      localStorage.setItem("filterPaymentMethod", JSON.stringify(filterPaymentMethod));
+    } else {
+      localStorage.removeItem("filterPaymentMethod");
+    }
+  }, [filterPaymentMethod]);
+
+  useEffect(() => {
+    if (filterOS.length > 0) {
+      localStorage.setItem("filterOS", JSON.stringify(filterOS));
+    } else {
+      localStorage.removeItem("filterOS");
+    }
+  }, [filterOS]);
+
+  useEffect(() => {
+    if (filterCPU.length > 0) {
+      localStorage.setItem("filterCPU", JSON.stringify(filterCPU));
+    } else {
+      localStorage.removeItem("filterCPU");
+    }
+  }, [filterCPU]);
+
+  useEffect(() => {
+    localStorage.setItem("filterKII", JSON.stringify(filterKII));
+  }, [filterKII]);
+
+  useEffect(() => {
+    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
+  }, [filterMobileApp]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "filterOrderBeforeRegistration",
+      JSON.stringify(filterOrderBeforeRegistration)
+    );
+  }, [filterOrderBeforeRegistration]);
+
+  useEffect(() => {
+    if (filterAdditionalServices.length > 0) {
+      localStorage.setItem(
+        "filterAdditionalServices",
+        JSON.stringify(filterAdditionalServices)
+      );
+    } else {
+      localStorage.removeItem("filterAdditionalServices");
+    }
+  }, [filterAdditionalServices]);
+
+  useEffect(() => {
+    if (filterRegistrationData.length > 0) {
+      localStorage.setItem(
+        "filterRegistrationData",
+        JSON.stringify(filterRegistrationData)
+      );
+    } else {
+      localStorage.removeItem("filterRegistrationData");
+    }
+  }, [filterRegistrationData]);
+
+  useEffect(() => {
+    if (filterClientType.length > 0) {
+      localStorage.setItem("filterClientType", JSON.stringify(filterClientType));
+    } else {
+      localStorage.removeItem("filterClientType");
+    }
+  }, [filterClientType]);
+
+  useEffect(() => {
+    if (filterGPU.length > 0) {
+      localStorage.setItem("filterGPU", JSON.stringify(filterGPU));
+    } else {
+      localStorage.removeItem("filterGPU");
+    }
+  }, [filterGPU]);
+
+  useEffect(() => {
+    localStorage.setItem("filterHasGPU", JSON.stringify(filterHasGPU));
+  }, [filterHasGPU]);
+
+  useEffect(() => {
+    localStorage.setItem("filter1C", JSON.stringify(filter1C));
+  }, [filter1C]);
+
+  useEffect(() => {
+    localStorage.setItem("filterAI", JSON.stringify(filterAI));
+  }, [filterAI]);
+
+  useEffect(() => {
+    localStorage.setItem("sortBy", sortBy);
+  }, [sortBy]);
+
+  // --- Опции для фильтров ---
+  const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
+  const additionalServicesOptions = useMemo(
+    () => [
+      "Аудит инфраструктуры",
+      "Проектирование инфраструктуры",
+      "Миграция в облако",
+      "Импортозамещение",
+      "Консультация по ИБ",
+      "Аттестация по ФСТЭК",
+      "Другие гос. лицензии",
+    ],
+    []
+  );
+  const registrationDataOptions = useMemo(
+    () => [
+      "ФИО",
+      "Email",
+      "Телефон",
+      "Страна",
+      "По заявке через менеджера",
+      "ИНН",
+      "Корпоративный email",
+      "Наименование организации",
+      "Адрес организации",
+      "Паспортные данные",
+      "Реквизиты банка",
+      "Регистрация в сторонних сервисах",
+      "Скан удостоверения личности",
+    ],
+    []
+  );
+  const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
+
+  // --- Уникальные значения для фильтров ---
+  const allLocations = useMemo(
+    () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
+    [providers]
+  );
+  const allVirtualizations = useMemo(
+    () =>
+      Array.from(
+        new Set(providers.flatMap((p) => p.technicalSpecs.virtualization))
+      ).sort(),
+    [providers]
+  );
+  const allDiskTypes = useMemo(
+    () =>
+      Array.from(new Set(providers.map((p) => p.technicalSpecs.diskType))).sort(),
+    [providers]
+  );
+  const allPaymentMethods = useMemo(
+    () =>
+      Array.from(
+        new Set(providers.flatMap((p) => p.pricingDetails.paymentMethods))
+      ).sort(),
+    [providers]
+  );
+  const allOS = useMemo(
+    () =>
+      Array.from(
+        new Set(providers.flatMap((p) => p.technicalSpecs.availableOS))
+      ).sort(),
+    [providers]
+  );
+  const allCPUs = useMemo(
+    () =>
+      Array.from(
+        new Set(providers.flatMap((p) => p.technicalSpecs.cpuModels || []))
+      ).sort(),
+    [providers]
+  );
+  const allGPUs = useMemo(
+    () =>
+      Array.from(
+        new Set(providers.flatMap((p) => p.technicalSpecs.gpuModels || []))
+      ).sort(),
+    [providers]
+  );
+
+  // --- Фильтрация и сортировка провайдеров ---
+  const filteredProviders = useMemo(() => {
+    const filtered = providers.filter((p) => {
+      if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        return false;
+
+      if (filterFZ152 && !p.fz152Compliant) return false;
+
+      if (filterFSTEK.length > 0) {
+        const hasMatchingFSTEK = filterFSTEK.some(
+          (cert) => p.fstekCertifications?.includes(cert) || false
+        );
+        if (!hasMatchingFSTEK) return false;
+      }
+
+      if (filterTrialPeriod && p.trialDays === 0) return false;
+
+      if (filterLocation.length > 0) {
+        const hasMatchingLocation = filterLocation.some((location) =>
+          p.locations.includes(location)
+        );
+        if (!hasMatchingLocation) return false;
+      }
+
+      if (filterVirtualization.length > 0) {
+        const hasMatchingVirtualization = filterVirtualization.some((virt) =>
+          p.technicalSpecs.virtualization.includes(virt as any)
+        );
+        if (!hasMatchingVirtualization) return false;
+      }
+
+      if (filterMinDatacenters !== null && p.locations.length < filterMinDatacenters)
+        return false;
+      if (filterMaxDatacenters !== null && p.locations.length > filterMaxDatacenters)
+        return false;
+
+      if (filterDiskType.length > 0) {
+        if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
+      }
+
+      if (filterPaymentMethod.length > 0) {
+        const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
+          p.pricingDetails.paymentMethods.includes(method)
+        );
+        if (!hasMatchingPaymentMethod) return false;
+      }
+
+      if (filterOS.length > 0) {
+        const hasMatchingOS = filterOS.some((os) =>
+          p.technicalSpecs.availableOS.includes(os)
+        );
+        if (!hasMatchingOS) return false;
+      }
+
+      if (filterCPU.length > 0) {
+        const cpuModels = p.technicalSpecs.cpuModels || [];
+        const hasMatchingCPU = filterCPU.some((cpu) => cpuModels.includes(cpu));
+        if (!hasMatchingCPU) return false;
+      }
+
+      if (filterKII && !p.kiiPlacement) return false;
+      if (filterMobileApp && !p.mobileApp) return false;
+      if (filterOrderBeforeRegistration && !p.orderBeforeRegistration) return false;
+
+      if (filterAdditionalServices.length > 0) {
+        const hasMatchingService = filterAdditionalServices.some(
+          (service) => p.additionalServicesList?.includes(service as any) || false
+        );
+        if (!hasMatchingService) return false;
+      }
+
+      if (filterRegistrationData.length > 0) {
+        const hasMatchingRegistrationData = filterRegistrationData.some(
+          (field) => p.registrationData?.includes(field as any) || false
+        );
+        if (!hasMatchingRegistrationData) return false;
+      }
+
+      if (filterClientType.length > 0) {
+        const hasMatchingClientType = filterClientType.some(
+          (type) => p.supportedClientTypes?.includes(type as any) || false
+        );
+        if (!hasMatchingClientType) return false;
+      }
+
+      if (filterHasGPU) {
+        const hasAnyGPU = (p.technicalSpecs.gpuModels || []).length > 0;
+        if (!hasAnyGPU) return false;
+      }
+
+      if (filterGPU.length > 0) {
+        const gpuModels = p.technicalSpecs.gpuModels || [];
+        const hasMatchingGPU = filterGPU.some((gpu) => gpuModels.includes(gpu));
+        if (!hasMatchingGPU) return false;
+      }
+
+      if (filter1C && !p.technicalSpecs.supports1C) return false;
+      if (filterAI && !p.technicalSpecs.supportsAI) return false;
+
+      return true;
+    });
+
+    return filtered.sort((a, b) => {
+      if (sortBy === "rating") {
+        const avgRatingA =
+          a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length;
+        const avgRatingB =
+          b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length;
+        return avgRatingB - avgRatingA;
+      } else {
+        const priceA = a.basePrice;
+        const priceB = b.basePrice;
+        if (priceA === 0 && priceB === 0) return 0;
+        if (priceA === 0 && priceB > 0) return 1;
+        if (priceA > 0 && priceB === 0) return -1;
+        return priceA - priceB;
+      }
+    });
+  }, [
+    providers,
+    searchQuery,
     filterFZ152,
-    filterFSTEK.length > 0,
+    filterFSTEK,
     filterTrialPeriod,
-    filterLocation.length > 0,
-    filterVirtualization.length > 0,
-    filterMinDatacenters !== null,
-    filterMaxDatacenters !== null,
-    filterDiskType.length > 0,
-    filterPaymentMethod.length > 0,
-    filterOS.length > 0,
-    filterCPU.length > 0,
+    filterLocation,
+    filterVirtualization,
+    filterMinDatacenters,
+    filterMaxDatacenters,
+    filterDiskType,
+    filterPaymentMethod,
+    filterOS,
+    filterCPU,
     filterKII,
     filterMobileApp,
     filterOrderBeforeRegistration,
-    filterAdditionalServices.length > 0,
-    filterRegistrationData.length > 0,
-    filterClientType.length > 0,
-    filterGPU.length > 0,
+    filterAdditionalServices,
+    filterRegistrationData,
+    filterClientType,
+    filterGPU,
     filterHasGPU,
     filter1C,
     filterAI,
-  ].filter(Boolean).length;
-
-  const clearFilters = useCallback(() => {
-    setFilterFZ152(false);
-    setFilterFSTEK([]);
-    setFilterTrialPeriod(false);
-    setFilterLocation([]);
-    setFilterVirtualization([]);
-    setFilterMinDatacenters(null);
-    setFilterMaxDatacenters(null);
-    setFilterDiskType([]);
-    setFilterPaymentMethod([]);
-    setFilterOS([]);
-    setFilterCPU([]);
-    setFilterKII(false);
-    setFilterMobileApp(false);
-    setFilterOrderBeforeRegistration(false);
-    setFilterAdditionalServices([]);
-    setFilterRegistrationData([]);
-    setFilterClientType([]);
-    setFilterGPU([]);
-    setFilterHasGPU(false);
-    setFilter1C(false);
-    setFilterAI(false);
-  }, [
-    setFilterFZ152,
-    setFilterFSTEK,
-    setFilterTrialPeriod,
-    setFilterLocation,
-    setFilterVirtualization,
-    setFilterMinDatacenters,
-    setFilterMaxDatacenters,
-    setFilterDiskType,
-    setFilterPaymentMethod,
-    setFilterOS,
-    setFilterCPU,
-    setFilterKII,
-    setFilterMobileApp,
-    setFilterOrderBeforeRegistration,
-    setFilterAdditionalServices,
-    setFilterRegistrationData,
-    setFilterClientType,
-    setFilterGPU,
-    setFilterHasGPU,
-    setFilter1C,
-    setFilterAI,
+    sortBy,
   ]);
 
-  const handleMultiSelectChange = (
-    value: string,
-    currentValues: string[],
-    setter: (values: string[]) => void,
-  ) => {
-    if (value === "all") {
-      setter([]);
-    } else if (currentValues.includes(value)) {
-      setter(currentValues.filter((v) => v !== value));
-    } else {
-      setter([...currentValues, value]);
+  // --- Логика сравнения провайдеров ---
+  const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
+
+  const toggleComparison = (providerId: number) => {
+    setSelectedForComparison((prev) =>
+      prev.includes(providerId)
+        ? prev.filter((id) => id !== providerId)
+        : [...prev, providerId]
+    );
+  };
+
+  const compareProviders = () => {
+    if (selectedForComparison.length >= 2) {
+      setShowComparison(true);
     }
   };
 
-  const handleFstekChange = (option: string) => {
-    const newValue = filterFSTEK.includes(option)
-      ? filterFSTEK.filter((v) => v !== option)
-      : [...filterFSTEK, option];
-    setFilterFSTEK(newValue);
+  const cancelComparison = () => {
+    setSelectedForComparison([]);
   };
 
-  const handleAdditionalServicesChange = (option: string) => {
-    const newValue = filterAdditionalServices.includes(option)
-      ? filterAdditionalServices.filter((v) => v !== option)
-      : [...filterAdditionalServices, option];
-    setFilterAdditionalServices(newValue);
-  };
-
-  const handleRegistrationDataChange = (option: string) => {
-    const newValue = filterRegistrationData.includes(option)
-      ? filterRegistrationData.filter((v) => v !== option)
-      : [...filterRegistrationData, option];
-    setFilterRegistrationData(newValue);
-  };
-
-  const handleClientTypeChange = (option: string) => {
-    const newValue = filterClientType.includes(option)
-      ? filterClientType.filter((v) => v !== option)
-      : [...filterClientType, option];
-    setFilterClientType(newValue);
-  };
-
-  const handleGpuChange = (option: string) => {
-    const newValue = filterGPU.includes(option)
-      ? filterGPU.filter((v) => v !== option)
-      : [...filterGPU, option];
-    setFilterGPU(newValue);
-  };
-
-  const handleDropdownClick = (dropdown: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const isCurrentlyOpen = dropdownsOpen[dropdown];
-
-    const newState = { ...dropdownsOpen };
-    Object.keys(newState).forEach((key) => {
-      if (key !== dropdown) {
-        newState[key] = false;
-      }
+  // --- Отзывы ---
+  const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(() => {
+    const initialReviews: Record<number, number> = {};
+    providers.forEach((provider) => {
+      initialReviews[provider.id] = 5;
     });
+    return initialReviews;
+  });
 
-    newState[dropdown] = !isCurrentlyOpen;
-    setDropdownsOpen(newState);
-  };
-
-  // Компонент Checkbox для повторного использования с оранжевыми границами
-  const FilterCheckbox = ({
-    checked,
-    onChange,
-    label,
-    id,
-  }: {
-    checked: boolean;
-    onChange: (checked: boolean) => void;
-    label: string;
-    id: string;
-  }) => (
-    <label
-      htmlFor={id}
-      className="flex items-center gap-1.5 w-full select-none p-1 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-    >
-      <div className="relative flex items-center">
-        <input
-          id={id}
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => {
-            onChange(e.target.checked);
-          }}
-          className="sr-only"
-        />
-        <div
-          className={`w-3 h-3 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
-            checked
-              ? "border-orange-500 bg-orange-500"
-              : "border-orange-400 dark:border-orange-400 bg-transparent"
-          }`}
-        >
-          {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
-        </div>
-      </div>
-      <span className="text-xs text-gray-900 dark:text-white">{label}</span>
-    </label>
-  );
-
-  // Верхняя секция чекбоксов
-  const CheckboxSection = () => {
+  // --- Рендеринг ---
+  if (showComparison) {
+    const selectedProviders = providers.filter((p) =>
+      selectedForComparison.includes(p.id)
+    );
     return (
-      <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-1.5">
-          <div className="flex items-center gap-1.5">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-              Фильтры
-            </h3>
-            {activeFiltersCount > 0 && (
-              <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-                <span className="text-xs text-white font-bold">
-                  {activeFiltersCount}
-                </span>
-              </div>
-            )}
-          </div>
-          {hasActiveFilters && (
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              Сбросить
-            </button>
-          )}
-        </div>
-
-        <div className="grid grid-cols-2 gap-1.5">
-          <div className="space-y-1">
-            <FilterCheckbox
-              id="filter-fz152"
-              checked={filterFZ152}
-              onChange={setFilterFZ152}
-              label="152-ФЗ"
-            />
-            <FilterCheckbox
-              id="filter-1c"
-              checked={filter1C}
-              onChange={setFilter1C}
-              label="1С"
-            />
-            <FilterCheckbox
-              id="filter-trial"
-              checked={filterTrialPeriod}
-              onChange={setFilterTrialPeriod}
-              label="Тестовый период"
-            />
-            <FilterCheckbox
-              id="filter-order-before-registration"
-              checked={filterOrderBeforeRegistration}
-              onChange={setFilterOrderBeforeRegistration}
-              label="Заказ до регистрации"
-            />
-          </div>
-          <div className="space-y-1">
-            <FilterCheckbox
-              id="filter-kii"
-              checked={filterKII}
-              onChange={setFilterKII}
-              label="КИИ"
-            />
-            <FilterCheckbox
-              id="filter-ai"
-              checked={filterAI}
-              onChange={setFilterAI}
-              label="AI"
-            />
-            <FilterCheckbox
-              id="filter-mobile-app"
-              checked={filterMobileApp}
-              onChange={setFilterMobileApp}
-              label="Моб. приложение"
-            />
-          </div>
-        </div>
-      </div>
+      <ComparisonTable
+        providers={selectedProviders}
+        onClose={() => setShowComparison(false)}
+      />
     );
-  };
-
-  // Компонент аккордеона для секций
-  const AccordionSection = ({
-    title,
-    isOpen,
-    onToggle,
-    children,
-    valueText,
-    dropdownKey,
-  }: {
-    title: string;
-    isOpen: boolean;
-    onToggle: (e: React.MouseEvent) => void;
-    children: React.ReactNode;
-    valueText: string;
-    dropdownKey: string;
-  }) => (
-    <div
-      className="border-b border-gray-200 dark:border-gray-700 py-1.5"
-      ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
-    >
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors focus:outline-none focus:ring-1 focus:ring-orange-500"
-      >
-        <span className="text-sm font-medium text-gray-900 dark:text-white">
-          {title}
-        </span>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {valueText}
-          </span>
-          <Icon
-            name={isOpen ? "ChevronUp" : "ChevronDown"}
-            size={12}
-            className="text-gray-400"
-          />
-        </div>
-      </button>
-      {isOpen && <div className="pt-1.5">{children}</div>}
-    </div>
-  );
-
-  // Общий компонент для отображения элементов построчно с прокруткой
-  const OptionsGrid = ({
-    options,
-    selectedValues,
-    onChange,
-  }: {
-    options: string[];
-    selectedValues: string[];
-    onChange: (option: string) => void;
-  }) => {
-    const hasManyOptions = options.length > 4;
-
-    return (
-      <div
-        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1 scrollbar-thin" : ""}`}
-      >
-        <div className="flex flex-wrap gap-1">
-          {options.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => onChange(option)}
-              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 ${
-                selectedValues.includes(option)
-                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
-                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  // Количество ЦОД аккордеон с двойным ползунком
-  const DatacentersAccordion = () => {
-    const isOpen = dropdownsOpen.datacenters;
-    const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
-    const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
-    const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-    const [minInput, setMinInput] = useState(minValue.toString());
-    const [maxInput, setMaxInput] = useState(maxValue.toString());
-
-    useEffect(() => {
-      setMinValue(filterMinDatacenters ?? 0);
-      setMinInput((filterMinDatacenters ?? 0).toString());
-    }, [filterMinDatacenters]);
-
-    useEffect(() => {
-      setMaxValue(filterMaxDatacenters ?? 15);
-      setMaxInput((filterMaxDatacenters ?? 15).toString());
-    }, [filterMaxDatacenters]);
-
-    const handleMinChange = useCallback(
-      (value: number) => {
-        const newValue = Math.max(0, Math.min(value, maxValue - 1, 15));
-        setMinValue(newValue);
-        setMinInput(newValue.toString());
-      },
-      [maxValue],
-    );
-
-    const handleMaxChange = useCallback(
-      (value: number) => {
-        const newValue = Math.min(15, Math.max(value, minValue + 1, 0));
-        setMaxValue(newValue);
-        setMaxInput(newValue.toString());
-      },
-      [minValue],
-    );
-
-    const applyValues = useCallback(() => {
-      setFilterMinDatacenters(minValue > 0 ? minValue : null);
-      setFilterMaxDatacenters(maxValue < 15 ? maxValue : null);
-    }, [minValue, maxValue, setFilterMinDatacenters, setFilterMaxDatacenters]);
-
-    const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      if (value === "" || /^\d+$/.test(value)) {
-        setMinInput(value);
-      }
-    };
-
-    const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      if (value === "" || /^\d+$/.test(value)) {
-        setMaxInput(value);
-      }
-    };
-
-    const handleMinInputBlur = () => {
-      let value = parseInt(minInput);
-      if (isNaN(value)) {
-        value = 0;
-      }
-      value = Math.max(0, Math.min(value, maxValue - 1, 15));
-      setMinValue(value);
-      setMinInput(value.toString());
-      setFilterMinDatacenters(value > 0 ? value : null);
-    };
-
-    const handleMaxInputBlur = () => {
-      let value = parseInt(maxInput);
-      if (isNaN(value)) {
-        value = 15;
-      }
-      value = Math.min(15, Math.max(value, minValue + 1, 0));
-      setMaxValue(value);
-      setMaxInput(value.toString());
-      setFilterMaxDatacenters(value < 15 ? value : null);
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        e.currentTarget.blur();
-      }
-    };
-
-    const handleMinMouseDown = (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging("min");
-    };
-
-    const handleMaxMouseDown = (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging("max");
-    };
-
-    useEffect(() => {
-      if (!isDragging) return;
-
-      const handleMouseMove = (moveEvent: MouseEvent) => {
-        moveEvent.preventDefault();
-
-        const slider = document.querySelector(".datacenters-slider");
-        if (!slider) return;
-
-        const rect = slider.getBoundingClientRect();
-        const x = moveEvent.clientX - rect.left;
-        const percent = Math.max(0, Math.min(1, x / rect.width));
-        const value = Math.round(percent * 15);
-
-        if (isDragging === "min") {
-          handleMinChange(value);
-        } else if (isDragging === "max") {
-          handleMaxChange(value);
-        }
-      };
-
-      const handleMouseUp = () => {
-        setIsDragging(null);
-        applyValues();
-      };
-
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-
-      return () => {
-        document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseup", handleMouseUp);
-      };
-    }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
-
-    const valueText =
-      (filterMinDatacenters === null || filterMinDatacenters === 0) &&
-      (filterMaxDatacenters === null || filterMaxDatacenters === 15)
-        ? "Любое"
-        : `${filterMinDatacenters ?? 0} - ${filterMaxDatacenters ?? 15}`;
-
-    return (
-      <AccordionSection
-        title="Количество ЦОД"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("datacenters", e)}
-        valueText={valueText}
-        dropdownKey="datacenters"
-      >
-        <div className="space-y-3 px-1 pb-2">
-          <div className="flex items-center justify-center gap-1">
-            <div className="flex-1">
-              <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
-                <input
-                  type="text"
-                  value={minInput}
-                  onChange={handleMinInputChange}
-                  onBlur={handleMinInputBlur}
-                  onKeyDown={handleKeyDown}
-                  className="w-full text-xs text-center text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
-                  placeholder="0"
-                />
-              </div>
-            </div>
-            <div className="flex items-center justify-center w-4">
-              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                —
-              </span>
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
-                <input
-                  type="text"
-                  value={maxInput}
-                  onChange={handleMaxInputChange}
-                  onBlur={handleMaxInputBlur}
-                  onKeyDown={handleKeyDown}
-                  className="w-full text-xs text-center text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
-                  placeholder="15"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="relative py-2">
-            <div className="datacenters-slider relative h-0.5 w-full bg-gray-300 dark:bg-gray-600 rounded-full">
-              <div
-                className={`absolute h-0.5 rounded-full transition-colors ${
-                  isDragging ? "bg-gray-300 dark:bg-gray-600" : "bg-orange-500"
-                }`}
-                style={{
-                  left: `${(minValue / 15) * 100}%`,
-                  width: `${((maxValue - minValue) / 15) * 100}%`,
-                }}
-              />
-            </div>
-            <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
-              style={{ left: `${(minValue / 15) * 100}%` }}
-              onMouseDown={handleMinMouseDown}
-            />
-            <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
-              style={{ left: `${(maxValue / 15) * 100}%` }}
-              onMouseDown={handleMaxMouseDown}
-            />
-          </div>
-        </div>
-      </AccordionSection>
-    );
-  };
-
-  // ФСТЭК аккордеон
-  const FstekAccordion = () => {
-    const isOpen = dropdownsOpen.fstek;
-    const valueText =
-      filterFSTEK.length === 0
-        ? "Любой"
-        : filterFSTEK.length === 1
-          ? filterFSTEK[0]
-          : `${filterFSTEK.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="ФСТЭК"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("fstek", e)}
-        valueText={valueText}
-        dropdownKey="fstek"
-      >
-        <OptionsGrid
-          options={fstekOptions}
-          selectedValues={filterFSTEK}
-          onChange={handleFstekChange}
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Локация ЦОД аккордеон
-  const LocationAccordion = () => {
-    const isOpen = dropdownsOpen.location;
-    const valueText =
-      filterLocation.length === 0
-        ? "Любая"
-        : filterLocation.length === 1
-          ? filterLocation[0]
-          : `${filterLocation.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Локация ЦОД"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("location", e)}
-        valueText={valueText}
-        dropdownKey="location"
-      >
-        <OptionsGrid
-          options={allLocations}
-          selectedValues={filterLocation}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterLocation, setFilterLocation)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // GPU аккордеон
-  const GpuAccordion = () => {
-    const isOpen = dropdownsOpen.gpu;
-    const valueText = filterHasGPU
-      ? "Есть GPU"
-      : filterGPU.length === 0
-        ? "Любой"
-        : filterGPU.length === 1
-          ? filterGPU[0]
-          : `${filterGPU.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="GPU"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("gpu", e)}
-        valueText={valueText}
-        dropdownKey="gpu"
-      >
-        <div className="space-y-1">
-          <FilterCheckbox
-            id="filter-has-gpu"
-            checked={filterHasGPU}
-            onChange={(checked) => {
-              setFilterHasGPU(checked);
-              if (checked) {
-                setFilterGPU([]);
-              }
-            }}
-            label="Есть GPU"
-          />
-          {allGPUs.length > 0 && (
-            <div className="mt-1">
-              <OptionsGrid
-                options={allGPUs}
-                selectedValues={filterGPU}
-                onChange={handleGpuChange}
-              />
-            </div>
-          )}
-        </div>
-      </AccordionSection>
-    );
-  };
-
-  // Виртуализация аккордеон
-  const VirtualizationAccordion = () => {
-    const isOpen = dropdownsOpen.virtualization;
-    const valueText =
-      filterVirtualization.length === 0
-        ? "Любая"
-        : filterVirtualization.length === 1
-          ? filterVirtualization[0]
-          : `${filterVirtualization.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Виртуализация"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("virtualization", e)}
-        valueText={valueText}
-        dropdownKey="virtualization"
-      >
-        <OptionsGrid
-          options={allVirtualizations}
-          selectedValues={filterVirtualization}
-          onChange={(option) =>
-            handleMultiSelectChange(
-              option,
-              filterVirtualization,
-              setFilterVirtualization,
-            )
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Тип дисков аккордеон
-  const DiskTypeAccordion = () => {
-    const isOpen = dropdownsOpen.diskType;
-    const valueText =
-      filterDiskType.length === 0
-        ? "Любой"
-        : filterDiskType.length === 1
-          ? filterDiskType[0]
-          : `${filterDiskType.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Тип дисков"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("diskType", e)}
-        valueText={valueText}
-        dropdownKey="diskType"
-      >
-        <OptionsGrid
-          options={allDiskTypes}
-          selectedValues={filterDiskType}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterDiskType, setFilterDiskType)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Процессор аккордеон
-  const CpuAccordion = () => {
-    const isOpen = dropdownsOpen.cpu;
-    const valueText =
-      filterCPU.length === 0
-        ? "Любой"
-        : filterCPU.length === 1
-          ? filterCPU[0]
-          : `${filterCPU.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Процессор"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("cpu", e)}
-        valueText={valueText}
-        dropdownKey="cpu"
-      >
-        <OptionsGrid
-          options={allCPUs}
-          selectedValues={filterCPU}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterCPU, setFilterCPU)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Операционная система аккордеон
-  const OSAccordion = () => {
-    const isOpen = dropdownsOpen.os;
-    const valueText =
-      filterOS.length === 0
-        ? "Любая"
-        : filterOS.length === 1
-          ? filterOS[0]
-          : `${filterOS.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Операционная система"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("os", e)}
-        valueText={valueText}
-        dropdownKey="os"
-      >
-        <OptionsGrid
-          options={allOS}
-          selectedValues={filterOS}
-          onChange={(option) =>
-            handleMultiSelectChange(option, filterOS, setFilterOS)
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Дополнительные услуги аккордеон
-  const AdditionalServicesAccordion = () => {
-    const isOpen = dropdownsOpen.additionalServices;
-    const valueText =
-      filterAdditionalServices.length === 0
-        ? "Любые"
-        : filterAdditionalServices.length === 1
-          ? filterAdditionalServices[0]
-          : `${filterAdditionalServices.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Дополнительные услуги"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("additionalServices", e)}
-        valueText={valueText}
-        dropdownKey="additionalServices"
-      >
-        <OptionsGrid
-          options={additionalServicesOptions}
-          selectedValues={filterAdditionalServices}
-          onChange={handleAdditionalServicesChange}
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Способы оплаты аккордеон
-  const PaymentMethodAccordion = () => {
-    const isOpen = dropdownsOpen.paymentMethod;
-    const valueText =
-      filterPaymentMethod.length === 0
-        ? "Любой"
-        : filterPaymentMethod.length === 1
-          ? filterPaymentMethod[0]
-          : `${filterPaymentMethod.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Способы оплаты"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("paymentMethod", e)}
-        valueText={valueText}
-        dropdownKey="paymentMethod"
-      >
-        <OptionsGrid
-          options={allPaymentMethods}
-          selectedValues={filterPaymentMethod}
-          onChange={(option) =>
-            handleMultiSelectChange(
-              option,
-              filterPaymentMethod,
-              setFilterPaymentMethod,
-            )
-          }
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Данные для регистрации аккордеон
-  const RegistrationDataAccordion = () => {
-    const isOpen = dropdownsOpen.registrationData;
-    const valueText =
-      filterRegistrationData.length === 0
-        ? "Любые"
-        : filterRegistrationData.length === 1
-          ? filterRegistrationData[0]
-          : `${filterRegistrationData.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Данные для регистрации"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("registrationData", e)}
-        valueText={valueText}
-        dropdownKey="registrationData"
-      >
-        <OptionsGrid
-          options={registrationDataOptions}
-          selectedValues={filterRegistrationData}
-          onChange={handleRegistrationDataChange}
-        />
-      </AccordionSection>
-    );
-  };
-
-  // Тип клиента аккордеон
-  const ClientTypeAccordion = () => {
-    const isOpen = dropdownsOpen.clientType;
-    const valueText =
-      filterClientType.length === 0
-        ? "Любой"
-        : filterClientType.length === 1
-          ? filterClientType[0]
-          : `${filterClientType.length} выбрано`;
-
-    return (
-      <AccordionSection
-        title="Тип клиента"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("clientType", e)}
-        valueText={valueText}
-        dropdownKey="clientType"
-      >
-        <OptionsGrid
-          options={clientTypeOptions}
-          selectedValues={filterClientType}
-          onChange={handleClientTypeChange}
-        />
-      </AccordionSection>
-    );
-  };
+  }
 
   return (
-    <div
-      ref={panelRef}
-      className={cn(
-        // Базовая ширина теперь управляется через className,
-        // но оставляем запасные классы на случай, если className не передан
-        "flex-shrink-0 bg-white dark:bg-gray-900 p-3",
-        "border-r border-gray-200 dark:border-gray-800",
-        className,
-      )}
-    >
-      <style jsx global>{`
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 4px;
-          height: 4px;
-        }
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: #d1d5db;
-          border-radius: 2px;
-        }
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: #9ca3af;
-        }
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: #4b5563;
-        }
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: #6b7280;
-        }
-      `}</style>
+    <section id="providers" className="container mx-auto px-2 py-4">
+      {/* 
+        Единая структура для всех экранов:
+        - flex row с запретом переноса (flex-nowrap)
+        - фильтр всегда слева, карточки справа
+      */}
+      <div className="flex flex-row flex-nowrap gap-4">
+        {/* 
+          Панель фильтров:
+          - минимальная ширина 208px (5.5 см)
+          - на экранах <1024: ширина 30% от родителя, но не меньше 208px и не больше 280px
+          - на экранах >=1024: фиксированная ширина 340px
+        */}
+        <FilterPanelAlwaysOpen
+          className="w-[30%] min-w-[208px] max-w-[280px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px]"
+          filterFZ152={filterFZ152}
+          setFilterFZ152={setFilterFZ152}
+          filterFSTEK={filterFSTEK}
+          setFilterFSTEK={setFilterFSTEK}
+          filterTrialPeriod={filterTrialPeriod}
+          setFilterTrialPeriod={setFilterTrialPeriod}
+          filterLocation={filterLocation}
+          setFilterLocation={setFilterLocation}
+          filterVirtualization={filterVirtualization}
+          setFilterVirtualization={setFilterVirtualization}
+          filterMinDatacenters={filterMinDatacenters}
+          setFilterMinDatacenters={setFilterMinDatacenters}
+          filterMaxDatacenters={filterMaxDatacenters}
+          setFilterMaxDatacenters={setFilterMaxDatacenters}
+          filterDiskType={filterDiskType}
+          setFilterDiskType={setFilterDiskType}
+          filterPaymentMethod={filterPaymentMethod}
+          setFilterPaymentMethod={setFilterPaymentMethod}
+          filterOS={filterOS}
+          setFilterOS={setFilterOS}
+          filterCPU={filterCPU}
+          setFilterCPU={setFilterCPU}
+          filterKII={filterKII}
+          setFilterKII={setFilterKII}
+          filterMobileApp={filterMobileApp}
+          setFilterMobileApp={setFilterMobileApp}
+          filterOrderBeforeRegistration={filterOrderBeforeRegistration}
+          setFilterOrderBeforeRegistration={setFilterOrderBeforeRegistration}
+          filterAdditionalServices={filterAdditionalServices}
+          setFilterAdditionalServices={setFilterAdditionalServices}
+          filterRegistrationData={filterRegistrationData}
+          setFilterRegistrationData={setFilterRegistrationData}
+          filterClientType={filterClientType}
+          setFilterClientType={setFilterClientType}
+          filterGPU={filterGPU}
+          setFilterGPU={setFilterGPU}
+          filterHasGPU={filterHasGPU}
+          setFilterHasGPU={setFilterHasGPU}
+          filter1C={filter1C}
+          setFilter1C={setFilter1C}
+          filterAI={filterAI}
+          setFilterAI={setFilterAI}
+          allLocations={allLocations}
+          allVirtualizations={allVirtualizations}
+          allDiskTypes={allDiskTypes}
+          allPaymentMethods={allPaymentMethods}
+          allOS={allOS}
+          allCPUs={allCPUs}
+          allGPUs={allGPUs}
+          fstekOptions={fstekOptions}
+          additionalServicesOptions={additionalServicesOptions}
+          registrationDataOptions={registrationDataOptions}
+          clientTypeOptions={clientTypeOptions}
+        />
 
-      <CheckboxSection />
+        {/* Правая колонка (карточки + управление) */}
+        <div className="flex-1 min-w-0">
+          {/* Верхняя панель управления */}
+          <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+            <div className="space-y-2 w-full sm:w-auto">
+              <SearchInput
+                value={searchQuery}
+                onChange={setSearchQuery}
+                placeholder="Поиск..."
+                className="w-full sm:w-[300px]"
+              />
+              <ProvidersCounter
+                currentCount={Math.min(providersToShow, filteredProviders.length)}
+                totalCount={filteredProviders.length}
+              />
+            </div>
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+          </div>
 
-      <div className="space-y-0">
-        <FstekAccordion />
-        <LocationAccordion />
-        <DatacentersAccordion />
-        <GpuAccordion />
-        <VirtualizationAccordion />
-        <DiskTypeAccordion />
-        <CpuAccordion />
-        <OSAccordion />
-        <AdditionalServicesAccordion />
-        <PaymentMethodAccordion />
-        <RegistrationDataAccordion />
-        <ClientTypeAccordion />
+          {/* Список карточек */}
+          {searchQuery && filteredProviders.length === 0 ? (
+            <div className="text-center py-8">
+              <div className="text-muted-foreground text-base mb-1.5">
+                По запросу "{searchQuery}" ничего не найдено
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Попробуйте изменить поисковый запрос или сбросить фильтры
+              </div>
+            </div>
+          ) : (
+            <>
+              <ProvidersList
+                filteredProviders={filteredProviders.slice(0, providersToShow)}
+                reviewsToShow={reviewsToShow}
+                setReviewsToShow={setReviewsToShow}
+                selectedProvider={selectedProvider}
+                setSelectedProvider={setSelectedProvider}
+                selectedForComparison={selectedForComparison}
+                toggleComparison={toggleComparison}
+              />
+
+              {/* Кнопки подгрузки */}
+              {(filteredProviders.length > providersToShow ||
+                providersToShow > incrementCount) && (
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
+                  {filteredProviders.length > providersToShow && (
+                    <button
+                      onClick={() => setProvidersToShow((prev) => prev + incrementCount)}
+                      className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="relative flex items-center justify-center gap-1.5">
+                        Показать ещё {incrementCount}
+                        <svg
+                          className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  )}
+
+                  {filteredProviders.length > 0 && (
+                    <button
+                      onClick={() => {
+                        if (providersToShow === filteredProviders.length) {
+                          const minToShow = Math.min(incrementCount, filteredProviders.length);
+                          setProvidersToShow(minToShow);
+                        } else {
+                          setProvidersToShow(filteredProviders.length);
+                        }
+                      }}
+                      className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="relative flex items-center justify-center gap-1.5">
+                        {providersToShow === filteredProviders.length
+                          ? "Скрыть"
+                          : "Показать всех"}
+                        <svg
+                          className={`w-4 h-4 transition-transform ${
+                            providersToShow === filteredProviders.length
+                              ? "group-hover:-translate-y-0.5"
+                              : "group-hover:translate-y-0.5"
+                          }`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d={
+                              providersToShow === filteredProviders.length
+                                ? "M5 15l7-7 7 7"
+                                : "M19 9l-7 7-7-7"
+                            }
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+
+          <ComparisonControls
+            selectedForComparison={selectedForComparison}
+            compareProviders={compareProviders}
+            onCancelComparison={cancelComparison}
+          />
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
