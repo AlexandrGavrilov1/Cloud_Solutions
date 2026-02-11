@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
-import { FilterPanel } from "./FilterPanel";
 import { FilterPanelAlwaysOpen } from "./FilterPanelAlwaysOpen";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
@@ -20,7 +19,30 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  // Фильтры
+  // --- Состояние ширины экрана ---
+  const [windowWidth, setWindowWidth] = useState<number>(() => {
+    if (typeof window !== "undefined") return window.innerWidth;
+    return 1024; // fallback для SSR
+  });
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMediumDesktop = windowWidth >= 1024 && windowWidth < 1280;
+  const incrementCount = isMediumDesktop ? 10 : 9;
+
+  // --- Количество отображаемых карточек (начальное значение зависит от ширины) ---
+  const [providersToShow, setProvidersToShow] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 1024 && window.innerWidth < 1280 ? 10 : 9;
+    }
+    return 9;
+  });
+
+  // --- Все фильтры (сохранение в localStorage) ---
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -139,59 +161,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
-    [],
-  );
-  const [showComparison, setShowComparison] = useState(false);
-  const [providersToShow, setProvidersToShow] = useState(9);
-  const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(
-    () => {
-      const initialReviews: Record<number, number> = {};
-      providers.forEach((provider) => {
-        initialReviews[provider.id] = 5;
-      });
-      return initialReviews;
-    },
-  );
-
-  // Опции для фильтров
-  const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
-
-  const additionalServicesOptions = useMemo(
-    () => [
-      "Аудит инфраструктуры",
-      "Проектирование инфраструктуры",
-      "Миграция в облако",
-      "Импортозамещение",
-      "Консультация по ИБ",
-      "Аттестация по ФСТЭК",
-      "Другие гос. лицензии",
-    ],
-    [],
-  );
-
-  const registrationDataOptions = useMemo(
-    () => [
-      "ФИО",
-      "Email",
-      "Телефон",
-      "Страна",
-      "По заявке через менеджера",
-      "ИНН",
-      "Корпоративный email",
-      "Наименование организации",
-      "Адрес организации",
-      "Паспортные данные",
-      "Реквизиты банка",
-      "Регистрация в сторонних сервисах",
-      "Скан удостоверения личности",
-    ],
-    [],
-  );
-
-  const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
-
-  // Сохранение фильтров в localStorage
+  // --- Сохранение фильтров в localStorage ---
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
@@ -359,29 +329,45 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-  const toggleComparison = (providerId: number) => {
-    setSelectedForComparison((prev) =>
-      prev.includes(providerId)
-        ? prev.filter((id) => id !== providerId)
-        : [...prev, providerId],
-    );
-  };
+  // --- Опции для фильтров ---
+  const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
+  const additionalServicesOptions = useMemo(
+    () => [
+      "Аудит инфраструктуры",
+      "Проектирование инфраструктуры",
+      "Миграция в облако",
+      "Импортозамещение",
+      "Консультация по ИБ",
+      "Аттестация по ФСТЭК",
+      "Другие гос. лицензии",
+    ],
+    [],
+  );
+  const registrationDataOptions = useMemo(
+    () => [
+      "ФИО",
+      "Email",
+      "Телефон",
+      "Страна",
+      "По заявке через менеджера",
+      "ИНН",
+      "Корпоративный email",
+      "Наименование организации",
+      "Адрес организации",
+      "Паспортные данные",
+      "Реквизиты банка",
+      "Регистрация в сторонних сервисах",
+      "Скан удостоверения личности",
+    ],
+    [],
+  );
+  const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
-  const compareProviders = () => {
-    if (selectedForComparison.length >= 2) {
-      setShowComparison(true);
-    }
-  };
-
-  const cancelComparison = () => {
-    setSelectedForComparison([]);
-  };
-
+  // --- Уникальные значения для фильтров ---
   const allLocations = useMemo(
     () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
     [providers],
   );
-
   const allVirtualizations = useMemo(
     () =>
       Array.from(
@@ -389,7 +375,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       ).sort(),
     [providers],
   );
-
   const allDiskTypes = useMemo(
     () =>
       Array.from(
@@ -397,7 +382,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       ).sort(),
     [providers],
   );
-
   const allPaymentMethods = useMemo(
     () =>
       Array.from(
@@ -405,7 +389,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       ).sort(),
     [providers],
   );
-
   const allOS = useMemo(
     () =>
       Array.from(
@@ -413,7 +396,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       ).sort(),
     [providers],
   );
-
   const allCPUs = useMemo(
     () =>
       Array.from(
@@ -421,7 +403,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       ).sort(),
     [providers],
   );
-
   const allGPUs = useMemo(
     () =>
       Array.from(
@@ -430,6 +411,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
+  // --- Фильтрация и сортировка провайдеров ---
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
       if (
@@ -468,7 +450,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         p.locations.length < filterMinDatacenters
       )
         return false;
-
       if (
         filterMaxDatacenters !== null &&
         p.locations.length > filterMaxDatacenters
@@ -500,9 +481,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       }
 
       if (filterKII && !p.kiiPlacement) return false;
-
       if (filterMobileApp && !p.mobileApp) return false;
-
       if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
         return false;
 
@@ -540,7 +519,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       }
 
       if (filter1C && !p.technicalSpecs.supports1C) return false;
-
       if (filterAI && !p.technicalSpecs.supportsAI) return false;
 
       return true;
@@ -556,7 +534,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       } else {
         const priceA = a.basePrice;
         const priceB = b.basePrice;
-
         if (priceA === 0 && priceB === 0) return 0;
         if (priceA === 0 && priceB > 0) return 1;
         if (priceA > 0 && priceB === 0) return -1;
@@ -590,6 +567,42 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     sortBy,
   ]);
 
+  // --- Логика сравнения провайдеров ---
+  const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
+    [],
+  );
+  const [showComparison, setShowComparison] = useState(false);
+
+  const toggleComparison = (providerId: number) => {
+    setSelectedForComparison((prev) =>
+      prev.includes(providerId)
+        ? prev.filter((id) => id !== providerId)
+        : [...prev, providerId],
+    );
+  };
+
+  const compareProviders = () => {
+    if (selectedForComparison.length >= 2) {
+      setShowComparison(true);
+    }
+  };
+
+  const cancelComparison = () => {
+    setSelectedForComparison([]);
+  };
+
+  // --- Отзывы ---
+  const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(
+    () => {
+      const initialReviews: Record<number, number> = {};
+      providers.forEach((provider) => {
+        initialReviews[provider.id] = 5;
+      });
+      return initialReviews;
+    },
+  );
+
+  // --- Рендеринг ---
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
       selectedForComparison.includes(p.id),
@@ -606,98 +619,88 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-2 py-4">
-      {/* Десктопный вид - новая структура */}
-      <div className="hidden lg:flex gap-4">
-        {/* Левая часть: фильтры (всегда открытые) - ширина 8.5 см */}
-        <div className="w-[340px] flex-shrink-0">
-          <FilterPanelAlwaysOpen
-            filterFZ152={filterFZ152}
-            setFilterFZ152={setFilterFZ152}
-            filterFSTEK={filterFSTEK}
-            setFilterFSTEK={setFilterFSTEK}
-            filterTrialPeriod={filterTrialPeriod}
-            setFilterTrialPeriod={setFilterTrialPeriod}
-            filterLocation={filterLocation}
-            setFilterLocation={setFilterLocation}
-            filterVirtualization={filterVirtualization}
-            setFilterVirtualization={setFilterVirtualization}
-            filterMinDatacenters={filterMinDatacenters}
-            setFilterMinDatacenters={setFilterMinDatacenters}
-            filterMaxDatacenters={filterMaxDatacenters}
-            setFilterMaxDatacenters={setFilterMaxDatacenters}
-            filterDiskType={filterDiskType}
-            setFilterDiskType={setFilterDiskType}
-            filterPaymentMethod={filterPaymentMethod}
-            setFilterPaymentMethod={setFilterPaymentMethod}
-            filterOS={filterOS}
-            setFilterOS={setFilterOS}
-            filterCPU={filterCPU}
-            setFilterCPU={setFilterCPU}
-            filterKII={filterKII}
-            setFilterKII={setFilterKII}
-            filterMobileApp={filterMobileApp}
-            setFilterMobileApp={setFilterMobileApp}
-            filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-            setFilterOrderBeforeRegistration={setFilterOrderBeforeRegistration}
-            filterAdditionalServices={filterAdditionalServices}
-            setFilterAdditionalServices={setFilterAdditionalServices}
-            filterRegistrationData={filterRegistrationData}
-            setFilterRegistrationData={setFilterRegistrationData}
-            filterClientType={filterClientType}
-            setFilterClientType={setFilterClientType}
-            filterGPU={filterGPU}
-            setFilterGPU={setFilterGPU}
-            filterHasGPU={filterHasGPU}
-            setFilterHasGPU={setFilterHasGPU}
-            filter1C={filter1C}
-            setFilter1C={setFilter1C}
-            filterAI={filterAI}
-            setFilterAI={setFilterAI}
-            allLocations={allLocations}
-            allVirtualizations={allVirtualizations}
-            allDiskTypes={allDiskTypes}
-            allPaymentMethods={allPaymentMethods}
-            allOS={allOS}
-            allCPUs={allCPUs}
-            allGPUs={allGPUs}
-            fstekOptions={fstekOptions}
-            additionalServicesOptions={additionalServicesOptions}
-            registrationDataOptions={registrationDataOptions}
-            clientTypeOptions={clientTypeOptions}
-          />
-        </div>
+      {/* Единая структура для всех экранов */}
+      <div className="flex flex-col lg:flex-row gap-4">
+        {/* Панель фильтров (всегда открыта) */}
+        <FilterPanelAlwaysOpen
+          filterFZ152={filterFZ152}
+          setFilterFZ152={setFilterFZ152}
+          filterFSTEK={filterFSTEK}
+          setFilterFSTEK={setFilterFSTEK}
+          filterTrialPeriod={filterTrialPeriod}
+          setFilterTrialPeriod={setFilterTrialPeriod}
+          filterLocation={filterLocation}
+          setFilterLocation={setFilterLocation}
+          filterVirtualization={filterVirtualization}
+          setFilterVirtualization={setFilterVirtualization}
+          filterMinDatacenters={filterMinDatacenters}
+          setFilterMinDatacenters={setFilterMinDatacenters}
+          filterMaxDatacenters={filterMaxDatacenters}
+          setFilterMaxDatacenters={setFilterMaxDatacenters}
+          filterDiskType={filterDiskType}
+          setFilterDiskType={setFilterDiskType}
+          filterPaymentMethod={filterPaymentMethod}
+          setFilterPaymentMethod={setFilterPaymentMethod}
+          filterOS={filterOS}
+          setFilterOS={setFilterOS}
+          filterCPU={filterCPU}
+          setFilterCPU={setFilterCPU}
+          filterKII={filterKII}
+          setFilterKII={setFilterKII}
+          filterMobileApp={filterMobileApp}
+          setFilterMobileApp={setFilterMobileApp}
+          filterOrderBeforeRegistration={filterOrderBeforeRegistration}
+          setFilterOrderBeforeRegistration={setFilterOrderBeforeRegistration}
+          filterAdditionalServices={filterAdditionalServices}
+          setFilterAdditionalServices={setFilterAdditionalServices}
+          filterRegistrationData={filterRegistrationData}
+          setFilterRegistrationData={setFilterRegistrationData}
+          filterClientType={filterClientType}
+          setFilterClientType={setFilterClientType}
+          filterGPU={filterGPU}
+          setFilterGPU={setFilterGPU}
+          filterHasGPU={filterHasGPU}
+          setFilterHasGPU={setFilterHasGPU}
+          filter1C={filter1C}
+          setFilter1C={setFilter1C}
+          filterAI={filterAI}
+          setFilterAI={setFilterAI}
+          allLocations={allLocations}
+          allVirtualizations={allVirtualizations}
+          allDiskTypes={allDiskTypes}
+          allPaymentMethods={allPaymentMethods}
+          allOS={allOS}
+          allCPUs={allCPUs}
+          allGPUs={allGPUs}
+          fstekOptions={fstekOptions}
+          additionalServicesOptions={additionalServicesOptions}
+          registrationDataOptions={registrationDataOptions}
+          clientTypeOptions={clientTypeOptions}
+        />
 
-        {/* Правая часть: контент */}
-        <div className="flex-1">
-          {/* Верхняя панель управления */}
-          <div className="mb-4">
-            <div className="flex justify-between items-start gap-3">
-              {/* Левая колонка: поиск и счетчик */}
-              <div className="space-y-2 flex-1 max-w-[500px]">
-                <SearchInput
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder="Поиск..."
-                  className="w-full max-w-[300px]"
-                />
-                <ProvidersCounter
-                  currentCount={Math.min(
-                    providersToShow,
-                    filteredProviders.length,
-                  )}
-                  totalCount={filteredProviders.length}
-                  className=""
-                />
-              </div>
-
-              {/* Правая колонка: сортировка */}
-              <div className="mt-0">
-                <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-              </div>
+        {/* Правая часть: управление + карточки */}
+        <div className="flex-1 min-w-0">
+          {/* Верхняя панель: поиск, счётчик, сортировка */}
+          <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+            <div className="space-y-2 w-full sm:w-auto">
+              <SearchInput
+                value={searchQuery}
+                onChange={setSearchQuery}
+                placeholder="Поиск..."
+                className="w-full sm:w-[300px]"
+              />
+              <ProvidersCounter
+                currentCount={Math.min(
+                  providersToShow,
+                  filteredProviders.length,
+                )}
+                totalCount={filteredProviders.length}
+              />
             </div>
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
 
-          {/* Карточки провайдеров */}
+          {/* Список провайдеров */}
           {searchQuery && filteredProviders.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-muted-foreground text-base mb-1.5">
@@ -719,17 +722,20 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 toggleComparison={toggleComparison}
               />
 
+              {/* Кнопки подгрузки */}
               {(filteredProviders.length > providersToShow ||
-                providersToShow > 9) && (
+                providersToShow > incrementCount) && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
-                      onClick={() => setProvidersToShow((prev) => prev + 9)}
+                      onClick={() =>
+                        setProvidersToShow((prev) => prev + incrementCount)
+                      }
                       className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="relative flex items-center justify-center gap-1.5">
-                        Показать ещё 9
+                        Показать ещё {incrementCount}
                         <svg
                           className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
                           fill="none"
@@ -752,7 +758,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                       onClick={() => {
                         if (providersToShow === filteredProviders.length) {
                           const minToShow = Math.min(
-                            9,
+                            incrementCount,
                             filteredProviders.length,
                           );
                           setProvidersToShow(minToShow);
@@ -766,9 +772,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                       <span className="relative flex items-center justify-center gap-1.5">
                         {providersToShow === filteredProviders.length
                           ? "Скрыть"
-                          : "Показать всех "}
+                          : "Показать всех"}
                         <svg
-                          className={`w-4 h-4 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"}`}
+                          className={`w-4 h-4 transition-transform ${
+                            providersToShow === filteredProviders.length
+                              ? "group-hover:-translate-y-0.5"
+                              : "group-hover:translate-y-0.5"
+                          }`}
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -798,192 +808,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             onCancelComparison={cancelComparison}
           />
         </div>
-      </div>
-
-      {/* Мобильный/планшетный вид - старая структура */}
-      <div className="lg:hidden">
-        <div className="mb-3">
-          <div className="flex flex-col sm:flex-row gap-1.5">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Поиск..."
-              className="w-full sm:w-auto"
-            />
-
-            <div className="flex items-center gap-1.5">
-              <ProvidersCounter
-                currentCount={Math.min(
-                  providersToShow,
-                  filteredProviders.length,
-                )}
-                totalCount={filteredProviders.length}
-                className="flex-1"
-              />
-
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
-            </div>
-          </div>
-
-          {/* Для мобильной версии используем старую панель фильтров */}
-          <div className="mt-1.5">
-            <FilterPanel
-              filterFZ152={filterFZ152}
-              setFilterFZ152={setFilterFZ152}
-              filterFSTEK={filterFSTEK}
-              setFilterFSTEK={setFilterFSTEK}
-              filterTrialPeriod={filterTrialPeriod}
-              setFilterTrialPeriod={setFilterTrialPeriod}
-              filterLocation={filterLocation}
-              setFilterLocation={setFilterLocation}
-              filterVirtualization={filterVirtualization}
-              setFilterVirtualization={setFilterVirtualization}
-              filterMinDatacenters={filterMinDatacenters}
-              setFilterMinDatacenters={setFilterMinDatacenters}
-              filterMaxDatacenters={filterMaxDatacenters}
-              setFilterMaxDatacenters={setFilterMaxDatacenters}
-              filterDiskType={filterDiskType}
-              setFilterDiskType={setFilterDiskType}
-              filterPaymentMethod={filterPaymentMethod}
-              setFilterPaymentMethod={setFilterPaymentMethod}
-              filterOS={filterOS}
-              setFilterOS={setFilterOS}
-              filterCPU={filterCPU}
-              setFilterCPU={setFilterCPU}
-              filterKII={filterKII}
-              setFilterKII={setFilterKII}
-              filterMobileApp={filterMobileApp}
-              setFilterMobileApp={setFilterMobileApp}
-              filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-              setFilterOrderBeforeRegistration={
-                setFilterOrderBeforeRegistration
-              }
-              filterAdditionalServices={filterAdditionalServices}
-              setFilterAdditionalServices={setFilterAdditionalServices}
-              filterRegistrationData={filterRegistrationData}
-              setFilterRegistrationData={setFilterRegistrationData}
-              filterClientType={filterClientType}
-              setFilterClientType={setFilterClientType}
-              filterGPU={filterGPU}
-              setFilterGPU={setFilterGPU}
-              filterHasGPU={filterHasGPU}
-              setFilterHasGPU={setFilterHasGPU}
-              filter1C={filter1C}
-              setFilter1C={setFilter1C}
-              filterAI={filterAI}
-              setFilterAI={setFilterAI}
-              allLocations={allLocations}
-              allVirtualizations={allVirtualizations}
-              allDiskTypes={allDiskTypes}
-              allPaymentMethods={allPaymentMethods}
-              allOS={allOS}
-              allCPUs={allCPUs}
-              allGPUs={allGPUs}
-              fstekOptions={fstekOptions}
-              additionalServicesOptions={additionalServicesOptions}
-              registrationDataOptions={registrationDataOptions}
-              clientTypeOptions={clientTypeOptions}
-            />
-          </div>
-        </div>
-
-        {/* Мобильная версия карточек */}
-        {searchQuery && filteredProviders.length === 0 ? (
-          <div className="text-center py-8">
-            <div className="text-muted-foreground text-base mb-1.5">
-              По запросу "{searchQuery}" ничего не найдено
-            </div>
-            <div className="text-xs text-muted-foreground">
-              Попробуйте изменить поисковый запрос или сбросить фильтры
-            </div>
-          </div>
-        ) : (
-          <>
-            <ProvidersList
-              filteredProviders={filteredProviders.slice(0, providersToShow)}
-              reviewsToShow={reviewsToShow}
-              setReviewsToShow={setReviewsToShow}
-              selectedProvider={selectedProvider}
-              setSelectedProvider={setSelectedProvider}
-              selectedForComparison={selectedForComparison}
-              toggleComparison={toggleComparison}
-            />
-
-            {(filteredProviders.length > providersToShow ||
-              providersToShow > 9) && (
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
-                {filteredProviders.length > providersToShow && (
-                  <button
-                    onClick={() => setProvidersToShow((prev) => prev + 9)}
-                    className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <span className="relative flex items-center justify-center gap-1.5">
-                      Показать ещё 9
-                      <svg
-                        className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                )}
-
-                {filteredProviders.length > 0 && (
-                  <button
-                    onClick={() => {
-                      if (providersToShow === filteredProviders.length) {
-                        const minToShow = Math.min(9, filteredProviders.length);
-                        setProvidersToShow(minToShow);
-                      } else {
-                        setProvidersToShow(filteredProviders.length);
-                      }
-                    }}
-                    className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <span className="relative flex items-center justify-center gap-1.5">
-                      {providersToShow === filteredProviders.length
-                        ? "Скрыть"
-                        : "Показать всех "}
-                      <svg
-                        className={`w-4 h-4 transition-transform ${providersToShow === filteredProviders.length ? "group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d={
-                            providersToShow === filteredProviders.length
-                              ? "M5 15l7-7 7 7"
-                              : "M19 9l-7 7-7-7"
-                          }
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                )}
-              </div>
-            )}
-          </>
-        )}
-
-        <ComparisonControls
-          selectedForComparison={selectedForComparison}
-          compareProviders={compareProviders}
-          onCancelComparison={cancelComparison}
-        />
       </div>
     </section>
   );
