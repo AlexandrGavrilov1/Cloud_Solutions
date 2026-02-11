@@ -26,7 +26,7 @@ export const SortPanel = ({
   const priceButtonText =
     priceSortOrder === "desc" ? "Сначала дорогие" : "Сначала дешёвые";
 
-  // --- МОБИЛЬНАЯ ВЕРСИЯ (иконки + тумблер, цена с переключением) ---
+  // --- МОБИЛЬНАЯ ВЕРСИЯ (иконки + тумблер, цена со стрелкой-переключателем) ---
   if (isMobile) {
     const getThumbLeft = () => {
       switch (sortBy) {
@@ -41,7 +41,6 @@ export const SortPanel = ({
       }
     };
 
-    // Обработчик клика по цене на мобильных — переключение направления
     const handlePriceClick = () => {
       if (sortBy !== "price") {
         onSortPrice("desc"); // дорогие сначала
@@ -85,10 +84,10 @@ export const SortPanel = ({
           <Icon name="Star" className="w-4 h-4" />
         </button>
 
-        {/* Цена — переключение направления при каждом клике */}
+        {/* Цена — тумблер: рубль + стрелка, переключение направления */}
         <button
           onClick={handlePriceClick}
-          className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
+          className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center gap-0.5 h-full ${
             sortBy === "price"
               ? "text-[#FF931F]"
               : "text-white hover:text-[#FF931F]"
@@ -96,6 +95,10 @@ export const SortPanel = ({
           title={priceButtonText}
         >
           <span className="text-base font-bold">₽</span>
+          <Icon
+            name={priceSortOrder === "desc" ? "ChevronDown" : "ChevronUp"}
+            size={14}
+          />
         </button>
       </div>
     );
@@ -130,7 +133,6 @@ export const SortPanel = ({
 
       {/* Цена: кастомный комбинированный контрол */}
       <div className="flex items-center">
-        {/* Левая часть — текст, клик — сортировка по убыванию (дорогие) */}
         <button
           onClick={() => onSortPrice("desc")}
           className={`text-xs transition-colors ${
@@ -142,7 +144,6 @@ export const SortPanel = ({
           {priceButtonText}
         </button>
 
-        {/* Правая часть — стрелка, открывает меню выбора направления */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
