@@ -682,9 +682,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   return (
     <section id="providers" className="container mx-auto px-2 py-4">
       {isMobile ? (
-        // ----------------------------------------------
-        // МОБИЛЬНАЯ ВЕРСИЯ (≤ 850px)
-        // ----------------------------------------------
         <div className="flex flex-col">
           {/* Верхняя панель: поиск и кнопка фильтров */}
           <div className="mb-4 flex items-center gap-2">
@@ -700,7 +697,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               onClick={() => setIsMobileFilterOpen(true)}
               className="px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-md hover:bg-primary/90 transition-colors flex items-center gap-1.5"
             >
-              <Icon name="Filter" size={18} />
+              {/* Заменяем Filter на Settings — точно есть в проекте */}
+              <Icon name="Settings" size={18} />
               <span>Фильтры</span>
             </button>
           </div>
