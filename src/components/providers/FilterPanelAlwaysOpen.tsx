@@ -7,7 +7,6 @@ import {
   ClientType,
   AdditionalServiceType,
 } from "./types";
-import { cn } from "@/lib/utils"; // или используйте clsx, classnames
 
 interface FilterPanelAlwaysOpenProps {
   filterFZ152: boolean;
@@ -171,9 +170,13 @@ export const FilterPanelAlwaysOpen = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
+
+      // Если клик внутри всей панели фильтров - НЕ закрываем дропдауны
       if (panelRef.current && panelRef.current.contains(target)) {
         return;
       }
+
+      // Если клик вне всей панели - закрываем все дропдауны
       setDropdownsOpen({
         fstek: false,
         location: false,
@@ -397,6 +400,7 @@ export const FilterPanelAlwaysOpen = ({
   const CheckboxSection = () => {
     return (
       <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
+        {/* Заголовок */}
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-1.5">
             <h3 className="text-sm font-bold text-gray-900 dark:text-white">
@@ -421,26 +425,35 @@ export const FilterPanelAlwaysOpen = ({
           )}
         </div>
 
+        {/* Двухколоночная сетка */}
         <div className="grid grid-cols-2 gap-1.5">
+          {/* Колонка 1 */}
           <div className="space-y-1">
+            {/* 152-ФЗ */}
             <FilterCheckbox
               id="filter-fz152"
               checked={filterFZ152}
               onChange={setFilterFZ152}
               label="152-ФЗ"
             />
+
+            {/* 1С */}
             <FilterCheckbox
               id="filter-1c"
               checked={filter1C}
               onChange={setFilter1C}
               label="1С"
             />
+
+            {/* Тестовый период */}
             <FilterCheckbox
               id="filter-trial"
               checked={filterTrialPeriod}
               onChange={setFilterTrialPeriod}
               label="Тестовый период"
             />
+
+            {/* Заказ до регистрации */}
             <FilterCheckbox
               id="filter-order-before-registration"
               checked={filterOrderBeforeRegistration}
@@ -448,19 +461,26 @@ export const FilterPanelAlwaysOpen = ({
               label="Заказ до регистрации"
             />
           </div>
+
+          {/* Колонка 2 */}
           <div className="space-y-1">
+            {/* КИИ */}
             <FilterCheckbox
               id="filter-kii"
               checked={filterKII}
               onChange={setFilterKII}
               label="КИИ"
             />
+
+            {/* AI */}
             <FilterCheckbox
               id="filter-ai"
               checked={filterAI}
               onChange={setFilterAI}
               label="AI"
             />
+
+            {/* Моб. приложение */}
             <FilterCheckbox
               id="filter-mobile-app"
               checked={filterMobileApp}
@@ -558,9 +578,12 @@ export const FilterPanelAlwaysOpen = ({
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
     const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
+
+    // Состояния для ручного ввода
     const [minInput, setMinInput] = useState(minValue.toString());
     const [maxInput, setMaxInput] = useState(maxValue.toString());
 
+    // Синхронизация с внешним состоянием
     useEffect(() => {
       setMinValue(filterMinDatacenters ?? 0);
       setMinInput((filterMinDatacenters ?? 0).toString());
@@ -589,11 +612,13 @@ export const FilterPanelAlwaysOpen = ({
       [minValue],
     );
 
+    // Применение значений
     const applyValues = useCallback(() => {
       setFilterMinDatacenters(minValue > 0 ? minValue : null);
       setFilterMaxDatacenters(maxValue < 15 ? maxValue : null);
     }, [minValue, maxValue, setFilterMinDatacenters, setFilterMaxDatacenters]);
 
+    // Обработчики для ручного ввода
     const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       if (value === "" || /^\d+$/.test(value)) {
@@ -636,6 +661,7 @@ export const FilterPanelAlwaysOpen = ({
       }
     };
 
+    // Обработчики для ползунков
     const handleMinMouseDown = (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -698,6 +724,7 @@ export const FilterPanelAlwaysOpen = ({
         dropdownKey="datacenters"
       >
         <div className="space-y-3 px-1 pb-2">
+          {/* Овалы с ручным вводом и тире между ними */}
           <div className="flex items-center justify-center gap-1">
             <div className="flex-1">
               <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
@@ -712,11 +739,13 @@ export const FilterPanelAlwaysOpen = ({
                 />
               </div>
             </div>
+
             <div className="flex items-center justify-center w-4">
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 —
               </span>
             </div>
+
             <div className="flex-1">
               <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
                 <input
@@ -732,8 +761,11 @@ export const FilterPanelAlwaysOpen = ({
             </div>
           </div>
 
+          {/* Ползунок */}
           <div className="relative py-2">
+            {/* Контейнер слайдера */}
             <div className="datacenters-slider relative h-0.5 w-full bg-gray-300 dark:bg-gray-600 rounded-full">
+              {/* Оранжевая линия между ползунками */}
               <div
                 className={`absolute h-0.5 rounded-full transition-colors ${
                   isDragging ? "bg-gray-300 dark:bg-gray-600" : "bg-orange-500"
@@ -744,6 +776,8 @@ export const FilterPanelAlwaysOpen = ({
                 }}
               />
             </div>
+
+            {/* Ползунки - маленькие, на линии */}
             <div
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
               style={{ left: `${(minValue / 15) * 100}%` }}
@@ -836,6 +870,7 @@ export const FilterPanelAlwaysOpen = ({
         dropdownKey="gpu"
       >
         <div className="space-y-1">
+          {/* Опция "Есть GPU" */}
           <FilterCheckbox
             id="filter-has-gpu"
             checked={filterHasGPU}
@@ -847,6 +882,8 @@ export const FilterPanelAlwaysOpen = ({
             }}
             label="Есть GPU"
           />
+
+          {/* Конкретные модели GPU */}
           {allGPUs.length > 0 && (
             <div className="mt-1">
               <OptionsGrid
@@ -1098,31 +1135,31 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className={cn(
-        // Адаптивная ширина панели фильтров
-        "w-[180px] sm:w-[240px] md:w-[280px] lg:w-[340px]",
-        "flex-shrink-0 bg-white dark:bg-gray-900 p-3",
-        "border-r border-gray-200 dark:border-gray-800",
-      )}
+      className="w-[340px] flex-shrink-0 bg-white dark:bg-gray-900 p-3 border-r border-gray-200 dark:border-gray-800"
     >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
           width: 4px;
           height: 4px;
         }
+
         .scrollbar-thin::-webkit-scrollbar-track {
           background: transparent;
         }
+
         .scrollbar-thin::-webkit-scrollbar-thumb {
           background-color: #d1d5db;
           border-radius: 2px;
         }
+
         .scrollbar-thin::-webkit-scrollbar-thumb:hover {
           background-color: #9ca3af;
         }
+
         .dark .scrollbar-thin::-webkit-scrollbar-thumb {
           background-color: #4b5563;
         }
+
         .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
           background-color: #6b7280;
         }
