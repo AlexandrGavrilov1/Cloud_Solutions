@@ -980,20 +980,23 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно — полукруг, примыкающий ровной стороной к верхней границе */}
+        {/* Мягкое оранжевое пятно — нижняя половина круга, ровная сторона на верхней границе */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[80px] overflow-hidden pointer-events-none opacity-0 group-hover:opacity-80 transition-opacity duration-700"
+          className="absolute left-1/2 -translate-x-1/2 w-[200px] h-[100px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden"
           style={{
-            maskImage: "linear-gradient(to bottom, black 0px, black 100%)", // без маски, просто overflow-hidden для обрезки сверху
+            top: 0,
+            maskImage:
+              "linear-gradient(to bottom, transparent 0px, black 5px, black 100%)", // плавное появление сверху
             WebkitMaskImage:
-              "linear-gradient(to bottom, black 0px, black 100%)",
+              "linear-gradient(to bottom, transparent 0px, black 5px, black 100%)",
           }}
         >
           <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[160px] rounded-full"
+            className="absolute left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full"
             style={{
+              top: "-90px", // центр круга на верхней границе, видна только нижняя половина
               background:
-                "radial-gradient(circle at center 20%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, rgba(255, 245, 235, 0.7) 80%, transparent 100%)",
+                "radial-gradient(circle at center 70%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, rgba(255,245,235,0.7) 80%, transparent 100%)",
               filter: "blur(25px)",
             }}
           />
