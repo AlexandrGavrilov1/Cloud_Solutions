@@ -972,7 +972,7 @@ export const ProviderCard = ({
         className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift h-full
     ${
       isSelected
-        ? "border-[#FF931F]/50 shadow-lg shadow-[#931F]/30"
+        ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30"
         : "border-[#FF931F]/20"
     }
     hover:bg-gradient-to-br hover:from-[#FFF5EB] hover:via-[#FFF9F2] hover:to-[#FFFDF9]
@@ -980,23 +980,21 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно — ровная сторона на верхней границе, плавное затухание вниз и по бокам */}
+        {/* Мягкое оранжевое пятно — полукруг, примыкающий ровной стороной к верхней границе */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[110px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[80px] overflow-hidden pointer-events-none opacity-0 group-hover:opacity-80 transition-opacity duration-700"
           style={{
-            maskImage: "linear-gradient(to bottom, transparent 0px, black 0px)",
+            maskImage: "linear-gradient(to bottom, black 0px, black 100%)", // без маски, просто overflow-hidden для обрезки сверху
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0px, black 0px)",
+              "linear-gradient(to bottom, black 0px, black 100%)",
           }}
         >
           <div
-            className="absolute left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[160px] rounded-full"
             style={{
-              top: 0,
-              transform: "translateY(-90px)", // центр круга на верхней границе
               background:
-                "radial-gradient(circle at center, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255, 245, 235, 0.6) 75%, transparent 90%)",
-              filter: "blur(22px)",
+                "radial-gradient(circle at center 20%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, rgba(255, 245, 235, 0.7) 80%, transparent 100%)",
+              filter: "blur(25px)",
             }}
           />
         </div>
