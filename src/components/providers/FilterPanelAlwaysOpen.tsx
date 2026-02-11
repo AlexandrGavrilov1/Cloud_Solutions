@@ -7,7 +7,7 @@ import {
   ClientType,
   AdditionalServiceType,
 } from "./types";
-import { cn } from "@/lib/utils"; // ил используй clsx, classnames
+import { cn } from "@/lib/utils"; // clsx, classname
 
 interface FilterPanelAlwaysOpenProps {
   filterFZ152: boolean;
