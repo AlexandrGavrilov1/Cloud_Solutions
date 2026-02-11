@@ -55,12 +55,12 @@ export const ProviderCardHeader = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#FF931F] hover:via-[#FFB366] hover:to-[#FFC999] hover:bg-opacity-10 p-3 -m-3 rounded-lg">
+    <div className="flex flex-col gap-2">
       {/* Заголовок с логотипом */}
       <div className="flex items-start gap-2">
         {/* Логотип */}
         <div className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-lg overflow-hidden bg-white border border-primary/10 shadow-sm flex items-center justify-center transition-all duration-300 group-hover:border-white">
+          <div className="w-12 h-12 rounded-lg overflow-hidden bg-white border border-primary/10 shadow-sm flex items-center justify-center">
             <img
               src={provider.logo}
               alt={provider.name}
@@ -72,7 +72,7 @@ export const ProviderCardHeader = ({
         {/* Информация о провайдере */}
         <div className="flex-1 min-w-0 flex flex-col gap-0.5">
           <div className="flex items-start justify-between gap-1">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate transition-colors duration-300 hover:text-white">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
               {provider.name}
             </h3>
             {onCompareClick && (
@@ -108,9 +108,9 @@ export const ProviderCardHeader = ({
             <Icon
               name="Star"
               size={12}
-              className="fill-orange-500 text-orange-500 transition-colors duration-300 hover:fill-white hover:text-white"
+              className="fill-orange-500 text-orange-500"
             />
-            <span className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300 hover:text-white">
+            <span className="text-sm font-medium text-gray-900 dark:text-white">
               {avgRating.toFixed(1)}
             </span>
           </div>
@@ -124,9 +124,9 @@ export const ProviderCardHeader = ({
           <Icon
             name="MapPin"
             size={12}
-            className="text-orange-500 flex-shrink-0 transition-colors duration-300 hover:text-white"
+            className="text-orange-500 flex-shrink-0"
           />
-          <span className="text-xs text-gray-900 dark:text-white truncate transition-colors duration-300 hover:text-white">
+          <span className="text-xs text-gray-900 dark:text-white truncate">
             {provider.locations.slice(0, 2).join(", ")}
             {provider.locations.length > 2 && (
               <>
@@ -134,7 +134,7 @@ export const ProviderCardHeader = ({
                   <>
                     , {provider.locations.slice(2).join(", ")}
                     <button
-                      className="ml-1 text-orange-500 hover:underline text-xs transition-colors duration-300 hover:text-white"
+                      className="ml-1 text-orange-500 hover:underline text-xs"
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowAllLocations(false);
@@ -145,7 +145,7 @@ export const ProviderCardHeader = ({
                   </>
                 ) : (
                   <button
-                    className="ml-1 text-orange-500 text-xs hover:underline transition-colors duration-300 hover:text-white"
+                    className="ml-1 text-orange-500 text-xs hover:underline"
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowAllLocations(true);
@@ -165,18 +165,14 @@ export const ProviderCardHeader = ({
           provider.kiiPlacement) && (
           <div className="flex items-center gap-1.5">
             <div className="relative flex-shrink-0">
-              <Icon
-                name="Shield"
-                size={12}
-                className="text-orange-500 transition-colors duration-300 hover:text-white"
-              />
+              <Icon name="Shield" size={12} className="text-orange-500" />
               <Icon
                 name="Check"
                 size={6}
-                className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-colors duration-300 hover:text-white"
+                className="text-orange-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               />
             </div>
-            <span className="text-xs text-gray-900 dark:text-white truncate transition-colors duration-300 hover:text-white">
+            <span className="text-xs text-gray-900 dark:text-white truncate">
               {[
                 provider.fz152Compliant && "152-ФЗ",
                 provider.fstekCompliant && "ФСТЭК",
@@ -194,9 +190,9 @@ export const ProviderCardHeader = ({
             <Icon
               name="Settings"
               size={12}
-              className="text-orange-500 flex-shrink-0 transition-colors duration-300 hover:text-white"
+              className="text-orange-500 flex-shrink-0"
             />
-            <span className="text-xs text-gray-900 dark:text-white truncate transition-colors duration-300 hover:text-white">
+            <span className="text-xs text-gray-900 dark:text-white truncate">
               {provider.technicalSpecs.virtualization
                 ? provider.technicalSpecs.virtualization.join(", ")
                 : provider.technicalSpecs.diskType}
@@ -211,9 +207,9 @@ export const ProviderCardHeader = ({
             <Icon
               name="User"
               size={12}
-              className="text-orange-500 flex-shrink-0 transition-colors duration-300 hover:text-white"
+              className="text-orange-500 flex-shrink-0"
             />
-            <span className="text-xs text-gray-900 dark:text-white truncate transition-colors duration-300 hover:text-white">
+            <span className="text-xs text-gray-900 dark:text-white truncate">
               Uptime {provider.serviceGuarantees.uptimeSLA}, поддержка{" "}
               {provider.serviceGuarantees.supportResponseTime}
             </span>
@@ -227,9 +223,9 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Cpu"
                 size={12}
-                className="text-orange-500 flex-shrink-0 transition-colors duration-300 hover:text-white"
+                className="text-orange-500 flex-shrink-0"
               />
-              <span className="text-xs text-gray-900 dark:text-white truncate transition-colors duration-300 hover:text-white">
+              <span className="text-xs text-gray-900 dark:text-white truncate">
                 GPU {provider.technicalSpecs.gpuModels.length}, Агенты
               </span>
             </div>
@@ -239,9 +235,9 @@ export const ProviderCardHeader = ({
       {/* Цена и кнопка */}
       <div className="flex items-center justify-between gap-3 mt-1">
         <div className="flex flex-col gap-1">
-          <div className="text-2xl font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap transition-colors duration-300 hover:text-white">
+          <div className="text-2xl font-bold text-gray-900 dark:text-white leading-none whitespace-nowrap">
             от {provider.basePrice === 0 ? "—" : `${provider.basePrice} ₽`}
-            <span className="text-base font-normal text-gray-900 dark:text-white ml-0.5 transition-colors duration-300 hover:text-white">
+            <span className="text-base font-normal text-gray-900 dark:text-white ml-0.5">
               /мес
             </span>
           </div>
@@ -251,9 +247,9 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Gift"
                 size={12}
-                className="text-orange-500 flex-shrink-0 transition-colors duration-300 hover:text-white"
+                className="text-orange-500 flex-shrink-0"
               />
-              <span className="text-xs text-gray-900 dark:text-white transition-colors duration-300 hover:text-white">
+              <span className="text-xs text-gray-900 dark:text-white">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
               </span>
             </div>
@@ -262,7 +258,7 @@ export const ProviderCardHeader = ({
 
         <Button
           size="sm"
-          className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 group transition-all duration-300 hover:scale-105"
+          className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 group"
           onClick={handleProviderClickWithTracking}
         >
           Попробовать
