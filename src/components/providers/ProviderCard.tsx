@@ -102,11 +102,19 @@ export const ProviderCard = ({
   };
 
   const handleProviderClick = async () => {
-    if (typeof window !== "undefined" && (window as unknown as { ym?: (...args: unknown[]) => void }).ym) {
-      ((window as unknown as { ym: (...args: unknown[]) => void }).ym)(105466349, "reachGoal", "handleProviderClick", {
-        provider_id: provider.id,
-        provider_name: provider.name,
-      });
+    if (
+      typeof window !== "undefined" &&
+      (window as unknown as { ym?: (...args: unknown[]) => void }).ym
+    ) {
+      (window as unknown as { ym: (...args: unknown[]) => void }).ym(
+        105466349,
+        "reachGoal",
+        "handleProviderClick",
+        {
+          provider_id: provider.id,
+          provider_name: provider.name,
+        },
+      );
     }
 
     if (provider.url) {
@@ -399,7 +407,9 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-purple-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Cpu" size={18} className="text-purple-500" />
           </div>
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">Поддержка GPU</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+            Поддержка GPU
+          </h4>
         </div>
 
         <div className="space-y-3">
@@ -466,7 +476,9 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-cyan-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Monitor" size={18} className="text-cyan-500" />
           </div>
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">Доступные ОС</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+            Доступные ОС
+          </h4>
         </div>
 
         <div className="space-y-3">
@@ -524,7 +536,9 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-green-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Database" size={18} className="text-green-500" />
           </div>
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">Поддержка 1С</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+            Поддержка 1С
+          </h4>
         </div>
 
         <div className="space-y-3">
@@ -635,7 +649,9 @@ export const ProviderCard = ({
               name={provider.mobileApp ? "Smartphone" : "SmartphoneOff"}
               size={18}
               className={
-                provider.mobileApp ? "text-pink-500" : "text-gray-600 dark:text-gray-300"
+                provider.mobileApp
+                  ? "text-pink-500"
+                  : "text-gray-600 dark:text-gray-300"
               }
             />
           </div>
@@ -668,7 +684,9 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-amber-500/20 rounded-xl flex items-center justify-center">
             <Icon name="ClipboardCheck" size={18} className="text-amber-500" />
           </div>
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">Заказ услуг</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+            Заказ услуг
+          </h4>
           <Badge
             className={
               provider.orderBeforeRegistration
@@ -702,7 +720,9 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
             <Icon name="Info" size={18} className="text-primary" />
           </div>
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">О провайдере</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+            О провайдере
+          </h4>
         </div>
         <div className="space-y-3">
           <p className="text-sm text-gray-900 dark:text-white leading-relaxed whitespace-pre-line">
@@ -727,14 +747,18 @@ export const ProviderCard = ({
           <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
             <Icon name="Phone" size={18} className="text-blue-500" />
           </div>
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">Контакты</h4>
+          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+            Контакты
+          </h4>
         </div>
         <div className="space-y-3">
           {contact.website && (
             <div className="flex items-start gap-2">
               <Icon name="Globe" size={16} className="text-primary mt-0.5" />
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-white">Сайт</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">
+                  Сайт
+                </div>
                 <a
                   href={contact.website}
                   target="_blank"
@@ -751,7 +775,9 @@ export const ProviderCard = ({
             <div className="flex items-start gap-2">
               <Icon name="Mail" size={16} className="text-primary mt-0.5" />
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-white">Email</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">
+                  Email
+                </div>
                 <a
                   href={`mailto:${contact.email}`}
                   className="text-sm text-primary hover:underline"
@@ -909,7 +935,9 @@ export const ProviderCard = ({
                 key={idx}
                 className="flex items-center justify-between p-2 bg-background/50 rounded-lg border border-border"
               >
-                <span className="text-sm text-gray-900 dark:text-white">{rule.service}</span>
+                <span className="text-sm text-gray-900 dark:text-white">
+                  {rule.service}
+                </span>
                 <Badge className="bg-green-500/10 text-green-600 border-green-500/30">
                   {rule.commission}
                 </Badge>
@@ -941,10 +969,15 @@ export const ProviderCard = ({
       }`}
     >
       <Card
-        className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift h-full
+        className={`rounded-2xl overflow-visible relative flex flex-col h-full transition-all duration-300 ease-in-out
           ${
-            isSelected ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30" : "border-[#FF931F]/20"
-          } transition-all`}
+            isSelected
+              ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30"
+              : "border-[#FF931F]/20"
+          }
+          hover:bg-gradient-to-br hover:from-[#FFF5EB] hover:via-[#FFF9F2] hover:to-[#FFFDF9]
+          dark:hover:from-[#332211] dark:hover:via-[#221A14] dark:hover:to-[#1A1512]
+        `}
       >
         <CardHeader className="p-5">
           <ProviderCardHeader
@@ -1167,7 +1200,9 @@ export const ProviderCard = ({
                   <div className="w-9 h-9 bg-sky-500/20 rounded-xl flex items-center justify-center">
                     <Icon name="Briefcase" size={18} className="text-sky-500" />
                   </div>
-                  <h4 className="text-base font-bold text-gray-900 dark:text-white">Кейсы</h4>
+                  <h4 className="text-base font-bold text-gray-900 dark:text-white">
+                    Кейсы
+                  </h4>
                 </div>
                 <CaseStudiesSection provider={provider} />
               </div>
