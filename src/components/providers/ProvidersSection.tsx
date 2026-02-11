@@ -19,10 +19,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
-  // --- Состояние ширины экрана для определения шага подгрузки ---
+  // --- Состояние ширины экрана ---
   const [windowWidth, setWindowWidth] = useState<number>(() => {
     if (typeof window !== "undefined") return window.innerWidth;
-    return 1024;
+    return 1024; // fallback для SSR
   });
 
   useEffect(() => {
@@ -43,7 +43,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   });
 
   // --- Все фильтры (сохранение в localStorage) ---
-  // ... (полный код фильтров без изменений, как в исходном файле) ...
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -166,119 +165,166 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
+
   useEffect(() => {
-    if (filterFSTEK.length > 0)
+    if (filterFSTEK.length > 0) {
       localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
-    else localStorage.removeItem("filterFSTEK");
+    } else {
+      localStorage.removeItem("filterFSTEK");
+    }
   }, [filterFSTEK]);
+
   useEffect(() => {
     localStorage.setItem(
       "filterTrialPeriod",
       JSON.stringify(filterTrialPeriod),
     );
   }, [filterTrialPeriod]);
+
   useEffect(() => {
-    if (filterLocation.length > 0)
+    if (filterLocation.length > 0) {
       localStorage.setItem("filterLocation", JSON.stringify(filterLocation));
-    else localStorage.removeItem("filterLocation");
+    } else {
+      localStorage.removeItem("filterLocation");
+    }
   }, [filterLocation]);
+
   useEffect(() => {
-    if (filterVirtualization.length > 0)
+    if (filterVirtualization.length > 0) {
       localStorage.setItem(
         "filterVirtualization",
         JSON.stringify(filterVirtualization),
       );
-    else localStorage.removeItem("filterVirtualization");
+    } else {
+      localStorage.removeItem("filterVirtualization");
+    }
   }, [filterVirtualization]);
+
   useEffect(() => {
-    if (filterMinDatacenters !== null)
+    if (filterMinDatacenters !== null) {
       localStorage.setItem(
         "filterMinDatacenters",
         filterMinDatacenters.toString(),
       );
-    else localStorage.removeItem("filterMinDatacenters");
+    } else {
+      localStorage.removeItem("filterMinDatacenters");
+    }
   }, [filterMinDatacenters]);
+
   useEffect(() => {
-    if (filterMaxDatacenters !== null)
+    if (filterMaxDatacenters !== null) {
       localStorage.setItem(
         "filterMaxDatacenters",
         filterMaxDatacenters.toString(),
       );
-    else localStorage.removeItem("filterMaxDatacenters");
+    } else {
+      localStorage.removeItem("filterMaxDatacenters");
+    }
   }, [filterMaxDatacenters]);
+
   useEffect(() => {
-    if (filterDiskType.length > 0)
+    if (filterDiskType.length > 0) {
       localStorage.setItem("filterDiskType", JSON.stringify(filterDiskType));
-    else localStorage.removeItem("filterDiskType");
+    } else {
+      localStorage.removeItem("filterDiskType");
+    }
   }, [filterDiskType]);
+
   useEffect(() => {
-    if (filterPaymentMethod.length > 0)
+    if (filterPaymentMethod.length > 0) {
       localStorage.setItem(
         "filterPaymentMethod",
         JSON.stringify(filterPaymentMethod),
       );
-    else localStorage.removeItem("filterPaymentMethod");
+    } else {
+      localStorage.removeItem("filterPaymentMethod");
+    }
   }, [filterPaymentMethod]);
+
   useEffect(() => {
-    if (filterOS.length > 0)
+    if (filterOS.length > 0) {
       localStorage.setItem("filterOS", JSON.stringify(filterOS));
-    else localStorage.removeItem("filterOS");
+    } else {
+      localStorage.removeItem("filterOS");
+    }
   }, [filterOS]);
+
   useEffect(() => {
-    if (filterCPU.length > 0)
+    if (filterCPU.length > 0) {
       localStorage.setItem("filterCPU", JSON.stringify(filterCPU));
-    else localStorage.removeItem("filterCPU");
+    } else {
+      localStorage.removeItem("filterCPU");
+    }
   }, [filterCPU]);
+
   useEffect(() => {
     localStorage.setItem("filterKII", JSON.stringify(filterKII));
   }, [filterKII]);
+
   useEffect(() => {
     localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
   }, [filterMobileApp]);
+
   useEffect(() => {
     localStorage.setItem(
       "filterOrderBeforeRegistration",
       JSON.stringify(filterOrderBeforeRegistration),
     );
   }, [filterOrderBeforeRegistration]);
+
   useEffect(() => {
-    if (filterAdditionalServices.length > 0)
+    if (filterAdditionalServices.length > 0) {
       localStorage.setItem(
         "filterAdditionalServices",
         JSON.stringify(filterAdditionalServices),
       );
-    else localStorage.removeItem("filterAdditionalServices");
+    } else {
+      localStorage.removeItem("filterAdditionalServices");
+    }
   }, [filterAdditionalServices]);
+
   useEffect(() => {
-    if (filterRegistrationData.length > 0)
+    if (filterRegistrationData.length > 0) {
       localStorage.setItem(
         "filterRegistrationData",
         JSON.stringify(filterRegistrationData),
       );
-    else localStorage.removeItem("filterRegistrationData");
+    } else {
+      localStorage.removeItem("filterRegistrationData");
+    }
   }, [filterRegistrationData]);
+
   useEffect(() => {
-    if (filterClientType.length > 0)
+    if (filterClientType.length > 0) {
       localStorage.setItem(
         "filterClientType",
         JSON.stringify(filterClientType),
       );
-    else localStorage.removeItem("filterClientType");
+    } else {
+      localStorage.removeItem("filterClientType");
+    }
   }, [filterClientType]);
+
   useEffect(() => {
-    if (filterGPU.length > 0)
+    if (filterGPU.length > 0) {
       localStorage.setItem("filterGPU", JSON.stringify(filterGPU));
-    else localStorage.removeItem("filterGPU");
+    } else {
+      localStorage.removeItem("filterGPU");
+    }
   }, [filterGPU]);
+
   useEffect(() => {
     localStorage.setItem("filterHasGPU", JSON.stringify(filterHasGPU));
   }, [filterHasGPU]);
+
   useEffect(() => {
     localStorage.setItem("filter1C", JSON.stringify(filter1C));
   }, [filter1C]);
+
   useEffect(() => {
     localStorage.setItem("filterAI", JSON.stringify(filterAI));
   }, [filterAI]);
+
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
@@ -368,32 +414,37 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   // --- Фильтрация и сортировка провайдеров ---
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
-      // ... (полная логика фильтрации, без изменений) ...
       if (
         searchQuery &&
         !p.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
         return false;
+
       if (filterFZ152 && !p.fz152Compliant) return false;
+
       if (filterFSTEK.length > 0) {
         const hasMatchingFSTEK = filterFSTEK.some(
           (cert) => p.fstekCertifications?.includes(cert) || false,
         );
         if (!hasMatchingFSTEK) return false;
       }
+
       if (filterTrialPeriod && p.trialDays === 0) return false;
+
       if (filterLocation.length > 0) {
         const hasMatchingLocation = filterLocation.some((location) =>
           p.locations.includes(location),
         );
         if (!hasMatchingLocation) return false;
       }
+
       if (filterVirtualization.length > 0) {
         const hasMatchingVirtualization = filterVirtualization.some((virt) =>
           p.technicalSpecs.virtualization.includes(virt as any),
         );
         if (!hasMatchingVirtualization) return false;
       }
+
       if (
         filterMinDatacenters !== null &&
         p.locations.length < filterMinDatacenters
@@ -404,30 +455,36 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         p.locations.length > filterMaxDatacenters
       )
         return false;
+
       if (filterDiskType.length > 0) {
         if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
       }
+
       if (filterPaymentMethod.length > 0) {
         const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
           p.pricingDetails.paymentMethods.includes(method),
         );
         if (!hasMatchingPaymentMethod) return false;
       }
+
       if (filterOS.length > 0) {
         const hasMatchingOS = filterOS.some((os) =>
           p.technicalSpecs.availableOS.includes(os),
         );
         if (!hasMatchingOS) return false;
       }
+
       if (filterCPU.length > 0) {
         const cpuModels = p.technicalSpecs.cpuModels || [];
         const hasMatchingCPU = filterCPU.some((cpu) => cpuModels.includes(cpu));
         if (!hasMatchingCPU) return false;
       }
+
       if (filterKII && !p.kiiPlacement) return false;
       if (filterMobileApp && !p.mobileApp) return false;
       if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
         return false;
+
       if (filterAdditionalServices.length > 0) {
         const hasMatchingService = filterAdditionalServices.some(
           (service) =>
@@ -435,29 +492,35 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         );
         if (!hasMatchingService) return false;
       }
+
       if (filterRegistrationData.length > 0) {
         const hasMatchingRegistrationData = filterRegistrationData.some(
           (field) => p.registrationData?.includes(field as any) || false,
         );
         if (!hasMatchingRegistrationData) return false;
       }
+
       if (filterClientType.length > 0) {
         const hasMatchingClientType = filterClientType.some(
           (type) => p.supportedClientTypes?.includes(type as any) || false,
         );
         if (!hasMatchingClientType) return false;
       }
+
       if (filterHasGPU) {
         const hasAnyGPU = (p.technicalSpecs.gpuModels || []).length > 0;
         if (!hasAnyGPU) return false;
       }
+
       if (filterGPU.length > 0) {
         const gpuModels = p.technicalSpecs.gpuModels || [];
         const hasMatchingGPU = filterGPU.some((gpu) => gpuModels.includes(gpu));
         if (!hasMatchingGPU) return false;
       }
+
       if (filter1C && !p.technicalSpecs.supports1C) return false;
       if (filterAI && !p.technicalSpecs.supportsAI) return false;
+
       return true;
     });
 
@@ -504,7 +567,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     sortBy,
   ]);
 
-  // --- Логика сравнения ---
+  // --- Логика сравнения провайдеров ---
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
     [],
   );
@@ -562,11 +625,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       <div className="flex flex-row flex-nowrap gap-4">
         {/* 
           Панель фильтров:
-          - на экранах <1024: ширина 30%, min 160px, max 280px (пропорциональное уменьшение)
-          - на экранах >=1024: фиксированная ширина 340px (lg)
+          - минимальная ширина 208px (5.5 см)
+          - на экранах <1024: ширина 30% от родителя, но не меньше 208px и не больше 280px
+          - на экранах >=1024: фиксированная ширина 340px
         */}
         <FilterPanelAlwaysOpen
-          className="w-[30%] min-w-[160px] max-w-[280px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px]"
+          className="w-[30%] min-w-[208px] max-w-[280px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px]"
           filterFZ152={filterFZ152}
           setFilterFZ152={setFilterFZ152}
           filterFSTEK={filterFSTEK}
