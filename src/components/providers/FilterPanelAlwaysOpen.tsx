@@ -655,10 +655,7 @@ export const FilterPanelAlwaysOpen = ({
       setFilterMaxDatacenters(value < 15 ? value : null);
     };
 
-    const handleKeyDown = (
-      e: React.KeyboardEvent<HTMLInputElement>,
-      type: "min" | "max",
-    ) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
         e.currentTarget.blur();
       }
@@ -716,7 +713,7 @@ export const FilterPanelAlwaysOpen = ({
       (filterMinDatacenters === null || filterMinDatacenters === 0) &&
       (filterMaxDatacenters === null || filterMaxDatacenters === 15)
         ? "Любое"
-        : `${filterMinDatacenters ?? 0} - ${filterMaxDatacenters ?? 15} ЦОД`;
+        : `${filterMinDatacenters ?? 0} - ${filterMaxDatacenters ?? 15}`;
 
     return (
       <AccordionSection
@@ -727,51 +724,50 @@ export const FilterPanelAlwaysOpen = ({
         dropdownKey="datacenters"
       >
         <div className="space-y-3 px-1 pb-2">
-          {/* Овальные секции с ручным вводом */}
-          <div className="flex items-center justify-between gap-2">
+          {/* Овалы с ручным вводом и тире между ними */}
+          <div className="flex items-center justify-center gap-1">
             <div className="flex-1">
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                От
-              </div>
-              <div className="flex items-center h-9 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
+              <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
                 <input
                   type="text"
                   value={minInput}
                   onChange={handleMinInputChange}
                   onBlur={handleMinInputBlur}
-                  onKeyDown={(e) => handleKeyDown(e, "min")}
-                  className="w-full text-sm text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
+                  onKeyDown={handleKeyDown}
+                  className="w-full text-xs text-center text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
                   placeholder="0"
                 />
-                <span className="text-xs text-gray-500 ml-1">ЦОД</span>
               </div>
             </div>
+
+            <div className="flex items-center justify-center w-4">
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                —
+              </span>
+            </div>
+
             <div className="flex-1">
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                До
-              </div>
-              <div className="flex items-center h-9 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
+              <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
                 <input
                   type="text"
                   value={maxInput}
                   onChange={handleMaxInputChange}
                   onBlur={handleMaxInputBlur}
-                  onKeyDown={(e) => handleKeyDown(e, "max")}
-                  className="w-full text-sm text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
+                  onKeyDown={handleKeyDown}
+                  className="w-full text-xs text-center text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
                   placeholder="15"
                 />
-                <span className="text-xs text-gray-500 ml-1">ЦОД</span>
               </div>
             </div>
           </div>
 
           {/* Ползунок */}
-          <div className="relative py-3">
+          <div className="relative py-2">
             {/* Контейнер слайдера */}
-            <div className="datacenters-slider relative h-1 w-full bg-gray-300 dark:bg-gray-600 rounded-full">
+            <div className="datacenters-slider relative h-0.5 w-full bg-gray-300 dark:bg-gray-600 rounded-full">
               {/* Оранжевая линия между ползунками */}
               <div
-                className={`absolute h-1 rounded-full transition-colors ${
+                className={`absolute h-0.5 rounded-full transition-colors ${
                   isDragging ? "bg-gray-300 dark:bg-gray-600" : "bg-orange-500"
                 }`}
                 style={{
@@ -781,23 +777,17 @@ export const FilterPanelAlwaysOpen = ({
               />
             </div>
 
-            {/* Ползунки */}
+            {/* Ползунки - маленькие, на линии */}
             <div
-              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
               style={{ left: `${(minValue / 15) * 100}%` }}
               onMouseDown={handleMinMouseDown}
             />
             <div
-              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
               style={{ left: `${(maxValue / 15) * 100}%` }}
               onMouseDown={handleMaxMouseDown}
             />
-
-            {/* Метки минимального и максимального значения */}
-            <div className="flex justify-between text-xs mt-2">
-              <span className="text-gray-600 dark:text-gray-400">0</span>
-              <span className="text-gray-600 dark:text-gray-400">15</span>
-            </div>
           </div>
         </div>
       </AccordionSection>
