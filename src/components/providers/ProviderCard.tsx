@@ -980,17 +980,16 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно в верхней части — полностью размытое, без границ */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 w-[300px] h-[150px] opacity-0 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none"
-          style={{
-            top: "-75px", // Половина высоты, чтобы нижняя часть пятна накладывалась на верх карточки
-            background:
-              "radial-gradient(ellipse at center bottom, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, rgba(255, 245, 235, 0.5) 80%, transparent 100%)",
-            filter: "blur(30px)",
-            borderRadius: "100%",
-          }}
-        ></div>
+        {/* Мягкое оранжевое пятно - только нижняя половина круга, полностью внутри карточки */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[90px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-none rounded-b-full">
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full blur-2xl"
+            style={{
+              background:
+                "radial-gradient(circle at center 30%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, #FFF5EB 85%, transparent 100%)",
+            }}
+          ></div>
+        </div>
 
         <CardHeader className="p-5 relative z-10">
           <ProviderCardHeader
