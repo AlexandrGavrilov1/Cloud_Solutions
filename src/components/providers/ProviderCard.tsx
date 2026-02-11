@@ -975,6 +975,7 @@ export const ProviderCard = ({
         ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30"
         : "border-[#FF931F]/20"
     }
+    hover:border-[#FF931F]/50 hover:shadow-md hover:shadow-[#FF931F]/20
     hover:bg-gradient-to-br hover:from-[#FFF5EB] hover:via-[#FFF9F2] hover:to-[#FFFDF9]
     dark:hover:from-[#332211] dark:hover:via-[#221A14] dark:hover:to-[#1A1512]
     transition-all duration-300 ease-in-out
