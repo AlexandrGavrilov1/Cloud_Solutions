@@ -980,9 +980,9 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Оранжевое градиентное полукруглое пятно в верхней части при наведении */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[250px] h-[80px] opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none overflow-hidden rounded-t-2xl">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[150px] bg-gradient-to-b from-[#FF931F] via-[#FFB366] to-transparent rounded-[50%] blur-xl"></div>
+        {/* Оранжевое градиентное круглое пятно в верхней части при наведении */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] opacity-0 group-hover:opacity-25 transition-opacity duration-700 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FF931F] via-[#FFB366] to-transparent rounded-full blur-2xl"></div>
         </div>
 
         <CardHeader className="p-5">
