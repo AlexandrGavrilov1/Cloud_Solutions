@@ -712,14 +712,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
 
-          {/* Счётчик провайдеров */}
-          <div className="mb-4">
-            <ProvidersCounter
-              currentCount={Math.min(providersToShow, filteredProviders.length)}
-              totalCount={filteredProviders.length}
-            />
-          </div>
-
           {/* Список карточек (всегда 1 колонка) */}
           {searchQuery && filteredProviders.length === 0 ? (
             <div className="text-center py-8">
