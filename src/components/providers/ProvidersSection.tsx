@@ -684,7 +684,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-2 py-4">
       {isMobile ? (
         <div className="flex flex-col">
-          {/* Верхняя панель: поиск и кнопка фильтров */}
+          {/* Верхняя панель: поиск + кнопка фильтров */}
           <div className="mb-4 flex items-center gap-2">
             <div className="flex-1">
               <SearchInput
@@ -698,10 +698,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               onClick={() => setIsMobileFilterOpen(true)}
               className="px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-md hover:bg-primary/90 transition-colors flex items-center gap-1.5"
             >
-              {/* Заменяем Filter на Settings — точно есть в проекте */}
-              <Icon name="Settings" size={18} />
+              <Icon name="Filter" size={18} />
               <span>Фильтры</span>
             </button>
+          </div>
+
+          {/* Строка: счётчик + сортировка */}
+          <div className="mb-4 flex items-center justify-between">
+            <ProvidersCounter
+              currentCount={Math.min(providersToShow, filteredProviders.length)}
+              totalCount={filteredProviders.length}
+            />
+            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
           </div>
 
           {/* Счётчик провайдеров */}
