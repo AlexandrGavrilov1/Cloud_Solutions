@@ -30,7 +30,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   });
   const [priceSortOrder, setPriceSortOrder] = useState<"asc" | "desc">(() => {
     const saved = localStorage.getItem("priceSortOrder");
-    return saved === "desc" ? "desc" : "asc";
+    return saved === "asc" || saved === "desc" ? saved : "desc";
   });
 
   // Сохраняем сортировку и направление цены
@@ -70,7 +70,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   // --- Состояние мобильного дровера ---
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  // ========== ВСЕ ФИЛЬТРЫ (полностью как в исходном проекте) ==========
+  // ========== ВСЕ ФИЛЬТРЫ (сохранение в localStorage) ==========
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -170,7 +170,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   });
 
   // ========== СОХРАНЕНИЕ ФИЛЬТРОВ В LOCALSTORAGE ==========
-  // (полный набор useEffect – скопировать из существующего проекта)
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
@@ -561,13 +560,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     setSortBy("rating");
   };
 
-  const handleSortPrice = () => {
-    if (sortBy !== "price") {
-      setSortBy("price");
-      setPriceSortOrder("asc");
-    } else {
-      setPriceSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
-    }
+  const handleSortPrice = (order: "asc" | "desc") => {
+    setSortBy("price");
+    setPriceSortOrder(order);
   };
 
   // ========== ЛОГИКА СРАВНЕНИЯ ==========
@@ -694,14 +689,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </div>
             <button
               onClick={() => setIsMobileFilterOpen(true)}
-              className="px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-md hover:bg-primary/90 transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-md hover:bg-primary/90 transition-colors flex items-center gap-1.5 min-w-[112px] justify-center"
             >
               <Icon name="Filter" size={18} />
               <span>Фильтры</span>
             </button>
           </div>
 
-          {/* Строка: счётчик + сортировка (мобильный вид SortPanel сам определит) */}
+          {/* Строка: счётчик + сортировка */}
           <div className="mb-4 flex items-center justify-between">
             <ProvidersCounter
               currentCount={Math.min(providersToShow, sortedProviders.length)}
@@ -739,7 +734,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 toggleComparison={toggleComparison}
               />
 
-              {/* Кнопки подгрузки (мобильные — шаг 9) */}
+              {/* Кнопки подгрузки (шаг 9) */}
               {(sortedProviders.length > providersToShow ||
                 providersToShow > 9) && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">

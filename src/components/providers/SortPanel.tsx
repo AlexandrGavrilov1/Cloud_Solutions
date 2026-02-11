@@ -1,10 +1,16 @@
 import Icon from "@/components/ui/icon";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SortPanelProps {
   sortBy: "popular" | "rating" | "price";
   onSortPopular: () => void;
   onSortRating: () => void;
-  onSortPrice: () => void;
+  onSortPrice: (order: "asc" | "desc") => void; // теперь передаём направление
   priceSortOrder: "asc" | "desc";
   isMobile?: boolean;
 }
@@ -17,10 +23,11 @@ export const SortPanel = ({
   priceSortOrder,
   isMobile = false,
 }: SortPanelProps) => {
+  // Текст кнопки цены в зависимости от направления
   const priceButtonText =
     priceSortOrder === "desc" ? "Сначала дорогие" : "Сначала дешёвые";
 
-  // --- МОБИЛЬНАЯ ВЕРСИЯ (только иконки, ширина как у кнопки "Фильтры") ---
+  // --- МОБИЛЬНАЯ ВЕРСИЯ (иконки + тумблер) ---
   if (isMobile) {
     const getThumbLeft = () => {
       switch (sortBy) {
@@ -43,7 +50,7 @@ export const SortPanel = ({
           style={{ left: getThumbLeft() }}
         />
 
-        {/* Популярные — ЗАМЕНЕНО НА Crown (точно есть в Lucide) */}
+        {/* Популярные */}
         <button
           onClick={onSortPopular}
           className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
@@ -51,12 +58,12 @@ export const SortPanel = ({
               ? "text-[#FF931F]"
               : "text-white hover:text-[#FF931F]"
           }`}
-          title="По популярности"
+          title="Популярные" // Пояснение при наведении/долгом нажатии
         >
           <Icon name="Crown" className="w-4 h-4" />
         </button>
 
-        {/* Рейтинг — Star */}
+        {/* Высокий рейтинг */}
         <button
           onClick={onSortRating}
           className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
@@ -64,20 +71,20 @@ export const SortPanel = ({
               ? "text-[#FF931F]"
               : "text-white hover:text-[#FF931F]"
           }`}
-          title="По рейтингу"
+          title="Высокий рейтинг"
         >
           <Icon name="Star" className="w-4 h-4" />
         </button>
 
-        {/* Цена */}
+        {/* Цена — иконка с динамическим title */}
         <button
-          onClick={onSortPrice}
+          onClick={() => onSortPrice("desc")} // на мобильных при клике — сортировка дорогие сначала
           className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
             sortBy === "price"
               ? "text-[#FF931F]"
               : "text-white hover:text-[#FF931F]"
           }`}
-          title={priceButtonText}
+          title={priceButtonText} // "Сначала дорогие" или "Сначала дешёвые"
         >
           <span className="text-base font-bold">₽</span>
         </button>
@@ -85,9 +92,10 @@ export const SortPanel = ({
     );
   }
 
-  // --- ДЕСКТОПНАЯ ВЕРСИЯ (только текст) ---
+  // --- ДЕСКТОПНАЯ ВЕРСИЯ (текст + выпадающий список для цены) ---
   return (
     <div className="flex items-center gap-6 bg-[#2B3038] px-5 py-2 rounded-xl h-10">
+      {/* Популярные */}
       <button
         onClick={onSortPopular}
         className={`text-sm font-medium transition-colors ${
@@ -98,6 +106,8 @@ export const SortPanel = ({
       >
         Популярные
       </button>
+
+      {/* Высокий рейтинг */}
       <button
         onClick={onSortRating}
         className={`text-sm font-medium transition-colors ${
@@ -108,16 +118,59 @@ export const SortPanel = ({
       >
         Высокий рейтинг
       </button>
-      <button
-        onClick={onSortPrice}
-        className={`text-sm font-medium transition-colors ${
-          sortBy === "price"
-            ? "text-[#FF931F]"
-            : "text-white hover:text-[#FF931F]"
-        }`}
-      >
-        {priceButtonText}
-      </button>
+
+      {/* Цена с выпадающим списком */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
+              sortBy === "price"
+                ? "text-[#FF931F]"
+                : "text-white hover:text-[#FF931F]"
+            }`}
+          >
+            {priceButtonText}
+            <Icon
+              name="ChevronDown"
+              size={14}
+              className={
+                sortBy === "price" ? "text-[#FF931F]" : "text-white/70"
+              }
+            />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          className="w-48 bg-[#2B3038] border-gray-700"
+        >
+          <DropdownMenuItem
+            onClick={() => onSortPrice("desc")}
+            className={`cursor-pointer text-sm ${
+              sortBy === "price" && priceSortOrder === "desc"
+                ? "text-[#FF931F] bg-white/10"
+                : "text-white hover:text-[#FF931F] hover:bg-white/10"
+            }`}
+          >
+            Сначала дорогие
+            {sortBy === "price" && priceSortOrder === "desc" && (
+              <Icon name="Check" size={16} className="ml-auto text-[#FF931F]" />
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onSortPrice("asc")}
+            className={`cursor-pointer text-sm ${
+              sortBy === "price" && priceSortOrder === "asc"
+                ? "text-[#FF931F] bg-white/10"
+                : "text-white hover:text-[#FF931F] hover:bg-white/10"
+            }`}
+          >
+            Сначала дешёвые
+            {sortBy === "price" && priceSortOrder === "asc" && (
+              <Icon name="Check" size={16} className="ml-auto text-[#FF931F]" />
+            )}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
