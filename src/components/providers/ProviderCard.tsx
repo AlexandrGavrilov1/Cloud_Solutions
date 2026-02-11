@@ -1145,7 +1145,7 @@ export const ProviderCard = ({
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-9 h-9 bg-violet-500/20 rounded-xl flex items-center justify-center">
                       <Icon
-                        name="Settings"
+                        name="Filter"
                         size={18}
                         className="text-violet-500"
                       />
