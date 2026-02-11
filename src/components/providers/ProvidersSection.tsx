@@ -8,7 +8,7 @@ import { ProvidersList } from "./ProvidersList";
 import { SearchInput } from "./SearchInput";
 import { SortPanel } from "./SortPanel";
 import { ProvidersCounter } from "./ProvidersCounter";
-import Icon from "@/components/ui/icon"; // обязательно для мобильной кнопки
+import Icon from "@/components/ui/icon";
 import { POPULAR_IDS } from "@/constants/popularProviders";
 
 interface ProvidersSectionProps {
@@ -21,18 +21,25 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [searchQuery, setSearchQuery] = useState("");
 
-  // --- Состояние сортировки (теперь 3 режима) ---
+  // --- Состояние сортировки и направления цены ---
   const [sortBy, setSortBy] = useState<"popular" | "rating" | "price">(() => {
     const saved = localStorage.getItem("sortBy");
     if (saved === "rating" || saved === "price" || saved === "popular")
       return saved;
-    return "popular"; // по умолчанию
+    return "popular";
+  });
+  const [priceSortOrder, setPriceSortOrder] = useState<"asc" | "desc">(() => {
+    const saved = localStorage.getItem("priceSortOrder");
+    return saved === "desc" ? "desc" : "asc";
   });
 
-  // --- Сохраняем сортировку ---
+  // Сохраняем сортировку и направление цены
   useEffect(() => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
+  useEffect(() => {
+    localStorage.setItem("priceSortOrder", priceSortOrder);
+  }, [priceSortOrder]);
 
   // --- Состояние ширины экрана ---
   const [windowWidth, setWindowWidth] = useState<number>(() => {
@@ -50,7 +57,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const isTenCardsMode = !isMobile && windowWidth >= 950 && windowWidth < 1280;
   const incrementCount = isTenCardsMode ? 10 : 9;
 
-  // --- Количество отображаемых карточек (только для обычных провайдеров) ---
+  // --- Количество отображаемых карточек (пагинация) ---
   const [providersToShow, setProvidersToShow] = useState(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth <= 850) return 9;
@@ -63,12 +70,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   // --- Состояние мобильного дровера ---
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  // --- Все фильтры (полностью без изменений, как в исходном коде) ---
-  // Для краткости я перечислю их, но в реальном проекте они уже есть.
-  // Здесь привожу сокращённую версию, чтобы не загромождать ответ.
-  // ВАЖНО: ВСЕ СОСТОЯНИЯ ФИЛЬТРОВ ДОЛЖНЫ БЫТЬ ОБЪЯВЛЕНЫ ПОЛНОСТЬЮ.
-  // Я покажу их сигнатуры, а в реальном коде вы просто копируете их из вашего текущего файла.
-
+  // ========== ВСЕ ФИЛЬТРЫ (полностью как в исходном проекте) ==========
   const [filterFZ152, setFilterFZ152] = useState(() => {
     const saved = localStorage.getItem("filterFZ152");
     return saved ? JSON.parse(saved) : false;
@@ -167,11 +169,126 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  // --- Сохранение фильтров в localStorage (опущено для краткости, но должно быть полностью) ---
-  // ВАЖНО: все useEffect для сохранения фильтров должны быть здесь, как в исходном коде.
-  // Я не буду их повторять, чтобы не занимать 1000 строк, но вы их копируете из текущего файла.
+  // ========== СОХРАНЕНИЕ ФИЛЬТРОВ В LOCALSTORAGE ==========
+  // (полный набор useEffect – скопировать из существующего проекта)
+  useEffect(() => {
+    localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
+  }, [filterFZ152]);
+  useEffect(() => {
+    if (filterFSTEK.length > 0)
+      localStorage.setItem("filterFSTEK", JSON.stringify(filterFSTEK));
+    else localStorage.removeItem("filterFSTEK");
+  }, [filterFSTEK]);
+  useEffect(() => {
+    localStorage.setItem(
+      "filterTrialPeriod",
+      JSON.stringify(filterTrialPeriod),
+    );
+  }, [filterTrialPeriod]);
+  useEffect(() => {
+    if (filterLocation.length > 0)
+      localStorage.setItem("filterLocation", JSON.stringify(filterLocation));
+    else localStorage.removeItem("filterLocation");
+  }, [filterLocation]);
+  useEffect(() => {
+    if (filterVirtualization.length > 0)
+      localStorage.setItem(
+        "filterVirtualization",
+        JSON.stringify(filterVirtualization),
+      );
+    else localStorage.removeItem("filterVirtualization");
+  }, [filterVirtualization]);
+  useEffect(() => {
+    if (filterMinDatacenters !== null)
+      localStorage.setItem(
+        "filterMinDatacenters",
+        filterMinDatacenters.toString(),
+      );
+    else localStorage.removeItem("filterMinDatacenters");
+  }, [filterMinDatacenters]);
+  useEffect(() => {
+    if (filterMaxDatacenters !== null)
+      localStorage.setItem(
+        "filterMaxDatacenters",
+        filterMaxDatacenters.toString(),
+      );
+    else localStorage.removeItem("filterMaxDatacenters");
+  }, [filterMaxDatacenters]);
+  useEffect(() => {
+    if (filterDiskType.length > 0)
+      localStorage.setItem("filterDiskType", JSON.stringify(filterDiskType));
+    else localStorage.removeItem("filterDiskType");
+  }, [filterDiskType]);
+  useEffect(() => {
+    if (filterPaymentMethod.length > 0)
+      localStorage.setItem(
+        "filterPaymentMethod",
+        JSON.stringify(filterPaymentMethod),
+      );
+    else localStorage.removeItem("filterPaymentMethod");
+  }, [filterPaymentMethod]);
+  useEffect(() => {
+    if (filterOS.length > 0)
+      localStorage.setItem("filterOS", JSON.stringify(filterOS));
+    else localStorage.removeItem("filterOS");
+  }, [filterOS]);
+  useEffect(() => {
+    if (filterCPU.length > 0)
+      localStorage.setItem("filterCPU", JSON.stringify(filterCPU));
+    else localStorage.removeItem("filterCPU");
+  }, [filterCPU]);
+  useEffect(() => {
+    localStorage.setItem("filterKII", JSON.stringify(filterKII));
+  }, [filterKII]);
+  useEffect(() => {
+    localStorage.setItem("filterMobileApp", JSON.stringify(filterMobileApp));
+  }, [filterMobileApp]);
+  useEffect(() => {
+    localStorage.setItem(
+      "filterOrderBeforeRegistration",
+      JSON.stringify(filterOrderBeforeRegistration),
+    );
+  }, [filterOrderBeforeRegistration]);
+  useEffect(() => {
+    if (filterAdditionalServices.length > 0)
+      localStorage.setItem(
+        "filterAdditionalServices",
+        JSON.stringify(filterAdditionalServices),
+      );
+    else localStorage.removeItem("filterAdditionalServices");
+  }, [filterAdditionalServices]);
+  useEffect(() => {
+    if (filterRegistrationData.length > 0)
+      localStorage.setItem(
+        "filterRegistrationData",
+        JSON.stringify(filterRegistrationData),
+      );
+    else localStorage.removeItem("filterRegistrationData");
+  }, [filterRegistrationData]);
+  useEffect(() => {
+    if (filterClientType.length > 0)
+      localStorage.setItem(
+        "filterClientType",
+        JSON.stringify(filterClientType),
+      );
+    else localStorage.removeItem("filterClientType");
+  }, [filterClientType]);
+  useEffect(() => {
+    if (filterGPU.length > 0)
+      localStorage.setItem("filterGPU", JSON.stringify(filterGPU));
+    else localStorage.removeItem("filterGPU");
+  }, [filterGPU]);
+  useEffect(() => {
+    localStorage.setItem("filterHasGPU", JSON.stringify(filterHasGPU));
+  }, [filterHasGPU]);
+  useEffect(() => {
+    localStorage.setItem("filter1C", JSON.stringify(filter1C));
+  }, [filter1C]);
+  useEffect(() => {
+    localStorage.setItem("filterAI", JSON.stringify(filterAI));
+  }, [filterAI]);
 
-  // --- Опции для фильтров (без изменений) ---
+  // --- Опции для фильтров (мемоизация) ---
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
   const additionalServicesOptions = useMemo(
     () => [
@@ -205,7 +322,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
-  // --- Уникальные значения для фильтров (без изменений) ---
+  // --- Уникальные значения для фильтров (мемоизация) ---
   const allLocations = useMemo(
     () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
     [providers],
@@ -253,9 +370,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // --- 1. ФИЛЬТРАЦИЯ (без сортировки) ---
+  // ========== ФИЛЬТРАЦИЯ (без сортировки) ==========
   const filteredProviders = useMemo(() => {
-    // Применяем все фильтры, кроме поиска (поиск применим отдельно)
     let filtered = providers.filter((p) => {
       if (filterFZ152 && !p.fz152Compliant) return false;
       if (filterFSTEK.length > 0) {
@@ -344,7 +460,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       return true;
     });
 
-    // Применяем поиск (по названию)
+    // Поиск по названию
     if (searchQuery) {
       filtered = filtered.filter((p) =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -378,12 +494,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterAI,
   ]);
 
-  // --- 2. СОРТИРОВКА ---
+  // ========== СОРТИРОВКА ==========
   const sortedProviders = useMemo(() => {
     const filtered = filteredProviders;
 
     if (sortBy === "popular") {
-      // Разделяем на популярных и остальных
       const popular: Provider[] = [];
       const others: Provider[] = [];
 
@@ -423,19 +538,39 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         if (a.basePrice === 0 && b.basePrice === 0) return 0;
         if (a.basePrice === 0) return 1;
         if (b.basePrice === 0) return -1;
-        return a.basePrice - b.basePrice;
+        return priceSortOrder === "asc"
+          ? a.basePrice - b.basePrice
+          : b.basePrice - a.basePrice;
       });
     }
 
     return filtered;
-  }, [filteredProviders, sortBy]);
+  }, [filteredProviders, sortBy, priceSortOrder]);
 
-  // --- 3. ПАГИНАЦИЯ ---
+  // ========== ПАГИНАЦИЯ ==========
   const displayedProviders = useMemo(() => {
     return sortedProviders.slice(0, providersToShow);
   }, [sortedProviders, providersToShow]);
 
-  // --- Логика сравнения провайдеров ---
+  // ========== ОБРАБОТЧИКИ СОРТИРОВКИ ==========
+  const handleSortPopular = () => {
+    setSortBy("popular");
+  };
+
+  const handleSortRating = () => {
+    setSortBy("rating");
+  };
+
+  const handleSortPrice = () => {
+    if (sortBy !== "price") {
+      setSortBy("price");
+      setPriceSortOrder("asc");
+    } else {
+      setPriceSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    }
+  };
+
+  // ========== ЛОГИКА СРАВНЕНИЯ ==========
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
     [],
   );
@@ -459,18 +594,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     setSelectedForComparison([]);
   };
 
-  // --- Отзывы ---
+  // ========== ОТЗЫВЫ ==========
   const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(
     () => {
-      const initialReviews: Record<number, number> = {};
+      const initial: Record<number, number> = {};
       providers.forEach((provider) => {
-        initialReviews[provider.id] = 5;
+        initial[provider.id] = 5;
       });
-      return initialReviews;
+      return initial;
     },
   );
 
-  // --- Объект с пропсами фильтров (для передачи в FilterPanelAlwaysOpen и MobileFilterDrawer) ---
+  // ========== ОБЪЕКТ ПРОПСОВ ДЛЯ ФИЛЬТРОВ ==========
   const filterProps = {
     filterFZ152,
     setFilterFZ152,
@@ -527,7 +662,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     clientTypeOptions,
   };
 
-  // --- Рендеринг ---
+  // ========== РЕНДЕРИНГ ==========
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
       selectedForComparison.includes(p.id),
@@ -544,7 +679,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     <section id="providers" className="container mx-auto px-2 py-4">
       {isMobile ? (
         // ----------------------------------------------
-        // МОБИЛЬНАЯ ВЕРСИЯ (≤ 850px)
+        // МОБИЛЬНАЯ ВЕРСИЯ (≤850px)
         // ----------------------------------------------
         <div className="flex flex-col">
           {/* Верхняя панель: поиск + кнопка фильтров */}
@@ -566,13 +701,20 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </button>
           </div>
 
-          {/* Строка: счётчик + сортировка */}
+          {/* Строка: счётчик + сортировка (мобильный вид SortPanel сам определит) */}
           <div className="mb-4 flex items-center justify-between">
             <ProvidersCounter
               currentCount={Math.min(providersToShow, sortedProviders.length)}
               totalCount={sortedProviders.length}
             />
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+            <SortPanel
+              sortBy={sortBy}
+              onSortPopular={handleSortPopular}
+              onSortRating={handleSortRating}
+              onSortPrice={handleSortPrice}
+              priceSortOrder={priceSortOrder}
+              isMobile={true}
+            />
           </div>
 
           {/* Список карточек */}
@@ -597,7 +739,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 toggleComparison={toggleComparison}
               />
 
-              {/* Кнопки подгрузки */}
+              {/* Кнопки подгрузки (мобильные — шаг 9) */}
               {(sortedProviders.length > providersToShow ||
                 providersToShow > 9) && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
@@ -625,7 +767,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                       </span>
                     </button>
                   )}
-
                   {sortedProviders.length > 0 && (
                     <button
                       onClick={() => {
@@ -671,14 +812,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </>
           )}
 
-          {/* Контролы сравнения */}
           <ComparisonControls
             selectedForComparison={selectedForComparison}
             compareProviders={compareProviders}
             onCancelComparison={cancelComparison}
           />
 
-          {/* Дровер фильтров (справа) */}
+          {/* Мобильный дровер фильтров (справа) */}
           <MobileFilterDrawer
             isOpen={isMobileFilterOpen}
             onClose={() => setIsMobileFilterOpen(false)}
@@ -687,7 +827,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
         </div>
       ) : (
         // ----------------------------------------------
-        // ДЕСКТОП/ПЛАНШЕТ (> 850px)
+        // ДЕСКТОП/ПЛАНШЕТ (>850px)
         // ----------------------------------------------
         <div className="flex flex-row flex-nowrap gap-4">
           {/* Панель фильтров (всегда открыта) */}
@@ -714,7 +854,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   totalCount={sortedProviders.length}
                 />
               </div>
-              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+              <SortPanel
+                sortBy={sortBy}
+                onSortPopular={handleSortPopular}
+                onSortRating={handleSortRating}
+                onSortPrice={handleSortPrice}
+                priceSortOrder={priceSortOrder}
+                isMobile={false}
+              />
             </div>
 
             {searchQuery && sortedProviders.length === 0 ? (
@@ -767,7 +914,6 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                         </span>
                       </button>
                     )}
-
                     {sortedProviders.length > 0 && (
                       <button
                         onClick={() => {
