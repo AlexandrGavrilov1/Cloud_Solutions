@@ -258,11 +258,15 @@ export const ProviderCardHeader = ({
 
         <Button
           size="sm"
-          className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8"
+          className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 group"
           onClick={handleProviderClickWithTracking}
         >
           Попробовать
-          <Icon name="ArrowRight" size={12} />
+          <Icon
+            name="ArrowRight"
+            size={12}
+            className="transform rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+          />
         </Button>
       </div>
     </div>
