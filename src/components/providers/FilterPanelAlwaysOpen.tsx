@@ -13,7 +13,9 @@ interface ProvidersSectionProps {
 }
 
 export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
-  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"rating" | "price">("rating");
 
@@ -32,7 +34,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   const isMediumDesktop = windowWidth >= 1024 && windowWidth < 1280;
   const incrementCount = isMediumDesktop ? 10 : 9;
 
-  // --- Количество отображаемых карточек (начальное значение зависит от ширины) ---
+  // --- Количество отображаемых карточек ( начальное значение зависит от ширины) ---
   const [providersToShow, setProvidersToShow] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth >= 1024 && window.innerWidth < 1280 ? 10 : 9;
@@ -61,17 +63,23 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [filterVirtualization, setFilterVirtualization] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterVirtualization");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [filterVirtualization, setFilterVirtualization] = useState<string[]>(
+    () => {
+      const saved = localStorage.getItem("filterVirtualization");
+      return saved ? JSON.parse(saved) : [];
+    },
+  );
 
-  const [filterMinDatacenters, setFilterMinDatacenters] = useState<number | null>(() => {
+  const [filterMinDatacenters, setFilterMinDatacenters] = useState<
+    number | null
+  >(() => {
     const saved = localStorage.getItem("filterMinDatacenters");
     return saved ? parseInt(saved) : null;
   });
 
-  const [filterMaxDatacenters, setFilterMaxDatacenters] = useState<number | null>(() => {
+  const [filterMaxDatacenters, setFilterMaxDatacenters] = useState<
+    number | null
+  >(() => {
     const saved = localStorage.getItem("filterMaxDatacenters");
     return saved ? parseInt(saved) : null;
   });
@@ -81,10 +89,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [filterPaymentMethod, setFilterPaymentMethod] = useState<string[]>(() => {
-    const saved = localStorage.getItem("filterPaymentMethod");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [filterPaymentMethod, setFilterPaymentMethod] = useState<string[]>(
+    () => {
+      const saved = localStorage.getItem("filterPaymentMethod");
+      return saved ? JSON.parse(saved) : [];
+    },
+  );
 
   const [filterOS, setFilterOS] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterOS");
@@ -106,17 +116,22 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  const [filterOrderBeforeRegistration, setFilterOrderBeforeRegistration] = useState<boolean>(() => {
-    const saved = localStorage.getItem("filterOrderBeforeRegistration");
-    return saved ? JSON.parse(saved) : false;
-  });
+  const [filterOrderBeforeRegistration, setFilterOrderBeforeRegistration] =
+    useState<boolean>(() => {
+      const saved = localStorage.getItem("filterOrderBeforeRegistration");
+      return saved ? JSON.parse(saved) : false;
+    });
 
-  const [filterAdditionalServices, setFilterAdditionalServices] = useState<string[]>(() => {
+  const [filterAdditionalServices, setFilterAdditionalServices] = useState<
+    string[]
+  >(() => {
     const saved = localStorage.getItem("filterAdditionalServices");
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [filterRegistrationData, setFilterRegistrationData] = useState<string[]>(() => {
+  const [filterRegistrationData, setFilterRegistrationData] = useState<
+    string[]
+  >(() => {
     const saved = localStorage.getItem("filterRegistrationData");
     return saved ? JSON.parse(saved) : [];
   });
@@ -160,7 +175,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, [filterFSTEK]);
 
   useEffect(() => {
-    localStorage.setItem("filterTrialPeriod", JSON.stringify(filterTrialPeriod));
+    localStorage.setItem(
+      "filterTrialPeriod",
+      JSON.stringify(filterTrialPeriod),
+    );
   }, [filterTrialPeriod]);
 
   useEffect(() => {
@@ -173,7 +191,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   useEffect(() => {
     if (filterVirtualization.length > 0) {
-      localStorage.setItem("filterVirtualization", JSON.stringify(filterVirtualization));
+      localStorage.setItem(
+        "filterVirtualization",
+        JSON.stringify(filterVirtualization),
+      );
     } else {
       localStorage.removeItem("filterVirtualization");
     }
@@ -181,7 +202,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   useEffect(() => {
     if (filterMinDatacenters !== null) {
-      localStorage.setItem("filterMinDatacenters", filterMinDatacenters.toString());
+      localStorage.setItem(
+        "filterMinDatacenters",
+        filterMinDatacenters.toString(),
+      );
     } else {
       localStorage.removeItem("filterMinDatacenters");
     }
@@ -189,7 +213,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   useEffect(() => {
     if (filterMaxDatacenters !== null) {
-      localStorage.setItem("filterMaxDatacenters", filterMaxDatacenters.toString());
+      localStorage.setItem(
+        "filterMaxDatacenters",
+        filterMaxDatacenters.toString(),
+      );
     } else {
       localStorage.removeItem("filterMaxDatacenters");
     }
@@ -205,7 +232,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   useEffect(() => {
     if (filterPaymentMethod.length > 0) {
-      localStorage.setItem("filterPaymentMethod", JSON.stringify(filterPaymentMethod));
+      localStorage.setItem(
+        "filterPaymentMethod",
+        JSON.stringify(filterPaymentMethod),
+      );
     } else {
       localStorage.removeItem("filterPaymentMethod");
     }
@@ -238,7 +268,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   useEffect(() => {
     localStorage.setItem(
       "filterOrderBeforeRegistration",
-      JSON.stringify(filterOrderBeforeRegistration)
+      JSON.stringify(filterOrderBeforeRegistration),
     );
   }, [filterOrderBeforeRegistration]);
 
@@ -246,7 +276,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     if (filterAdditionalServices.length > 0) {
       localStorage.setItem(
         "filterAdditionalServices",
-        JSON.stringify(filterAdditionalServices)
+        JSON.stringify(filterAdditionalServices),
       );
     } else {
       localStorage.removeItem("filterAdditionalServices");
@@ -257,7 +287,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     if (filterRegistrationData.length > 0) {
       localStorage.setItem(
         "filterRegistrationData",
-        JSON.stringify(filterRegistrationData)
+        JSON.stringify(filterRegistrationData),
       );
     } else {
       localStorage.removeItem("filterRegistrationData");
@@ -266,7 +296,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   useEffect(() => {
     if (filterClientType.length > 0) {
-      localStorage.setItem("filterClientType", JSON.stringify(filterClientType));
+      localStorage.setItem(
+        "filterClientType",
+        JSON.stringify(filterClientType),
+      );
     } else {
       localStorage.removeItem("filterClientType");
     }
@@ -308,7 +341,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       "Аттестация по ФСТЭК",
       "Другие гос. лицензии",
     ],
-    []
+    [],
   );
   const registrationDataOptions = useMemo(
     () => [
@@ -326,67 +359,72 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       "Регистрация в сторонних сервисах",
       "Скан удостоверения личности",
     ],
-    []
+    [],
   );
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
   // --- Уникальные значения для фильтров ---
   const allLocations = useMemo(
     () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
-    [providers]
+    [providers],
   );
   const allVirtualizations = useMemo(
     () =>
       Array.from(
-        new Set(providers.flatMap((p) => p.technicalSpecs.virtualization))
+        new Set(providers.flatMap((p) => p.technicalSpecs.virtualization)),
       ).sort(),
-    [providers]
+    [providers],
   );
   const allDiskTypes = useMemo(
     () =>
-      Array.from(new Set(providers.map((p) => p.technicalSpecs.diskType))).sort(),
-    [providers]
+      Array.from(
+        new Set(providers.map((p) => p.technicalSpecs.diskType)),
+      ).sort(),
+    [providers],
   );
   const allPaymentMethods = useMemo(
     () =>
       Array.from(
-        new Set(providers.flatMap((p) => p.pricingDetails.paymentMethods))
+        new Set(providers.flatMap((p) => p.pricingDetails.paymentMethods)),
       ).sort(),
-    [providers]
+    [providers],
   );
   const allOS = useMemo(
     () =>
       Array.from(
-        new Set(providers.flatMap((p) => p.technicalSpecs.availableOS))
+        new Set(providers.flatMap((p) => p.technicalSpecs.availableOS)),
       ).sort(),
-    [providers]
+    [providers],
   );
   const allCPUs = useMemo(
     () =>
       Array.from(
-        new Set(providers.flatMap((p) => p.technicalSpecs.cpuModels || []))
+        new Set(providers.flatMap((p) => p.technicalSpecs.cpuModels || [])),
       ).sort(),
-    [providers]
+    [providers],
   );
   const allGPUs = useMemo(
     () =>
       Array.from(
-        new Set(providers.flatMap((p) => p.technicalSpecs.gpuModels || []))
+        new Set(providers.flatMap((p) => p.technicalSpecs.gpuModels || [])),
       ).sort(),
-    [providers]
+    [providers],
   );
 
   // --- Фильтрация и сортировка провайдеров ---
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
-      if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      if (
+        searchQuery &&
+        !p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
         return false;
 
       if (filterFZ152 && !p.fz152Compliant) return false;
 
       if (filterFSTEK.length > 0) {
         const hasMatchingFSTEK = filterFSTEK.some(
-          (cert) => p.fstekCertifications?.includes(cert) || false
+          (cert) => p.fstekCertifications?.includes(cert) || false,
         );
         if (!hasMatchingFSTEK) return false;
       }
@@ -395,21 +433,27 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
       if (filterLocation.length > 0) {
         const hasMatchingLocation = filterLocation.some((location) =>
-          p.locations.includes(location)
+          p.locations.includes(location),
         );
         if (!hasMatchingLocation) return false;
       }
 
       if (filterVirtualization.length > 0) {
         const hasMatchingVirtualization = filterVirtualization.some((virt) =>
-          p.technicalSpecs.virtualization.includes(virt as any)
+          p.technicalSpecs.virtualization.includes(virt as any),
         );
         if (!hasMatchingVirtualization) return false;
       }
 
-      if (filterMinDatacenters !== null && p.locations.length < filterMinDatacenters)
+      if (
+        filterMinDatacenters !== null &&
+        p.locations.length < filterMinDatacenters
+      )
         return false;
-      if (filterMaxDatacenters !== null && p.locations.length > filterMaxDatacenters)
+      if (
+        filterMaxDatacenters !== null &&
+        p.locations.length > filterMaxDatacenters
+      )
         return false;
 
       if (filterDiskType.length > 0) {
@@ -418,14 +462,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
       if (filterPaymentMethod.length > 0) {
         const hasMatchingPaymentMethod = filterPaymentMethod.some((method) =>
-          p.pricingDetails.paymentMethods.includes(method)
+          p.pricingDetails.paymentMethods.includes(method),
         );
         if (!hasMatchingPaymentMethod) return false;
       }
 
       if (filterOS.length > 0) {
         const hasMatchingOS = filterOS.some((os) =>
-          p.technicalSpecs.availableOS.includes(os)
+          p.technicalSpecs.availableOS.includes(os),
         );
         if (!hasMatchingOS) return false;
       }
@@ -438,25 +482,27 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
       if (filterKII && !p.kiiPlacement) return false;
       if (filterMobileApp && !p.mobileApp) return false;
-      if (filterOrderBeforeRegistration && !p.orderBeforeRegistration) return false;
+      if (filterOrderBeforeRegistration && !p.orderBeforeRegistration)
+        return false;
 
       if (filterAdditionalServices.length > 0) {
         const hasMatchingService = filterAdditionalServices.some(
-          (service) => p.additionalServicesList?.includes(service as any) || false
+          (service) =>
+            p.additionalServicesList?.includes(service as any) || false,
         );
         if (!hasMatchingService) return false;
       }
 
       if (filterRegistrationData.length > 0) {
         const hasMatchingRegistrationData = filterRegistrationData.some(
-          (field) => p.registrationData?.includes(field as any) || false
+          (field) => p.registrationData?.includes(field as any) || false,
         );
         if (!hasMatchingRegistrationData) return false;
       }
 
       if (filterClientType.length > 0) {
         const hasMatchingClientType = filterClientType.some(
-          (type) => p.supportedClientTypes?.includes(type as any) || false
+          (type) => p.supportedClientTypes?.includes(type as any) || false,
         );
         if (!hasMatchingClientType) return false;
       }
@@ -522,14 +568,16 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   ]);
 
   // --- Логика сравнения провайдеров ---
-  const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);
+  const [selectedForComparison, setSelectedForComparison] = useState<number[]>(
+    [],
+  );
   const [showComparison, setShowComparison] = useState(false);
 
   const toggleComparison = (providerId: number) => {
     setSelectedForComparison((prev) =>
       prev.includes(providerId)
         ? prev.filter((id) => id !== providerId)
-        : [...prev, providerId]
+        : [...prev, providerId],
     );
   };
 
@@ -544,18 +592,20 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   };
 
   // --- Отзывы ---
-  const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(() => {
-    const initialReviews: Record<number, number> = {};
-    providers.forEach((provider) => {
-      initialReviews[provider.id] = 5;
-    });
-    return initialReviews;
-  });
+  const [reviewsToShow, setReviewsToShow] = useState<Record<number, number>>(
+    () => {
+      const initialReviews: Record<number, number> = {};
+      providers.forEach((provider) => {
+        initialReviews[provider.id] = 5;
+      });
+      return initialReviews;
+    },
+  );
 
   // --- Рендеринг ---
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
-      selectedForComparison.includes(p.id)
+      selectedForComparison.includes(p.id),
     );
     return (
       <ComparisonTable
@@ -648,7 +698,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 className="w-full sm:w-[300px]"
               />
               <ProvidersCounter
-                currentCount={Math.min(providersToShow, filteredProviders.length)}
+                currentCount={Math.min(
+                  providersToShow,
+                  filteredProviders.length,
+                )}
                 totalCount={filteredProviders.length}
               />
             </div>
@@ -683,7 +736,9 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
-                      onClick={() => setProvidersToShow((prev) => prev + incrementCount)}
+                      onClick={() =>
+                        setProvidersToShow((prev) => prev + incrementCount)
+                      }
                       className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -710,7 +765,10 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                     <button
                       onClick={() => {
                         if (providersToShow === filteredProviders.length) {
-                          const minToShow = Math.min(incrementCount, filteredProviders.length);
+                          const minToShow = Math.min(
+                            incrementCount,
+                            filteredProviders.length,
+                          );
                           setProvidersToShow(minToShow);
                         } else {
                           setProvidersToShow(filteredProviders.length);
