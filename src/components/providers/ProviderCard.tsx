@@ -981,8 +981,8 @@ export const ProviderCard = ({
   `}
       >
         {/* Оранжевое градиентное пятно - только нижняя половина круга */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[220px] h-[110px] opacity-0 group-hover:opacity-60 transition-opacity duration-700 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[220px] h-[220px] bg-gradient-to-b from-[#FF931F] via-[#FF8000] to-[#FF6B00] rounded-full blur-xl"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[250px] h-[125px] opacity-0 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-full">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[250px] h-[250px] bg-radial-gradient from-[#FF931F] via-[#FF8000] to-[#FF6B00] rounded-full blur-2xl"></div>
         </div>
 
         <CardHeader className="p-5">
