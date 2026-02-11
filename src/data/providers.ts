@@ -464,7 +464,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         { months: 12, percent: 15 },
         { months: 6, percent: 8 },
       ],
-      paymentMethods: ["Банковская карта", "ЮMoney", "Безналичный расчёт"],
+      paymentMethods: ["Банковская карта", "ЮMoney", "Безналичный расчет"],
       minPrice: 200,
     },
     popularity: 7500,
@@ -3097,7 +3097,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "СБП",
         "ЮMoney",
         "Криптовалюта",
-        "QIWI",
+        "Qiwi",
         "WebMoney",
       ],
       minPrice: 180,
@@ -3283,7 +3283,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
+      paymentMethods: ["Безналичный расчет", "Банковская карта"],
       minPrice: 220,
     },
     popularity: 15000,
@@ -3351,7 +3351,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [{ months: 12, percent: 10 }],
-      paymentMethods: ["Банковская карта", "ЮMoney", "Безналичный расчёт"],
+      paymentMethods: ["Банковская карта", "ЮMoney", "Безналичный расчет"],
       minPrice: 200,
     },
     popularity: 8000,
@@ -3432,7 +3432,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: ["Банковская карта", "Безналичный расчёт"],
+      paymentMethods: ["Банковская карта", "Безналичный расчет"],
       minPrice: 195,
     },
     popularity: 6000,
@@ -3506,7 +3506,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [{ months: 12, percent: 15 }],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
+      paymentMethods: ["Безналичный расчет", "Банковская карта"],
       minPrice: 230,
     },
     popularity: 12000,
@@ -3590,7 +3590,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: ["Безналичный расчёт"],
+      paymentMethods: ["Безналичный расчет"],
       minPrice: 240,
     },
     popularity: 10000,
@@ -3674,7 +3674,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [{ months: 12, percent: 12 }],
-      paymentMethods: ["Банковская карта", "Безналичный расчёт", "ЮMoney"],
+      paymentMethods: ["Банковская карта", "Безналичный расчет", "ЮMoney"],
       minPrice: 210,
     },
     popularity: 7000,
@@ -3826,7 +3826,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
+      paymentMethods: ["Безналичный расчет", "Банковская карта"],
       minPrice: 235,
     },
     popularity: 9000,
@@ -3916,7 +3916,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         { months: 6, percent: 5 },
         { months: 12, percent: 10 },
       ],
-      paymentMethods: ["Банковская карта", "Безналичный расчёт", "ЮMoney"],
+      paymentMethods: ["Банковская карта", "Безналичный расчет", "ЮMoney"],
       minPrice: 280,
     },
     popularity: 11000,
@@ -3985,7 +3985,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [{ months: 12, percent: 10 }],
-      paymentMethods: ["Банковская карта", "ЮMoney", "Безналичный расчёт"],
+      paymentMethods: ["Банковская карта", "ЮMoney", "Безналичный расчет"],
       minPrice: 205,
     },
     popularity: 4500,
@@ -4059,7 +4059,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
+      paymentMethods: ["Безналичный расчет", "Банковская карта"],
       minPrice: 225,
     },
     popularity: 8500,
@@ -4274,7 +4274,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [{ months: 12, percent: 10 }],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
+      paymentMethods: ["Безналичный расчет", "Банковская карта"],
       minPrice: 275,
     },
     popularity: 12000,
@@ -4428,7 +4428,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     pricingDetails: {
       discounts: [{ months: 12, percent: 8 }],
-      paymentMethods: ["Безналичный расчёт", "Банковская карта"],
+      paymentMethods: ["Безналичный расчет", "Банковская карта"],
       minPrice: 230,
     },
     popularity: 9500,

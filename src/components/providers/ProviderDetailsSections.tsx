@@ -437,7 +437,7 @@ export const PaymentMethodsSection = ({
     if (
       method.includes("Электрон") ||
       method.includes("WebMoney") ||
-      method.includes("QIWI")
+      method.includes("Qiwi")
     )
       return "text-purple-600 bg-purple-500/10 border-purple-500/30";
     return "text-rose-600 bg-rose-500/10 border-rose-500/30";
