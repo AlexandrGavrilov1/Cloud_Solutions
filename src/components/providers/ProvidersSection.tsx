@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Provider } from "./types";
 import { ComparisonTable } from "./ComparisonTable";
 import { FilterPanelAlwaysOpen } from "./FilterPanelAlwaysOpen";
+import { MobileFilterDrawer } from "./MobileFilterDrawer";
 import { ComparisonControls } from "./ComparisonControls";
 import { ProvidersList } from "./ProvidersList";
 import { SearchInput } from "./SearchInput";
@@ -22,7 +23,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   // --- Состояние ширины экрана ---
   const [windowWidth, setWindowWidth] = useState<number>(() => {
     if (typeof window !== "undefined") return window.innerWidth;
-    return 1024; // fallback для SSR
+    return 1024;
   });
 
   useEffect(() => {
@@ -31,17 +32,22 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Диапазон для отображения 10 карточек: от 950px до 1279px
-  const isTenCardsMode = windowWidth >= 950 && windowWidth < 1280;
+  const isMobile = windowWidth <= 850;
+  const isTenCardsMode = !isMobile && windowWidth >= 950 && windowWidth < 1280;
   const incrementCount = isTenCardsMode ? 10 : 9;
 
-  // --- Количество отображаемых карточек (начальное значение зависит от ширины) ---
+  // --- Количество отображаемых карточек ---
   const [providersToShow, setProvidersToShow] = useState(() => {
     if (typeof window !== "undefined") {
-      return window.innerWidth >= 950 && window.innerWidth < 1280 ? 10 : 9;
+      if (window.innerWidth <= 850) return 9; // мобильные — всегда 9
+      if (window.innerWidth >= 950 && window.innerWidth < 1280) return 10;
+      return 9;
     }
     return 9;
   });
+
+  // --- Состояние мобильного дровера ---
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // --- Все фильтры (сохранение в localStorage) ---
   const [filterFZ152, setFilterFZ152] = useState(() => {
@@ -330,7 +336,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("sortBy", sortBy);
   }, [sortBy]);
 
-  // --- Опции для фильтров ---
+  // --- Опции для фильтров (без изменений) ---
   const fstekOptions = useMemo(() => ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"], []);
   const additionalServicesOptions = useMemo(
     () => [
@@ -364,7 +370,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const clientTypeOptions = useMemo(() => ["Физлицо", "Юрлицо"], []);
 
-  // --- Уникальные значения для фильтров ---
+  // --- Уникальные значения для фильтров (без изменений) ---
   const allLocations = useMemo(
     () => Array.from(new Set(providers.flatMap((p) => p.locations))).sort(),
     [providers],
@@ -412,7 +418,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // --- Фильтрация и сортировка провайдеров ---
+  // --- Фильтрация и сортировка провайдеров (без изменений) ---
   const filteredProviders = useMemo(() => {
     const filtered = providers.filter((p) => {
       if (
@@ -603,6 +609,63 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     },
   );
 
+  // --- Объект со всеми пропсами фильтров (для передачи в Drawer и FilterPanel) ---
+  const filterProps = {
+    filterFZ152,
+    setFilterFZ152,
+    filterFSTEK,
+    setFilterFSTEK,
+    filterTrialPeriod,
+    setFilterTrialPeriod,
+    filterLocation,
+    setFilterLocation,
+    filterVirtualization,
+    setFilterVirtualization,
+    filterMinDatacenters,
+    setFilterMinDatacenters,
+    filterMaxDatacenters,
+    setFilterMaxDatacenters,
+    filterDiskType,
+    setFilterDiskType,
+    filterPaymentMethod,
+    setFilterPaymentMethod,
+    filterOS,
+    setFilterOS,
+    filterCPU,
+    setFilterCPU,
+    filterKII,
+    setFilterKII,
+    filterMobileApp,
+    setFilterMobileApp,
+    filterOrderBeforeRegistration,
+    setFilterOrderBeforeRegistration,
+    filterAdditionalServices,
+    setFilterAdditionalServices,
+    filterRegistrationData,
+    setFilterRegistrationData,
+    filterClientType,
+    setFilterClientType,
+    filterGPU,
+    setFilterGPU,
+    filterHasGPU,
+    setFilterHasGPU,
+    filter1C,
+    setFilter1C,
+    filterAI,
+    setFilterAI,
+    allLocations,
+    allVirtualizations,
+    allDiskTypes,
+    allPaymentMethods,
+    allOS,
+    allCPUs,
+    allGPUs,
+    fstekOptions,
+    additionalServicesOptions,
+    registrationDataOptions,
+    clientTypeOptions,
+  };
+
   // --- Рендеринг ---
   if (showComparison) {
     const selectedProviders = providers.filter((p) =>
@@ -618,98 +681,39 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
   return (
     <section id="providers" className="container mx-auto px-2 py-4">
-      {/* 
-        Единая структура для всех экранов:
-        - flex row с запретом переноса (flex-nowrap)
-        - фильтр всегда слева, карточки справа
-      */}
-      <div className="flex flex-row flex-nowrap gap-4">
-        {/* 
-          Панель фильтров:
-          - минимальная ширина 208px (5.5 см)
-          - на экранах <1024: ширина 30% от родителя, но не меньше 208px и не больше 280px
-          - на экранах >=1024: фиксированная ширина 340px
-        */}
-        <FilterPanelAlwaysOpen
-          className="w-[30%] min-w-[208px] max-w-[280px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px]"
-          filterFZ152={filterFZ152}
-          setFilterFZ152={setFilterFZ152}
-          filterFSTEK={filterFSTEK}
-          setFilterFSTEK={setFilterFSTEK}
-          filterTrialPeriod={filterTrialPeriod}
-          setFilterTrialPeriod={setFilterTrialPeriod}
-          filterLocation={filterLocation}
-          setFilterLocation={setFilterLocation}
-          filterVirtualization={filterVirtualization}
-          setFilterVirtualization={setFilterVirtualization}
-          filterMinDatacenters={filterMinDatacenters}
-          setFilterMinDatacenters={setFilterMinDatacenters}
-          filterMaxDatacenters={filterMaxDatacenters}
-          setFilterMaxDatacenters={setFilterMaxDatacenters}
-          filterDiskType={filterDiskType}
-          setFilterDiskType={setFilterDiskType}
-          filterPaymentMethod={filterPaymentMethod}
-          setFilterPaymentMethod={setFilterPaymentMethod}
-          filterOS={filterOS}
-          setFilterOS={setFilterOS}
-          filterCPU={filterCPU}
-          setFilterCPU={setFilterCPU}
-          filterKII={filterKII}
-          setFilterKII={setFilterKII}
-          filterMobileApp={filterMobileApp}
-          setFilterMobileApp={setFilterMobileApp}
-          filterOrderBeforeRegistration={filterOrderBeforeRegistration}
-          setFilterOrderBeforeRegistration={setFilterOrderBeforeRegistration}
-          filterAdditionalServices={filterAdditionalServices}
-          setFilterAdditionalServices={setFilterAdditionalServices}
-          filterRegistrationData={filterRegistrationData}
-          setFilterRegistrationData={setFilterRegistrationData}
-          filterClientType={filterClientType}
-          setFilterClientType={setFilterClientType}
-          filterGPU={filterGPU}
-          setFilterGPU={setFilterGPU}
-          filterHasGPU={filterHasGPU}
-          setFilterHasGPU={setFilterHasGPU}
-          filter1C={filter1C}
-          setFilter1C={setFilter1C}
-          filterAI={filterAI}
-          setFilterAI={setFilterAI}
-          allLocations={allLocations}
-          allVirtualizations={allVirtualizations}
-          allDiskTypes={allDiskTypes}
-          allPaymentMethods={allPaymentMethods}
-          allOS={allOS}
-          allCPUs={allCPUs}
-          allGPUs={allGPUs}
-          fstekOptions={fstekOptions}
-          additionalServicesOptions={additionalServicesOptions}
-          registrationDataOptions={registrationDataOptions}
-          clientTypeOptions={clientTypeOptions}
-        />
-
-        {/* Правая колонка (карточки + управление) */}
-        <div className="flex-1 min-w-0">
-          {/* Верхняя панель управления */}
-          <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-            <div className="space-y-2 w-full sm:w-auto">
+      {isMobile ? (
+        // ----------------------------------------------
+        // МОБИЛЬНАЯ ВЕРСИЯ (≤ 850px)
+        // ----------------------------------------------
+        <div className="flex flex-col">
+          {/* Верхняя панель: поиск и кнопка фильтров */}
+          <div className="mb-4 flex items-center gap-2">
+            <div className="flex-1">
               <SearchInput
                 value={searchQuery}
                 onChange={setSearchQuery}
                 placeholder="Поиск..."
-                className="w-full sm:w-[300px]"
-              />
-              <ProvidersCounter
-                currentCount={Math.min(
-                  providersToShow,
-                  filteredProviders.length,
-                )}
-                totalCount={filteredProviders.length}
+                className="w-full"
               />
             </div>
-            <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+            <button
+              onClick={() => setIsMobileFilterOpen(true)}
+              className="px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-md hover:bg-primary/90 transition-colors flex items-center gap-1.5"
+            >
+              <Icon name="Filter" size={18} />
+              <span>Фильтры</span>
+            </button>
           </div>
 
-          {/* Список карточек */}
+          {/* Счётчик провайдеров */}
+          <div className="mb-4">
+            <ProvidersCounter
+              currentCount={Math.min(providersToShow, filteredProviders.length)}
+              totalCount={filteredProviders.length}
+            />
+          </div>
+
+          {/* Список карточек (всегда 1 колонка) */}
           {searchQuery && filteredProviders.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-muted-foreground text-base mb-1.5">
@@ -731,20 +735,18 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                 toggleComparison={toggleComparison}
               />
 
-              {/* Кнопки подгрузки */}
+              {/* Кнопки подгрузки (шаг 9 на мобильных) */}
               {(filteredProviders.length > providersToShow ||
-                providersToShow > incrementCount) && (
+                providersToShow > 9) && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
                   {filteredProviders.length > providersToShow && (
                     <button
-                      onClick={() =>
-                        setProvidersToShow((prev) => prev + incrementCount)
-                      }
+                      onClick={() => setProvidersToShow((prev) => prev + 9)}
                       className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="relative flex items-center justify-center gap-1.5">
-                        Показать ещё {incrementCount}
+                        Показать ещё 9
                         <svg
                           className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
                           fill="none"
@@ -766,11 +768,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                     <button
                       onClick={() => {
                         if (providersToShow === filteredProviders.length) {
-                          const minToShow = Math.min(
-                            incrementCount,
-                            filteredProviders.length,
-                          );
-                          setProvidersToShow(minToShow);
+                          setProvidersToShow(9);
                         } else {
                           setProvidersToShow(filteredProviders.length);
                         }
@@ -811,13 +809,163 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </>
           )}
 
+          {/* Контролы сравнения */}
           <ComparisonControls
             selectedForComparison={selectedForComparison}
             compareProviders={compareProviders}
             onCancelComparison={cancelComparison}
           />
+
+          {/* Дровер с фильтрами */}
+          <MobileFilterDrawer
+            isOpen={isMobileFilterOpen}
+            onClose={() => setIsMobileFilterOpen(false)}
+            {...filterProps}
+          />
         </div>
-      </div>
+      ) : (
+        // ----------------------------------------------
+        // ДЕСКТОП/ПЛАНШЕТ (> 850px)
+        // ----------------------------------------------
+        <div className="flex flex-row flex-nowrap gap-4">
+          {/* Панель фильтров (всегда открыта) */}
+          <FilterPanelAlwaysOpen
+            className="w-[30%] min-w-[208px] max-w-[280px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px]"
+            {...filterProps}
+          />
+
+          {/* Правая колонка: поиск, сортировка, карточки */}
+          <div className="flex-1 min-w-0">
+            <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+              <div className="space-y-2 w-full sm:w-auto">
+                <SearchInput
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Поиск..."
+                  className="w-full sm:w-[300px]"
+                />
+                <ProvidersCounter
+                  currentCount={Math.min(
+                    providersToShow,
+                    filteredProviders.length,
+                  )}
+                  totalCount={filteredProviders.length}
+                />
+              </div>
+              <SortPanel sortBy={sortBy} setSortBy={setSortBy} />
+            </div>
+
+            {searchQuery && filteredProviders.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-muted-foreground text-base mb-1.5">
+                  По запросу "{searchQuery}" ничего не найдено
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Попробуйте изменить поисковый запрос или сбросить фильтры
+                </div>
+              </div>
+            ) : (
+              <>
+                <ProvidersList
+                  filteredProviders={filteredProviders.slice(
+                    0,
+                    providersToShow,
+                  )}
+                  reviewsToShow={reviewsToShow}
+                  setReviewsToShow={setReviewsToShow}
+                  selectedProvider={selectedProvider}
+                  setSelectedProvider={setSelectedProvider}
+                  selectedForComparison={selectedForComparison}
+                  toggleComparison={toggleComparison}
+                />
+
+                {(filteredProviders.length > providersToShow ||
+                  providersToShow > incrementCount) && (
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
+                    {filteredProviders.length > providersToShow && (
+                      <button
+                        onClick={() =>
+                          setProvidersToShow((prev) => prev + incrementCount)
+                        }
+                        className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span className="relative flex items-center justify-center gap-1.5">
+                          Показать ещё {incrementCount}
+                          <svg
+                            className="w-4 h-4 group-hover:translate-y-0.5 transition-transform"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    )}
+
+                    {filteredProviders.length > 0 && (
+                      <button
+                        onClick={() => {
+                          if (providersToShow === filteredProviders.length) {
+                            const minToShow = Math.min(
+                              incrementCount,
+                              filteredProviders.length,
+                            );
+                            setProvidersToShow(minToShow);
+                          } else {
+                            setProvidersToShow(filteredProviders.length);
+                          }
+                        }}
+                        className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-secondary/0 via-white/20 to-secondary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span className="relative flex items-center justify-center gap-1.5">
+                          {providersToShow === filteredProviders.length
+                            ? "Скрыть"
+                            : "Показать всех"}
+                          <svg
+                            className={`w-4 h-4 transition-transform ${
+                              providersToShow === filteredProviders.length
+                                ? "group-hover:-translate-y-0.5"
+                                : "group-hover:translate-y-0.5"
+                            }`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d={
+                                providersToShow === filteredProviders.length
+                                  ? "M5 15l7-7 7 7"
+                                  : "M19 9l-7 7-7-7"
+                              }
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+
+            <ComparisonControls
+              selectedForComparison={selectedForComparison}
+              compareProviders={compareProviders}
+              onCancelComparison={cancelComparison}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
