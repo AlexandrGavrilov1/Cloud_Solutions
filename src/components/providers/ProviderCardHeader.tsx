@@ -265,7 +265,7 @@ export const ProviderCardHeader = ({
           <Icon
             name="ArrowRight"
             size={12}
-            className="transform rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+            className="transform -rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
           />
         </Button>
       </div>
