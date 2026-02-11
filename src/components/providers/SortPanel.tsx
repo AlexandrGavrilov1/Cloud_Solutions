@@ -16,7 +16,7 @@ if (isMobile) {
   return (
     <div
       className="inline-flex bg-[#2B3038] rounded-xl p-0.5 border border-[#2B3038] h-10 relative min-w-[112px]"
-      style={{ width: "auto" }} // ширина по содержимому, ное меньше 112px
+      style={{ width: "auto" }} // ширина по содержимому, но не меньше 112px
     >
       {/* Тумблер — белый с тенью */}
       <div
