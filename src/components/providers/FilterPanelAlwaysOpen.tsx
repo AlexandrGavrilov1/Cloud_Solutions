@@ -21,6 +21,8 @@ interface FilterPanelAlwaysOpenProps {
   setFilterVirtualization: (value: string[]) => void;
   filterMinDatacenters: number | null;
   setFilterMinDatacenters: (value: number | null) => void;
+  filterMaxDatacenters: number | null;
+  setFilterMaxDatacenters: (value: number | null) => void;
   filterDiskType: string[];
   setFilterDiskType: (value: string[]) => void;
   filterPaymentMethod: string[];
@@ -77,6 +79,8 @@ export const FilterPanelAlwaysOpen = ({
   setFilterVirtualization,
   filterMinDatacenters,
   setFilterMinDatacenters,
+  filterMaxDatacenters,
+  setFilterMaxDatacenters,
   filterDiskType,
   setFilterDiskType,
   filterPaymentMethod,
@@ -162,29 +166,6 @@ export const FilterPanelAlwaysOpen = ({
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Оптимизация: мемоизация значений для линейки
-  const [datacentersValue, setDatacentersValue] = useState(
-    filterMinDatacenters || 0,
-  );
-
-  // Синхронизация с внешним состоянием
-  useEffect(() => {
-    setDatacentersValue(filterMinDatacenters || 0);
-  }, [filterMinDatacenters]);
-
-  // Оптимизированный обработчик изменения количества ЦОД
-  const handleDatacentersChange = useCallback((value: number) => {
-    setDatacentersValue(value);
-  }, []);
-
-  // Применение значения после изменения
-  const applyDatacentersValue = useCallback(
-    (value: number) => {
-      setFilterMinDatacenters(value > 0 ? value : null);
-    },
-    [setFilterMinDatacenters],
-  );
-
   // Закрытие дропдаунов при клике вне компонента - ТОЛЬКО ВНЕ ВСЕЙ ПАНЕЛИ
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -225,6 +206,7 @@ export const FilterPanelAlwaysOpen = ({
     filterLocation.length > 0 ||
     filterVirtualization.length > 0 ||
     filterMinDatacenters !== null ||
+    filterMaxDatacenters !== null ||
     filterDiskType.length > 0 ||
     filterPaymentMethod.length > 0 ||
     filterOS.length > 0 ||
@@ -247,6 +229,7 @@ export const FilterPanelAlwaysOpen = ({
     filterLocation.length > 0,
     filterVirtualization.length > 0,
     filterMinDatacenters !== null,
+    filterMaxDatacenters !== null,
     filterDiskType.length > 0,
     filterPaymentMethod.length > 0,
     filterOS.length > 0,
@@ -270,6 +253,7 @@ export const FilterPanelAlwaysOpen = ({
     setFilterLocation([]);
     setFilterVirtualization([]);
     setFilterMinDatacenters(null);
+    setFilterMaxDatacenters(null);
     setFilterDiskType([]);
     setFilterPaymentMethod([]);
     setFilterOS([]);
@@ -291,6 +275,7 @@ export const FilterPanelAlwaysOpen = ({
     setFilterLocation,
     setFilterVirtualization,
     setFilterMinDatacenters,
+    setFilterMaxDatacenters,
     setFilterDiskType,
     setFilterPaymentMethod,
     setFilterOS,
@@ -587,6 +572,238 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
+  // Количество ЦОД аккордеон с двойным ползунком
+  const DatacentersAccordion = () => {
+    const isOpen = dropdownsOpen.datacenters;
+    const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
+    const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
+    const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
+
+    // Состояния для ручного ввода
+    const [minInput, setMinInput] = useState(minValue.toString());
+    const [maxInput, setMaxInput] = useState(maxValue.toString());
+
+    // Синхронизация с внешним состоянием
+    useEffect(() => {
+      setMinValue(filterMinDatacenters ?? 0);
+      setMinInput((filterMinDatacenters ?? 0).toString());
+    }, [filterMinDatacenters]);
+
+    useEffect(() => {
+      setMaxValue(filterMaxDatacenters ?? 15);
+      setMaxInput((filterMaxDatacenters ?? 15).toString());
+    }, [filterMaxDatacenters]);
+
+    const handleMinChange = useCallback(
+      (value: number) => {
+        const newValue = Math.max(0, Math.min(value, maxValue - 1, 15));
+        setMinValue(newValue);
+        setMinInput(newValue.toString());
+      },
+      [maxValue],
+    );
+
+    const handleMaxChange = useCallback(
+      (value: number) => {
+        const newValue = Math.min(15, Math.max(value, minValue + 1, 0));
+        setMaxValue(newValue);
+        setMaxInput(newValue.toString());
+      },
+      [minValue],
+    );
+
+    // Применение значений
+    const applyValues = useCallback(() => {
+      setFilterMinDatacenters(minValue > 0 ? minValue : null);
+      setFilterMaxDatacenters(maxValue < 15 ? maxValue : null);
+    }, [minValue, maxValue, setFilterMinDatacenters, setFilterMaxDatacenters]);
+
+    // Обработчики для ручного ввода
+    const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      if (value === "" || /^\d+$/.test(value)) {
+        setMinInput(value);
+      }
+    };
+
+    const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      if (value === "" || /^\d+$/.test(value)) {
+        setMaxInput(value);
+      }
+    };
+
+    const handleMinInputBlur = () => {
+      let value = parseInt(minInput);
+      if (isNaN(value)) {
+        value = 0;
+      }
+      value = Math.max(0, Math.min(value, maxValue - 1, 15));
+      setMinValue(value);
+      setMinInput(value.toString());
+      setFilterMinDatacenters(value > 0 ? value : null);
+    };
+
+    const handleMaxInputBlur = () => {
+      let value = parseInt(maxInput);
+      if (isNaN(value)) {
+        value = 15;
+      }
+      value = Math.min(15, Math.max(value, minValue + 1, 0));
+      setMaxValue(value);
+      setMaxInput(value.toString());
+      setFilterMaxDatacenters(value < 15 ? value : null);
+    };
+
+    const handleKeyDown = (
+      e: React.KeyboardEvent<HTMLInputElement>,
+      type: "min" | "max",
+    ) => {
+      if (e.key === "Enter") {
+        e.currentTarget.blur();
+      }
+    };
+
+    // Обработчики для ползунков
+    const handleMinMouseDown = (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging("min");
+    };
+
+    const handleMaxMouseDown = (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging("max");
+    };
+
+    useEffect(() => {
+      if (!isDragging) return;
+
+      const handleMouseMove = (moveEvent: MouseEvent) => {
+        moveEvent.preventDefault();
+
+        const slider = document.querySelector(".datacenters-slider");
+        if (!slider) return;
+
+        const rect = slider.getBoundingClientRect();
+        const x = moveEvent.clientX - rect.left;
+        const percent = Math.max(0, Math.min(1, x / rect.width));
+        const value = Math.round(percent * 15);
+
+        if (isDragging === "min") {
+          handleMinChange(value);
+        } else if (isDragging === "max") {
+          handleMaxChange(value);
+        }
+      };
+
+      const handleMouseUp = () => {
+        setIsDragging(null);
+        applyValues();
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+
+      return () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+    }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
+
+    const valueText =
+      (filterMinDatacenters === null || filterMinDatacenters === 0) &&
+      (filterMaxDatacenters === null || filterMaxDatacenters === 15)
+        ? "Любое"
+        : `${filterMinDatacenters ?? 0} - ${filterMaxDatacenters ?? 15} ЦОД`;
+
+    return (
+      <AccordionSection
+        title="Количество ЦОД"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("datacenters", e)}
+        valueText={valueText}
+        dropdownKey="datacenters"
+      >
+        <div className="space-y-3 px-1 pb-2">
+          {/* Овальные секции с ручным вводом */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex-1">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                От
+              </div>
+              <div className="flex items-center h-9 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
+                <input
+                  type="text"
+                  value={minInput}
+                  onChange={handleMinInputChange}
+                  onBlur={handleMinInputBlur}
+                  onKeyDown={(e) => handleKeyDown(e, "min")}
+                  className="w-full text-sm text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
+                  placeholder="0"
+                />
+                <span className="text-xs text-gray-500 ml-1">ЦОД</span>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                До
+              </div>
+              <div className="flex items-center h-9 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
+                <input
+                  type="text"
+                  value={maxInput}
+                  onChange={handleMaxInputChange}
+                  onBlur={handleMaxInputBlur}
+                  onKeyDown={(e) => handleKeyDown(e, "max")}
+                  className="w-full text-sm text-gray-900 dark:text-white bg-transparent border-0 focus:outline-none focus:ring-0 p-0"
+                  placeholder="15"
+                />
+                <span className="text-xs text-gray-500 ml-1">ЦОД</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Ползунок */}
+          <div className="relative py-3">
+            {/* Контейнер слайдера */}
+            <div className="datacenters-slider relative h-1 w-full bg-gray-300 dark:bg-gray-600 rounded-full">
+              {/* Оранжевая линия между ползунками */}
+              <div
+                className={`absolute h-1 rounded-full transition-colors ${
+                  isDragging ? "bg-gray-300 dark:bg-gray-600" : "bg-orange-500"
+                }`}
+                style={{
+                  left: `${(minValue / 15) * 100}%`,
+                  width: `${((maxValue - minValue) / 15) * 100}%`,
+                }}
+              />
+            </div>
+
+            {/* Ползунки */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
+              style={{ left: `${(minValue / 15) * 100}%` }}
+              onMouseDown={handleMinMouseDown}
+            />
+            <div
+              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
+              style={{ left: `${(maxValue / 15) * 100}%` }}
+              onMouseDown={handleMaxMouseDown}
+            />
+
+            {/* Метки минимального и максимального значения */}
+            <div className="flex justify-between text-xs mt-2">
+              <span className="text-gray-600 dark:text-gray-400">0</span>
+              <span className="text-gray-600 dark:text-gray-400">15</span>
+            </div>
+          </div>
+        </div>
+      </AccordionSection>
+    );
+  };
+
   // ФСТЭК аккордеон
   const FstekAccordion = () => {
     const isOpen = dropdownsOpen.fstek;
@@ -639,79 +856,6 @@ export const FilterPanelAlwaysOpen = ({
             handleMultiSelectChange(option, filterLocation, setFilterLocation)
           }
         />
-      </AccordionSection>
-    );
-  };
-
-  // Количество ЦОД аккордеон с ползунком
-  const DatacentersAccordion = () => {
-    const isOpen = dropdownsOpen.datacenters;
-    const valueText =
-      filterMinDatacenters === null || filterMinDatacenters === 0
-        ? "Любое"
-        : `${filterMinDatacenters}`;
-
-    return (
-      <AccordionSection
-        title="Количество ЦОД"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("datacenters", e)}
-        valueText={valueText}
-        dropdownKey="datacenters"
-      >
-        <div className="space-y-2 px-1">
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-600 dark:text-gray-400">0</span>
-            <span className="text-gray-900 dark:text-white font-medium">
-              {datacentersValue} ЦОД
-            </span>
-            <span className="text-gray-600 dark:text-gray-400">15</span>
-          </div>
-          <div className="relative py-2">
-            {/* Тонкая линия ползунка */}
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 dark:bg-gray-600 -translate-y-1/2"></div>
-
-            {/* Ползунок */}
-            <div
-              className="relative h-4 cursor-pointer"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const slider = e.currentTarget;
-                const rect = slider.getBoundingClientRect();
-
-                const handleMove = (moveEvent: MouseEvent) => {
-                  moveEvent.preventDefault();
-                  const x = moveEvent.clientX - rect.left;
-                  const percent = Math.max(0, Math.min(1, x / rect.width));
-                  const value = Math.round(percent * 15);
-                  handleDatacentersChange(value);
-                };
-
-                const handleUp = () => {
-                  document.removeEventListener("mousemove", handleMove);
-                  document.removeEventListener("mouseup", handleUp);
-                  applyDatacentersValue(datacentersValue);
-                };
-
-                document.addEventListener("mousemove", handleMove);
-                document.addEventListener("mouseup", handleUp);
-
-                // Инициализируем клик
-                const x = e.clientX - rect.left;
-                const percent = Math.max(0, Math.min(1, x / rect.width));
-                const value = Math.round(percent * 15);
-                handleDatacentersChange(value);
-              }}
-            >
-              {/* Маркер ползунка */}
-              <div
-                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full cursor-pointer shadow"
-                style={{ left: `${(datacentersValue / 15) * 100}%` }}
-              />
-            </div>
-          </div>
-        </div>
       </AccordionSection>
     );
   };

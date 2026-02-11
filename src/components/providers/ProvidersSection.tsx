@@ -55,6 +55,13 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     return saved ? parseInt(saved) : null;
   });
 
+  const [filterMaxDatacenters, setFilterMaxDatacenters] = useState<
+    number | null
+  >(() => {
+    const saved = localStorage.getItem("filterMaxDatacenters");
+    return saved ? parseInt(saved) : null;
+  });
+
   const [filterDiskType, setFilterDiskType] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterDiskType");
     return saved ? JSON.parse(saved) : [];
@@ -233,6 +240,17 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       localStorage.removeItem("filterMinDatacenters");
     }
   }, [filterMinDatacenters]);
+
+  useEffect(() => {
+    if (filterMaxDatacenters !== null) {
+      localStorage.setItem(
+        "filterMaxDatacenters",
+        filterMaxDatacenters.toString(),
+      );
+    } else {
+      localStorage.removeItem("filterMaxDatacenters");
+    }
+  }, [filterMaxDatacenters]);
 
   useEffect(() => {
     if (filterDiskType.length > 0) {
@@ -451,6 +469,12 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       )
         return false;
 
+      if (
+        filterMaxDatacenters !== null &&
+        p.locations.length > filterMaxDatacenters
+      )
+        return false;
+
       if (filterDiskType.length > 0) {
         if (!filterDiskType.includes(p.technicalSpecs.diskType)) return false;
       }
@@ -548,6 +572,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     filterLocation,
     filterVirtualization,
     filterMinDatacenters,
+    filterMaxDatacenters,
     filterDiskType,
     filterPaymentMethod,
     filterOS,
@@ -598,6 +623,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             setFilterVirtualization={setFilterVirtualization}
             filterMinDatacenters={filterMinDatacenters}
             setFilterMinDatacenters={setFilterMinDatacenters}
+            filterMaxDatacenters={filterMaxDatacenters}
+            setFilterMaxDatacenters={setFilterMaxDatacenters}
             filterDiskType={filterDiskType}
             setFilterDiskType={setFilterDiskType}
             filterPaymentMethod={filterPaymentMethod}
@@ -813,6 +840,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
               setFilterVirtualization={setFilterVirtualization}
               filterMinDatacenters={filterMinDatacenters}
               setFilterMinDatacenters={setFilterMinDatacenters}
+              filterMaxDatacenters={filterMaxDatacenters}
+              setFilterMaxDatacenters={setFilterMaxDatacenters}
               filterDiskType={filterDiskType}
               setFilterDiskType={setFilterDiskType}
               filterPaymentMethod={filterPaymentMethod}
