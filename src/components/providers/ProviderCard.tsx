@@ -980,9 +980,9 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Половина оранжевого круга - ровная сторона (диаметр) совпадает с верхней границей карточки */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[220px] h-[110px] opacity-0 group-hover:opacity-60 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-none rounded-b-full">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[220px] h-[220px] bg-[#FF931F] rounded-full blur-2xl"></div>
+        {/* Половина оранжевого круга - уменьшен в 1,5 раза */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[146px] h-[73px] opacity-0 group-hover:opacity-60 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-none rounded-b-full">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[146px] h-[146px] bg-[#FF931F] rounded-full blur-2xl"></div>
         </div>
 
         <CardHeader className="p-5 relative z-10">
