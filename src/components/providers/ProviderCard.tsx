@@ -980,15 +980,25 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно - только нижняя половина круга, полностью внутри карточки */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[90px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden rounded-t-none rounded-b-full">
+        {/* Мягкое оранжевое пятно — плавно исчезает вверх, без резких границ */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[100px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none"
+          style={{
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, black 30%, black 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, black 30%, black 100%)",
+          }}
+        >
           <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full blur-2xl"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[160px] rounded-full"
             style={{
               background:
-                "radial-gradient(circle at center 30%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, #FFF5EB 85%, transparent 100%)",
+                "radial-gradient(circle at center 25%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, #FFF5EB 85%, transparent 100%)",
+              filter: "blur(20px)",
+              transform: "translateY(-80px)", // центр круга на уровне верхней границы карточки
             }}
-          ></div>
+          />
         </div>
 
         <CardHeader className="p-5 relative z-10">
