@@ -65,7 +65,6 @@ interface FilterPanelAlwaysOpenProps {
   registrationDataOptions: RegistrationDataField[];
   clientTypeOptions: ClientType[];
 
-  /** Дополнительный CSS-класс для корневого элемента */
   className?: string;
 }
 
@@ -170,17 +169,13 @@ export const FilterPanelAlwaysOpen = ({
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Закрытие дропдаунов при клике вне компонента - ТОЛЬКО ВНЕ ВСЕЙ ПАНЕЛИ
+  // Закрытие дропдаунов при клике вне панели
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-
-      // Если клик внутри всей панели фильтров - НЕ закрываем дропдауны
       if (panelRef.current && panelRef.current.contains(target)) {
         return;
       }
-
-      // Если клик вне всей панели - закрываем все дропдауны
       setDropdownsOpen({
         fstek: false,
         location: false,
@@ -198,9 +193,7 @@ export const FilterPanelAlwaysOpen = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const hasActiveFilters =
@@ -360,7 +353,7 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // Компонент Checkbox для повторного использования с оранжевыми границами
+  // --- Компоненты ---
   const FilterCheckbox = ({
     checked,
     onChange,
@@ -381,9 +374,7 @@ export const FilterPanelAlwaysOpen = ({
           id={id}
           type="checkbox"
           checked={checked}
-          onChange={(e) => {
-            onChange(e.target.checked);
-          }}
+          onChange={(e) => onChange(e.target.checked)}
           className="sr-only"
         />
         <div
@@ -393,111 +384,91 @@ export const FilterPanelAlwaysOpen = ({
               : "border-orange-400 dark:border-orange-400 bg-transparent"
           }`}
         >
-          {checked && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
+          {checked && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
         </div>
       </div>
       <span className="text-xs text-gray-900 dark:text-white">{label}</span>
     </label>
   );
 
-  // Верхняя секция чекбоксов
-  const CheckboxSection = () => {
-    return (
-      <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
-        {/* Заголовок */}
-        <div className="flex items-center justify-between mb-1.5">
-          <div className="flex items-center gap-1.5">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-              Фильтры
-            </h3>
-            {activeFiltersCount > 0 && (
-              <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-                <span className="text-xs text-white font-bold">
-                  {activeFiltersCount}
-                </span>
-              </div>
-            )}
-          </div>
-          {hasActiveFilters && (
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              Сбросить
-            </button>
+  const CheckboxSection = () => (
+    <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between mb-1.5">
+        <div className="flex items-center gap-1.5">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+            Фильтры
+          </h3>
+          {activeFiltersCount > 0 && (
+            <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">
+                {activeFiltersCount}
+              </span>
+            </div>
           )}
         </div>
+        {hasActiveFilters && (
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            Сбросить
+          </button>
+        )}
+      </div>
 
-        {/* Двухколоночная сетка */}
-        <div className="grid grid-cols-2 gap-1.5">
-          {/* Колонка 1 */}
-          <div className="space-y-1">
-            {/* 152-ФЗ */}
-            <FilterCheckbox
-              id="filter-fz152"
-              checked={filterFZ152}
-              onChange={setFilterFZ152}
-              label="152-ФЗ"
-            />
-
-            {/* 1С */}
-            <FilterCheckbox
-              id="filter-1c"
-              checked={filter1C}
-              onChange={setFilter1C}
-              label="1С"
-            />
-
-            {/* Тестовый период */}
-            <FilterCheckbox
-              id="filter-trial"
-              checked={filterTrialPeriod}
-              onChange={setFilterTrialPeriod}
-              label="Тестовый период"
-            />
-
-            {/* Заказ до регистрации */}
-            <FilterCheckbox
-              id="filter-order-before-registration"
-              checked={filterOrderBeforeRegistration}
-              onChange={setFilterOrderBeforeRegistration}
-              label="Заказ до регистрации"
-            />
-          </div>
-
-          {/* Колонка 2 */}
-          <div className="space-y-1">
-            {/* КИИ */}
-            <FilterCheckbox
-              id="filter-kii"
-              checked={filterKII}
-              onChange={setFilterKII}
-              label="КИИ"
-            />
-
-            {/* AI */}
-            <FilterCheckbox
-              id="filter-ai"
-              checked={filterAI}
-              onChange={setFilterAI}
-              label="AI"
-            />
-
-            {/* Моб. приложение */}
-            <FilterCheckbox
-              id="filter-mobile-app"
-              checked={filterMobileApp}
-              onChange={setFilterMobileApp}
-              label="Моб. приложение"
-            />
-          </div>
+      <div className="grid grid-cols-2 gap-1.5">
+        <div className="space-y-1">
+          <FilterCheckbox
+            id="filter-fz152"
+            checked={filterFZ152}
+            onChange={setFilterFZ152}
+            label="152-ФЗ"
+          />
+          <FilterCheckbox
+            id="filter-1c"
+            checked={filter1C}
+            onChange={setFilter1C}
+            label="1С"
+          />
+          <FilterCheckbox
+            id="filter-trial"
+            checked={filterTrialPeriod}
+            onChange={setFilterTrialPeriod}
+            label="Тестовый период"
+          />
+          <FilterCheckbox
+            id="filter-order-before-registration"
+            checked={filterOrderBeforeRegistration}
+            onChange={setFilterOrderBeforeRegistration}
+            label="Заказ до регистрации"
+          />
+        </div>
+        <div className="space-y-1">
+          <FilterCheckbox
+            id="filter-kii"
+            checked={filterKII}
+            onChange={setFilterKII}
+            label="КИИ"
+          />
+          <FilterCheckbox
+            id="filter-ai"
+            checked={filterAI}
+            onChange={setFilterAI}
+            label="AI"
+          />
+          <FilterCheckbox
+            id="filter-mobile-app"
+            checked={filterMobileApp}
+            onChange={setFilterMobileApp}
+            label="Моб. приложение"
+          />
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
-  // Компонент аккордеона для секций
+  // Аккордеон — убираем отображение valueText, если он пустой
   const AccordionSection = ({
     title,
     isOpen,
@@ -526,9 +497,11 @@ export const FilterPanelAlwaysOpen = ({
           {title}
         </span>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {valueText}
-          </span>
+          {valueText && valueText.length > 0 && (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {valueText}
+            </span>
+          )}
           <Icon
             name={isOpen ? "ChevronUp" : "ChevronDown"}
             size={12}
@@ -540,7 +513,6 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // Общий компонент для отображения элементов построчно с прокруткой
   const OptionsGrid = ({
     options,
     selectedValues,
@@ -576,18 +548,15 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Количество ЦОД аккордеон с двойным ползунком
+  // --- Аккордеоны с изменённым valueText (убраны "Любой", "Любая", "Любое", "Любые") ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
     const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-
-    // Состояния для ручного ввода
     const [minInput, setMinInput] = useState(minValue.toString());
     const [maxInput, setMaxInput] = useState(maxValue.toString());
 
-    // Синхронизация с внешним состоянием
     useEffect(() => {
       setMinValue(filterMinDatacenters ?? 0);
       setMinInput((filterMinDatacenters ?? 0).toString());
@@ -616,32 +585,24 @@ export const FilterPanelAlwaysOpen = ({
       [minValue],
     );
 
-    // Применение значений
     const applyValues = useCallback(() => {
       setFilterMinDatacenters(minValue > 0 ? minValue : null);
       setFilterMaxDatacenters(maxValue < 15 ? maxValue : null);
     }, [minValue, maxValue, setFilterMinDatacenters, setFilterMaxDatacenters]);
 
-    // Обработчики для ручного ввода
     const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (value === "" || /^\d+$/.test(value)) {
-        setMinInput(value);
-      }
+      if (value === "" || /^\d+$/.test(value)) setMinInput(value);
     };
 
     const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (value === "" || /^\d+$/.test(value)) {
-        setMaxInput(value);
-      }
+      if (value === "" || /^\d+$/.test(value)) setMaxInput(value);
     };
 
     const handleMinInputBlur = () => {
       let value = parseInt(minInput);
-      if (isNaN(value)) {
-        value = 0;
-      }
+      if (isNaN(value)) value = 0;
       value = Math.max(0, Math.min(value, maxValue - 1, 15));
       setMinValue(value);
       setMinInput(value.toString());
@@ -650,9 +611,7 @@ export const FilterPanelAlwaysOpen = ({
 
     const handleMaxInputBlur = () => {
       let value = parseInt(maxInput);
-      if (isNaN(value)) {
-        value = 15;
-      }
+      if (isNaN(value)) value = 15;
       value = Math.min(15, Math.max(value, minValue + 1, 0));
       setMaxValue(value);
       setMaxInput(value.toString());
@@ -660,12 +619,9 @@ export const FilterPanelAlwaysOpen = ({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        e.currentTarget.blur();
-      }
+      if (e.key === "Enter") e.currentTarget.blur();
     };
 
-    // Обработчики для ползунков
     const handleMinMouseDown = (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
@@ -683,20 +639,14 @@ export const FilterPanelAlwaysOpen = ({
 
       const handleMouseMove = (moveEvent: MouseEvent) => {
         moveEvent.preventDefault();
-
         const slider = document.querySelector(".datacenters-slider");
         if (!slider) return;
-
         const rect = slider.getBoundingClientRect();
         const x = moveEvent.clientX - rect.left;
         const percent = Math.max(0, Math.min(1, x / rect.width));
         const value = Math.round(percent * 15);
-
-        if (isDragging === "min") {
-          handleMinChange(value);
-        } else if (isDragging === "max") {
-          handleMaxChange(value);
-        }
+        if (isDragging === "min") handleMinChange(value);
+        else if (isDragging === "max") handleMaxChange(value);
       };
 
       const handleMouseUp = () => {
@@ -706,18 +656,19 @@ export const FilterPanelAlwaysOpen = ({
 
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
-
       return () => {
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
       };
     }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
 
-    const valueText =
+    // valueText: если оба значения по умолчанию – пустая строка, иначе отображаем диапазон
+    const isDefault =
       (filterMinDatacenters === null || filterMinDatacenters === 0) &&
-      (filterMaxDatacenters === null || filterMaxDatacenters === 15)
-        ? "Любое"
-        : `${filterMinDatacenters ?? 0} - ${filterMaxDatacenters ?? 15}`;
+      (filterMaxDatacenters === null || filterMaxDatacenters === 15);
+    const valueText = isDefault
+      ? ""
+      : `${filterMinDatacenters ?? 0} – ${filterMaxDatacenters ?? 15}`;
 
     return (
       <AccordionSection
@@ -728,7 +679,6 @@ export const FilterPanelAlwaysOpen = ({
         dropdownKey="datacenters"
       >
         <div className="space-y-3 px-1 pb-2">
-          {/* Овалы с ручным вводом и тире между ними */}
           <div className="flex items-center justify-center gap-1">
             <div className="flex-1">
               <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
@@ -743,13 +693,11 @@ export const FilterPanelAlwaysOpen = ({
                 />
               </div>
             </div>
-
             <div className="flex items-center justify-center w-4">
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 —
               </span>
             </div>
-
             <div className="flex-1">
               <div className="flex items-center h-8 px-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-colors">
                 <input
@@ -764,12 +712,8 @@ export const FilterPanelAlwaysOpen = ({
               </div>
             </div>
           </div>
-
-          {/* Ползунок */}
           <div className="relative py-2">
-            {/* Контейнер слайдера */}
             <div className="datacenters-slider relative h-0.5 w-full bg-gray-300 dark:bg-gray-600 rounded-full">
-              {/* Оранжевая линия между ползунками */}
               <div
                 className={`absolute h-0.5 rounded-full transition-colors ${
                   isDragging ? "bg-gray-300 dark:bg-gray-600" : "bg-orange-500"
@@ -780,8 +724,6 @@ export const FilterPanelAlwaysOpen = ({
                 }}
               />
             </div>
-
-            {/* Ползунки - маленькие, на линии */}
             <div
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-orange-500 rounded-full cursor-pointer shadow-sm hover:scale-110 transition-transform"
               style={{ left: `${(minValue / 15) * 100}%` }}
@@ -798,16 +740,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // ФСТЭК аккордеон
   const FstekAccordion = () => {
     const isOpen = dropdownsOpen.fstek;
     const valueText =
       filterFSTEK.length === 0
-        ? "Любой"
+        ? "" // убрали "Любой"
         : filterFSTEK.length === 1
           ? filterFSTEK[0]
           : `${filterFSTEK.length} выбрано`;
-
     return (
       <AccordionSection
         title="ФСТЭК"
@@ -825,16 +765,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Локация ЦОД аккордеон
   const LocationAccordion = () => {
     const isOpen = dropdownsOpen.location;
     const valueText =
       filterLocation.length === 0
-        ? "Любая"
+        ? "" // убрали "Любая"
         : filterLocation.length === 1
           ? filterLocation[0]
           : `${filterLocation.length} выбрано`;
-
     return (
       <AccordionSection
         title="Локация ЦОД"
@@ -854,17 +792,16 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // GPU аккордеон
   const GpuAccordion = () => {
     const isOpen = dropdownsOpen.gpu;
-    const valueText = filterHasGPU
-      ? "Есть GPU"
-      : filterGPU.length === 0
-        ? "Любой"
-        : filterGPU.length === 1
-          ? filterGPU[0]
-          : `${filterGPU.length} выбрано`;
-
+    const hasSelection = filterHasGPU || filterGPU.length > 0;
+    let valueText = "";
+    if (filterHasGPU) {
+      valueText = "Есть GPU";
+    } else if (filterGPU.length > 0) {
+      valueText =
+        filterGPU.length === 1 ? filterGPU[0] : `${filterGPU.length} выбрано`;
+    }
     return (
       <AccordionSection
         title="GPU"
@@ -874,20 +811,15 @@ export const FilterPanelAlwaysOpen = ({
         dropdownKey="gpu"
       >
         <div className="space-y-1">
-          {/* Опция "Есть GPU" */}
           <FilterCheckbox
             id="filter-has-gpu"
             checked={filterHasGPU}
             onChange={(checked) => {
               setFilterHasGPU(checked);
-              if (checked) {
-                setFilterGPU([]);
-              }
+              if (checked) setFilterGPU([]);
             }}
             label="Есть GPU"
           />
-
-          {/* Конкретные модели GPU */}
           {allGPUs.length > 0 && (
             <div className="mt-1">
               <OptionsGrid
@@ -902,16 +834,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Виртуализация аккордеон
   const VirtualizationAccordion = () => {
     const isOpen = dropdownsOpen.virtualization;
     const valueText =
       filterVirtualization.length === 0
-        ? "Любая"
+        ? "" // убрали "Любая"
         : filterVirtualization.length === 1
           ? filterVirtualization[0]
           : `${filterVirtualization.length} выбрано`;
-
     return (
       <AccordionSection
         title="Виртуализация"
@@ -935,16 +865,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Тип дисков аккордеон
   const DiskTypeAccordion = () => {
     const isOpen = dropdownsOpen.diskType;
     const valueText =
       filterDiskType.length === 0
-        ? "Любой"
+        ? "" // убрали "Любой"
         : filterDiskType.length === 1
           ? filterDiskType[0]
           : `${filterDiskType.length} выбрано`;
-
     return (
       <AccordionSection
         title="Тип дисков"
@@ -964,16 +892,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Процессор аккордеон
   const CpuAccordion = () => {
     const isOpen = dropdownsOpen.cpu;
     const valueText =
       filterCPU.length === 0
-        ? "Любой"
+        ? "" // убрали "Любой"
         : filterCPU.length === 1
           ? filterCPU[0]
           : `${filterCPU.length} выбрано`;
-
     return (
       <AccordionSection
         title="Процессор"
@@ -993,16 +919,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Операционная система аккордеон
   const OSAccordion = () => {
     const isOpen = dropdownsOpen.os;
     const valueText =
       filterOS.length === 0
-        ? "Любая"
+        ? "" // убрали "Любая"
         : filterOS.length === 1
           ? filterOS[0]
           : `${filterOS.length} выбрано`;
-
     return (
       <AccordionSection
         title="Операционная система"
@@ -1022,16 +946,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Дополнительные услуги аккордеон
   const AdditionalServicesAccordion = () => {
     const isOpen = dropdownsOpen.additionalServices;
     const valueText =
       filterAdditionalServices.length === 0
-        ? "Любые"
+        ? "" // убрали "Любые"
         : filterAdditionalServices.length === 1
           ? filterAdditionalServices[0]
           : `${filterAdditionalServices.length} выбрано`;
-
     return (
       <AccordionSection
         title="Дополнительные услуги"
@@ -1049,16 +971,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Способы оплаты аккордеон
   const PaymentMethodAccordion = () => {
     const isOpen = dropdownsOpen.paymentMethod;
     const valueText =
       filterPaymentMethod.length === 0
-        ? "Любой"
+        ? "" // убрали "Любой"
         : filterPaymentMethod.length === 1
           ? filterPaymentMethod[0]
           : `${filterPaymentMethod.length} выбрано`;
-
     return (
       <AccordionSection
         title="Способы оплаты"
@@ -1082,16 +1002,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Данные для регистрации аккордеон
   const RegistrationDataAccordion = () => {
     const isOpen = dropdownsOpen.registrationData;
     const valueText =
       filterRegistrationData.length === 0
-        ? "Любые"
+        ? "" // убрали "Любые"
         : filterRegistrationData.length === 1
           ? filterRegistrationData[0]
           : `${filterRegistrationData.length} выбрано`;
-
     return (
       <AccordionSection
         title="Данные для регистрации"
@@ -1109,16 +1027,14 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Тип клиента аккордеон
   const ClientTypeAccordion = () => {
     const isOpen = dropdownsOpen.clientType;
     const valueText =
       filterClientType.length === 0
-        ? "Любой"
+        ? "" // убрали "Любой"
         : filterClientType.length === 1
           ? filterClientType[0]
           : `${filterClientType.length} выбрано`;
-
     return (
       <AccordionSection
         title="Тип клиента"
@@ -1140,30 +1056,26 @@ export const FilterPanelAlwaysOpen = ({
     <div
       ref={panelRef}
       className={`flex-shrink-0 bg-white dark:bg-gray-900 p-3 border-r border-gray-200 dark:border-gray-800 ${className}`}
+      // Нет фиксированной высоты — панель растягивается по содержимому
     >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
           width: 4px;
           height: 4px;
         }
-
         .scrollbar-thin::-webkit-scrollbar-track {
           background: transparent;
         }
-
         .scrollbar-thin::-webkit-scrollbar-thumb {
           background-color: #d1d5db;
           border-radius: 2px;
         }
-
         .scrollbar-thin::-webkit-scrollbar-thumb:hover {
           background-color: #9ca3af;
         }
-
         .dark .scrollbar-thin::-webkit-scrollbar-thumb {
           background-color: #4b5563;
         }
-
         .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
           background-color: #6b7280;
         }
