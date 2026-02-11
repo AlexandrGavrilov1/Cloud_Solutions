@@ -26,7 +26,7 @@ export const SortPanel = ({
   const priceButtonText =
     priceSortOrder === "desc" ? "Сначала дорогие" : "Сначала дешёвые";
 
-  // --- МОБИЛЬНАЯ ВЕРСИЯ (иконки + тумблер) ---
+  // --- МОБИЛЬНАЯ ВЕРСИЯ (иконки + тумблер, цена с переключением) ---
   if (isMobile) {
     const getThumbLeft = () => {
       switch (sortBy) {
@@ -41,13 +41,25 @@ export const SortPanel = ({
       }
     };
 
+    // Обработчик клика по цене на мобильных — переключение направления
+    const handlePriceClick = () => {
+      if (sortBy !== "price") {
+        onSortPrice("desc"); // дорогие сначала
+      } else {
+        // переключаем направление
+        onSortPrice(priceSortOrder === "asc" ? "desc" : "asc");
+      }
+    };
+
     return (
       <div className="inline-flex bg-[#2B3038] rounded-xl p-0.5 border border-[#2B3038] h-10 relative min-w-[112px]">
+        {/* Тумблер */}
         <div
           className="absolute top-0.5 bottom-0.5 w-[33.33%] bg-white/90 shadow-sm rounded-lg transition-all duration-200 ease-in-out"
           style={{ left: getThumbLeft() }}
         />
 
+        {/* Популярные */}
         <button
           onClick={onSortPopular}
           className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
@@ -60,6 +72,7 @@ export const SortPanel = ({
           <Icon name="Crown" className="w-4 h-4" />
         </button>
 
+        {/* Рейтинг */}
         <button
           onClick={onSortRating}
           className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
@@ -72,8 +85,9 @@ export const SortPanel = ({
           <Icon name="Star" className="w-4 h-4" />
         </button>
 
+        {/* Цена — переключение направления при каждом клике */}
         <button
-          onClick={() => onSortPrice("desc")}
+          onClick={handlePriceClick}
           className={`relative z-10 w-[33.33%] rounded-lg transition-all flex items-center justify-center h-full ${
             sortBy === "price"
               ? "text-[#FF931F]"
@@ -90,6 +104,7 @@ export const SortPanel = ({
   // --- ДЕСКТОПНАЯ ВЕРСИЯ (текст, шрифт как в надписях чекбоксов: 12px, обычный вес) ---
   return (
     <div className="flex items-center gap-6 bg-[#2B3038] px-5 py-2 rounded-xl h-10">
+      {/* Популярные */}
       <button
         onClick={onSortPopular}
         className={`text-xs transition-colors ${
@@ -101,6 +116,7 @@ export const SortPanel = ({
         Популярные
       </button>
 
+      {/* Рейтинг */}
       <button
         onClick={onSortRating}
         className={`text-xs transition-colors ${
@@ -112,7 +128,9 @@ export const SortPanel = ({
         Высокий рейтинг
       </button>
 
+      {/* Цена: кастомный комбинированный контрол */}
       <div className="flex items-center">
+        {/* Левая часть — текст, клик — сортировка по убыванию (дорогие) */}
         <button
           onClick={() => onSortPrice("desc")}
           className={`text-xs transition-colors ${
@@ -124,6 +142,7 @@ export const SortPanel = ({
           {priceButtonText}
         </button>
 
+        {/* Правая часть — стрелка, открывает меню выбора направления */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
