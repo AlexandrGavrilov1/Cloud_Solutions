@@ -7,7 +7,7 @@ import {
   ClientType,
   AdditionalServiceType,
 } from "./types";
-import { cn } from "@/lib/utils"; // или используйте clsx, classnames
+import { cn } from "@/lib/utils"; // ил используй clsx, classnames
 
 interface FilterPanelAlwaysOpenProps {
   filterFZ152: boolean;
@@ -52,6 +52,7 @@ interface FilterPanelAlwaysOpenProps {
   setFilter1C: (value: boolean) => void;
   filterAI: boolean;
   setFilterAI: (value: boolean) => void;
+  className?: string;
 
   allLocations: string[];
   allVirtualizations: string[];
@@ -110,6 +111,7 @@ export const FilterPanelAlwaysOpen = ({
   setFilter1C,
   filterAI,
   setFilterAI,
+  className = "",
 
   allLocations,
   allVirtualizations,
@@ -1099,10 +1101,11 @@ export const FilterPanelAlwaysOpen = ({
     <div
       ref={panelRef}
       className={cn(
-        // Адаптивная ширина панели фильтров
-        "w-[180px] sm:w-[240px] md:w-[280px] lg:w-[340px]",
+        // Базовая ширина теперь управляется через className,
+        // но оставляем запасные классы на случай, если className не передан
         "flex-shrink-0 bg-white dark:bg-gray-900 p-3",
         "border-r border-gray-200 dark:border-gray-800",
+        className,
       )}
     >
       <style jsx global>{`
