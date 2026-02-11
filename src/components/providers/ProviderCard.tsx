@@ -972,7 +972,7 @@ export const ProviderCard = ({
         className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift h-full
     ${
       isSelected
-        ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30"
+        ? "border-[#FF931F]/50 shadow-lg shadow-[#931F]/30"
         : "border-[#FF931F]/20"
     }
     hover:bg-gradient-to-br hover:from-[#FFF5EB] hover:via-[#FFF9F2] hover:to-[#FFFDF9]
@@ -980,23 +980,23 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно — плавно исчезает вверх, без резких границ */}
+        {/* Мягкое оранжевое пятно — ровная сторона на верхней границе, плавное затухание вниз и по бокам */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[100px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[110px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none"
           style={{
-            maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 30%, black 100%)",
+            maskImage: "linear-gradient(to bottom, transparent 0px, black 0px)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 30%, black 100%)",
+              "linear-gradient(to bottom, transparent 0px, black 0px)",
           }}
         >
           <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[160px] rounded-full"
+            className="absolute left-1/2 -translate-x-1/2 w-[180px] h-[180px] rounded-full"
             style={{
+              top: 0,
+              transform: "translateY(-90px)", // центр круга на верхней границе
               background:
-                "radial-gradient(circle at center 25%, #FF931F 0%, #FFB366 30%, #FFD9B3 60%, #FFF5EB 85%, transparent 100%)",
-              filter: "blur(20px)",
-              transform: "translateY(-80px)", // центр круга на уровне верхней границы карточки
+                "radial-gradient(circle at center, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255, 245, 235, 0.6) 75%, transparent 90%)",
+              filter: "blur(22px)",
             }}
           />
         </div>
