@@ -17,18 +17,18 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» ========== */}
+      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — уменьшенное ========== */}
       <div
         className="absolute top-0 left-0 w-full pointer-events-none"
-        style={{ zIndex: 1, height: "650px" }}
+        style={{ zIndex: 1, height: "550px" }}
       >
         <div
-          className="absolute left-[5%] top-0 w-[800px] h-[800px] rounded-full"
+          className="absolute left-[5%] top-0 w-[500px] h-[500px] rounded-full"
           style={{
             background:
               "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
-            filter: "blur(90px)",
-            transform: "translate(-20%, -40%)",
+            filter: "blur(70px)",
+            transform: "translate(-10%, -35%)",
             opacity: 0.9,
           }}
         />
