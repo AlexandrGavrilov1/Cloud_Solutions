@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 export const Footer = () => {
   return (
     <footer className="bg-card border-t border-border py-16">
-      <div className="container max-w-7xl mx-auto px-4 lg:px-8">
+      <div className="w-full px-4 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">

@@ -18,7 +18,7 @@ export const HeroSection = () => {
       itemType="https://schema.org/WebPageElement"
     >
       <div className="container max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="w-full px-4 lg:px-8 relative z-10">
           <h1
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold"
             style={{
