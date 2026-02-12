@@ -12,39 +12,41 @@ export const HeroSection = () => {
       className="relative py-24 overflow-hidden"
       style={{
         background:
-          "linear-gradient(90deg, #FF931F 0%, #FFB366 20%, #FFC999 40%, #FFE4CC 70%, #F5E6D3 100%)",
+          "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
       }}
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — примыкает к верхней границе ========== */}
+      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» ========== */}
       <div
-        className="absolute top-0 left-0 w-full pointer-events-none overflow-hidden"
-        style={{ zIndex: 1, height: "500px" }}
+        className="absolute top-0 left-0 w-full pointer-events-none"
+        style={{ zIndex: 1, height: "600px" }}
       >
         <div
-          className="absolute left-[5%] top-0 w-[600px] h-[600px] rounded-full"
+          className="absolute left-[5%] top-0 w-[700px] h-[700px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 30% 20%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255, 245, 235, 0.4) 75%, transparent 90%)",
-            filter: "blur(70px)",
-            transform: "translate(-10%, -30%)",
+              "radial-gradient(circle at 30% 20%, #FF931F 0%, #FFB366 20%, #FFD9B3 40%, rgba(255, 245, 235, 0.3) 70%, transparent 90%)",
+            filter: "blur(80px)",
+            transform: "translate(-15%, -35%)",
+            opacity: 0.7,
           }}
         />
       </div>
 
-      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ (уже работает отлично) ========== */}
+      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ========== */}
       <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] pointer-events-none overflow-hidden"
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none"
         style={{ zIndex: 1 }}
       >
         <div
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full"
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 70% 50%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255, 245, 235, 0.3) 75%, transparent 90%)",
-            filter: "blur(60px)",
-            transform: "translate(30%, -50%)",
+              "radial-gradient(circle at 70% 50%, #FF931F 0%, #FFB366 20%, #FFD9B3 40%, rgba(255, 245, 235, 0.25) 70%, transparent 90%)",
+            filter: "blur(70px)",
+            transform: "translate(25%, -50%)",
+            opacity: 0.7,
           }}
         />
       </div>
