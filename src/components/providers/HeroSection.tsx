@@ -9,7 +9,7 @@ export const HeroSection = () => {
 
   return (
     <section
-      className="relative py-24 overflow-hidden"
+      className="relative py-24"
       style={{
         background:
           "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
@@ -20,33 +20,33 @@ export const HeroSection = () => {
       {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» ========== */}
       <div
         className="absolute top-0 left-0 w-full pointer-events-none"
-        style={{ zIndex: 1, height: "600px" }}
+        style={{ zIndex: 1, height: "650px" }}
       >
         <div
-          className="absolute left-[5%] top-0 w-[700px] h-[700px] rounded-full"
+          className="absolute left-[5%] top-0 w-[800px] h-[800px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 30% 20%, #FF931F 0%, #FFB366 20%, #FFD9B3 40%, rgba(255, 245, 235, 0.3) 70%, transparent 90%)",
-            filter: "blur(80px)",
-            transform: "translate(-15%, -35%)",
-            opacity: 0.7,
+              "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
+            filter: "blur(90px)",
+            transform: "translate(-20%, -40%)",
+            opacity: 0.9,
           }}
         />
       </div>
 
       {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ========== */}
       <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none"
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
         style={{ zIndex: 1 }}
       >
         <div
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full"
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 70% 50%, #FF931F 0%, #FFB366 20%, #FFD9B3 40%, rgba(255, 245, 235, 0.25) 70%, transparent 90%)",
-            filter: "blur(70px)",
-            transform: "translate(25%, -50%)",
-            opacity: 0.7,
+              "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
+            filter: "blur(80px)",
+            transform: "translate(20%, -50%)",
+            opacity: 0.9,
           }}
         />
       </div>
