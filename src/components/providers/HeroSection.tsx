@@ -9,7 +9,7 @@ export const HeroSection = () => {
 
   return (
     <section
-      className="relative py-24"
+      className="relative py-16 sm:py-20 md:py-24 overflow-hidden"
       style={{
         background:
           "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
@@ -17,36 +17,38 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — уменьшенное ========== */}
+      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — адаптивное ========== */}
       <div
         className="absolute top-0 left-0 w-full pointer-events-none"
-        style={{ zIndex: 1, height: "550px" }}
+        style={{ zIndex: 1, height: "350px sm:450px md:550px lg:650px" }}
       >
         <div
-          className="absolute left-[5%] top-0 w-[500px] h-[500px] rounded-full"
+          className="absolute left-[5%] top-0 w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px] h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px] rounded-full"
           style={{
             background:
               "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
-            filter: "blur(70px)",
+            filter:
+              "blur(50px) sm:blur(60px) md:blur(70px) lg:blur(80px) xl:blur(90px)",
             transform: "translate(-10%, -35%)",
             opacity: 0.9,
           }}
         />
       </div>
 
-      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ========== */}
+      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ — адаптивное ========== */}
       <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
+        className="absolute right-0 sm:right-[5%] md:right-[8%] lg:right-[10%] xl:right-[12%] top-1/2 -translate-y-1/2 w-[250px] sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[550px] h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px] pointer-events-none"
         style={{ zIndex: 1 }}
       >
         <div
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full"
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-full h-full rounded-full"
           style={{
             background:
               "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
-            filter: "blur(80px)",
+            filter:
+              "blur(50px) sm:blur(60px) md:blur(70px) lg:blur(75px) xl:blur(80px)",
             transform: "translate(20%, -50%)",
-            opacity: 0.9,
+            opacity: 0.85,
           }}
         />
       </div>
