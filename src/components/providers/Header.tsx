@@ -69,43 +69,39 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Мобильная шапка: иконки прижаты вправо и имеют фиксированный тёмный цвет (как на светлой схеме) */}
+          {/* Мобильная шапка: иконки прижаты вправо и всегда белые */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
-              className="p-2 hover:bg-accent rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               aria-label="Toggle theme"
             >
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
                 size={20}
-                className="text-gray-800 dark:text-gray-800"
+                className="text-white"
               />
             </button>
             <button
-              className="p-2 hover:bg-accent rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
               <Icon
                 name={mobileMenuOpen ? "X" : "Menu"}
                 size={24}
-                className="text-gray-800 dark:text-gray-800"
+                className="text-white"
               />
             </button>
           </div>
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
               <a
                 href="/gaming"
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-                  theme === "dark"
-                    ? "text-white hover:text-[#FF931F] hover:bg-white/10"
-                    : "text-foreground/80 hover:text-primary hover:bg-accent"
-                }`}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Gamepad2" size={16} />
@@ -113,11 +109,7 @@ export const Header = () => {
               </a>
               <a
                 href="/blog"
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-                  theme === "dark"
-                    ? "text-white hover:text-[#FF931F] hover:bg-white/10"
-                    : "text-foreground/80 hover:text-primary hover:bg-accent"
-                }`}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="BookOpen" size={16} />
@@ -125,11 +117,7 @@ export const Header = () => {
               </a>
               <a
                 href="/uptime"
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-                  theme === "dark"
-                    ? "text-white hover:text-[#FF931F] hover:bg-white/10"
-                    : "text-foreground/80 hover:text-primary hover:bg-accent"
-                }`}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Activity" size={16} />
@@ -137,22 +125,14 @@ export const Header = () => {
               </a>
               <a
                 href="/promo"
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-                  theme === "dark"
-                    ? "text-white hover:text-[#FF931F] hover:bg-white/10"
-                    : "text-foreground/80 hover:text-primary hover:bg-accent"
-                }`}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Tag" size={16} />
                 Акции
               </a>
               <button
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all text-left ${
-                  theme === "dark"
-                    ? "text-white hover:text-[#FF931F] hover:bg-white/10"
-                    : "text-foreground/80 hover:text-primary hover:bg-accent"
-                }`}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all text-left"
                 onClick={toggleTheme}
               >
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
