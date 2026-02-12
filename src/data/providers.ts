@@ -4743,7 +4743,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
 
     reviews: reviewsData[51] || [],
   },
-  /* {
+  {
     id: 52,
     name: "OVH",
     logo: "providers_logo/52_OVH.JPG",
@@ -4851,7 +4851,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     ],
 
     reviews: reviewsData[52] || [],
-  },*/
+  },
   {
     id: 53,
     name: "One Dash",
