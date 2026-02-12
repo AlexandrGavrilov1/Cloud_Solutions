@@ -17,24 +17,23 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ДЕКОРАТИВНЫЕ ОРАНЖЕВЫЕ ПЯТНА ========== */}
-      {/* Пятно над словом «НАЙДИ» — большое, мягкое */}
+      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — примыкает к верхней границе ========== */}
       <div
-        className="absolute top-0 left-[5%] w-[600px] h-[500px] pointer-events-none overflow-hidden"
-        style={{ zIndex: 1 }}
+        className="absolute top-0 left-0 w-full pointer-events-none overflow-hidden"
+        style={{ zIndex: 1, height: "500px" }}
       >
         <div
-          className="absolute left-0 top-0 w-[500px] h-[500px] rounded-full"
+          className="absolute left-[5%] top-0 w-[600px] h-[600px] rounded-full"
           style={{
             background:
               "radial-gradient(circle at 30% 20%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255, 245, 235, 0.4) 75%, transparent 90%)",
             filter: "blur(70px)",
-            transform: "translate(-15%, -25%)",
+            transform: "translate(-10%, -30%)",
           }}
         />
       </div>
 
-      {/* Пятно у правой границы — смещено к центру по вертикали */}
+      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ (уже работает отлично) ========== */}
       <div
         className="absolute right-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] pointer-events-none overflow-hidden"
         style={{ zIndex: 1 }}
@@ -50,7 +49,7 @@ export const HeroSection = () => {
         />
       </div>
 
-      {/* Контейнер с контентом — поверх пятен (z-10) */}
+      {/* Контент — поверх пятен */}
       <div className="w-full px-4 lg:px-8 relative z-10">
         <h1
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-4xl"
