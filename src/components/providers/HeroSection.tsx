@@ -17,15 +17,15 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — адаптивное ========== */}
-      <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[350px] sm:h-[450px] md:h-[550px] lg:h-[650px]">
+      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — уменьшенное ========== */}
+      <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
         <div
           className="absolute left-[5%] top-0 
-                     w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px]
-                     h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]
-                     rounded-full
-                     blur-[50px] sm:blur-[60px] md:blur-[70px] lg:blur-[80px] xl:blur-[90px]
-                     opacity-90"
+               w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px]
+               h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]
+               rounded-full
+               blur-[40px] sm:blur-[50px] md:blur-[60px] lg:blur-[70px] xl:blur-[80px] 2xl:blur-[90px]
+               opacity-90"
           style={{
             background:
               "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
