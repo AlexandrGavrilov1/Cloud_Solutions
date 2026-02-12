@@ -30,14 +30,14 @@ export const Header = () => {
             >
               Как выбрать
             </a>
-            /*{" "}
+            {/* Временно скрыто
             <a
               href="/gaming"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               Игровые
             </a>
-            */
+            */}
             <a
               href="/blog"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
@@ -101,6 +101,7 @@ export const Header = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
+              {/* Временно скрыто
               <a
                 href="/gaming"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
@@ -109,6 +110,7 @@ export const Header = () => {
                 <Icon name="Gamepad2" size={16} />
                 Игровые
               </a>
+              */}
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
