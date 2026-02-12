@@ -30,12 +30,14 @@ export const Header = () => {
             >
               Как выбрать
             </a>
+            /*{" "}
             <a
               href="/gaming"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               Игровые
             </a>
+            */
             <a
               href="/blog"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
