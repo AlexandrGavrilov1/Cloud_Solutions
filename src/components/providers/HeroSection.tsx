@@ -46,7 +46,7 @@ export const HeroSection = () => {
                      w-full h-full
                      rounded-full
                      blur-[50px] sm:blur-[60px] md:blur-[70px] lg:blur-[75px] xl:blur-[80px]
-                     opacity-80"
+                     opacity-70"
           style={{
             background:
               "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
