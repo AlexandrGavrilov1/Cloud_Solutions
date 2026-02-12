@@ -69,7 +69,7 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* === ИСПРАВЛЕНИЕ 1: кнопки прижаты к правому краю === */}
+          {/* Мобильная шапка: иконки прижаты вправо и имеют фиксированный тёмный цвет (как на светлой схеме) */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
@@ -79,9 +79,7 @@ export const Header = () => {
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
                 size={20}
-                className={
-                  theme === "dark" ? "text-white" : "text-foreground/70"
-                }
+                className="text-gray-800 dark:text-gray-800"
               />
             </button>
             <button
@@ -92,7 +90,7 @@ export const Header = () => {
               <Icon
                 name={mobileMenuOpen ? "X" : "Menu"}
                 size={24}
-                className={theme === "dark" ? "text-white" : "text-foreground"}
+                className="text-gray-800 dark:text-gray-800"
               />
             </button>
           </div>
@@ -110,11 +108,7 @@ export const Header = () => {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Icon
-                  name="Gamepad2"
-                  size={16}
-                  className={theme === "dark" ? "text-white" : ""}
-                />
+                <Icon name="Gamepad2" size={16} />
                 Игровые
               </a>
               <a
@@ -126,11 +120,7 @@ export const Header = () => {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Icon
-                  name="BookOpen"
-                  size={16}
-                  className={theme === "dark" ? "text-white" : ""}
-                />
+                <Icon name="BookOpen" size={16} />
                 Блог
               </a>
               <a
@@ -142,11 +132,7 @@ export const Header = () => {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Icon
-                  name="Activity"
-                  size={16}
-                  className={theme === "dark" ? "text-white" : ""}
-                />
+                <Icon name="Activity" size={16} />
                 {t("header.uptime")}
               </a>
               <a
@@ -158,11 +144,7 @@ export const Header = () => {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Icon
-                  name="Tag"
-                  size={16}
-                  className={theme === "dark" ? "text-white" : ""}
-                />
+                <Icon name="Tag" size={16} />
                 Акции
               </a>
               <button
@@ -173,11 +155,7 @@ export const Header = () => {
                 }`}
                 onClick={toggleTheme}
               >
-                <Icon
-                  name={theme === "light" ? "Moon" : "Sun"}
-                  size={16}
-                  className={theme === "dark" ? "text-white" : ""}
-                />
+                <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
                 {theme === "light" ? "Тёмная тема" : "Светлая тема"}
               </button>
               <Button
