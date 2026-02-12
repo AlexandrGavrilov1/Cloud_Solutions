@@ -1055,7 +1055,7 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className={`flex-shrink-0 bg-white dark:bg-gray-900 p-3 border-r border-gray-200 dark:border-gray-800 ${className}`}
+      className={`flex-shrink-0 bg-transparent p-3 ${className}`}
       // Нет фиксированной высоты — панель растягивается по содержимому
     >
       <style jsx global>{`
