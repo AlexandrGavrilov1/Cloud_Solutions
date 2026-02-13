@@ -3,7 +3,7 @@ import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
-import { VpnStructuredData } from "@/components/VpnStructuredData";
+
 import { vpnPosts } from "@/data/vpn-posts";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -66,9 +66,6 @@ const VpnPost = () => {
           { name: post.title, url: `https://topcloudhub.ru/vpn/${post.slug}` },
         ]}
       />
-
-      {/* Специализированный компонент StructuredData для VPN */}
-      <VpnStructuredData post={post} />
 
       <Header />
 
