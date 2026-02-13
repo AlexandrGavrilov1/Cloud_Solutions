@@ -1,4 +1,3 @@
-// src/pages/VpnPost.tsx
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
@@ -11,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -121,20 +122,21 @@ const VpnPost = () => {
                 </div>
               )}
 
+              {/* Основной контент с кастомным рендерингом кода */}
               <div
                 className="prose prose-lg max-w-none
                 prose-headings:font-bold prose-headings:text-foreground
                 prose-h1:text-4xl prose-h1:mb-6
                 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
                 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
-                prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6
+                prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
                 prose-strong:text-foreground prose-strong:font-bold
                 prose-ul:my-6 prose-ul:text-muted-foreground
                 prose-ol:my-6 prose-ol:text-muted-foreground
                 prose-li:my-2
                 prose-code:text-primary prose-code:bg-accent prose-code:px-2 prose-code:py-1 prose-code:rounded
-                prose-pre:bg-[#1e1e1e] prose-pre:text-[#d4d4d4] prose-pre:border-2 prose-pre:border-border prose-pre:p-4 prose-pre:rounded-xl prose-pre:overflow-x-auto
+                prose-pre:bg-transparent prose-pre:p-0 prose-pre:border-0
                 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic
                 prose-table:border-2 prose-table:border-border
                 prose-th:bg-accent prose-th:p-3 prose-th:text-foreground
@@ -142,7 +144,32 @@ const VpnPost = () => {
                 prose-img:w-full prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
               "
               >
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      if (!inline && match) {
+                        return (
+                          <SyntaxHighlighter
+                            style={vscDarkPlus}
+                            language={match[1]}
+                            PreTag="div"
+                            className="rounded-xl my-6 overflow-x-auto"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        );
+                      }
+                      return (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
                   {post.content}
                 </ReactMarkdown>
               </div>
