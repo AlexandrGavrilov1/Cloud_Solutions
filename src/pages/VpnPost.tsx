@@ -1,4 +1,3 @@
-// src/pages/VpnPost.tsx
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
@@ -21,7 +20,12 @@ const VpnPost = () => {
   }
 
   const relatedPosts = vpnPosts
-    .filter((p) => p.id !== post.id && p.category === post.category)
+    .filter(
+      (p) =>
+        p.id !== post.id &&
+        (p.category === post.category ||
+          p.tags.some((tag) => post.tags.includes(tag))),
+    )
     .slice(0, 3);
 
   return (
@@ -40,6 +44,7 @@ const VpnPost = () => {
           tags: post.tags,
         }}
       />
+
       <SEOStructuredData
         type="article"
         article={{
@@ -52,15 +57,18 @@ const VpnPost = () => {
           url: `https://topcloudhub.ru/vpn/${post.slug}`,
         }}
       />
+
       <SEOStructuredData
         type="breadcrumb"
         breadcrumbs={[
           { name: "Главная", url: "https://topcloudhub.ru" },
-          { name: "VPN", url: "https://topcloudhub.ru/vpn" },
+          { name: "VPN инструкции", url: "https://topcloudhub.ru/vpn" },
           { name: post.title, url: `https://topcloudhub.ru/vpn/${post.slug}` },
         ]}
       />
+
       <StructuredData type="article" data={post} />
+
       <Header />
 
       <main>
@@ -72,7 +80,9 @@ const VpnPost = () => {
                 className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8"
               >
                 <Icon name="ArrowLeft" size={20} />
-                <span className="font-semibold">Вернуться к разделу VPN</span>
+                <span className="font-semibold">
+                  Вернуться к VPN инструкциям
+                </span>
               </Link>
 
               <div className="mb-8">
@@ -160,7 +170,7 @@ const VpnPost = () => {
               <div className="mt-8 text-center">
                 <Button
                   asChild
-                  className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg"
+                  className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg hover:bg-primary/90 transition-all"
                 >
                   <a
                     href="https://aeza.net/?ref=766003"
@@ -180,7 +190,7 @@ const VpnPost = () => {
             <div className="container mx-auto px-4 lg:px-8">
               <div className="max-w-6xl mx-auto">
                 <h2 className="text-3xl font-extrabold text-foreground mb-8">
-                  Похожие статьи
+                  Похожие инструкции
                 </h2>
 
                 <div className="grid md:grid-cols-3 gap-6">
@@ -201,7 +211,7 @@ const VpnPost = () => {
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center">
                               <Icon
-                                name="FileText"
+                                name="Shield"
                                 size={48}
                                 className="text-primary/30"
                               />
