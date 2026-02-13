@@ -150,14 +150,6 @@ const BlogPost = () => {
                   ))}
                 </div>
               </div>
-
-              <div className="mt-12 p-6 bg-accent border-2 border-primary/20 rounded-2xl">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                    <Icon name="Lightbulb" size={24} className="text-primary" />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </article>
