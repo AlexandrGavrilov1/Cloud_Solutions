@@ -28,7 +28,7 @@ const Vpn = () => {
               Как развернуть свой VPN на облачных серверах
             </p>
 
-            {/* Фильтр по категорям */}
+            {/* Фильтр по категориям */}
             <div className="flex flex-wrap gap-2 mb-8">
               {vpnCategories.map((cat) => (
                 <button
