@@ -32,13 +32,6 @@ export const Header = () => {
               Игровые
             </a>
             */}
-            {/* Добавлена ссылка VPN */}
-            <a
-              href="/vpn"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
-            >
-              VPN
-            </a>
             <a
               href="/blog"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
@@ -72,7 +65,7 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Мобильная шапка */}
+          {/* Мобильная шапка: иконки прижаты вправо и всегда белые */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
@@ -112,15 +105,6 @@ export const Header = () => {
                 Игровые
               </a>
               */}
-              {/* Добавлена ссылка VPN в мобильном меню */}
-              <a
-                href="/vpn"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Icon name="Lock" size={16} />
-                VPN
-              </a>
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
