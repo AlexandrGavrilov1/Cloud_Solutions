@@ -2,8 +2,6 @@ import { useParams, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { vpnPosts } from "@/data/vpn-posts";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
 const VpnPost = () => {
   const { slug } = useParams();
@@ -15,11 +13,7 @@ const VpnPost = () => {
       <Header />
       <main className="pt-32 pb-16 container mx-auto px-4">
         <h1 className="text-4xl font-bold">{post.title}</h1>
-        <div className="prose prose-lg max-w-none mt-8">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {post.content}
-          </ReactMarkdown>
-        </div>
+        <pre className="whitespace-pre-wrap mt-8">{post.content}</pre>
       </main>
       <Footer />
     </div>
