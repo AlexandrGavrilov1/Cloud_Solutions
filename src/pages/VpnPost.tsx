@@ -67,6 +67,8 @@ const VpnPost = () => {
         ]}
       />
 
+      <StructuredData type="article" data={post} />
+
       <Header />
 
       <main>
