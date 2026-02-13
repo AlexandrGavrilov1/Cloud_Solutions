@@ -1,27 +1,31 @@
-// src/pages/VpnPost.tsx
-import { useParams, Link, Navigate } from 'react-router-dom';
-import { Header } from '@/components/providers/Header';
-import { Footer } from '@/components/providers/Footer';
-import { StructuredData as SEOStructuredData } from '@/components/SEO/StructuredData';
-import { StructuredData } from '@/components/StructuredData';
-import { OpenGraph } from '@/components/SEO/OpenGraph';
-import { vpnPosts } from '@/data/vpn-posts';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import Icon from '@/components/ui/icon';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { useParams, Link, Navigate } from "react-router-dom";
+import { Header } from "@/components/providers/Header";
+import { Footer } from "@/components/providers/Footer";
+import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
+import { StructuredData } from "@/components/StructuredData";
+import { OpenGraph } from "@/components/SEO/OpenGraph";
+import { vpnPosts } from "@/data/vpn-posts";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Icon from "@/components/ui/icon";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = vpnPosts.find(p => p.slug === slug);
+  const post = vpnPosts.find((p) => p.slug === slug);
 
   if (!post) {
     return <Navigate to="/vpn" replace />;
   }
 
   const relatedPosts = vpnPosts
-    .filter(p => p.id !== post.id && p.category === post.category)
+    .filter(
+      (p) =>
+        p.id !== post.id &&
+        (p.category === post.category ||
+          p.tags.some((tag) => post.tags.includes(tag))),
+    )
     .slice(0, 3);
 
   return (
@@ -30,14 +34,14 @@ const VpnPost = () => {
         title={post.title}
         description={post.excerpt}
         url={`https://topcloudhub.ru/vpn/${post.slug}`}
-        image={post.image || 'https://topcloudhub.ru/og-image.png'}
+        image={post.image || "https://topcloudhub.ru/og-image.png"}
         type="article"
         article={{
           publishedTime: post.datePublished || post.date,
           modifiedTime: post.dateModified || post.date,
           author: post.author,
           section: post.category,
-          tags: post.tags
+          tags: post.tags,
         }}
       />
       <SEOStructuredData
@@ -48,16 +52,16 @@ const VpnPost = () => {
           author: post.author,
           datePublished: post.datePublished || post.date,
           dateModified: post.dateModified || post.date,
-          image: post.image || 'https://topcloudhub.ru/og-image.png',
-          url: `https://topcloudhub.ru/vpn/${post.slug}`
+          image: post.image || "https://topcloudhub.ru/og-image.png",
+          url: `https://topcloudhub.ru/vpn/${post.slug}`,
         }}
       />
       <SEOStructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: 'Главная', url: 'https://topcloudhub.ru' },
-          { name: 'VPN', url: 'https://topcloudhub.ru/vpn' },
-          { name: post.title, url: `https://topcloudhub.ru/vpn/${post.slug}` }
+          { name: "Главная", url: "https://topcloudhub.ru" },
+          { name: "VPN инструкции", url: "https://topcloudhub.ru/vpn" },
+          { name: post.title, url: `https://topcloudhub.ru/vpn/${post.slug}` },
         ]}
       />
       <StructuredData type="article" data={post} />
@@ -72,7 +76,9 @@ const VpnPost = () => {
                 className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8"
               >
                 <Icon name="ArrowLeft" size={20} />
-                <span className="font-semibold">Вернуться к разделу VPN</span>
+                <span className="font-semibold">
+                  Вернуться к VPN инструкциям
+                </span>
               </Link>
 
               <div className="mb-8">
@@ -80,8 +86,12 @@ const VpnPost = () => {
                   <Badge className="bg-primary/10 text-primary border-primary/30">
                     {post.category}
                   </Badge>
-                  <span className="text-sm text-muted-foreground">{post.readTime}</span>
-                  <span className="text-sm text-muted-foreground">{post.date}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {post.readTime}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {post.date}
+                  </span>
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
@@ -97,8 +107,12 @@ const VpnPost = () => {
                     <Icon name="User" size={24} className="text-primary" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">{post.author}</div>
-                    <div className="text-sm text-muted-foreground">Эксперт TopCloudhub</div>
+                    <div className="font-semibold text-foreground">
+                      {post.author}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Эксперт TopCloudhub
+                    </div>
                   </div>
                 </div>
               </div>
@@ -113,7 +127,8 @@ const VpnPost = () => {
                 </div>
               )}
 
-              <div className="prose prose-lg max-w-none
+              <div
+                className="prose prose-lg max-w-none
                 prose-headings:font-bold prose-headings:text-foreground
                 prose-h1:text-4xl prose-h1:mb-6
                 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
@@ -131,7 +146,8 @@ const VpnPost = () => {
                 prose-th:bg-accent prose-th:p-3 prose-th:text-foreground
                 prose-td:p-3 prose-td:border prose-td:border-border
                 prose-img:w-full prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
-              ">
+              "
+              >
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {post.content}
                 </ReactMarkdown>
@@ -170,7 +186,7 @@ const VpnPost = () => {
             <div className="container mx-auto px-4 lg:px-8">
               <div className="max-w-6xl mx-auto">
                 <h2 className="text-3xl font-extrabold text-foreground mb-8">
-                  Похожие статьи
+                  Похожие инструкции
                 </h2>
 
                 <div className="grid md:grid-cols-3 gap-6">
@@ -190,7 +206,11 @@ const VpnPost = () => {
                             />
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center">
-                              <Icon name="FileText" size={48} className="text-primary/30" />
+                              <Icon
+                                name="Lock"
+                                size={48}
+                                className="text-primary/30"
+                              />
                             </div>
                           )}
                         </div>
@@ -210,7 +230,11 @@ const VpnPost = () => {
 
                           <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
                             Читать
-                            <Icon name="ArrowRight" size={16} className="group-hover:translate-x-1 transition-transform" />
+                            <Icon
+                              name="ArrowRight"
+                              size={16}
+                              className="group-hover:translate-x-1 transition-transform"
+                            />
                           </div>
                         </div>
                       </article>
