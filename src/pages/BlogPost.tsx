@@ -108,7 +108,7 @@ const BlogPost = () => {
                       {post.author}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      Эксперт VPS Rating
+                      Эксперт TopCloudhub
                     </div>
                   </div>
                 </div>
