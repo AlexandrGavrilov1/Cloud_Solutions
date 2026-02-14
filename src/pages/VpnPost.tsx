@@ -99,14 +99,16 @@ const VpnPost = () => {
                     {post.date}
                   </span>
                 </div>
+
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
                   {post.title}
                 </h1>
+
                 <p className="text-lg text-muted-foreground mb-6">
                   {post.excerpt}
                 </p>
-                /*{" "}
-                <div className="flex items-center gap-3 pb-8 border-b border-border">
+
+                {/* <div className="flex items-center gap-3 pb-8 border-b border-border">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                     <Icon name="User" size={24} className="text-primary" />
                   </div>
@@ -118,8 +120,7 @@ const VpnPost = () => {
                       Эксперт TopCloudhub
                     </div>
                   </div>
-                </div>
-                */
+                </div>*/}
               </div>
 
               {post.image && (
