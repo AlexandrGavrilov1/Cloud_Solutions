@@ -27,7 +27,7 @@ export const vpnPosts: VpnPost[] = [
     title: "Запускаем персональный VPN на Aeza.net за 10 минут",
     excerpt:
       "Пошаговая инструкция по развертыванию своего VPN сервера на базе XRay с Reality. Подходит для iOS, Android, Windows.",
-    author: "Команда TopCloudHub",
+    //author: "Команда TopCloudHub",
     date: "13.02.2026",
     datePublished: "2026-02-13T12:00:00+03:00",
     dateModified: "2026-02-13T12:00:00+03:00",
@@ -35,7 +35,7 @@ export const vpnPosts: VpnPost[] = [
     category: "VPN",
     tags: ["VPN", "Aeza", "XRay", "Reality", "Самостоятельный хостинг"],
     image: "/VPN/pictures/01_vpn_aeza_preview.png",
-    views: 0,
+    //views: 0,
     providerUrl: "https://aeza.net/?ref=766003",
     providerName: "Aeza.net",
     content: `
@@ -206,7 +206,7 @@ systemctl enable xray.service
    - Public key: ваш публичный ключ
    - Short ID: оставьте пустым
 
-![Пример конфигурации клиента](https://cdn.poehali.dev/files/vpn-client-config.jpg)
+![Пример конфигурации клиента](/VPN/pictures/02_config_example.png)
 
 ### 7. Готово!
 
@@ -223,7 +223,7 @@ systemctl enable xray.service
 - Отсутствие ограничений по скорости (кроме канала сервера)
 - Можно подключать сколько угодно устройств
 
-Попробуйте сами – арендуйте сервер у **Aeza.net** по нашей [ссылке](https://aeza.net/?ref=766003) и следуйте инструкции.
+Попробуйте сами – арендуйте сервер у [Aeza.net](https://aeza.net/?ref=766003) и следуйте инструкции.
 
 [**Перейти на Aeza.net**](https://aeza.net/?ref=766003)
 `,
