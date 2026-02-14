@@ -312,6 +312,106 @@ export const ClickStatsSection = ({
             </Card>
           </div>
 
+          <Card className="border-2 border-yellow-500/20 bg-gradient-to-br from-yellow-500/5 to-transparent mb-6">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-yellow-500/20 p-2 rounded-lg">
+                  <Icon name="CalendarMinus" size={22} className="text-yellow-500" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">Вчерашний день</h3>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(Date.now() - 86400000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+                {(() => {
+                  const yesterdayTotal = yesterdayStats.reduce((sum, s) => sum + s.clicks, 0);
+                  const dayBeforeTotal = dayBeforeStats.reduce((sum, s) => sum + s.clicks, 0);
+                  const diff = dayBeforeTotal > 0 ? Math.round(((yesterdayTotal - dayBeforeTotal) / dayBeforeTotal) * 100) : 0;
+                  return diff !== 0 ? (
+                    <Badge className={`ml-auto ${diff > 0 ? 'bg-green-500/20 text-green-500 border-green-500/30' : 'bg-red-500/20 text-red-500 border-red-500/30'}`}>
+                      <Icon name={diff > 0 ? 'ArrowUp' : 'ArrowDown'} size={14} className="mr-1" />
+                      {diff > 0 ? '+' : ''}{diff}% к позавчера
+                    </Badge>
+                  ) : null;
+                })()}
+              </div>
+
+              {isLoadingYesterday ? (
+                <div className="flex items-center justify-center py-8">
+                  <Icon name="Loader2" size={24} className="animate-spin text-yellow-500" />
+                </div>
+              ) : yesterdayStats.length === 0 ? (
+                <div className="text-center py-6 text-muted-foreground">
+                  <Icon name="CalendarX" size={32} className="mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Нет данных за вчера</p>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                    <div className="bg-card/50 border border-yellow-500/10 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-black text-yellow-500">
+                        {yesterdayStats.reduce((sum, s) => sum + s.clicks, 0)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Всего переходов</div>
+                    </div>
+                    <div className="bg-card/50 border border-yellow-500/10 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-black text-foreground">
+                        {yesterdayStats.length}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Провайдеров</div>
+                    </div>
+                    <div className="bg-card/50 border border-yellow-500/10 rounded-lg p-3 text-center">
+                      <div className="text-lg font-bold text-foreground truncate">
+                        {yesterdayStats.length > 0 ? getProviderName(
+                          yesterdayStats.reduce((prev, cur) => cur.clicks > prev.clicks ? cur : prev).provider_id
+                        ) : '—'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Лидер дня</div>
+                    </div>
+                    <div className="bg-card/50 border border-yellow-500/10 rounded-lg p-3 text-center">
+                      <div className="text-2xl font-black text-foreground">
+                        {yesterdayStats.length > 0 ? Math.round(yesterdayStats.reduce((sum, s) => sum + s.clicks, 0) / yesterdayStats.length) : 0}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Среднее на провайдера</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    {yesterdayStats
+                      .sort((a, b) => b.clicks - a.clicks)
+                      .map((stat, idx) => {
+                        const maxClicks = Math.max(...yesterdayStats.map(s => s.clicks));
+                        const percentage = maxClicks > 0 ? (stat.clicks / maxClicks) * 100 : 0;
+                        const dayBeforeStat = dayBeforeStats.find(s => s.provider_id === stat.provider_id);
+                        const diff = dayBeforeStat ? stat.clicks - dayBeforeStat.clicks : 0;
+                        return (
+                          <div key={stat.provider_id} className="flex items-center gap-3">
+                            <span className="text-xs text-muted-foreground w-5 text-right">{idx + 1}</span>
+                            <span className="text-sm font-medium w-36 truncate">{getProviderName(stat.provider_id)}</span>
+                            <div className="flex-1 h-6 bg-muted/30 rounded-full overflow-hidden relative">
+                              <div
+                                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full transition-all duration-500"
+                                style={{ width: `${percentage}%` }}
+                              />
+                              <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-foreground">
+                                {stat.clicks}
+                              </span>
+                            </div>
+                            {diff !== 0 && (
+                              <span className={`text-xs font-medium w-14 text-right ${diff > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                {diff > 0 ? '+' : ''}{diff}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
           <Card className="border-2 border-primary/20 mb-6 bg-gradient-to-br from-primary/5 via-background to-background">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between mb-6">
