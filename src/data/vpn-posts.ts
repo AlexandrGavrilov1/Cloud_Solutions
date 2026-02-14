@@ -20,17 +20,18 @@ export interface VpnPost {
 export const vpnPosts: VpnPost[] = [
   {
     id: 1,
-    slug: 'personalnyj-vpn-na-aeza',
-    title: 'Запускаем персональный VPN на Aeza.net за 10 минут',
-    excerpt: 'Пошаговая инструкция по развертыванию своего VPN сервера на базе XRay с Reality. Подходит для iOS, Android, Windows.',
-    author: 'Команда TopCloudHub',
-    date: '13.02.2026',
-    datePublished: '2026-02-13T12:00:00+03:00',
-    dateModified: '2026-02-13T12:00:00+03:00',
-    readTime: '8 мин',
-    category: 'VPN',
-    tags: ['VPN', 'Aeza', 'XRay', 'Reality', 'Самостоятельный хостинг'],
-    image: 'https://cdn.poehali.dev/files/vpn-aeza-preview.jpg', // замените на реальную картинку
+    slug: "personalnyj-vpn-na-aeza",
+    title: "Запускаем персональный VPN на Aeza.net за 10 минут",
+    excerpt:
+      "Пошаговая инструкция по развертыванию своего VPN сервера на базе XRay с Reality. Подходит для iOS, Android, Windows.",
+    author: "Команда TopCloudHub",
+    date: "13.02.2026",
+    datePublished: "2026-02-13T12:00:00+03:00",
+    dateModified: "2026-02-13T12:00:00+03:00",
+    readTime: "8 мин",
+    category: "VPN",
+    tags: ["VPN", "Aeza", "XRay", "Reality", "Самостоятельный хостинг"],
+    image: "VPN/pictures/01_vpn_aeza_preview.png", // замените на реальную картинку
     views: 0,
     content: `
 Итак, приступим к запуску персонального VPN на [Aeza.net](https://aeza.net/?ref=766003).
@@ -220,8 +221,8 @@ systemctl enable xray.service
 Попробуйте сами – арендуйте сервер у **Aeza.net** по нашей [ссылке](https://aeza.net/?ref=766003) и следуйте инструкции.
 
 [**Перейти на Aeza.net**](https://aeza.net/?ref=766003)
-`
-  }
+`,
+  },
 ];
 
-export const vpnCategories = ['Все', 'VPN', 'Инструкции', 'Безопасность'];
+export const vpnCategories = ["Все", "VPN", "Инструкции", "Безопасность"];
