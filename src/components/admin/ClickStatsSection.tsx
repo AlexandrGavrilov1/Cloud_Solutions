@@ -215,7 +215,20 @@ export const ClickStatsSection = ({
     return provider?.name || `Provider #${providerId}`;
   };
 
-  const displayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' && selectedPeriod === 'custom' ? clickStats : filteredStats);
+  const buildStatsFromDaily = (daily: DailyStats[]): ClickStats[] => {
+    const providerMap = new Map<number, number>();
+    daily.forEach(s => {
+      providerMap.set(s.provider_id, (providerMap.get(s.provider_id) || 0) + s.clicks);
+    });
+    return Array.from(providerMap.entries()).map(([provider_id, clicks]) => ({
+      provider_id, clicks, first_click: null, last_click: null
+    }));
+  };
+
+  const baseDisplayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' && selectedPeriod === 'custom' ? clickStats : filteredStats);
+  const displayStats = (selectedPeriod === '1' || selectedPeriod === '7' || selectedPeriod === '30') && selectedMonth === 'all' && dailyStats.length > 0
+    ? buildStatsFromDaily(dailyStats)
+    : baseDisplayStats;
   const totalClicks = displayStats.reduce((sum, s) => sum + s.clicks, 0);
   const topProvider = displayStats.length > 0 ? displayStats.reduce((prev, current) => 
     (prev.clicks > current.clicks) ? prev : current
