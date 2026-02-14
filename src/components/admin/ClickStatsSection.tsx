@@ -182,6 +182,17 @@ export const ClickStatsSection = ({
     }
   };
 
+  const providerAdminLinks: { [key: number]: string } = {
+    53: 'https://rdp-onedash.ru/refer',
+    11: 'https://panel.hostland.ru/#profail',
+    7: 'https://cp.sprinthost.ru/wm/account/hello',
+    51: 'https://client.the.hosting/billmgr?startform=referralprogram.client',
+  };
+
+  const getProviderAdminLink = (providerId: number): string | null => {
+    return providerAdminLinks[providerId] || null;
+  };
+
   const getProviderName = (providerId: number) => {
     const nameMapping: { [key: number]: string } = {
       1029: 'HostKey',
@@ -556,7 +567,19 @@ export const ClickStatsSection = ({
                                 />
                                 <div className="flex-1 min-w-0">
                                   <div className="font-semibold text-foreground truncate">
-                                    {getProviderName(stat.provider_id)}
+                                    {getProviderAdminLink(stat.provider_id) ? (
+                                      <a
+                                        href={getProviderAdminLink(stat.provider_id)!}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-primary underline decoration-dotted underline-offset-4 inline-flex items-center gap-1"
+                                      >
+                                        {getProviderName(stat.provider_id)}
+                                        <Icon name="ExternalLink" size={12} className="text-muted-foreground" />
+                                      </a>
+                                    ) : (
+                                      getProviderName(stat.provider_id)
+                                    )}
                                   </div>
                                   <div className="flex items-center gap-2 mt-1">
                                     <div className="flex-1 bg-secondary h-2 rounded-full overflow-hidden">
