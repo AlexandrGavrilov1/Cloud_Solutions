@@ -40,7 +40,7 @@ export const ClickStatsSection = ({
 }: ClickStatsSectionProps) => {
   const [chartView, setChartView] = useState<'bar' | 'pie' | 'line'>('bar');
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
-  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'custom'>('custom');
+  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'yesterday' | 'custom'>('custom');
   const [filteredStats, setFilteredStats] = useState<ClickStats[]>(clickStats);
   const [isLoadingMonth, setIsLoadingMonth] = useState(false);
   const [yesterdayStats, setYesterdayStats] = useState<ClickStats[]>([]);
@@ -104,7 +104,7 @@ export const ClickStatsSection = ({
     }
   }, [clickStats, selectedMonth, selectedPeriod]);
 
-  const handlePeriodChange = async (period: '1' | '7' | '30' | 'custom') => {
+  const handlePeriodChange = async (period: '1' | '7' | '30' | 'yesterday' | 'custom') => {
     setSelectedPeriod(period);
     
     if (period === 'custom') {
@@ -112,6 +112,13 @@ export const ClickStatsSection = ({
     }
 
     setSelectedMonth('all');
+
+    if (period === 'yesterday') {
+      setFilteredStats(yesterdayStats);
+      onPeriodChange('1');
+      return;
+    }
+
     setIsLoadingMonth(true);
     
     try {
@@ -226,6 +233,15 @@ export const ClickStatsSection = ({
           </h2>
           <div className="flex gap-3 items-center">
             <div className="flex gap-2">
+              <Button
+                variant={selectedPeriod === 'yesterday' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => handlePeriodChange('yesterday')}
+                disabled={isLoadingMonth || isLoadingYesterday}
+                className="font-semibold"
+              >
+                Вчера
+              </Button>
               <Button
                 variant={selectedPeriod === '1' ? 'default' : 'outline'}
                 size="sm"
