@@ -35,7 +35,7 @@ export const vpnPosts: VpnPost[] = [
     category: "VPN",
     tags: ["VPN", "Aeza", "XRay", "Reality", "Самостоятельный хостинг"],
     image: "/VPN/pictures/01_vpn_aeza_preview.png",
-    //views: 0,
+    views: 14,
     providerUrl: "https://aeza.net/?ref=766003",
     providerName: "Aeza.net",
     content: `
