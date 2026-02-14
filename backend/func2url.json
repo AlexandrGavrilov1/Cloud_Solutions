@@ -2,5 +2,6 @@
   "auth-social": "https://functions.poehali.dev/b41c80f0-ea03-4690-aeed-e4161955b6f9",
   "visitors": "https://functions.poehali.dev/94b30990-d971-403f-a237-849453d2ec73",
   "clicks": "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
-  "auth": "https://functions.poehali.dev/ccab6b74-68f9-4520-ad0e-701c27393f9d"
+  "auth": "https://functions.poehali.dev/ccab6b74-68f9-4520-ad0e-701c27393f9d",
+  "reviews": "https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8"
 }
