@@ -15,7 +15,9 @@ interface ProviderStats {
 
 interface OneDashData {
   balance: number | null;
-  registrationsToday: number | null;
+  currency: string | null;
+  ordersCount: number | null;
+  activeVps: number | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -26,48 +28,46 @@ const ONEDASH_PROXY_URL = 'https://functions.poehali.dev/5bdf179c-9b43-46eb-a042
 export const ProviderStatsSection = () => {
   const [providerStats, setProviderStats] = useState<ProviderStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [oneDash, setOneDash] = useState<OneDashData>({ balance: null, registrationsToday: null, isLoading: true, error: null });
+  const [oneDash, setOneDash] = useState<OneDashData>({ balance: null, currency: null, ordersCount: null, activeVps: null, isLoading: true, error: null });
 
   useEffect(() => {
     const fetchOneDash = async () => {
       setOneDash(prev => ({ ...prev, isLoading: true, error: null }));
       try {
-        const [balanceRes, statsRes] = await Promise.all([
+        const [balanceRes, ordersRes] = await Promise.all([
           fetch(`${ONEDASH_PROXY_URL}?endpoint=balance`),
-          fetch(`${ONEDASH_PROXY_URL}?endpoint=stats`),
+          fetch(`${ONEDASH_PROXY_URL}?endpoint=all-orders`),
         ]);
 
         let balance: number | null = null;
-        let registrationsToday: number | null = null;
+        let currency: string | null = null;
+        let ordersCount: number | null = null;
+        let activeVps: number | null = null;
 
         if (balanceRes.ok) {
           const bData = await balanceRes.json();
-          const d = bData.data;
-          if (d && typeof d.balance !== 'undefined') {
-            balance = parseFloat(d.balance) || 0;
-          } else if (d && d.data && typeof d.data.balance !== 'undefined') {
-            balance = parseFloat(d.data.balance) || 0;
+          if (bData.data?.type === true && bData.data?.data) {
+            balance = bData.data.data.balance ?? 0;
+            currency = bData.data.data.currency ?? 'RUB';
           }
         }
 
-        if (statsRes.ok) {
-          const sData = await statsRes.json();
-          const d = sData.data;
-          if (d && typeof d.registrations_today !== 'undefined') {
-            registrationsToday = parseInt(d.registrations_today, 10) || 0;
-          } else if (d && d.data && typeof d.data.registrations_today !== 'undefined') {
-            registrationsToday = parseInt(d.data.registrations_today, 10) || 0;
-          } else if (d && typeof d.today !== 'undefined') {
-            registrationsToday = parseInt(d.today, 10) || 0;
-          } else if (d && d.data && typeof d.data.today !== 'undefined') {
-            registrationsToday = parseInt(d.data.today, 10) || 0;
+        if (ordersRes.ok) {
+          const oData = await ordersRes.json();
+          if (oData.data?.type === true && Array.isArray(oData.data?.data)) {
+            const orders = oData.data.data;
+            ordersCount = orders.length;
+            activeVps = orders.reduce((sum: number, order: Record<string, unknown>) => {
+              const vpsList = order.vps_list as Array<Record<string, unknown>> | undefined;
+              return sum + (vpsList?.filter((v) => v.vps_status === 'runned').length || 0);
+            }, 0);
           }
         }
 
-        setOneDash({ balance, registrationsToday, isLoading: false, error: null });
+        setOneDash({ balance, currency, ordersCount, activeVps, isLoading: false, error: null });
       } catch (error) {
         console.error('Error fetching OneDash data:', error);
-        setOneDash({ balance: null, registrationsToday: null, isLoading: false, error: 'Failed to fetch' });
+        setOneDash({ balance: null, currency: null, ordersCount: null, activeVps: null, isLoading: false, error: 'Failed to fetch' });
       }
     };
 
@@ -212,10 +212,13 @@ export const ProviderStatsSection = () => {
             One Dash (API)
             {oneDash.isLoading && <Icon name="Loader2" size={16} className="animate-spin text-muted-foreground" />}
             {oneDash.error && <span className="text-xs text-destructive font-normal ml-2">Ошибка загрузки</span>}
+            {!oneDash.isLoading && !oneDash.error && oneDash.balance !== null && (
+              <span className="text-xs bg-green-500/10 text-green-600 px-1.5 py-0.5 rounded font-medium">Online</span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-3 gap-6">
             <div>
               <p className="text-sm text-muted-foreground mb-1">Баланс</p>
               <p className="text-2xl font-bold text-foreground">
@@ -223,9 +226,15 @@ export const ProviderStatsSection = () => {
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Регистрации сегодня</p>
+              <p className="text-sm text-muted-foreground mb-1">Заказов</p>
               <p className="text-2xl font-bold text-foreground">
-                {oneDash.isLoading ? '...' : oneDash.registrationsToday !== null ? oneDash.registrationsToday : '—'}
+                {oneDash.isLoading ? '...' : oneDash.ordersCount !== null ? oneDash.ordersCount : '—'}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Активных VPS</p>
+              <p className="text-2xl font-bold text-foreground">
+                {oneDash.isLoading ? '...' : oneDash.activeVps !== null ? oneDash.activeVps : '—'}
               </p>
             </div>
           </div>
@@ -260,7 +269,7 @@ export const ProviderStatsSection = () => {
                           {index === 0 && <Icon name="Crown" size={16} className="text-yellow-500" />}
                           <span className="font-medium text-foreground">{provider.name}</span>
                           {provider.id === ONEDASH_PROVIDER_ID && !oneDash.isLoading && oneDash.balance !== null && (
-                            <span className="text-xs bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium">API</span>
+                            <span className="text-xs bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium" title={`Баланс: ${formatCurrency(oneDash.balance)}, Заказов: ${oneDash.ordersCount}, VPS: ${oneDash.activeVps}`}>API</span>
                           )}
                         </div>
                       </td>
