@@ -207,7 +207,7 @@ systemctl enable xray.service
 
 Теперь ваш личный VPN работает. Весь трафик будет шифроваться и проходить через ваш сервер на Aeza.
 
-![VPN работает](https://cdn.poehali.dev/files/vpn-working.jpg)
+![VPN работает](VPN/pictures/04_app_for_ios.png)
 
 ---
 
