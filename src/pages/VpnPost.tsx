@@ -152,7 +152,7 @@ const VpnPost = () => {
                 prose-table:border-2 prose-table:border-border
                 prose-th:bg-accent prose-th:p-3 prose-th:text-foreground
                 prose-td:p-3 prose-td:border prose-td:border-border
-prose-img:w-[70%] prose-img:mx-auto prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
+                prose-img:w-[30%] prose-img:mx-auto prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
               "
               >
                 <ReactMarkdown
