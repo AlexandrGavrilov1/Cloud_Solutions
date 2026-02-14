@@ -15,6 +15,9 @@ export interface VpnPost {
   tags: string[];
   image?: string;
   views: number;
+  // Поля для кнопки перехода к провайдеру
+  providerUrl?: string;
+  providerName?: string;
 }
 
 export const vpnPosts: VpnPost[] = [
@@ -31,8 +34,10 @@ export const vpnPosts: VpnPost[] = [
     readTime: "8 мин",
     category: "VPN",
     tags: ["VPN", "Aeza", "XRay", "Reality", "Самостоятельный хостинг"],
-    image: "/VPN/pictures/01_vpn_aeza_preview.png", // замените на реальную картинку
+    image: "/VPN/pictures/01_vpn_aeza_preview.png",
     views: 0,
+    providerUrl: "https://aeza.net/?ref=766003",
+    providerName: "Aeza.net",
     content: `
 Итак, приступим к запуску персонального VPN на [Aeza.net](https://aeza.net/?ref=766003).
 
@@ -201,7 +206,7 @@ systemctl enable xray.service
    - Public key: ваш публичный ключ
    - Short ID: оставьте пустым
 
-![Пример конфигурации клиента](/VPN/pictures/02_config_example.png)
+![Пример конфигурации клиента](https://cdn.poehali.dev/files/vpn-client-config.jpg)
 
 ### 7. Готово!
 
@@ -223,6 +228,7 @@ systemctl enable xray.service
 [**Перейти на Aeza.net**](https://aeza.net/?ref=766003)
 `,
   },
+  // Сюда можно добавлять другие статьи с провайдерами
 ];
 
 export const vpnCategories = ["Все", "VPN", "Инструкции", "Безопасность"];

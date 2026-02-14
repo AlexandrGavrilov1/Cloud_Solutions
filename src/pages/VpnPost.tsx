@@ -1,3 +1,5 @@
+// src/pages/VpnPost.tsx
+import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
@@ -24,6 +26,15 @@ const VpnPost = () => {
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post.id && p.category === post.category)
     .slice(0, 3);
+
+  // Обработчик клика для Яндекс.Метрики
+  const handleProviderClick = () => {
+    if (typeof window !== "undefined" && (window as any).ym) {
+      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+        provider_name: post.providerName,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -184,20 +195,24 @@ const VpnPost = () => {
                 </div>
               </div>
 
-              <div className="mt-8 text-center">
-                <Button
-                  asChild
-                  className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg"
-                >
-                  <a
-                    href="https://aeza.net/?ref=766003"
-                    target="_blank"
-                    rel="noopener noreferrer"
+              {/* Универсальная кнопка провайдера с отслеживанием */}
+              {post.providerUrl && post.providerName && (
+                <div className="mt-8 text-center">
+                  <Button
+                    asChild
+                    className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg"
                   >
-                    Перейти на Aeza.net
-                  </a>
-                </Button>
-              </div>
+                    <a
+                      href={post.providerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleProviderClick}
+                    >
+                      Перейти на {post.providerName}
+                    </a>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </article>
