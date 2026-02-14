@@ -262,7 +262,7 @@ export const ClickStatsSection = ({
         fill={link ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}
         fontSize={14}
         fontWeight={600}
-        style={{ cursor: link ? 'pointer' : 'default', textDecoration: link ? 'underline' : 'none' }}
+        style={{ cursor: link ? 'pointer' : 'default' }}
         transform={`rotate(-45)`}
       >
         {payload.value}
