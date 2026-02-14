@@ -245,6 +245,42 @@ export const ClickStatsSection = ({
     return Math.round(((lastDayClicks - prevDayClicks) / prevDayClicks) * 100);
   };
 
+  const sortedDisplayStats = [...displayStats].sort((a, b) => b.clicks - a.clicks);
+
+  const CustomXAxisTick = ({ x, y, payload }: any) => {
+    const link = (() => {
+      const stat = sortedDisplayStats.find(s => getProviderName(s.provider_id) === payload.value);
+      return stat ? getProviderAdminLink(stat.provider_id) : null;
+    })();
+
+    const text = (
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill={link ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}
+        fontSize={14}
+        fontWeight={600}
+        style={{ cursor: link ? 'pointer' : 'default', textDecoration: link ? 'underline' : 'none' }}
+        transform={`rotate(-45)`}
+      >
+        {payload.value}
+      </text>
+    );
+
+    if (link) {
+      return (
+        <g transform={`translate(${x},${y})`}>
+          <a href={link} target="_blank" rel="noopener noreferrer">
+            {text}
+          </a>
+        </g>
+      );
+    }
+    return <g transform={`translate(${x},${y})`}>{text}</g>;
+  };
+
   return (
     <div className="mb-8">
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b-2 border-primary/20 -mx-4 px-4 py-4 mb-6">
@@ -467,12 +503,9 @@ export const ClickStatsSection = ({
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} stroke="hsl(var(--border))" />
                       <XAxis 
                         dataKey="name" 
-                        angle={-45}
-                        textAnchor="end"
                         height={120}
-                        style={{ fontSize: '14px', fontWeight: '600', fill: 'hsl(var(--foreground))' }}
                         interval={0}
-                        tick={{ fill: 'hsl(var(--foreground))' }}
+                        tick={<CustomXAxisTick />}
                       />
                       <YAxis 
                         style={{ fontSize: '13px', fontWeight: '500', fill: 'hsl(var(--foreground))' }} 
@@ -508,28 +541,7 @@ export const ClickStatsSection = ({
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
-                  <div className="mt-4 space-y-2">
-                    {[...displayStats].sort((a, b) => b.clicks - a.clicks).map((stat, idx) => {
-                      const link = getProviderAdminLink(stat.provider_id);
-                      const percentage = totalClicks > 0 ? ((stat.clicks / totalClicks) * 100).toFixed(1) : '0';
-                      return (
-                        <div key={stat.provider_id} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-card/50 border border-border/50">
-                          <span className="text-xs text-muted-foreground w-5 text-right font-mono">{idx + 1}</span>
-                          <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                          <span className="text-sm font-semibold flex-1 truncate">
-                            {link ? (
-                              <a href={link} target="_blank" rel="noopener noreferrer" className="hover:text-primary underline decoration-dotted underline-offset-4 inline-flex items-center gap-1">
-                                {getProviderName(stat.provider_id)}
-                                <Icon name="ExternalLink" size={12} className="text-muted-foreground" />
-                              </a>
-                            ) : getProviderName(stat.provider_id)}
-                          </span>
-                          <span className="text-sm font-bold">{stat.clicks}</span>
-                          <span className="text-xs text-muted-foreground w-12 text-right">{percentage}%</span>
-                        </div>
-                      );
-                    })}
-                  </div>
+
                 </div>
               )}
 
