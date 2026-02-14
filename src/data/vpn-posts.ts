@@ -201,7 +201,7 @@ systemctl enable xray.service
    - Public key: ваш публичный ключ
    - Short ID: оставьте пустым
 
-![Пример конфигурации клиента]/VPN/pictures/02_config_example.png)
+![Пример конфигурации клиента](/VPN/pictures/02_config_example.png)
 
 ### 7. Готово!
 
