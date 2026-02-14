@@ -2,6 +2,7 @@ import json
 import os
 import urllib.request
 import urllib.error
+import urllib.parse
 from typing import Dict, Any
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
@@ -52,12 +53,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     url = f'https://rdp-onedash.ru/web-api/{endpoint}'
     payload = json.dumps({'key': api_key}).encode('utf-8')
 
-    req = urllib.request.Request(
-        url,
-        data=payload,
-        headers={'Content-Type': 'application/json'},
-        method='POST'
-    )
+    get_url = f'{url}?key={urllib.parse.quote(api_key)}'
+    req = urllib.request.Request(get_url, method='GET')
 
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
@@ -76,16 +73,21 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'isBase64Encoded': False
         }
     except urllib.error.HTTPError as e:
+        detail = ''
+        try:
+            detail = e.read().decode('utf-8')[:500]
+        except Exception:
+            pass
         return {
-            'statusCode': e.code,
+            'statusCode': 200,
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': f'OneDash API returned {e.code}', 'detail': e.read().decode('utf-8')[:500]}),
+            'body': json.dumps({'endpoint': endpoint, 'data': None, 'api_error': True, 'api_status': e.code, 'detail': detail}),
             'isBase64Encoded': False
         }
     except Exception as e:
         return {
-            'statusCode': 502,
+            'statusCode': 200,
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': str(e)}),
+            'body': json.dumps({'endpoint': endpoint, 'data': None, 'api_error': True, 'detail': str(e)}),
             'isBase64Encoded': False
         }
