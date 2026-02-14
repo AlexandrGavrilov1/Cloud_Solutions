@@ -39,6 +39,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'isBase64Encoded': False
         }
 
+    print(f'[onedash-proxy] key_len={len(api_key)} key_prefix={api_key[:8]}...')
+
     params = event.get('queryStringParameters') or {}
     endpoint = params.get('endpoint', 'stats')
     debug = params.get('debug', '0') == '1'
