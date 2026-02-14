@@ -13,9 +13,66 @@ interface ProviderStats {
   balanceToday: number;
 }
 
+interface OneDashData {
+  balance: number | null;
+  registrationsToday: number | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
+const ONEDASH_PROVIDER_ID = 53;
+const ONEDASH_PROXY_URL = 'https://functions.poehali.dev/5bdf179c-9b43-46eb-a042-c52b651f946c';
+
 export const ProviderStatsSection = () => {
   const [providerStats, setProviderStats] = useState<ProviderStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [oneDash, setOneDash] = useState<OneDashData>({ balance: null, registrationsToday: null, isLoading: true, error: null });
+
+  useEffect(() => {
+    const fetchOneDash = async () => {
+      setOneDash(prev => ({ ...prev, isLoading: true, error: null }));
+      try {
+        const [balanceRes, statsRes] = await Promise.all([
+          fetch(`${ONEDASH_PROXY_URL}?endpoint=balance`),
+          fetch(`${ONEDASH_PROXY_URL}?endpoint=stats`),
+        ]);
+
+        let balance: number | null = null;
+        let registrationsToday: number | null = null;
+
+        if (balanceRes.ok) {
+          const bData = await balanceRes.json();
+          const d = bData.data;
+          if (d && typeof d.balance !== 'undefined') {
+            balance = parseFloat(d.balance) || 0;
+          } else if (d && d.data && typeof d.data.balance !== 'undefined') {
+            balance = parseFloat(d.data.balance) || 0;
+          }
+        }
+
+        if (statsRes.ok) {
+          const sData = await statsRes.json();
+          const d = sData.data;
+          if (d && typeof d.registrations_today !== 'undefined') {
+            registrationsToday = parseInt(d.registrations_today, 10) || 0;
+          } else if (d && d.data && typeof d.data.registrations_today !== 'undefined') {
+            registrationsToday = parseInt(d.data.registrations_today, 10) || 0;
+          } else if (d && typeof d.today !== 'undefined') {
+            registrationsToday = parseInt(d.today, 10) || 0;
+          } else if (d && d.data && typeof d.data.today !== 'undefined') {
+            registrationsToday = parseInt(d.data.today, 10) || 0;
+          }
+        }
+
+        setOneDash({ balance, registrationsToday, isLoading: false, error: null });
+      } catch (error) {
+        console.error('Error fetching OneDash data:', error);
+        setOneDash({ balance: null, registrationsToday: null, isLoading: false, error: 'Failed to fetch' });
+      }
+    };
+
+    fetchOneDash();
+  }, []);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -148,6 +205,33 @@ export const ProviderStatsSection = () => {
         </Card>
       </div>
 
+      <Card className="border-2 border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-transparent mb-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium flex items-center gap-2">
+            <Icon name="Zap" size={20} className="text-blue-500" />
+            One Dash (API)
+            {oneDash.isLoading && <Icon name="Loader2" size={16} className="animate-spin text-muted-foreground" />}
+            {oneDash.error && <span className="text-xs text-destructive font-normal ml-2">Ошибка загрузки</span>}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Баланс</p>
+              <p className="text-2xl font-bold text-foreground">
+                {oneDash.isLoading ? '...' : oneDash.balance !== null ? formatCurrency(oneDash.balance) : '—'}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Регистрации сегодня</p>
+              <p className="text-2xl font-bold text-foreground">
+                {oneDash.isLoading ? '...' : oneDash.registrationsToday !== null ? oneDash.registrationsToday : '—'}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -175,6 +259,9 @@ export const ProviderStatsSection = () => {
                         <div className="flex items-center gap-2">
                           {index === 0 && <Icon name="Crown" size={16} className="text-yellow-500" />}
                           <span className="font-medium text-foreground">{provider.name}</span>
+                          {provider.id === ONEDASH_PROVIDER_ID && !oneDash.isLoading && oneDash.balance !== null && (
+                            <span className="text-xs bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded font-medium">API</span>
+                          )}
                         </div>
                       </td>
                       <td className="text-right py-4 px-6">
