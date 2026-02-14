@@ -31,7 +31,7 @@ export const vpnPosts: VpnPost[] = [
     readTime: "8 мин",
     category: "VPN",
     tags: ["VPN", "Aeza", "XRay", "Reality", "Самостоятельный хостинг"],
-    image: "VPN/pictures/01_vpn_aeza_preview.png", // замените на реальную картинку
+    image: "/VPN/pictures/01_vpn_aeza_preview.png", // замените на реальную картинку
     views: 0,
     content: `
 Итак, приступим к запуску персонального VPN на [Aeza.net](https://aeza.net/?ref=766003).
@@ -201,13 +201,13 @@ systemctl enable xray.service
    - Public key: ваш публичный ключ
    - Short ID: оставьте пустым
 
-![Пример конфигурации клиента](https://cdn.poehali.dev/files/vpn-client-config.jpg)
+![Пример конфигурации клиента]/VPN/pictures/02_config_example.png)
 
 ### 7. Готово!
 
 Теперь ваш личный VPN работает. Весь трафик будет шифроваться и проходить через ваш сервер на Aeza.
 
-![VPN работает](VPN/pictures/04_app_for_ios.png)
+![VPN работает](/VPN/pictures/03_app_for_ios.png)
 
 ---
 
