@@ -437,7 +437,7 @@ export const ClickStatsSection = ({
                     <div className="bg-card/30 rounded-xl p-6 border border-primary/10">
                       <ResponsiveContainer width="100%" height={450}>
                         <BarChart
-                          data={displayStats.map((stat, idx) => ({
+                          data={[...displayStats].sort((a, b) => b.clicks - a.clicks).map((stat, idx) => ({
                             name: getProviderName(stat.provider_id),
                             clicks: stat.clicks,
                             percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0,
@@ -505,7 +505,7 @@ export const ClickStatsSection = ({
                       <ResponsiveContainer width="50%" height={400}>
                         <PieChart>
                           <Pie
-                            data={displayStats.map(stat => ({
+                            data={[...displayStats].sort((a, b) => b.clicks - a.clicks).map(stat => ({
                               name: getProviderName(stat.provider_id),
                               value: stat.clicks
                             }))}
@@ -520,7 +520,7 @@ export const ClickStatsSection = ({
                             animationDuration={800}
                             paddingAngle={2}
                           >
-                            {displayStats.map((entry, index) => (
+                            {[...displayStats].sort((a, b) => b.clicks - a.clicks).map((entry, index) => (
                               <Cell 
                                 key={`cell-${index}`} 
                                 fill={COLORS[index % COLORS.length]}
