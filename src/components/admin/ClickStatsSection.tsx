@@ -40,9 +40,10 @@ export const ClickStatsSection = ({
 }: ClickStatsSectionProps) => {
   const [chartView, setChartView] = useState<'bar' | 'pie' | 'line'>('bar');
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
-  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'yesterday' | 'custom'>('custom');
+  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'today' | 'yesterday' | 'custom'>('custom');
   const [filteredStats, setFilteredStats] = useState<ClickStats[]>(clickStats);
   const [isLoadingMonth, setIsLoadingMonth] = useState(false);
+  const [todayStats, setTodayStats] = useState<ClickStats[]>([]);
   const [yesterdayStats, setYesterdayStats] = useState<ClickStats[]>([]);
   const [dayBeforeStats, setDayBeforeStats] = useState<ClickStats[]>([]);
   const [isLoadingYesterday, setIsLoadingYesterday] = useState(true);
@@ -65,6 +66,7 @@ export const ClickStatsSection = ({
       setIsLoadingYesterday(true);
       try {
         const now = new Date();
+        const todayStr = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().split('T')[0];
         const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
         const yesterdayStr = yesterday.toISOString().split('T')[0];
         const dayBefore = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2);
@@ -76,12 +78,17 @@ export const ClickStatsSection = ({
         if (res.ok) {
           const data = await res.json();
           const allDaily: DailyStats[] = data.daily_stats || [];
+          const tMap = new Map<number, number>();
           const yMap = new Map<number, number>();
           const dbMap = new Map<number, number>();
           allDaily.forEach(s => {
+            if (s.date === todayStr) tMap.set(s.provider_id, (tMap.get(s.provider_id) || 0) + s.clicks);
             if (s.date === yesterdayStr) yMap.set(s.provider_id, (yMap.get(s.provider_id) || 0) + s.clicks);
             if (s.date === dayBeforeStr) dbMap.set(s.provider_id, (dbMap.get(s.provider_id) || 0) + s.clicks);
           });
+          setTodayStats(Array.from(tMap.entries()).map(([provider_id, clicks]) => ({
+            provider_id, clicks, first_click: null, last_click: null
+          })));
           setYesterdayStats(Array.from(yMap.entries()).map(([provider_id, clicks]) => ({
             provider_id, clicks, first_click: null, last_click: null
           })));
@@ -104,7 +111,7 @@ export const ClickStatsSection = ({
     }
   }, [clickStats, selectedMonth, selectedPeriod]);
 
-  const handlePeriodChange = async (period: '1' | '7' | '30' | 'yesterday' | 'custom') => {
+  const handlePeriodChange = async (period: '1' | '7' | '30' | 'today' | 'yesterday' | 'custom') => {
     setSelectedPeriod(period);
     
     if (period === 'custom') {
@@ -112,6 +119,12 @@ export const ClickStatsSection = ({
     }
 
     setSelectedMonth('all');
+
+    if (period === 'today') {
+      setFilteredStats(todayStats);
+      onPeriodChange('1');
+      return;
+    }
 
     if (period === 'yesterday') {
       setFilteredStats(yesterdayStats);
@@ -233,6 +246,15 @@ export const ClickStatsSection = ({
           </h2>
           <div className="flex gap-3 items-center">
             <div className="flex gap-2">
+              <Button
+                variant={selectedPeriod === 'today' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => handlePeriodChange('today')}
+                disabled={isLoadingMonth || isLoadingYesterday}
+                className="font-semibold"
+              >
+                Сегодня
+              </Button>
               <Button
                 variant={selectedPeriod === 'yesterday' ? 'default' : 'outline'}
                 size="sm"
