@@ -1,3 +1,4 @@
+// src/pages/VpnPost.tsx
 import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
@@ -11,8 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -108,7 +107,8 @@ const VpnPost = () => {
                   {post.excerpt}
                 </p>
 
-                <div className="flex items-center gap-3 pb-8 border-b border-border">
+                {/* Авторский блок закомментирован */}
+                {/* <div className="flex items-center gap-3 pb-8 border-b border-border">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                     <Icon name="User" size={24} className="text-primary" />
                   </div>
@@ -120,7 +120,7 @@ const VpnPost = () => {
                       Эксперт TopCloudhub
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {post.image && (
@@ -133,7 +133,6 @@ const VpnPost = () => {
                 </div>
               )}
 
-              {/* Основной контент с кастомным рендерингом кода и ссылок */}
               <div
                 className="prose prose-lg max-w-none
                 prose-headings:font-bold prose-headings:text-foreground
@@ -152,48 +151,12 @@ const VpnPost = () => {
                 prose-table:border-2 prose-table:border-border
                 prose-th:bg-accent prose-th:p-3 prose-th:text-foreground
                 prose-td:p-3 prose-td:border prose-td:border-border
-                prose-img:w-full prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
+                prose-img:w-[30%] prose-img:mx-auto prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
               "
               >
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[
-                    rehypeRaw,
-                    [
-                      rehypeSanitize,
-                      {
-                        tagNames: [
-                          "p",
-                          "span",
-                          "div",
-                          "img",
-                          "strong",
-                          "em",
-                          "u",
-                          "h1",
-                          "h2",
-                          "h3",
-                          "h4",
-                          "h5",
-                          "h6",
-                          "ul",
-                          "ol",
-                          "li",
-                          "blockquote",
-                          "pre",
-                          "code",
-                          "a",
-                        ],
-                        attributes: {
-                          "*": ["class"],
-                          img: ["src", "alt", "title", "class"],
-                          a: ["href", "title", "class", "target", "rel"],
-                        },
-                      },
-                    ],
-                  ]}
                   components={{
-                    // Кастомный рендеринг для блоков кода
                     code({ node, inline, className, children, ...props }) {
                       const match = /language-(\w+)/.exec(className || "");
                       if (!inline && match) {
@@ -215,7 +178,7 @@ const VpnPost = () => {
                         </code>
                       );
                     },
-                    // Кастомный рендеринг для ссылок (открытие в новой вкладке)
+                    // 👇 Добавлено: все ссылки открываются в новой вкладке
                     a({ node, children, ...props }) {
                       return (
                         <a target="_blank" rel="noopener noreferrer" {...props}>
