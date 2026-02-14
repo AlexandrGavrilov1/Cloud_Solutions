@@ -112,6 +112,7 @@ const VpnPost = () => {
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                     <Icon name="User" size={24} className="text-primary" />
                   </div>
+                  /*{" "}
                   <div>
                     <div className="font-semibold text-foreground">
                       {post.author}
@@ -120,6 +121,7 @@ const VpnPost = () => {
                       Эксперт TopCloudhub
                     </div>
                   </div>
+                  */
                 </div>
               </div>
 
