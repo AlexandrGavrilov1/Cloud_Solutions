@@ -43,6 +43,9 @@ export const ClickStatsSection = ({
   const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'custom'>('custom');
   const [filteredStats, setFilteredStats] = useState<ClickStats[]>(clickStats);
   const [isLoadingMonth, setIsLoadingMonth] = useState(false);
+  const [yesterdayStats, setYesterdayStats] = useState<ClickStats[]>([]);
+  const [dayBeforeStats, setDayBeforeStats] = useState<ClickStats[]>([]);
+  const [isLoadingYesterday, setIsLoadingYesterday] = useState(true);
 
   const getAvailableMonths = () => {
     const months = [];
@@ -56,6 +59,44 @@ export const ClickStatsSection = ({
     }
     return months;
   };
+
+  useEffect(() => {
+    const fetchYesterdayStats = async () => {
+      setIsLoadingYesterday(true);
+      try {
+        const now = new Date();
+        const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        const dayBefore = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2);
+        const dayBeforeStr = dayBefore.toISOString().split('T')[0];
+
+        const res = await fetch(
+          `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?view=daily&period=3`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const allDaily: DailyStats[] = data.daily_stats || [];
+          const yMap = new Map<number, number>();
+          const dbMap = new Map<number, number>();
+          allDaily.forEach(s => {
+            if (s.date === yesterdayStr) yMap.set(s.provider_id, (yMap.get(s.provider_id) || 0) + s.clicks);
+            if (s.date === dayBeforeStr) dbMap.set(s.provider_id, (dbMap.get(s.provider_id) || 0) + s.clicks);
+          });
+          setYesterdayStats(Array.from(yMap.entries()).map(([provider_id, clicks]) => ({
+            provider_id, clicks, first_click: null, last_click: null
+          })));
+          setDayBeforeStats(Array.from(dbMap.entries()).map(([provider_id, clicks]) => ({
+            provider_id, clicks, first_click: null, last_click: null
+          })));
+        }
+      } catch (error) {
+        console.error('Error fetching yesterday stats:', error);
+      } finally {
+        setIsLoadingYesterday(false);
+      }
+    };
+    fetchYesterdayStats();
+  }, []);
 
   useEffect(() => {
     if (selectedMonth === 'all' && selectedPeriod === 'custom') {
