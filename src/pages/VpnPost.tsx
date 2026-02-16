@@ -1,12 +1,12 @@
 // src/pages/VpnPost.tsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
 import { StructuredData } from "@/components/StructuredData";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
-import { vpnPosts, VpnPost as VpnPostType } from "@/data/vpn-posts";
+import { vpnPosts } from "@/data/vpn-posts";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
@@ -15,45 +15,13 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const VPN_POSTS_API = "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
-
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const staticPost = vpnPosts.find((p) => p.slug === slug);
-  const [post, setPost] = useState<VpnPostType | null>(staticPost || null);
-  const [isLoading, setIsLoading] = useState(true);
+  const post = vpnPosts.find((p) => p.slug === slug);
 
-  useEffect(() => {
-    if (!slug) return;
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
-        if (res.ok) {
-          const data = await res.json();
-          setPost(data);
-        }
-      } catch {
-        // fallback to static data
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPost();
-  }, [slug]);
-
-  if (!isLoading && !post) {
+  if (!post) {
     return <Navigate to="/vpn" replace />;
   }
-
-  if (isLoading && !post) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Icon name="Loader2" size={32} className="animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!post) return null;
 
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post.id && p.category === post.category)
