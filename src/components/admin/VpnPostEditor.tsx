@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -14,6 +12,9 @@ import { vpnPosts, VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 
+// Ленивая загрузка MDEditor (отдельный чанк)
+const MDEditor = lazy(() => import("@uiw/react-md-editor"));
+
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
 }
@@ -22,8 +23,8 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [selectedPost, setSelectedPost] = useState<VpnPost | null>(null);
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
 
+  // При смене статьи обновляем контент
   useEffect(() => {
     if (selectedPost) {
       setContent(selectedPost.content);
@@ -34,6 +35,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
+      // Здесь должен быть вызов API для сохранения
       const updatedPost = { ...selectedPost, content };
       console.log("Сохраняем статью:", updatedPost);
       toast.success("Статья сохранена (локально)");
@@ -90,37 +92,32 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </p>
               </div>
 
-              <div className="w-full">
-                <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-2">
-                  <button
-                    onClick={() => setActiveTab("edit")}
-                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === "edit" ? "bg-background text-foreground shadow-sm" : ""}`}
-                  >
-                    <Icon name="Edit" size={14} className="mr-1" />
-                    Редактирование
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("preview")}
-                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === "preview" ? "bg-background text-foreground shadow-sm" : ""}`}
-                  >
-                    <Icon name="Eye" size={14} className="mr-1" />
-                    Предпросмотр
-                  </button>
-                </div>
-                {activeTab === "edit" ? (
-                  <textarea
+              <div
+                data-color-mode="light"
+                className="border rounded-lg overflow-hidden"
+              >
+                <Suspense
+                  fallback={
+                    <div
+                      className="flex items-center justify-center"
+                      style={{ height: 500 }}
+                    >
+                      <Icon
+                        name="Loader2"
+                        size={32}
+                        className="animate-spin text-primary"
+                      />
+                    </div>
+                  }
+                >
+                  <MDEditor
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    className="flex min-h-[500px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 font-mono"
-                    placeholder="Введите текст в формате Markdown..."
+                    onChange={(val) => setContent(val || "")}
+                    preview="live"
+                    height={500}
+                    visibleDragbar={false}
                   />
-                ) : (
-                  <div className="min-h-[500px] border rounded-md p-4 prose prose-sm max-w-none dark:prose-invert">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {content}
-                    </ReactMarkdown>
-                  </div>
-                )}
+                </Suspense>
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
@@ -156,5 +153,3 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     </div>
   );
 };
-
-export default VpnPostEditor;
