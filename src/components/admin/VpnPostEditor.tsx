@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -11,7 +15,6 @@ import {
 import { vpnPosts, VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
-import { SimpleMarkdownEditor } from "./SimpleMarkdownEditor";
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -32,7 +35,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
-      // Здесь должен быть вызов API для сохранения
       const updatedPost = { ...selectedPost, content };
       console.log("Сохраняем статью:", updatedPost);
       toast.success("Статья сохранена (локально)");
@@ -89,11 +91,33 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </p>
               </div>
 
-              <SimpleMarkdownEditor
-                value={content}
-                onChange={setContent}
-                height={500}
-              />
+              <Tabs defaultValue="edit" className="w-full">
+                <TabsList>
+                  <TabsTrigger value="edit">
+                    <Icon name="Edit" size={14} className="mr-1" />
+                    Редактирование
+                  </TabsTrigger>
+                  <TabsTrigger value="preview">
+                    <Icon name="Eye" size={14} className="mr-1" />
+                    Предпросмотр
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="edit">
+                  <Textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    className="min-h-[500px] font-mono text-sm"
+                    placeholder="Введите текст в формате Markdown..."
+                  />
+                </TabsContent>
+                <TabsContent value="preview">
+                  <div className="min-h-[500px] border rounded-md p-4 prose prose-sm max-w-none dark:prose-invert">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {content}
+                    </ReactMarkdown>
+                  </div>
+                </TabsContent>
+              </Tabs>
 
               <div className="mt-6 flex justify-end gap-4">
                 <Button variant="outline" onClick={() => setSelectedPost(null)}>
@@ -128,3 +152,5 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     </div>
   );
 };
+
+export default VpnPostEditor;
