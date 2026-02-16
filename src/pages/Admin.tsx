@@ -7,7 +7,7 @@ import { ReviewModerationSection } from "@/components/admin/ReviewModerationSect
 import { ProviderStatsSection } from "@/components/admin/ProviderStatsSection";
 import { generateSitemap, downloadSitemap } from "@/utils/sitemap-generator";
 // ===== ДОБАВЛЕНО =====
-import { VpnPostEditor } from "@/components/admin/VpnPostEditor"; // [!code ++]
+import { VpnPostEditor } from "@/components/admin/VpnPostEditor"; //
 // =====================
 
 interface Review {
