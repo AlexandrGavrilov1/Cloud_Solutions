@@ -25,7 +25,7 @@ export const Header = () => {
             />
           </a>
           <div className="hidden md:flex items-center gap-8 ml-12">
-            {/* Временно скрыто
+            {/* Временно скрытощ
             <a
               href="/gaming"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
@@ -33,14 +33,14 @@ export const Header = () => {
               Игровые
             </a>
             */}
-            {/* ===== Временно скрыто ===
+            ===== Временно скрыто ===
             <a
               href="/vpn"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
-             ===================== */}
+            =====================
             <a
               href="/blog"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
