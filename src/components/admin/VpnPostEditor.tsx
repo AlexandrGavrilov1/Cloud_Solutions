@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useMarkdownEditor, MarkdownEditorView } from '@gravity-ui/markdown-editor';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { vpnPosts, VpnPost } from '@/data/vpn-posts';
-import Icon from '@/components/ui/icon';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from "react";
+import MDEditor from "@uiw/react-md-editor";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { vpnPosts, VpnPost } from "@/data/vpn-posts";
+import Icon from "@/components/ui/icon";
+import { toast } from "sonner";
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -13,53 +19,27 @@ interface VpnPostEditorProps {
 
 export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [selectedPost, setSelectedPost] = useState<VpnPost | null>(null);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  const editor = useMarkdownEditor({
-    initial: {
-      markdown: content,
-    },
-    allowHTML: true,
-  });
-
-  // Следим за изменениями в редакторе
-  useEffect(() => {
-    const handleChange = () => {
-      const value = editor.getValue();
-      setContent(value);
-    };
-    editor.on('change', handleChange);
-    return () => {
-      editor.off('change', handleChange);
-    };
-  }, [editor]);
-
-  // При смене статьи обновляем контент в редакторе
+  // При смене статьи обновляем контент
   useEffect(() => {
     if (selectedPost) {
       setContent(selectedPost.content);
-      // Принудительно обновляем значение в редакторе
-      editor.setValue(selectedPost.content);
     }
-  }, [selectedPost, editor]);
+  }, [selectedPost]);
 
   const handleSave = async () => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
       // Здесь должен быть вызов API для сохранения
-      // Пока просто имитируем сохранение
       const updatedPost = { ...selectedPost, content };
-      // В реальности вы отправите на сервер и обновите данные
-      console.log('Сохраняем статью:', updatedPost);
-      
-      // Можно обновить в массиве vpnPosts (но это не сохранится после перезагрузки)
-      // Для демо покажем уведомление
-      toast.success('Статья сохранена (локально)');
+      console.log("Сохраняем статью:", updatedPost);
+      toast.success("Статья сохранена (локально)");
       onSave?.(updatedPost);
     } catch (error) {
-      toast.error('Ошибка при сохранении');
+      toast.error("Ошибка при сохранении");
     } finally {
       setIsSaving(false);
     }
@@ -80,9 +60,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
               Выберите статью
             </label>
             <Select
-              value={selectedPost?.slug || ''}
+              value={selectedPost?.slug || ""}
               onValueChange={(slug) => {
-                const post = vpnPosts.find(p => p.slug === slug) || null;
+                const post = vpnPosts.find((p) => p.slug === slug) || null;
                 setSelectedPost(post);
               }}
             >
@@ -102,23 +82,29 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
           {selectedPost && (
             <>
               <div className="mb-4 p-4 bg-muted/50 rounded-lg">
-                <h3 className="font-semibold text-foreground mb-2">{selectedPost.title}</h3>
-                <p className="text-sm text-muted-foreground">{selectedPost.excerpt}</p>
+                <h3 className="font-semibold text-foreground mb-2">
+                  {selectedPost.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {selectedPost.excerpt}
+                </p>
               </div>
 
-              <div className="border rounded-lg overflow-hidden bg-white dark:bg-gray-800">
-                <MarkdownEditorView
-                  editor={editor}
-                  stickyToolbar
-                  className="min-h-[500px]"
+              <div
+                data-color-mode="light"
+                className="border rounded-lg overflow-hidden"
+              >
+                <MDEditor
+                  value={content}
+                  onChange={(val) => setContent(val || "")}
+                  preview="live"
+                  height={500}
+                  visibleDragbar={false}
                 />
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => setSelectedPost(null)}
-                >
+                <Button variant="outline" onClick={() => setSelectedPost(null)}>
                   Отмена
                 </Button>
                 <Button
@@ -128,7 +114,11 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 >
                   {isSaving ? (
                     <>
-                      <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
+                      <Icon
+                        name="Loader2"
+                        size={16}
+                        className="mr-2 animate-spin"
+                      />
                       Сохранение...
                     </>
                   ) : (
