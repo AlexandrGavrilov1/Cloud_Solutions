@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import MDEditor from "@uiw/react-md-editor";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -12,6 +11,9 @@ import {
 import { vpnPosts, VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
+
+// Ленивая загрузка MDEditor (отдельный чанк)
+const MDEditor = lazy(() => import("@uiw/react-md-editor"));
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -94,13 +96,28 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
               >
-                <MDEditor
-                  value={content}
-                  onChange={(val) => setContent(val || "")}
-                  preview="live"
-                  height={500}
-                  visibleDragbar={false}
-                />
+                <Suspense
+                  fallback={
+                    <div
+                      className="flex items-center justify-center"
+                      style={{ height: 500 }}
+                    >
+                      <Icon
+                        name="Loader2"
+                        size={32}
+                        className="animate-spin text-primary"
+                      />
+                    </div>
+                  }
+                >
+                  <MDEditor
+                    value={content}
+                    onChange={(val) => setContent(val || "")}
+                    preview="live"
+                    height={500}
+                    visibleDragbar={false}
+                  />
+                </Suspense>
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
