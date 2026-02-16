@@ -3,8 +3,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -24,6 +22,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [selectedPost, setSelectedPost] = useState<VpnPost | null>(null);
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
 
   useEffect(() => {
     if (selectedPost) {
@@ -91,33 +90,38 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </p>
               </div>
 
-              <Tabs defaultValue="edit" className="w-full">
-                <TabsList>
-                  <TabsTrigger value="edit">
+              <div className="w-full">
+                <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-2">
+                  <button
+                    onClick={() => setActiveTab("edit")}
+                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === "edit" ? "bg-background text-foreground shadow-sm" : ""}`}
+                  >
                     <Icon name="Edit" size={14} className="mr-1" />
                     Редактирование
-                  </TabsTrigger>
-                  <TabsTrigger value="preview">
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("preview")}
+                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === "preview" ? "bg-background text-foreground shadow-sm" : ""}`}
+                  >
                     <Icon name="Eye" size={14} className="mr-1" />
                     Предпросмотр
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="edit">
-                  <Textarea
+                  </button>
+                </div>
+                {activeTab === "edit" ? (
+                  <textarea
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="min-h-[500px] font-mono text-sm"
+                    className="flex min-h-[500px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 font-mono"
                     placeholder="Введите текст в формате Markdown..."
                   />
-                </TabsContent>
-                <TabsContent value="preview">
+                ) : (
                   <div className="min-h-[500px] border rounded-md p-4 prose prose-sm max-w-none dark:prose-invert">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {content}
                     </ReactMarkdown>
                   </div>
-                </TabsContent>
-              </Tabs>
+                )}
+              </div>
 
               <div className="mt-6 flex justify-end gap-4">
                 <Button variant="outline" onClick={() => setSelectedPost(null)}>
