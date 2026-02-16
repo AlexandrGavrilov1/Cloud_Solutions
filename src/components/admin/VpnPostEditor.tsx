@@ -8,10 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { vpnPosts, VpnPost } from "@/data/vpn-posts";
+import { VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
+
+const VPN_POSTS_API = "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
 
 // Ленивая загрузка MDEditor (отдельный чанк)
 // const MDEditor = lazy(() => import("@uiw/react-md-editor"));
@@ -133,24 +135,73 @@ interface VpnPostEditorProps {
 }
 
 export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
+  const [posts, setPosts] = useState<VpnPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<VpnPost | null>(null);
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+  const [isLoadingContent, setIsLoadingContent] = useState(false);
 
   useEffect(() => {
-    if (selectedPost) {
-      setContent(selectedPost.content);
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    setIsLoadingPosts(true);
+    try {
+      const res = await fetch(VPN_POSTS_API);
+      if (res.ok) {
+        const data = await res.json();
+        setPosts(data);
+      }
+    } catch (err) {
+      toast.error("Не удалось загрузить список статей");
+    } finally {
+      setIsLoadingPosts(false);
     }
-  }, [selectedPost]);
+  };
+
+  const fetchPostContent = async (slug: string) => {
+    setIsLoadingContent(true);
+    try {
+      const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSelectedPost(data);
+        setContent(data.content || "");
+      }
+    } catch (err) {
+      toast.error("Не удалось загрузить статью");
+    } finally {
+      setIsLoadingContent(false);
+    }
+  };
 
   const handleSave = async () => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
-      const updatedPost = { ...selectedPost, content };
-      console.log("Сохраняем статью:", updatedPost);
-      toast.success("Статья сохранена (локально)");
-      onSave?.(updatedPost);
+      const token = localStorage.getItem("admin_token");
+      const res = await fetch(VPN_POSTS_API, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Auth-Token": token || "",
+        },
+        body: JSON.stringify({
+          slug: selectedPost.slug,
+          content,
+        }),
+      });
+      if (res.ok) {
+        toast.success("Статья сохранена");
+        const updatedPost = { ...selectedPost, content };
+        setSelectedPost(updatedPost);
+        onSave?.(updatedPost);
+      } else {
+        const err = await res.json();
+        toast.error(err.error || "Ошибка при сохранении");
+      }
     } catch (error) {
       toast.error("Ошибка при сохранении");
     } finally {
@@ -199,27 +250,39 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
             <label className="text-sm font-semibold text-foreground mb-2 block">
               Выберите статью
             </label>
-            <Select
-              value={selectedPost?.slug || ""}
-              onValueChange={(slug) => {
-                const post = vpnPosts.find((p) => p.slug === slug) || null;
-                setSelectedPost(post);
-              }}
-            >
-              <SelectTrigger className="w-full max-w-md">
-                <SelectValue placeholder="Выберите статью для редактирования" />
-              </SelectTrigger>
-              <SelectContent>
-                {vpnPosts.map((post) => (
-                  <SelectItem key={post.id} value={post.slug}>
-                    {post.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isLoadingPosts ? (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Icon name="Loader2" size={16} className="animate-spin" />
+                Загрузка списка статей...
+              </div>
+            ) : (
+              <Select
+                value={selectedPost?.slug || ""}
+                onValueChange={(slug) => {
+                  fetchPostContent(slug);
+                }}
+              >
+                <SelectTrigger className="w-full max-w-md">
+                  <SelectValue placeholder="Выберите статью для редактирования" />
+                </SelectTrigger>
+                <SelectContent>
+                  {posts.map((post) => (
+                    <SelectItem key={post.id} value={post.slug}>
+                      {post.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
-          {selectedPost && (
+          {isLoadingContent && (
+            <div className="flex items-center justify-center py-12">
+              <Icon name="Loader2" size={32} className="animate-spin text-primary" />
+            </div>
+          )}
+
+          {selectedPost && !isLoadingContent && (
             <>
               <div className="mb-4 p-4 bg-muted/50 rounded-lg">
                 <h3 className="font-semibold text-foreground mb-2">

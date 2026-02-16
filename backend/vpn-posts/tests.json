@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "Get all posts",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": [{"slug": "string"}],
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get post by slug",
+      "method": "GET",
+      "path": "/?slug=personalnyj-vpn-na-aeza",
+      "expectedStatus": 200,
+      "expectedBody": {"slug": "string", "title": "string", "content": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Update without auth",
+      "method": "PUT",
+      "path": "/",
+      "body": {"slug": "personalnyj-vpn-na-aeza", "title": "Test"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
