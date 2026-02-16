@@ -114,15 +114,11 @@ def handle_get(conn, event):
             rows = cur.fetchall()
             return response(200, [dict(r) for r in rows])
 
-# ========= МИНИМАЛЬНАЯ ВЕРСИЯ handle_put ДЛЯ ПРОВЕРКИ =========
+# ========= МИНИМАЛЬНАЯ ВЕРСИЯ handle_put (БЕЗ ЛЮБЫХ ПРОВЕРОК) =========
 def handle_put(conn, event):
-    headers = event.get('headers', {})
-    token = headers.get('X-Auth-Token') or headers.get('x-auth-token', '')
-    if not verify_admin(conn, token):
-        return response(401, {'error': 'Unauthorized'})
-    # Временный ответ для проверки
-    return response(200, {'success': True, 'message': 'PUT works'})
-# =============================================================
+    # Возвращаем успех без всяких проверок
+    return response(200, {'success': True, 'message': 'PUT works (no auth, no db)'})
+# =====================================================================
 
 def handle_post(conn, event):
     """Обработка POST-запросов: создание новой статьи."""
