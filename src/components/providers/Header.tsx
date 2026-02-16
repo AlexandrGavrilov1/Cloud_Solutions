@@ -25,7 +25,7 @@ export const Header = () => {
             />
           </a>
           <div className="hidden md:flex items-center gap-8 ml-12">
-            {/* Временно скрытощ
+            {/* Временно скрыто
             <a
               href="/gaming"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
