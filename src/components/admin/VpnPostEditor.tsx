@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -13,9 +13,10 @@ import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
 
-// ==================== Кастомные команды ====================
+// Ленивая загрузка MDEditor (отдельный чанк)
+// const MDEditor = lazy(() => import("@uiw/react-md-editor"));
 
-// Выравнивание по левому краю
+// Кастомная команда для выравнивания по левому краю
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
@@ -34,7 +35,7 @@ const alignLeftCommand: ICommand = {
   },
 };
 
-// Выравнивание по центру
+// Кастомная команда для выравнивания по центру
 const alignCenterCommand: ICommand = {
   name: "alignCenter",
   keyCommand: "alignCenter",
@@ -53,7 +54,7 @@ const alignCenterCommand: ICommand = {
   },
 };
 
-// Выравнивание по правому краю
+// Кастомная команда для выравнивания по правому краю
 const alignRightCommand: ICommand = {
   name: "alignRight",
   keyCommand: "alignRight",
@@ -72,7 +73,7 @@ const alignRightCommand: ICommand = {
   },
 };
 
-// Выравнивание по ширине
+// Кастомная команда для выравнивания по ширине
 const alignJustifyCommand: ICommand = {
   name: "alignJustify",
   keyCommand: "alignJustify",
@@ -91,7 +92,7 @@ const alignJustifyCommand: ICommand = {
   },
 };
 
-// Увеличение шрифта
+// Кастомная команда для увеличения шрифта
 const fontSizeIncreaseCommand: ICommand = {
   name: "fontSizeIncrease",
   keyCommand: "fontSizeIncrease",
@@ -109,7 +110,7 @@ const fontSizeIncreaseCommand: ICommand = {
   },
 };
 
-// Уменьшение шрифта
+// Кастомная команда для уменьшения шрифта
 const fontSizeDecreaseCommand: ICommand = {
   name: "fontSizeDecrease",
   keyCommand: "fontSizeDecrease",
@@ -126,27 +127,6 @@ const fontSizeDecreaseCommand: ICommand = {
     api.replaceSelection(text);
   },
 };
-
-// Красная строка (отступ)
-const indentCommand: ICommand = {
-  name: "indent",
-  keyCommand: "indent",
-  buttonProps: { "aria-label": "Красная строка (отступ)" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <rect x="3" y="6" width="14" height="2" fill="currentColor" />
-      <rect x="3" y="10" width="10" height="2" fill="currentColor" />
-      <rect x="3" y="14" width="14" height="2" fill="currentColor" />
-    </svg>
-  ),
-  execute: (state, api) => {
-    const selectedText = state.selectedText || "Текст с красной строкой";
-    const text = `<p class="indent">${selectedText}</p>`;
-    api.replaceSelection(text);
-  },
-};
-
-// ==================== Компонент ====================
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -167,7 +147,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
-      // Здесь должен быть вызов API для сохранения
       const updatedPost = { ...selectedPost, content };
       console.log("Сохраняем статью:", updatedPost);
       toast.success("Статья сохранена (локально)");
@@ -179,7 +158,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // Все команды для панели инструментов
+  // Собираем все команды для панели инструментов
   const allCommands = [
     commands.bold,
     commands.italic,
@@ -197,14 +176,13 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     commands.orderedListCommand,
     commands.checkedListCommand,
     commands.table,
-    // Кастомные команды
+    // Наши новые команды
     alignLeftCommand,
     alignCenterCommand,
     alignRightCommand,
     alignJustifyCommand,
     fontSizeIncreaseCommand,
     fontSizeDecreaseCommand,
-    indentCommand,
   ];
 
   return (
@@ -256,14 +234,29 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
               >
-                <MDEditor
-                  value={content}
-                  onChange={(val) => setContent(val || "")}
-                  preview="live"
-                  height={500}
-                  visibleDragbar={false}
-                  commands={allCommands}
-                />
+                <Suspense
+                  fallback={
+                    <div
+                      className="flex items-center justify-center"
+                      style={{ height: 500 }}
+                    >
+                      <Icon
+                        name="Loader2"
+                        size={32}
+                        className="animate-spin text-primary"
+                      />
+                    </div>
+                  }
+                >
+                  <MDEditor
+                    value={content}
+                    onChange={(val) => setContent(val || "")}
+                    preview="live"
+                    height={500}
+                    visibleDragbar={false}
+                    commands={allCommands}
+                  />
+                </Suspense>
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
