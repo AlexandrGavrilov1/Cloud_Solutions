@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
 import { useVpnPosts, useVpnPost, useUpdateVpnPost } from "@/hooks/useVpnPosts";
 
-// ... кастомные команды (без изменений) ...
+// ... кастомные команды (оставьте как есть) ...
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -26,9 +26,11 @@ interface VpnPostEditorProps {
 export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const { data: posts, isLoading: isLoadingPosts } = useVpnPosts();
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
-  const { data: selectedPost, isLoading: isLoadingContent } = useVpnPost(
-    selectedSlug || undefined,
-  );
+  const {
+    data: selectedPost,
+    isLoading: isLoadingContent,
+    error,
+  } = useVpnPost(selectedSlug || undefined);
   const updateMutation = useUpdateVpnPost();
 
   const [content, setContent] = useState("");
@@ -49,6 +51,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   // Заполняем форму при загрузке полной статьи
   useEffect(() => {
     if (selectedPost) {
+      console.log("Загружена статья:", selectedPost);
       setContent(selectedPost.content || "");
       setTitle(selectedPost.title || "");
       setExcerpt(selectedPost.excerpt || "");
@@ -65,6 +68,21 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       setTags(selectedPost.tags || []);
     }
   }, [selectedPost]);
+
+  // Сброс при отмене
+  const handleCancel = () => {
+    setSelectedSlug(null);
+    setContent("");
+    setTitle("");
+    setExcerpt("");
+    setCategory("");
+    setReadTime("");
+    setAuthor("");
+    setImage("");
+    setProviderUrl("");
+    setProviderName("");
+    setTags([]);
+  };
 
   const handleAddTag = () => {
     if (tagInput.trim()) {
@@ -94,10 +112,11 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
         provider_name: providerName,
         tags,
       };
+      console.log("Отправка PUT:", updatedData);
       const updatedPost = await updateMutation.mutateAsync(updatedData);
       toast.success("Статья сохранена");
-      // Обновляем локальное состояние (хотя React Query уже обновит кеш)
-      // Можно дополнительно вызвать onSave
+      // Обновляем локальное состояние (не обязательно, но можно)
+      // React Query обновит кеш автоматически
       onSave?.(updatedPost);
     } catch (error) {
       toast.error(
@@ -109,7 +128,28 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   };
 
   const allCommands = [
-    /* ... */
+    commands.bold,
+    commands.italic,
+    commands.strikethrough,
+    commands.hr,
+    commands.title1,
+    commands.title2,
+    commands.title3,
+    commands.link,
+    commands.quote,
+    commands.code,
+    commands.codeBlock,
+    commands.image,
+    commands.unorderedListCommand,
+    commands.orderedListCommand,
+    commands.checkedListCommand,
+    commands.table,
+    alignLeftCommand,
+    alignCenterCommand,
+    alignRightCommand,
+    alignJustifyCommand,
+    fontSizeIncreaseCommand,
+    fontSizeDecreaseCommand,
   ];
 
   return (
@@ -150,6 +190,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
             )}
           </div>
 
+          {error && (
+            <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-lg">
+              <p>Ошибка загрузки статьи: {error.message}</p>
+            </div>
+          )}
+
           {isLoadingContent && (
             <div className="flex items-center justify-center py-12">
               <Icon
@@ -162,11 +208,137 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
           {selectedPost && !isLoadingContent && (
             <>
-              {/* Форма метаданных (такая же, как раньше) */}
+              {/* Форма метаданных */}
               <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
-                {/* ... все поля ... */}
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Заголовок
+                  </label>
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Заголовок статьи"
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Краткое описание (excerpt)
+                  </label>
+                  <Textarea
+                    value={excerpt}
+                    onChange={(e) => setExcerpt(e.target.value)}
+                    placeholder="Краткое описание статьи"
+                    rows={2}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Категория
+                    </label>
+                    <Input
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      placeholder="VPN"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Время чтения
+                    </label>
+                    <Input
+                      value={readTime}
+                      onChange={(e) => setReadTime(e.target.value)}
+                      placeholder="5 мин"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Автор
+                  </label>
+                  <Input
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    placeholder="Автор статьи"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      URL провайдера
+                    </label>
+                    <Input
+                      value={providerUrl}
+                      onChange={(e) => setProviderUrl(e.target.value)}
+                      placeholder="https://example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Название провайдера
+                    </label>
+                    <Input
+                      value={providerName}
+                      onChange={(e) => setProviderName(e.target.value)}
+                      placeholder="Aeza.net"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    URL изображения (превью)
+                  </label>
+                  <Input
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    placeholder="/images/preview.jpg"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Теги
+                  </label>
+                  <div className="flex gap-2 mb-2 flex-wrap">
+                    {tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="gap-1">
+                        {tag}
+                        <button
+                          onClick={() => handleRemoveTag(tag)}
+                          className="ml-1 hover:text-destructive"
+                        >
+                          <Icon name="X" size={12} />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <Input
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      placeholder="Новый тег"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddTag();
+                        }
+                      }}
+                    />
+                    <Button onClick={handleAddTag} variant="outline">
+                      Добавить
+                    </Button>
+                  </div>
+                </div>
               </div>
 
+              {/* Редактор */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
@@ -182,7 +354,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
-                <Button variant="outline" onClick={() => setSelectedSlug(null)}>
+                <Button variant="outline" onClick={handleCancel}>
                   Отмена
                 </Button>
                 <Button
