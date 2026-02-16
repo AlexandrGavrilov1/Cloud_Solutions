@@ -26,7 +26,7 @@ def verify_admin(conn, token):
         return False
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT 1 FROM %s.admin_tokens WHERE token = '%s' AND expires_at > NOW()" % (SCHEMA, token.replace("'", "''"))
+            "SELECT 1 FROM %s.admin_tokens WHERE token = '%s'" % (SCHEMA, token.replace("'", "''"))
         )
         return cur.fetchone() is not None
 
