@@ -36,7 +36,6 @@ def verify_admin(conn, token: str) -> bool:
 
 def generate_slug(title: str) -> str:
     """Генерация slug из заголовка (простая транслитерация)."""
-    # Транслитерация русских букв (можно дополнить)
     translit_map = {
         'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
         'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
@@ -115,83 +114,15 @@ def handle_get(conn, event):
             rows = cur.fetchall()
             return response(200, [dict(r) for r in rows])
 
+# ========= МИНИМАЛЬНАЯ ВЕРСИЯ handle_put ДЛЯ ПРОВЕРКИ =========
 def handle_put(conn, event):
-    """Обработка PUT-запросов: обновление существующей статьи (только переданные поля)."""
     headers = event.get('headers', {})
     token = headers.get('X-Auth-Token') or headers.get('x-auth-token', '')
-
     if not verify_admin(conn, token):
         return response(401, {'error': 'Unauthorized'})
-
-    try:
-        body = json.loads(event.get('body', '{}'))
-    except json.JSONDecodeError:
-        return response(400, {'error': 'Invalid JSON'})
-
-    slug = body.get('slug')
-    if not slug:
-        return response(400, {'error': 'slug is required'})
-
-    # Белый список полей, которые можно обновлять
-    updatable_fields = {
-        'title': 'title',
-        'excerpt': 'excerpt',
-        'content': 'content',
-        'author': 'author',
-        'date': 'date',
-        'date_published': 'date_published',
-        'date_modified': 'date_modified',
-        'read_time': 'read_time',
-        'category': 'category',
-        'image': 'image',
-        'provider_url': 'provider_url',
-        'provider_name': 'provider_name',
-    }
-
-    set_clauses = []
-    params = []
-
-    for json_key, db_col in updatable_fields.items():
-        if json_key in body:
-            set_clauses.append(f"{db_col} = %s")
-            params.append(body[json_key])
-
-    if 'tags' in body:
-        tags = body['tags']
-        if not isinstance(tags, list):
-            return response(400, {'error': 'tags must be an array'})
-        set_clauses.append("tags = %s::text[]")
-        params.append(tags)
-
-    if not set_clauses:
-        return response(400, {'error': 'No fields to update'})
-
-    # Если в таблице есть колонка updated_at, раскомментируйте следующую строку:
-    # set_clauses.append("updated_at = NOW()")
-
-    sql = f"""
-        UPDATE {SCHEMA}.vpn_posts
-        SET {', '.join(set_clauses)}
-        WHERE slug = %s
-        RETURNING id, slug, title
-    """
-    params.append(slug)
-
-    try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(sql, params)
-            row = cur.fetchone()
-            conn.commit()
-    except Exception as e:
-        # Логирование ошибки (появится в логах функции)
-        print(f"SQL Error in handle_put: {e}")
-        conn.rollback()
-        return response(500, {'error': 'Database error', 'detail': str(e)})
-
-    if not row:
-        return response(404, {'error': 'Post not found'})
-
-    return response(200, {'success': True, 'post': dict(row)})
+    # Временный ответ для проверки
+    return response(200, {'success': True, 'message': 'PUT works'})
+# =============================================================
 
 def handle_post(conn, event):
     """Обработка POST-запросов: создание новой статьи."""
