@@ -11,9 +11,6 @@ import "@gravity-ui/markdown-editor/dist/styles.css";
 import { ToasterProvider, configure as configureUI } from "@gravity-ui/uikit";
 import { configure as configureEditor } from "@gravity-ui/markdown-editor";
 
-// 3. Ваши стили (после Gravity UI)
-import "./index.css";
-
 import App from "./App";
 
 // 4. Настройка локализации
