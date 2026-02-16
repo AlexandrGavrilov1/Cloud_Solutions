@@ -11,10 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@diplodoc/transform": "^4.68.3",
-    "@gravity-ui/components": "^4.18.0",
-    "@gravity-ui/markdown-editor": "^15.32.0",
-    "@gravity-ui/uikit": "^7.32.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -51,7 +47,6 @@
     "embla-carousel-react": "^8.3.0",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.462.0",
-    "markdown-it": "^14.1.1",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
