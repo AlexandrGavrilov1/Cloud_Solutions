@@ -8,35 +8,126 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
 
-const VPN_POSTS_API =
-  "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
+const VPN_POSTS_API = "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
 
-// Кастомные команды (без изменений)
+// Ленивая загрузка MDEditor (отдельный чанк)
+// const MDEditor = lazy(() => import("@uiw/react-md-editor"));
+
+// Кастомная команда для выравнивания по левому краю
 const alignLeftCommand: ICommand = {
-  /* ... */
+  name: "alignLeft",
+  keyCommand: "alignLeft",
+  buttonProps: { "aria-label": "Выровнять по левому краю" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="left">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
+// Кастомная команда для выравнивания по центру
 const alignCenterCommand: ICommand = {
-  /* ... */
+  name: "alignCenter",
+  keyCommand: "alignCenter",
+  buttonProps: { "aria-label": "Выровнять по центру" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="center">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
+// Кастомная команда для выравнивания по правому краю
 const alignRightCommand: ICommand = {
-  /* ... */
+  name: "alignRight",
+  keyCommand: "alignRight",
+  buttonProps: { "aria-label": "Выровнять по правому краю" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="right">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
+// Кастомная команда для выравнивания по ширине
 const alignJustifyCommand: ICommand = {
-  /* ... */
+  name: "alignJustify",
+  keyCommand: "alignJustify",
+  buttonProps: { "aria-label": "Выровнять по ширине" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p style="text-align: justify;">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
+// Кастомная команда для увеличения шрифта
 const fontSizeIncreaseCommand: ICommand = {
-  /* ... */
+  name: "fontSizeIncrease",
+  keyCommand: "fontSizeIncrease",
+  buttonProps: { "aria-label": "Увеличить шрифт" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A+
+      </text>
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<font size="5">${state.selectedText || "текст"}</font>`;
+    api.replaceSelection(text);
+  },
 };
+
+// Кастомная команда для уменьшения шрифта
 const fontSizeDecreaseCommand: ICommand = {
-  /* ... */
+  name: "fontSizeDecrease",
+  keyCommand: "fontSizeDecrease",
+  buttonProps: { "aria-label": "Уменьшить шрифт" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A-
+      </text>
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<font size="2">${state.selectedText || "текст"}</font>`;
+    api.replaceSelection(text);
+  },
 };
 
 interface VpnPostEditorProps {
@@ -50,18 +141,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
-
-  // Поля для редактирования метаданных
-  const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
-  const [category, setCategory] = useState("");
-  const [readTime, setReadTime] = useState("");
-  const [author, setAuthor] = useState("");
-  const [image, setImage] = useState("");
-  const [providerUrl, setProviderUrl] = useState("");
-  const [providerName, setProviderName] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState("");
 
   useEffect(() => {
     fetchPosts();
@@ -90,16 +169,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
         const data = await res.json();
         setSelectedPost(data);
         setContent(data.content || "");
-        // Заполняем метаданные
-        setTitle(data.title || "");
-        setExcerpt(data.excerpt || "");
-        setCategory(data.category || "");
-        setReadTime(data.readTime || data.read_time || "");
-        setAuthor(data.author || "");
-        setImage(data.image || "");
-        setProviderUrl(data.providerUrl || data.provider_url || "");
-        setProviderName(data.providerName || data.provider_name || "");
-        setTags(data.tags || []);
       }
     } catch (err) {
       toast.error("Не удалось загрузить статью");
@@ -108,55 +177,25 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  const handleAddTag = () => {
-    if (tagInput.trim()) {
-      setTags([...tags, tagInput.trim()]);
-      setTagInput("");
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter((t) => t !== tagToRemove));
-  };
-
   const handleSave = async () => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
       const token = localStorage.getItem("admin_token");
-      // Собираем обновлённые данные
-      const updatedData: any = {
-        slug: selectedPost.slug,
-        content,
-        title,
-        excerpt,
-        category,
-        read_time: readTime,
-        author,
-        image,
-        provider_url: providerUrl,
-        provider_name: providerName,
-        tags,
-      };
-      // Убираем поля, которые не изменились, если нужно (но можно отправлять всё)
-      // Для простоты отправляем всё, бэкенд обновит только переданные поля
-
       const res = await fetch(VPN_POSTS_API, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "X-Auth-Token": token || "",
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify({
+          slug: selectedPost.slug,
+          content,
+        }),
       });
       if (res.ok) {
-        const result = await res.json();
         toast.success("Статья сохранена");
-        // Обновляем данные в списке
-        const updatedPost = { ...selectedPost, ...updatedData };
-        setPosts((prev) =>
-          prev.map((p) => (p.id === updatedPost.id ? updatedPost : p)),
-        );
+        const updatedPost = { ...selectedPost, content };
         setSelectedPost(updatedPost);
         onSave?.(updatedPost);
       } else {
@@ -170,6 +209,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
+  // Собираем все команды для панели инструментов
   const allCommands = [
     commands.bold,
     commands.italic,
@@ -187,6 +227,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     commands.orderedListCommand,
     commands.checkedListCommand,
     commands.table,
+    // Наши новые команды
     alignLeftCommand,
     alignCenterCommand,
     alignRightCommand,
@@ -237,144 +278,19 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
           {isLoadingContent && (
             <div className="flex items-center justify-center py-12">
-              <Icon
-                name="Loader2"
-                size={32}
-                className="animate-spin text-primary"
-              />
+              <Icon name="Loader2" size={32} className="animate-spin text-primary" />
             </div>
           )}
 
           {selectedPost && !isLoadingContent && (
             <>
-              {/* Форма редактирования метаданных */}
-              <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Заголовок
-                  </label>
-                  <Input
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Заголовок статьи"
-                    className="w-full"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Краткое описание (excerpt)
-                  </label>
-                  <Textarea
-                    value={excerpt}
-                    onChange={(e) => setExcerpt(e.target.value)}
-                    placeholder="Краткое описание статьи"
-                    rows={2}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Категория
-                    </label>
-                    <Input
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      placeholder="VPN"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Время чтения
-                    </label>
-                    <Input
-                      value={readTime}
-                      onChange={(e) => setReadTime(e.target.value)}
-                      placeholder="5 мин"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Автор
-                  </label>
-                  <Input
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    placeholder="Автор статьи"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      URL провайдера
-                    </label>
-                    <Input
-                      value={providerUrl}
-                      onChange={(e) => setProviderUrl(e.target.value)}
-                      placeholder="https://example.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Название провайдера
-                    </label>
-                    <Input
-                      value={providerName}
-                      onChange={(e) => setProviderName(e.target.value)}
-                      placeholder="Aeza.net"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    URL изображения (превью)
-                  </label>
-                  <Input
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                    placeholder="/images/preview.jpg"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Теги
-                  </label>
-                  <div className="flex gap-2 mb-2 flex-wrap">
-                    {tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="gap-1">
-                        {tag}
-                        <button
-                          onClick={() => handleRemoveTag(tag)}
-                          className="ml-1 hover:text-destructive"
-                        >
-                          <Icon name="X" size={12} />
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <Input
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      placeholder="Новый тег"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          handleAddTag();
-                        }
-                      }}
-                    />
-                    <Button onClick={handleAddTag} variant="outline">
-                      Добавить
-                    </Button>
-                  </div>
-                </div>
+              <div className="mb-4 p-4 bg-muted/50 rounded-lg">
+                <h3 className="font-semibold text-foreground mb-2">
+                  {selectedPost.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {selectedPost.excerpt}
+                </p>
               </div>
 
               <div
