@@ -4,16 +4,18 @@ import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
 import { StructuredData } from "@/components/SEO/StructuredData";
-import { vpnPosts, vpnCategories } from "@/data/vpn-posts";
+import { vpnCategories } from "@/data/vpn-posts";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import { useVpnPosts } from "@/hooks/useVpnPosts";
 
 const Vpn = () => {
+  const { data: posts = [], isLoading, error } = useVpnPosts();
   const [selectedCategory, setSelectedCategory] = useState("Все");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredPosts = vpnPosts.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     const matchesCategory =
       selectedCategory === "Все" || post.category === selectedCategory;
     const matchesSearch =
@@ -24,6 +26,38 @@ const Vpn = () => {
       );
     return matchesCategory && matchesSearch;
   });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Icon
+            name="AlertCircle"
+            size={48}
+            className="text-destructive mx-auto mb-4"
+          />
+          <p className="text-xl text-muted-foreground">
+            Ошибка загрузки статей
+          </p>
+          <Button
+            variant="outline"
+            className="mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Повторить
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,6 +76,7 @@ const Vpn = () => {
       <Header />
 
       <main>
+        {/* Hero секция (без изменений) */}
         <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]"></div>
           <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/20 rounded-full blur-[120px]"></div>
@@ -81,6 +116,7 @@ const Vpn = () => {
           </div>
         </section>
 
+        {/* Фильтр по категориям */}
         <section className="py-8">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="flex flex-wrap gap-2 justify-center">
@@ -100,6 +136,7 @@ const Vpn = () => {
           </div>
         </section>
 
+        {/* Список статей */}
         <section className="py-12 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
             {filteredPosts.length === 0 ? (
@@ -160,7 +197,7 @@ const Vpn = () => {
                           </span>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Icon name="Eye" size={12} />
-                            <span>{post.views.toLocaleString()}</span>
+                            <span>{post.views?.toLocaleString() ?? 0}</span>
                           </div>
                         </div>
 

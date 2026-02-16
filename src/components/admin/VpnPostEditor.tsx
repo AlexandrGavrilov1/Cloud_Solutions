@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,28 +15,113 @@ import { VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
+import { useVpnPosts, useUpdateVpnPost } from "@/hooks/useVpnPosts";
 
-const VPN_POSTS_API =
-  "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
-
-// Кастомные команды (без изменений)
+// Кастомные команды для редактора (без изменений, можно оставить как есть)
 const alignLeftCommand: ICommand = {
-  /* ... */
+  name: "alignLeft",
+  keyCommand: "alignLeft",
+  buttonProps: { "aria-label": "Выровнять по левому краю" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="left">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
 const alignCenterCommand: ICommand = {
-  /* ... */
+  name: "alignCenter",
+  keyCommand: "alignCenter",
+  buttonProps: { "aria-label": "Выровнять по центру" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="center">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
 const alignRightCommand: ICommand = {
-  /* ... */
+  name: "alignRight",
+  keyCommand: "alignRight",
+  buttonProps: { "aria-label": "Выровнять по правому краю" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="right">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
 const alignJustifyCommand: ICommand = {
-  /* ... */
+  name: "alignJustify",
+  keyCommand: "alignJustify",
+  buttonProps: { "aria-label": "Выровнять по ширине" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p style="text-align: justify;">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
+
 const fontSizeIncreaseCommand: ICommand = {
-  /* ... */
+  name: "fontSizeIncrease",
+  keyCommand: "fontSizeIncrease",
+  buttonProps: { "aria-label": "Увеличить шрифт" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A+
+      </text>
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<font size="5">${state.selectedText || "текст"}</font>`;
+    api.replaceSelection(text);
+  },
 };
+
 const fontSizeDecreaseCommand: ICommand = {
-  /* ... */
+  name: "fontSizeDecrease",
+  keyCommand: "fontSizeDecrease",
+  buttonProps: { "aria-label": "Уменьшить шрифт" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A-
+      </text>
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<font size="2">${state.selectedText || "текст"}</font>`;
+    api.replaceSelection(text);
+  },
 };
 
 interface VpnPostEditorProps {
@@ -44,14 +129,14 @@ interface VpnPostEditorProps {
 }
 
 export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
-  const [posts, setPosts] = useState<VpnPost[]>([]);
+  const { data: posts, isLoading: isLoadingPosts } = useVpnPosts();
+  const updateMutation = useUpdateVpnPost();
+
   const [selectedPost, setSelectedPost] = useState<VpnPost | null>(null);
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const [isLoadingContent, setIsLoadingContent] = useState(false);
 
-  // Поля для редактирования метаданных
+  // Поля метаданных
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [category, setCategory] = useState("");
@@ -63,50 +148,25 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
+  // Заполняем форму при выборе статьи
   useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    setIsLoadingPosts(true);
-    try {
-      const res = await fetch(VPN_POSTS_API);
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data);
-      }
-    } catch (err) {
-      toast.error("Не удалось загрузить список статей");
-    } finally {
-      setIsLoadingPosts(false);
+    if (selectedPost) {
+      setContent(selectedPost.content || "");
+      setTitle(selectedPost.title || "");
+      setExcerpt(selectedPost.excerpt || "");
+      setCategory(selectedPost.category || "");
+      setReadTime(selectedPost.readTime || selectedPost.read_time || "");
+      setAuthor(selectedPost.author || "");
+      setImage(selectedPost.image || "");
+      setProviderUrl(
+        selectedPost.providerUrl || selectedPost.provider_url || "",
+      );
+      setProviderName(
+        selectedPost.providerName || selectedPost.provider_name || "",
+      );
+      setTags(selectedPost.tags || []);
     }
-  };
-
-  const fetchPostContent = async (slug: string) => {
-    setIsLoadingContent(true);
-    try {
-      const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
-      if (res.ok) {
-        const data = await res.json();
-        setSelectedPost(data);
-        setContent(data.content || "");
-        // Заполняем метаданные
-        setTitle(data.title || "");
-        setExcerpt(data.excerpt || "");
-        setCategory(data.category || "");
-        setReadTime(data.readTime || data.read_time || "");
-        setAuthor(data.author || "");
-        setImage(data.image || "");
-        setProviderUrl(data.providerUrl || data.provider_url || "");
-        setProviderName(data.providerName || data.provider_name || "");
-        setTags(data.tags || []);
-      }
-    } catch (err) {
-      toast.error("Не удалось загрузить статью");
-    } finally {
-      setIsLoadingContent(false);
-    }
-  };
+  }, [selectedPost]);
 
   const handleAddTag = () => {
     if (tagInput.trim()) {
@@ -123,9 +183,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     if (!selectedPost) return;
     setIsSaving(true);
     try {
-      const token = localStorage.getItem("admin_token");
-      // Собираем обновлённые данные
-      const updatedData: any = {
+      const updatedData = {
         slug: selectedPost.slug,
         content,
         title,
@@ -138,33 +196,14 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
         provider_name: providerName,
         tags,
       };
-      // Убираем поля, которые не изменились, если нужно (но можно отправлять всё)
-      // Для простоты отправляем всё, бэкенд обновит только переданные поля
-
-      const res = await fetch(VPN_POSTS_API, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Auth-Token": token || "",
-        },
-        body: JSON.stringify(updatedData),
-      });
-      if (res.ok) {
-        const result = await res.json();
-        toast.success("Статья сохранена");
-        // Обновляем данные в списке
-        const updatedPost = { ...selectedPost, ...updatedData };
-        setPosts((prev) =>
-          prev.map((p) => (p.id === updatedPost.id ? updatedPost : p)),
-        );
-        setSelectedPost(updatedPost);
-        onSave?.(updatedPost);
-      } else {
-        const err = await res.json();
-        toast.error(err.error || "Ошибка при сохранении");
-      }
+      const updatedPost = await updateMutation.mutateAsync(updatedData);
+      toast.success("Статья сохранена");
+      setSelectedPost(updatedPost);
+      onSave?.(updatedPost);
     } catch (error) {
-      toast.error("Ошибка при сохранении");
+      toast.error(
+        error instanceof Error ? error.message : "Ошибка при сохранении",
+      );
     } finally {
       setIsSaving(false);
     }
@@ -218,14 +257,15 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
               <Select
                 value={selectedPost?.slug || ""}
                 onValueChange={(slug) => {
-                  fetchPostContent(slug);
+                  const post = posts?.find((p) => p.slug === slug) || null;
+                  setSelectedPost(post);
                 }}
               >
                 <SelectTrigger className="w-full max-w-md">
                   <SelectValue placeholder="Выберите статью для редактирования" />
                 </SelectTrigger>
                 <SelectContent>
-                  {posts.map((post) => (
+                  {posts?.map((post) => (
                     <SelectItem key={post.id} value={post.slug}>
                       {post.title}
                     </SelectItem>
@@ -235,19 +275,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
             )}
           </div>
 
-          {isLoadingContent && (
-            <div className="flex items-center justify-center py-12">
-              <Icon
-                name="Loader2"
-                size={32}
-                className="animate-spin text-primary"
-              />
-            </div>
-          )}
-
-          {selectedPost && !isLoadingContent && (
+          {selectedPost && (
             <>
-              {/* Форма редактирования метаданных */}
+              {/* Форма метаданных */}
               <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
@@ -377,33 +407,19 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </div>
               </div>
 
+              {/* Редактор */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
               >
-                <Suspense
-                  fallback={
-                    <div
-                      className="flex items-center justify-center"
-                      style={{ height: 500 }}
-                    >
-                      <Icon
-                        name="Loader2"
-                        size={32}
-                        className="animate-spin text-primary"
-                      />
-                    </div>
-                  }
-                >
-                  <MDEditor
-                    value={content}
-                    onChange={(val) => setContent(val || "")}
-                    preview="live"
-                    height={500}
-                    visibleDragbar={false}
-                    commands={allCommands}
-                  />
-                </Suspense>
+                <MDEditor
+                  value={content}
+                  onChange={(val) => setContent(val || "")}
+                  preview="live"
+                  height={500}
+                  visibleDragbar={false}
+                  commands={allCommands}
+                />
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
@@ -412,10 +428,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </Button>
                 <Button
                   onClick={handleSave}
-                  disabled={isSaving}
+                  disabled={isSaving || updateMutation.isPending}
                   className="bg-primary text-background"
                 >
-                  {isSaving ? (
+                  {isSaving || updateMutation.isPending ? (
                     <>
                       <Icon
                         name="Loader2"
