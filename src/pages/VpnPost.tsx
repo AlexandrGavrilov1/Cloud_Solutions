@@ -27,6 +27,7 @@ const VpnPost = () => {
     .filter((p) => p.id !== post.id && p.category === post.category)
     .slice(0, 3);
 
+  // Обработчик клика для Яндекс.Метрики
   const handleProviderClick = () => {
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
@@ -107,7 +108,6 @@ const VpnPost = () => {
                   {post.excerpt}
                 </p>
 
-                {/* Авторский блок закомментирован */}
                 {/* <div className="flex items-center gap-3 pb-8 border-b border-border">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                     <Icon name="User" size={24} className="text-primary" />
@@ -120,7 +120,7 @@ const VpnPost = () => {
                       Эксперт TopCloudhub
                     </div>
                   </div>
-                </div> */}
+                </div>*/}
               </div>
 
               {post.image && (
@@ -133,6 +133,7 @@ const VpnPost = () => {
                 </div>
               )}
 
+              {/* Основной контент с кастомным рендерингом кода */}
               <div
                 className="prose prose-lg max-w-none
                 prose-headings:font-bold prose-headings:text-foreground
@@ -178,14 +179,6 @@ const VpnPost = () => {
                         </code>
                       );
                     },
-                    // 👇 Добавлено: все ссылки открываются в новой вкладке
-                    a({ node, children, ...props }) {
-                      return (
-                        <a target="_blank" rel="noopener noreferrer" {...props}>
-                          {children}
-                        </a>
-                      );
-                    },
                   }}
                 >
                   {post.content}
@@ -202,6 +195,7 @@ const VpnPost = () => {
                 </div>
               </div>
 
+              {/* Универсальная кнопка провайдера с отслеживанием */}
               {post.providerUrl && post.providerName && (
                 <div className="mt-8 text-center">
                   <Button
