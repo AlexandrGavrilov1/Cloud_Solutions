@@ -4,16 +4,18 @@ import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
 import { StructuredData } from "@/components/SEO/StructuredData";
-import { vpnPosts, vpnCategories } from "@/data/vpn-posts";
+import { vpnCategories } from "@/data/vpn-posts"; // категории пока оставим статичными (если не меняются)
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import { useVpnPosts } from "@/hooks/useVpnPosts"; // импортируем хук
 
 const Vpn = () => {
+  const { data: posts = [], isLoading, error } = useVpnPosts();
   const [selectedCategory, setSelectedCategory] = useState("Все");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredPosts = vpnPosts.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     const matchesCategory =
       selectedCategory === "Все" || post.category === selectedCategory;
     const matchesSearch =
@@ -24,6 +26,40 @@ const Vpn = () => {
       );
     return matchesCategory && matchesSearch;
   });
+
+  // Обработка загрузки
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Обработка ошибки
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Icon
+            name="AlertCircle"
+            size={48}
+            className="text-destructive mx-auto mb-4"
+          />
+          <p className="text-xl text-muted-foreground">
+            Ошибка загрузки статей
+          </p>
+          <Button
+            variant="outline"
+            className="mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Повторить
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -160,7 +196,7 @@ const Vpn = () => {
                           </span>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Icon name="Eye" size={12} />
-                            <span>{post.views.toLocaleString()}</span>
+                            <span>{post.views?.toLocaleString() ?? 0}</span>
                           </div>
                         </div>
 
