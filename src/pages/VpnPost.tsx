@@ -9,19 +9,14 @@ import { vpnPosts } from "@/data/vpn-posts"; // для похожих стате
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import MDEditor from "@uiw/react-md-editor"; // импортируем MDEditor
 import { useVpnPost } from "@/hooks/useVpnPosts";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
 
-  // Похожие статьи (пока из статики, можно потом заменить на API)
+  // Похожие статьи (пока из статики)
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
@@ -129,116 +124,9 @@ const VpnPost = () => {
                 </div>
               )}
 
-              {/* Основной контент с поддержкой HTML */}
-              <div
-                className="prose prose-lg max-w-none
-                prose-headings:font-bold prose-headings:text-foreground
-                prose-h1:text-4xl prose-h1:mb-6
-                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
-                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
-                prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                prose-strong:text-foreground prose-strong:font-bold
-                prose-ul:my-6 prose-ul:text-muted-foreground
-                prose-ol:my-6 prose-ol:text-muted-foreground
-                prose-li:my-2
-                prose-code:text-primary prose-code:bg-accent prose-code:px-2 prose-code:py-1 prose-code:rounded
-                prose-pre:bg-transparent prose-pre:p-0 prose-pre:border-0
-                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic
-                prose-table:border-2 prose-table:border-border
-                prose-th:bg-accent prose-th:p-3 prose-th:text-foreground
-                prose-td:p-3 prose-td:border prose-td:border-border
-                prose-img:w-[30%] prose-img:mx-auto prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
-              "
-              >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[
-                    rehypeRaw,
-                    [
-                      rehypeSanitize,
-                      {
-                        tagNames: [
-                          "p",
-                          "span",
-                          "div",
-                          "img",
-                          "strong",
-                          "em",
-                          "u",
-                          "h1",
-                          "h2",
-                          "h3",
-                          "h4",
-                          "h5",
-                          "h6",
-                          "ul",
-                          "ol",
-                          "li",
-                          "blockquote",
-                          "pre",
-                          "code",
-                          "a",
-                          "font",
-                          "br",
-                          "hr",
-                          "table",
-                          "thead",
-                          "tbody",
-                          "tr",
-                          "th",
-                          "td",
-                        ],
-                        attributes: {
-                          "*": ["class", "style", "align"],
-                          img: [
-                            "src",
-                            "alt",
-                            "title",
-                            "class",
-                            "style",
-                            "width",
-                            "height",
-                          ],
-                          a: ["href", "title", "class", "target", "rel"],
-                          font: ["size", "color"],
-                        },
-                      },
-                    ],
-                  ]}
-                  components={{
-                    code({ node, inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || "");
-                      if (!inline && match) {
-                        return (
-                          <SyntaxHighlighter
-                            style={vscDarkPlus}
-                            language={match[1]}
-                            PreTag="div"
-                            className="rounded-xl my-6 overflow-x-auto"
-                            {...props}
-                          >
-                            {String(children).replace(/\n$/, "")}
-                          </SyntaxHighlighter>
-                        );
-                      }
-                      return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    },
-                    a({ node, children, ...props }) {
-                      return (
-                        <a target="_blank" rel="noopener noreferrer" {...props}>
-                          {children}
-                        </a>
-                      );
-                    },
-                  }}
-                >
-                  {post.content}
-                </ReactMarkdown>
+              {/* Контент с использованием MDEditor.Markdown */}
+              <div data-color-mode="light" className="markdown-body">
+                <MDEditor.Markdown source={post.content} />
               </div>
 
               <div className="mt-12 pt-8 border-t border-border">
