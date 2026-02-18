@@ -129,8 +129,9 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
-// ==================== Группа заголовков ====================
+// ==================== Группа заголовков (исправлено) ====================
 const titleGroup: ICommand = {
+  type: "group", // ← обязательно для отображения выпадающего списка
   name: "titleGroup",
   keyCommand: "titleGroup",
   buttonProps: { "aria-label": "Заголовки" },
