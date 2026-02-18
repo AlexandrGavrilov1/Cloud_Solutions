@@ -246,8 +246,8 @@
   white-space: pre;
   word-wrap: normal;
 }
-/* Отступы для контента статьи (переопределяем стили редактора) */
-[data-color-mode="light"] .wmde-markdown {
+/* Отступы для контента статьи (усиленный селектор) */
+body div[data-color-mode="light"] > div.wmde-markdown {
   padding: 2rem 3rem !important;
 }
 /* Дополнительно: можно добавить скругление и тени для блоков кода, 
