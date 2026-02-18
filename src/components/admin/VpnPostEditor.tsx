@@ -22,7 +22,7 @@ import {
   useUpdateVpnPost,
 } from "@/hooks/useVpnPosts";
 
-// ==================== Кастомные команды для редактора ====================
+// ==================== Кастомные команды ====================
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
@@ -129,31 +129,20 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
-// Сбор всех команд для панели инструментов
-const allCommands = [
-  commands.bold,
-  commands.italic,
-  commands.strikethrough,
-  commands.hr,
-  commands.title1,
-  commands.title2,
-  commands.title3,
-  commands.link,
-  commands.quote,
-  commands.code,
-  commands.codeBlock,
-  commands.image,
-  commands.unorderedListCommand,
-  commands.orderedListCommand,
-  commands.checkedListCommand,
-  commands.table,
-  alignLeftCommand,
-  alignCenterCommand,
-  alignRightCommand,
-  alignJustifyCommand,
-  fontSizeIncreaseCommand,
-  fontSizeDecreaseCommand,
-];
+// ==================== Группа заголовков ====================
+const titleGroup: ICommand = {
+  name: "titleGroup",
+  keyCommand: "titleGroup",
+  buttonProps: { "aria-label": "Заголовки" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        H
+      </text>
+    </svg>
+  ),
+  children: [commands.title1, commands.title2, commands.title3],
+};
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -281,7 +270,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     setIsSaving(true);
     try {
       if (isCreating) {
-        // Создание новой статьи
         if (!title || !content) {
           toast.error("Заголовок и содержимое обязательны");
           return;
@@ -301,12 +289,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
         };
         const created = await createMutation.mutateAsync(newData);
         toast.success("Статья создана");
-        // Переключаемся на созданную статью
         setSelectedSlug(created.slug);
         setIsCreating(false);
         onSave?.(created);
       } else {
-        // Обновление существующей
         if (!selectedPost) return;
         const updatedData = {
           slug: selectedPost.slug,
@@ -323,7 +309,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
         };
         const updated = await updateMutation.mutateAsync(updatedData);
         toast.success("Статья сохранена");
-        setSelectedSlug(updated.slug); // обновим данные (по идее хук сам обновит, но можно для верности)
+        setSelectedSlug(updated.slug);
         onSave?.(updated);
       }
     } catch (error) {
@@ -334,6 +320,30 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       setIsSaving(false);
     }
   };
+
+  // Собираем все команды для панели инструментов
+  const allCommands = [
+    commands.bold,
+    commands.italic,
+    commands.strikethrough,
+    commands.hr,
+    titleGroup, // ← группа заголовков вместо трёх отдельных кнопок
+    commands.link,
+    commands.quote,
+    commands.code,
+    commands.codeBlock,
+    commands.image,
+    commands.unorderedListCommand,
+    commands.orderedListCommand,
+    commands.checkedListCommand,
+    commands.table,
+    alignLeftCommand,
+    alignCenterCommand,
+    alignRightCommand,
+    alignJustifyCommand,
+    fontSizeIncreaseCommand,
+    fontSizeDecreaseCommand,
+  ];
 
   return (
     <div className="space-y-6">
@@ -358,7 +368,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
           </div>
         </CardHeader>
         <CardContent>
-          {/* Выбор существующей статьи (не в режиме создания) */}
           {!isCreating && (
             <div className="mb-6">
               <label className="text-sm font-semibold text-foreground mb-2 block">
@@ -405,10 +414,8 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
             </div>
           )}
 
-          {/* Форма редактирования (показываем, если есть выбранная статья или режим создания) */}
           {(selectedPost || isCreating) && !isLoadingContent && (
             <>
-              {/* Форма метаданных */}
               <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
@@ -557,7 +564,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </div>
               </div>
 
-              {/* Редактор контента */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
