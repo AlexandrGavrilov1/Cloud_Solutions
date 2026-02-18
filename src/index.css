@@ -246,6 +246,9 @@
   white-space: pre;
   word-wrap: normal;
 }
-
+/* Отступы для контента статьи (переопределяем стили редактора) */
+[data-color-mode="light"] .wmde-markdown {
+  padding: 2rem 3rem !important;
+}
 /* Дополнительно: можно добавить скругление и тени для блоков кода, 
    но они уже заданы в компоненте через className */
