@@ -1,4 +1,3 @@
-
 CREATE TABLE t_p4153566_vds_rating_portal.vpn_posts (
     id SERIAL PRIMARY KEY,
     slug VARCHAR(255) UNIQUE NOT NULL,
