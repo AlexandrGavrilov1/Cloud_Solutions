@@ -5,12 +5,14 @@ import { Footer } from "@/components/providers/Footer";
 import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
 import { StructuredData } from "@/components/StructuredData";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
-import { vpnPosts } from "@/data/vpn-posts"; // для похожих статей (можно заменить на API)
+import { vpnPosts } from "@/data/vpn-posts"; // для похожих статей (пока статика)
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useVpnPost } from "@/hooks/useVpnPosts";
@@ -19,10 +21,23 @@ const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
 
+  // Похожие статьи (пока из статики, можно потом заменить на API)
+  const relatedPosts = vpnPosts
+    .filter((p) => p.id !== post?.id && p.category === post?.category)
+    .slice(0, 3);
+
+  const handleProviderClick = () => {
+    if (typeof window !== "undefined" && (window as any).ym) {
+      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+        provider_name: post?.providerName,
+      });
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Icon name="Loader2" size={32} className="animate-spin text-primary" />
+        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
       </div>
     );
   }
@@ -30,19 +45,6 @@ const VpnPost = () => {
   if (error || !post) {
     return <Navigate to="/vpn" replace />;
   }
-
-  // Похожие статьи (пока из статического массива)
-  const relatedPosts = vpnPosts
-    .filter((p) => p.id !== post.id && p.category === post.category)
-    .slice(0, 3);
-
-  const handleProviderClick = () => {
-    if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
-        provider_name: post.providerName,
-      });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,6 +129,7 @@ const VpnPost = () => {
                 </div>
               )}
 
+              {/* Основной контент с поддержкой HTML */}
               <div
                 className="prose prose-lg max-w-none
                 prose-headings:font-bold prose-headings:text-foreground
@@ -150,6 +153,59 @@ const VpnPost = () => {
               >
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[
+                    rehypeRaw,
+                    [
+                      rehypeSanitize,
+                      {
+                        tagNames: [
+                          "p",
+                          "span",
+                          "div",
+                          "img",
+                          "strong",
+                          "em",
+                          "u",
+                          "h1",
+                          "h2",
+                          "h3",
+                          "h4",
+                          "h5",
+                          "h6",
+                          "ul",
+                          "ol",
+                          "li",
+                          "blockquote",
+                          "pre",
+                          "code",
+                          "a",
+                          "font",
+                          "br",
+                          "hr",
+                          "table",
+                          "thead",
+                          "tbody",
+                          "tr",
+                          "th",
+                          "td",
+                        ],
+                        attributes: {
+                          "*": ["class", "style", "align"],
+                          img: [
+                            "src",
+                            "alt",
+                            "title",
+                            "class",
+                            "style",
+                            "width",
+                            "height",
+                          ],
+                          a: ["href", "title", "class", "target", "rel"],
+                          font: ["size", "color"],
+                        },
+                      },
+                    ],
+                  ]}
                   components={{
                     code({ node, inline, className, children, ...props }) {
                       const match = /language-(\w+)/.exec(className || "");
