@@ -1,12 +1,10 @@
-// src/pages/VpnPost.tsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
 import { StructuredData } from "@/components/StructuredData";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
-import { vpnPosts, VpnPost as VpnPostType } from "@/data/vpn-posts";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
@@ -14,50 +12,25 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-const VPN_POSTS_API = "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
+import { useVpnPost } from "@/hooks/useVpnPosts";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const staticPost = vpnPosts.find((p) => p.slug === slug);
-  const [post, setPost] = useState<VpnPostType | null>(staticPost || null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: post, isLoading, error } = useVpnPost(slug);
 
-  useEffect(() => {
-    if (!slug) return;
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
-        if (res.ok) {
-          const data = await res.json();
-          setPost(data);
-        }
-      } catch {
-        // fallback to static data
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPost();
-  }, [slug]);
-
-  if (!isLoading && !post) {
-    return <Navigate to="/vpn" replace />;
-  }
-
-  if (isLoading && !post) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Icon name="Loader2" size={32} className="animate-spin text-primary" />
+        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
       </div>
     );
   }
 
-  if (!post) return null;
+  if (error || !post) {
+    return <Navigate to="/vpn" replace />;
+  }
 
-  const relatedPosts = vpnPosts
-    .filter((p) => p.id !== post.id && p.category === post.category)
-    .slice(0, 3);
+  const relatedPosts = []; // Здесь можно загрузить похожие статьи, но пока оставим пустым
 
   const handleProviderClick = () => {
     if (typeof window !== "undefined" && (window as any).ym) {
@@ -138,21 +111,6 @@ const VpnPost = () => {
                 <p className="text-lg text-muted-foreground mb-6">
                   {post.excerpt}
                 </p>
-
-                {/* Авторский блок закомментирован */}
-                {/* <div className="flex items-center gap-3 pb-8 border-b border-border">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Icon name="User" size={24} className="text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-foreground">
-                      {post.author}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Эксперт TopCloudhub
-                    </div>
-                  </div>
-                </div> */}
               </div>
 
               {post.image && (
@@ -210,7 +168,6 @@ const VpnPost = () => {
                         </code>
                       );
                     },
-                    // 👇 Добавлено: все ссылки открываются в новой вкладке
                     a({ node, children, ...props }) {
                       return (
                         <a target="_blank" rel="noopener noreferrer" {...props}>
@@ -254,71 +211,6 @@ const VpnPost = () => {
             </div>
           </div>
         </article>
-
-        {relatedPosts.length > 0 && (
-          <section className="py-16 bg-accent/30">
-            <div className="container mx-auto px-4 lg:px-8">
-              <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl font-extrabold text-foreground mb-8">
-                  Похожие статьи
-                </h2>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost) => (
-                    <Link
-                      key={relatedPost.id}
-                      to={`/vpn/${relatedPost.slug}`}
-                      className="group"
-                    >
-                      <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
-                        <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-                          {relatedPost.image ? (
-                            <img
-                              src={relatedPost.image}
-                              alt={relatedPost.title}
-                              className="object-cover w-full h-full"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Icon
-                                name="FileText"
-                                size={48}
-                                className="text-primary/30"
-                              />
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="p-5 flex-1 flex flex-col">
-                          <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
-                            {relatedPost.category}
-                          </Badge>
-
-                          <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                            {relatedPost.title}
-                          </h3>
-
-                          <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
-                            {relatedPost.excerpt}
-                          </p>
-
-                          <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
-                            Читать
-                            <Icon
-                              name="ArrowRight"
-                              size={16}
-                              className="group-hover:translate-x-1 transition-transform"
-                            />
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
       </main>
 
       <Footer />
