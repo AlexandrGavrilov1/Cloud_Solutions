@@ -4,17 +4,17 @@ import { VpnPost } from "@/data/vpn-posts";
 const VPN_POSTS_API =
   "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
 
-// Функция для преобразования полей из snake_case в camelCase
+// Преобразование snake_case в camelCase
 const transformPost = (data: any): VpnPost => {
   return {
     ...data,
     providerUrl: data.provider_url,
     providerName: data.provider_name,
     readTime: data.read_time,
-    // При необходимости можно добавить другие поля
   };
 };
 
+// Получение списка всех статей
 const fetchPosts = async (): Promise<VpnPost[]> => {
   const res = await fetch(VPN_POSTS_API);
   if (!res.ok) {
@@ -25,6 +25,7 @@ const fetchPosts = async (): Promise<VpnPost[]> => {
   return data.map(transformPost);
 };
 
+// Получение одной статьи по slug
 const fetchPostBySlug = async (slug: string): Promise<VpnPost> => {
   const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
   if (!res.ok) {
@@ -38,7 +39,31 @@ const fetchPostBySlug = async (slug: string): Promise<VpnPost> => {
   return transformPost(data);
 };
 
-const updatePost = async (data: Partial<VpnPost> & { slug: string }) => {
+// Создание новой статьи (POST)
+const createPost = async (data: Partial<VpnPost>): Promise<VpnPost> => {
+  const token = localStorage.getItem("admin_token");
+  if (!token) {
+    throw new Error("Не найден токен авторизации");
+  }
+  const res = await fetch(VPN_POSTS_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Auth-Token": token,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Ошибка создания");
+  }
+  return transformPost(await res.json());
+};
+
+// Обновление существующей статьи (PUT)
+const updatePost = async (
+  data: Partial<VpnPost> & { slug: string },
+): Promise<VpnPost> => {
   const token = localStorage.getItem("admin_token");
   if (!token) {
     throw new Error("Не найден токен авторизации");
@@ -56,9 +81,10 @@ const updatePost = async (data: Partial<VpnPost> & { slug: string }) => {
     throw new Error(err.error || "Ошибка сохранения");
   }
   const result = await res.json();
-  return transformPost(result.post); // предполагаем, что бэкенд возвращает { success: true, post: ... }
+  return transformPost(result.post);
 };
 
+// Хук для получения списка статей
 export const useVpnPosts = () => {
   return useQuery({
     queryKey: ["vpn-posts"],
@@ -67,6 +93,7 @@ export const useVpnPosts = () => {
   });
 };
 
+// Хук для получения одной статьи
 export const useVpnPost = (slug?: string) => {
   return useQuery({
     queryKey: ["vpn-post", slug],
@@ -76,6 +103,18 @@ export const useVpnPost = (slug?: string) => {
   });
 };
 
+// Хук для создания статьи
+export const useCreateVpnPost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vpn-posts"] });
+    },
+  });
+};
+
+// Хук для обновления статьи
 export const useUpdateVpnPost = () => {
   const queryClient = useQueryClient();
   return useMutation({

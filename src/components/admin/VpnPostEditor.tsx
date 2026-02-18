@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -8,17 +8,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
+import {
+  useVpnPosts,
+  useVpnPost,
+  useCreateVpnPost,
+  useUpdateVpnPost,
+} from "@/hooks/useVpnPosts";
 
-const VPN_POSTS_API = "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
-
-// Ленивая загрузка MDEditor (отдельный чанк)
-// const MDEditor = lazy(() => import("@uiw/react-md-editor"));
-
-// Кастомная команда для выравнивания по левому краю
+// ==================== Кастомные команды для редактора ====================
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
@@ -37,7 +41,6 @@ const alignLeftCommand: ICommand = {
   },
 };
 
-// Кастомная команда для выравнивания по центру
 const alignCenterCommand: ICommand = {
   name: "alignCenter",
   keyCommand: "alignCenter",
@@ -56,7 +59,6 @@ const alignCenterCommand: ICommand = {
   },
 };
 
-// Кастомная команда для выравнивания по правому краю
 const alignRightCommand: ICommand = {
   name: "alignRight",
   keyCommand: "alignRight",
@@ -75,7 +77,6 @@ const alignRightCommand: ICommand = {
   },
 };
 
-// Кастомная команда для выравнивания по ширине
 const alignJustifyCommand: ICommand = {
   name: "alignJustify",
   keyCommand: "alignJustify",
@@ -94,7 +95,6 @@ const alignJustifyCommand: ICommand = {
   },
 };
 
-// Кастомная команда для увеличения шрифта
 const fontSizeIncreaseCommand: ICommand = {
   name: "fontSizeIncrease",
   keyCommand: "fontSizeIncrease",
@@ -112,7 +112,6 @@ const fontSizeIncreaseCommand: ICommand = {
   },
 };
 
-// Кастомная команда для уменьшения шрифта
 const fontSizeDecreaseCommand: ICommand = {
   name: "fontSizeDecrease",
   keyCommand: "fontSizeDecrease",
@@ -130,208 +129,465 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
+// Сбор всех команд для панели инструментов
+const allCommands = [
+  commands.bold,
+  commands.italic,
+  commands.strikethrough,
+  commands.hr,
+  commands.title1,
+  commands.title2,
+  commands.title3,
+  commands.link,
+  commands.quote,
+  commands.code,
+  commands.codeBlock,
+  commands.image,
+  commands.unorderedListCommand,
+  commands.orderedListCommand,
+  commands.checkedListCommand,
+  commands.table,
+  alignLeftCommand,
+  alignCenterCommand,
+  alignRightCommand,
+  alignJustifyCommand,
+  fontSizeIncreaseCommand,
+  fontSizeDecreaseCommand,
+];
+
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
 }
 
 export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
-  const [posts, setPosts] = useState<VpnPost[]>([]);
-  const [selectedPost, setSelectedPost] = useState<VpnPost | null>(null);
+  const { data: posts, isLoading: isLoadingPosts } = useVpnPosts();
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const {
+    data: selectedPost,
+    isLoading: isLoadingContent,
+    error,
+  } = useVpnPost(selectedSlug || undefined);
+  const createMutation = useCreateVpnPost();
+  const updateMutation = useUpdateVpnPost();
+
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const [isLoadingContent, setIsLoadingContent] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
+  // Поля метаданных
+  const [title, setTitle] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [category, setCategory] = useState("");
+  const [readTime, setReadTime] = useState("");
+  const [author, setAuthor] = useState("");
+  const [image, setImage] = useState("");
+  const [providerUrl, setProviderUrl] = useState("");
+  const [providerName, setProviderName] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+
+  // Новая статья – пустая форма
+  const [newPost, setNewPost] = useState<Partial<VpnPost>>({
+    title: "",
+    excerpt: "",
+    slug: "",
+    category: "VPN",
+    tags: [],
+    author: "Команда TopCloudHub",
+    date: new Date().toLocaleDateString("ru-RU"),
+    readTime: "5 мин",
+    image: "",
+    providerUrl: "",
+    providerName: "",
+  });
+
+  // Заполняем форму при выборе существующей статьи
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    if (selectedPost) {
+      setContent(selectedPost.content || "");
+      setTitle(selectedPost.title || "");
+      setExcerpt(selectedPost.excerpt || "");
+      setCategory(selectedPost.category || "");
+      setReadTime(selectedPost.readTime || "");
+      setAuthor(selectedPost.author || "");
+      setImage(selectedPost.image || "");
+      setProviderUrl(selectedPost.providerUrl || "");
+      setProviderName(selectedPost.providerName || "");
+      setTags(selectedPost.tags || []);
+      setIsCreating(false);
+    }
+  }, [selectedPost]);
 
-  const fetchPosts = async () => {
-    setIsLoadingPosts(true);
-    try {
-      const res = await fetch(VPN_POSTS_API);
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data);
-      }
-    } catch (err) {
-      toast.error("Не удалось загрузить список статей");
-    } finally {
-      setIsLoadingPosts(false);
+  const handleAddTag = () => {
+    if (tagInput.trim()) {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
     }
   };
 
-  const fetchPostContent = async (slug: string) => {
-    setIsLoadingContent(true);
-    try {
-      const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
-      if (res.ok) {
-        const data = await res.json();
-        setSelectedPost(data);
-        setContent(data.content || "");
-      }
-    } catch (err) {
-      toast.error("Не удалось загрузить статью");
-    } finally {
-      setIsLoadingContent(false);
+  const handleRemoveTag = (tagToRemove: string) => {
+    setTags(tags.filter((t) => t !== tagToRemove));
+  };
+
+  const handleCreateNew = () => {
+    setIsCreating(true);
+    setSelectedSlug(null);
+    setContent("");
+    setTitle("");
+    setExcerpt("");
+    setCategory("VPN");
+    setReadTime("5 мин");
+    setAuthor("Команда TopCloudHub");
+    setImage("");
+    setProviderUrl("");
+    setProviderName("");
+    setTags([]);
+    setNewPost({
+      title: "",
+      excerpt: "",
+      slug: "",
+      category: "VPN",
+      tags: [],
+      author: "Команда TopCloudHub",
+      date: new Date().toLocaleDateString("ru-RU"),
+      readTime: "5 мин",
+      image: "",
+      providerUrl: "",
+      providerName: "",
+    });
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-zа-яё0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    if (isCreating) {
+      setNewPost({ ...newPost, title: newTitle, slug: generateSlug(newTitle) });
     }
+  };
+
+  const handleCancel = () => {
+    setIsCreating(false);
+    setSelectedSlug(null);
   };
 
   const handleSave = async () => {
-    if (!selectedPost) return;
     setIsSaving(true);
     try {
-      const token = localStorage.getItem("admin_token");
-      const res = await fetch(VPN_POSTS_API, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Auth-Token": token || "",
-        },
-        body: JSON.stringify({
+      if (isCreating) {
+        // Создание новой статьи
+        if (!title || !content) {
+          toast.error("Заголовок и содержимое обязательны");
+          return;
+        }
+        const newData = {
+          title,
+          content,
+          excerpt,
+          category,
+          read_time: readTime,
+          author,
+          image,
+          provider_url: providerUrl,
+          provider_name: providerName,
+          tags,
+          slug: generateSlug(title),
+        };
+        const created = await createMutation.mutateAsync(newData);
+        toast.success("Статья создана");
+        // Переключаемся на созданную статью
+        setSelectedSlug(created.slug);
+        setIsCreating(false);
+        onSave?.(created);
+      } else {
+        // Обновление существующей
+        if (!selectedPost) return;
+        const updatedData = {
           slug: selectedPost.slug,
           content,
-        }),
-      });
-      if (res.ok) {
+          title,
+          excerpt,
+          category,
+          read_time: readTime,
+          author,
+          image,
+          provider_url: providerUrl,
+          provider_name: providerName,
+          tags,
+        };
+        const updated = await updateMutation.mutateAsync(updatedData);
         toast.success("Статья сохранена");
-        const updatedPost = { ...selectedPost, content };
-        setSelectedPost(updatedPost);
-        onSave?.(updatedPost);
-      } else {
-        const err = await res.json();
-        toast.error(err.error || "Ошибка при сохранении");
+        setSelectedSlug(updated.slug); // обновим данные (по идее хук сам обновит, но можно для верности)
+        onSave?.(updated);
       }
     } catch (error) {
-      toast.error("Ошибка при сохранении");
+      toast.error(
+        error instanceof Error ? error.message : "Ошибка при сохранении",
+      );
     } finally {
       setIsSaving(false);
     }
   };
 
-  // Собираем все команды для панели инструментов
-  const allCommands = [
-    commands.bold,
-    commands.italic,
-    commands.strikethrough,
-    commands.hr,
-    commands.title1,
-    commands.title2,
-    commands.title3,
-    commands.link,
-    commands.quote,
-    commands.code,
-    commands.codeBlock,
-    commands.image,
-    commands.unorderedListCommand,
-    commands.orderedListCommand,
-    commands.checkedListCommand,
-    commands.table,
-    // Наши новые команды
-    alignLeftCommand,
-    alignCenterCommand,
-    alignRightCommand,
-    alignJustifyCommand,
-    fontSizeIncreaseCommand,
-    fontSizeDecreaseCommand,
-  ];
-
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Icon name="PenLine" size={20} className="text-primary" />
-            Редактирование статьи VPN
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Icon name="PenLine" size={20} className="text-primary" />
+              {isCreating
+                ? "Создание новой статьи"
+                : "Редактирование статьи VPN"}
+            </CardTitle>
+            <Button
+              variant="outline"
+              onClick={handleCreateNew}
+              disabled={isCreating}
+              className="gap-2"
+            >
+              <Icon name="Plus" size={16} />
+              Новая статья
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="mb-6">
-            <label className="text-sm font-semibold text-foreground mb-2 block">
-              Выберите статью
-            </label>
-            {isLoadingPosts ? (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Icon name="Loader2" size={16} className="animate-spin" />
-                Загрузка списка статей...
-              </div>
-            ) : (
-              <Select
-                value={selectedPost?.slug || ""}
-                onValueChange={(slug) => {
-                  fetchPostContent(slug);
-                }}
-              >
-                <SelectTrigger className="w-full max-w-md">
-                  <SelectValue placeholder="Выберите статью для редактирования" />
-                </SelectTrigger>
-                <SelectContent>
-                  {posts.map((post) => (
-                    <SelectItem key={post.id} value={post.slug}>
-                      {post.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          </div>
-
-          {isLoadingContent && (
-            <div className="flex items-center justify-center py-12">
-              <Icon name="Loader2" size={32} className="animate-spin text-primary" />
+          {/* Выбор существующей статьи (не в режиме создания) */}
+          {!isCreating && (
+            <div className="mb-6">
+              <label className="text-sm font-semibold text-foreground mb-2 block">
+                Выберите статью
+              </label>
+              {isLoadingPosts ? (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Icon name="Loader2" size={16} className="animate-spin" />
+                  Загрузка списка статей...
+                </div>
+              ) : (
+                <Select
+                  value={selectedSlug || ""}
+                  onValueChange={(slug) => setSelectedSlug(slug)}
+                >
+                  <SelectTrigger className="w-full max-w-md">
+                    <SelectValue placeholder="Выберите статью для редактирования" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {posts?.map((post) => (
+                      <SelectItem key={post.id} value={post.slug}>
+                        {post.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
           )}
 
-          {selectedPost && !isLoadingContent && (
+          {error && (
+            <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-lg">
+              <p>Ошибка загрузки статьи: {error.message}</p>
+            </div>
+          )}
+
+          {isLoadingContent && (
+            <div className="flex items-center justify-center py-12">
+              <Icon
+                name="Loader2"
+                size={32}
+                className="animate-spin text-primary"
+              />
+            </div>
+          )}
+
+          {/* Форма редактирования (показываем, если есть выбранная статья или режим создания) */}
+          {(selectedPost || isCreating) && !isLoadingContent && (
             <>
-              <div className="mb-4 p-4 bg-muted/50 rounded-lg">
-                <h3 className="font-semibold text-foreground mb-2">
-                  {selectedPost.title}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {selectedPost.excerpt}
-                </p>
+              {/* Форма метаданных */}
+              <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Заголовок *
+                  </label>
+                  <Input
+                    value={title}
+                    onChange={handleTitleChange}
+                    placeholder="Заголовок статьи"
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Краткое описание (excerpt)
+                  </label>
+                  <Textarea
+                    value={excerpt}
+                    onChange={(e) => setExcerpt(e.target.value)}
+                    placeholder="Краткое описание статьи"
+                    rows={2}
+                  />
+                </div>
+
+                {isCreating && (
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Slug (URL) *
+                    </label>
+                    <Input
+                      value={newPost.slug || generateSlug(title)}
+                      onChange={(e) =>
+                        setNewPost({ ...newPost, slug: e.target.value })
+                      }
+                      placeholder="url-адрес-статьи"
+                      className="w-full"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Генерируется автоматически из заголовка, можно изменить
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Категория
+                    </label>
+                    <Input
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      placeholder="VPN"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Время чтения
+                    </label>
+                    <Input
+                      value={readTime}
+                      onChange={(e) => setReadTime(e.target.value)}
+                      placeholder="5 мин"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Автор
+                  </label>
+                  <Input
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    placeholder="Автор статьи"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      URL провайдера
+                    </label>
+                    <Input
+                      value={providerUrl}
+                      onChange={(e) => setProviderUrl(e.target.value)}
+                      placeholder="https://example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold text-foreground mb-1 block">
+                      Название провайдера
+                    </label>
+                    <Input
+                      value={providerName}
+                      onChange={(e) => setProviderName(e.target.value)}
+                      placeholder="Aeza.net"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    URL изображения (превью)
+                  </label>
+                  <Input
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    placeholder="/images/preview.jpg"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-foreground mb-1 block">
+                    Теги
+                  </label>
+                  <div className="flex gap-2 mb-2 flex-wrap">
+                    {tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="gap-1">
+                        {tag}
+                        <button
+                          onClick={() => handleRemoveTag(tag)}
+                          className="ml-1 hover:text-destructive"
+                        >
+                          <Icon name="X" size={12} />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <Input
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      placeholder="Новый тег"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddTag();
+                        }
+                      }}
+                    />
+                    <Button onClick={handleAddTag} variant="outline">
+                      Добавить
+                    </Button>
+                  </div>
+                </div>
               </div>
 
+              {/* Редактор контента */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
               >
-                <Suspense
-                  fallback={
-                    <div
-                      className="flex items-center justify-center"
-                      style={{ height: 500 }}
-                    >
-                      <Icon
-                        name="Loader2"
-                        size={32}
-                        className="animate-spin text-primary"
-                      />
-                    </div>
-                  }
-                >
-                  <MDEditor
-                    value={content}
-                    onChange={(val) => setContent(val || "")}
-                    preview="live"
-                    height={500}
-                    visibleDragbar={false}
-                    commands={allCommands}
-                  />
-                </Suspense>
+                <MDEditor
+                  value={content}
+                  onChange={(val) => setContent(val || "")}
+                  preview="live"
+                  height={500}
+                  visibleDragbar={false}
+                  commands={allCommands}
+                />
               </div>
 
               <div className="mt-6 flex justify-end gap-4">
-                <Button variant="outline" onClick={() => setSelectedPost(null)}>
+                <Button variant="outline" onClick={handleCancel}>
                   Отмена
                 </Button>
                 <Button
                   onClick={handleSave}
-                  disabled={isSaving}
+                  disabled={
+                    isSaving ||
+                    createMutation.isPending ||
+                    updateMutation.isPending
+                  }
                   className="bg-primary text-background"
                 >
-                  {isSaving ? (
+                  {isSaving ||
+                  createMutation.isPending ||
+                  updateMutation.isPending ? (
                     <>
                       <Icon
                         name="Loader2"
@@ -343,7 +599,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   ) : (
                     <>
                       <Icon name="Save" size={16} className="mr-2" />
-                      Сохранить изменения
+                      {isCreating ? "Создать" : "Сохранить изменения"}
                     </>
                   )}
                 </Button>
