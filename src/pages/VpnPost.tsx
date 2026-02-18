@@ -124,8 +124,8 @@ const VpnPost = () => {
                 </div>
               )}
 
-              {/* Контент с использованием MDEditor.Markdown */}
-              <div data-color-mode="light" className="markdown-body">
+              {/* Контент с использованием MDEditor.Markdown — добавлены отступы */}
+              <div data-color-mode="light" className="markdown-body px-4 py-2">
                 <MDEditor.Markdown source={post.content} />
               </div>
 
