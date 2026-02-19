@@ -10,7 +10,7 @@ SCHEMA = 't_p4153566_vds_rating_portal'
 
 CORS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, X-Auth-Token',
     'Access-Control-Max-Age': '86400'
 }
@@ -24,6 +24,7 @@ def response(status_code: int, body: Any) -> Dict[str, Any]:
     }
 
 def verify_admin(conn, token: str) -> bool:
+    """Проверка токена администратора."""
     if not token:
         return False
     with conn.cursor() as cur:
@@ -34,6 +35,7 @@ def verify_admin(conn, token: str) -> bool:
         return cur.fetchone() is not None
 
 def generate_slug(title: str) -> str:
+    """Генерирует slug из заголовка (транслитерация)."""
     translit_map = {
         'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
         'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
@@ -54,6 +56,7 @@ def generate_slug(title: str) -> str:
     return slug or 'post'
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
+    """Основной обработчик HTTP-запросов."""
     method = event.get('httpMethod', 'GET')
 
     if method == 'OPTIONS':
@@ -72,14 +75,18 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             return handle_put(conn, event)
         elif method == 'POST':
             return handle_post(conn, event)
+        elif method == 'DELETE':
+            return handle_delete(conn, event)
         else:
             return response(405, {'error': 'Method not allowed'})
     finally:
         conn.close()
 
 def handle_get(conn, event):
+    """Обработка GET-запросов: список статей или одна статья по slug."""
     params = event.get('queryStringParameters') or {}
     slug = params.get('slug')
+
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         if slug:
             cur.execute(
@@ -110,6 +117,7 @@ def handle_get(conn, event):
             return response(200, [dict(r) for r in rows])
 
 def handle_put(conn, event):
+    """Обновление существующей статьи."""
     headers = event.get('headers', {})
     token = headers.get('X-Auth-Token') or headers.get('x-auth-token', '')
 
@@ -179,11 +187,12 @@ def handle_put(conn, event):
     return response(200, dict(row))
 
 def handle_post(conn, event):
-    # === ВНИМАНИЕ: проверка токена ОТКЛЮЧЕНА для диагностики ===
-    # headers = event.get('headers', {})
-    # token = headers.get('X-Auth-Token') or headers.get('x-auth-token', '')
-    # if not verify_admin(conn, token):
-    #     return response(401, {'error': 'Unauthorized'})
+    """Создание новой статьи."""
+    headers = event.get('headers', {})
+    token = headers.get('X-Auth-Token') or headers.get('x-auth-token', '')
+
+    if not verify_admin(conn, token):
+        return response(401, {'error': 'Unauthorized'})
 
     try:
         body = json.loads(event.get('body', '{}'))
@@ -252,3 +261,33 @@ def handle_post(conn, event):
         return response(500, {'error': 'Failed to create post'})
 
     return response(201, dict(new_post))
+
+def handle_delete(conn, event):
+    """Удаление статьи по slug."""
+    headers = event.get('headers', {})
+    token = headers.get('X-Auth-Token') or headers.get('x-auth-token', '')
+
+    if not verify_admin(conn, token):
+        return response(401, {'error': 'Unauthorized'})
+
+    try:
+        body = json.loads(event.get('body', '{}'))
+    except json.JSONDecodeError:
+        return response(400, {'error': 'Invalid JSON'})
+
+    slug = body.get('slug')
+    if not slug:
+        return response(400, {'error': 'slug is required'})
+
+    with conn.cursor() as cur:
+        cur.execute(
+            f"DELETE FROM {SCHEMA}.vpn_posts WHERE slug = %s RETURNING id",
+            (slug,)
+        )
+        deleted = cur.fetchone()
+        conn.commit()
+
+    if not deleted:
+        return response(404, {'error': 'Post not found'})
+
+    return response(200, {'success': True, 'message': 'Post deleted'})
