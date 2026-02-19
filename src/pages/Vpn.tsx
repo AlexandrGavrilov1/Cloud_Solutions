@@ -4,7 +4,7 @@ import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
 import { StructuredData } from "@/components/SEO/StructuredData";
-import { vpnCategories } from "@/data/vpn-posts"; // категории пока оставим статичными (если не меняются)
+import { vpnCategories } from "@/data/vpn-posts"; // пока оставляем, но может пригодиться
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
@@ -12,20 +12,22 @@ import { useVpnPosts } from "@/hooks/useVpnPosts"; // импортируем х�
 
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
-  const [selectedCategory, setSelectedCategory] = useState("Все");
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredPosts = posts.filter((post) => {
-    const matchesCategory =
-      selectedCategory === "Все" || post.category === selectedCategory;
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some((tag) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-    return matchesCategory && matchesSearch;
-  });
+  // ========== ВРЕМЕННО ОТКЛЮЧЕНО: поиск и фильтрация ==========
+  // const [selectedCategory, setSelectedCategory] = useState("Все");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const filteredPosts = posts.filter((post) => {
+  //   const matchesCategory =
+  //     selectedCategory === "Все" || post.category === selectedCategory;
+  //   const matchesSearch =
+  //     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     post.tags.some((tag) =>
+  //       tag.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //   return matchesCategory && matchesSearch;
+  // });
+  // =============================================================
 
   // Обработка загрузки
   if (isLoading) {
@@ -99,46 +101,50 @@ const Vpn = () => {
                 Пошаговые руководства по развертыванию безопасных VPN серверов
               </p>
 
-              <div className="relative max-w-xl mx-auto">
-                <Icon
-                  name="Search"
-                  size={20}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-                />
-                <input
-                  type="text"
-                  placeholder="Поиск по инструкциям..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-14 pl-12 pr-4 bg-card border-2 border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
-                />
-              </div>
+              {/*
+                // ВРЕМЕННО ОТКЛЮЧЕНО: поле поиска
+                <div className="relative max-w-xl mx-auto">
+                  <Icon
+                    name="Search"
+                    size={20}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Поиск по инструкциям..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full h-14 pl-12 pr-4 bg-card border-2 border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+              */}
             </div>
           </div>
         </section>
 
-        <section className="py-8">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex flex-wrap gap-2 justify-center">
-              {vpnCategories.map((category) => (
-                <Button
-                  key={category}
-                  variant={
-                    selectedCategory === category ? "default" : "outline"
-                  }
-                  onClick={() => setSelectedCategory(category)}
-                  className="rounded-full"
-                >
-                  {category}
-                </Button>
-              ))}
+        {/*
+          // ВРЕМЕННО ОТКЛЮЧЕНО: кнопки категорий
+          <section className="py-8">
+            <div className="container mx-auto px-4 lg:px-8">
+              <div className="flex flex-wrap gap-2 justify-center">
+                {vpnCategories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    onClick={() => setSelectedCategory(category)}
+                    className="rounded-full"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        */}
 
         <section className="py-12 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
-            {filteredPosts.length === 0 ? (
+            {posts.length === 0 ? (
               <div className="text-center py-16">
                 <Icon
                   name="FileQuestion"
@@ -148,20 +154,23 @@ const Vpn = () => {
                 <p className="text-xl text-muted-foreground">
                   Инструкции не найдены
                 </p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedCategory("Все");
-                  }}
-                >
-                  Сбросить фильтры
-                </Button>
+                {/*
+                  // ВРЕМЕННО ОТКЛЮЧЕНО: кнопка сброса фильтров
+                  <Button
+                    variant="outline"
+                    className="mt-4"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategory("Все");
+                    }}
+                  >
+                    Сбросить фильтры
+                  </Button>
+                */}
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                {filteredPosts.map((post) => (
+                {posts.map((post) => (
                   <Link
                     key={post.id}
                     to={`/vpn/${post.slug}`}
