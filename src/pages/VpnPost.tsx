@@ -13,12 +13,12 @@ import MDEditor from "@uiw/react-md-editor";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useVpnPost } from "@/hooks/useVpnPosts";
-import { useTheme } from "@/contexts/ThemeContext"; // для тёмной темы
+import { useTheme } from "@/contexts/ThemeContext";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
-  const { theme } = useTheme(); // получаем текущую тему
+  const { theme } = useTheme();
 
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
@@ -108,12 +108,11 @@ const VpnPost = () => {
                   </span>
                 </div>
 
-                {/* === 1. Заголовок с поддержкой Markdown и выравниванием по центру === */}
+                {/* Заголовок с поддержкой Markdown и выравниванием по центру */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-center">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
-                      // Ограничиваем рендеринг только нужными элементами
                       p: ({ children }) => <span>{children}</span>,
                       h1: "span",
                       h2: "span",
@@ -152,8 +151,8 @@ const VpnPost = () => {
                   </ReactMarkdown>
                 </h1>
 
-                {/* Описание с поддержкой Markdown (оставляем как есть, можно тоже выровнять) */}
-                <p className="text-lg text-muted-foreground mb-6">
+                {/* Описание с поддержкой Markdown и выравниванием по центру */}
+                <p className="text-lg text-muted-foreground mb-6 text-center">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -206,12 +205,11 @@ const VpnPost = () => {
                 </div>
               )}
 
-              {/* === 4. Контент с тёмной темой и поддержкой увеличения картинок === */}
+              {/* Контент с тёмной темой и поддержкой увеличения картинок */}
               <div data-color-mode={theme === "dark" ? "dark" : "light"}>
                 <MDEditor.Markdown
                   source={post.content}
                   components={{
-                    // === 3. Обёртка для картинок: центрирование и увеличение при клике ===
                     img({ node, ...props }) {
                       return (
                         <a
