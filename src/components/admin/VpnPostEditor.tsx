@@ -33,28 +33,126 @@ import {
   useDeleteVpnPost,
 } from "@/hooks/useVpnPosts";
 
-// ==================== Кастомные команды (без изменений) ====================
+// ==================== Кастомные команды ====================
 const alignLeftCommand: ICommand = {
-  /* ... */
-};
-const alignCenterCommand: ICommand = {
-  /* ... */
-};
-const alignRightCommand: ICommand = {
-  /* ... */
-};
-const alignJustifyCommand: ICommand = {
-  /* ... */
-};
-const fontSizeIncreaseCommand: ICommand = {
-  /* ... */
-};
-const fontSizeDecreaseCommand: ICommand = {
-  /* ... */
+  name: "alignLeft",
+  keyCommand: "alignLeft",
+  buttonProps: { "aria-label": "Выровнять по левому краю" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="left">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
 };
 
-// ==================== Группа заголовков (если не используется, можно удалить) ====================
-// const titleGroup: ICommand = { ... };
+const alignCenterCommand: ICommand = {
+  name: "alignCenter",
+  keyCommand: "alignCenter",
+  buttonProps: { "aria-label": "Выровнять по центру" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="center">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
+};
+
+const alignRightCommand: ICommand = {
+  name: "alignRight",
+  keyCommand: "alignRight",
+  buttonProps: { "aria-label": "Выровнять по правому краю" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p align="right">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
+};
+
+const alignJustifyCommand: ICommand = {
+  name: "alignJustify",
+  keyCommand: "alignJustify",
+  buttonProps: { "aria-label": "Выровнять по ширине" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<p style="text-align: justify;">${state.selectedText || "текст"}</p>`;
+    api.replaceSelection(text);
+  },
+};
+
+const fontSizeIncreaseCommand: ICommand = {
+  name: "fontSizeIncrease",
+  keyCommand: "fontSizeIncrease",
+  buttonProps: { "aria-label": "Увеличить шрифт" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A+
+      </text>
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<font size="5">${state.selectedText || "текст"}</font>`;
+    api.replaceSelection(text);
+  },
+};
+
+const fontSizeDecreaseCommand: ICommand = {
+  name: "fontSizeDecrease",
+  keyCommand: "fontSizeDecrease",
+  buttonProps: { "aria-label": "Уменьшить шрифт" },
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A-
+      </text>
+    </svg>
+  ),
+  execute: (state, api) => {
+    const text = `<font size="2">${state.selectedText || "текст"}</font>`;
+    api.replaceSelection(text);
+  },
+};
+
+// ==================== Группа заголовков (не используется, но можно раскомментировать при необходимости) ====================
+// const titleGroup: ICommand = {
+//   type: 'group',
+//   name: "titleGroup",
+//   keyCommand: "titleGroup",
+//   buttonProps: { "aria-label": "Заголовки" },
+//   icon: <span style={{ fontSize: 14 }}>H</span>,
+//   children: [
+//     commands.title1,
+//     commands.title2,
+//     commands.title3,
+//   ],
+// };
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -70,12 +168,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   } = useVpnPost(selectedSlug || undefined);
   const createMutation = useCreateVpnPost();
   const updateMutation = useUpdateVpnPost();
-  const deleteMutation = useDeleteVpnPost(); // <-- новый хук
+  const deleteMutation = useDeleteVpnPost();
 
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false); // <-- состояние для диалога
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // Поля метаданных
   const [title, setTitle] = useState("");
@@ -235,13 +333,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // ==================== Обработчик удаления ====================
   const handleDelete = async () => {
     if (!selectedPost) return;
     try {
       await deleteMutation.mutateAsync(selectedPost.slug);
       toast.success("Статья удалена");
-      setSelectedSlug(null); // сбрасываем выбор
+      setSelectedSlug(null);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Ошибка при удалении",
@@ -251,7 +348,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // ==================== Команды для панели инструментов (без изменений) ====================
+  // Команды для панели инструментов
   const allCommands = [
     commands.bold,
     commands.italic,
@@ -348,9 +445,8 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
           {(selectedPost || isCreating) && !isLoadingContent && (
             <>
-              {/* Форма метаданных (без изменений) */}
+              {/* Форма метаданных */}
               <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
-                {/* ... все поля (те же, что и раньше) ... */}
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
                     Заголовок *
@@ -515,7 +611,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
               {/* Кнопки действий */}
               <div className="mt-6 flex justify-end gap-4">
-                {/* Кнопка Удалить (показываем только для существующей статьи, не в режиме создания) */}
                 {!isCreating && selectedPost && (
                   <Button
                     variant="destructive"
