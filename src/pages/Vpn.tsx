@@ -8,8 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import { useVpnPosts } from "@/hooks/useVpnPosts";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+
+// Функция для удаления Markdown-ссылок (оставляет только текст)
+const stripMarkdownLinks = (text: string): string => {
+  return text.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1");
+};
 
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
@@ -52,7 +55,7 @@ const Vpn = () => {
     <div className="min-h-screen bg-background">
       <OpenGraph
         title="VPN инструкции — Как развернуть свой VPN на VPS"
-        description="Пошаговые руководства по настройке VPN серверов на облачных провайдерах: XRay, WireGuard, OpenVPN и другие."
+        description="Пошаговие руководства по настройке VPN серверов на облачных провайдерах: XRay, WireGuard, OpenVPN и другие."
         url="https://topcloudhub.ru/vpn"
       />
       <StructuredData
@@ -143,57 +146,14 @@ const Vpn = () => {
                           </div>
                         </div>
 
-                        {/* Заголовок остаётся обычной ссылкой на статью (без Markdown) */}
+                        {/* Заголовок – удаляем Markdown-ссылки, оставляем только текст */}
                         <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                          {post.title}
+                          {stripMarkdownLinks(post.title)}
                         </h2>
 
-                        {/* Описание с поддержкой Markdown (чтобы ссылки работали) */}
+                        {/* Описание – тоже удаляем Markdown-ссылки */}
                         <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                              p: ({ children }) => <span>{children}</span>,
-                              h1: "span",
-                              h2: "span",
-                              h3: "span",
-                              h4: "span",
-                              h5: "span",
-                              h6: "span",
-                              ul: "span",
-                              ol: "span",
-                              li: "span",
-                              blockquote: "span",
-                              pre: "span",
-                              code: ({
-                                inline,
-                                className,
-                                children,
-                                ...props
-                              }) => {
-                                if (inline)
-                                  return (
-                                    <code className={className} {...props}>
-                                      {children}
-                                    </code>
-                                  );
-                                return <span>{children}</span>;
-                              },
-                              a: ({ href, children, ...props }) => (
-                                <a
-                                  href={href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  {...props}
-                                >
-                                  {children}
-                                </a>
-                              ),
-                              img: () => null,
-                            }}
-                          >
-                            {post.excerpt}
-                          </ReactMarkdown>
+                          {stripMarkdownLinks(post.excerpt)}
                         </p>
 
                         <div className="flex items-center justify-between pt-4 border-t border-border">
