@@ -11,6 +11,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
@@ -20,6 +30,7 @@ import {
   useVpnPost,
   useCreateVpnPost,
   useUpdateVpnPost,
+  useDeleteVpnPost,
 } from "@/hooks/useVpnPosts";
 
 // ==================== Кастомные команды (без изменений) ====================
@@ -42,8 +53,7 @@ const fontSizeDecreaseCommand: ICommand = {
   /* ... */
 };
 
-// ==================== Группа заголовков (больше не используется) ====================
-// +++ УДАЛЕНО +++ (можно оставить закомментированным)
+// ==================== Группа заголовков (если не используется, можно удалить) ====================
 // const titleGroup: ICommand = { ... };
 
 interface VpnPostEditorProps {
@@ -60,10 +70,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   } = useVpnPost(selectedSlug || undefined);
   const createMutation = useCreateVpnPost();
   const updateMutation = useUpdateVpnPost();
+  const deleteMutation = useDeleteVpnPost(); // <-- новый хук
 
   const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false); // <-- состояние для диалога
 
   // Поля метаданных
   const [title, setTitle] = useState("");
@@ -223,14 +235,28 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // +++ ИЗМЕНЕНО: убрана группа, добавлены отдельные кнопки +++
+  // ==================== Обработчик удаления ====================
+  const handleDelete = async () => {
+    if (!selectedPost) return;
+    try {
+      await deleteMutation.mutateAsync(selectedPost.slug);
+      toast.success("Статья удалена");
+      setSelectedSlug(null); // сбрасываем выбор
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Ошибка при удалении",
+      );
+    } finally {
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
+  // ==================== Команды для панели инструментов (без изменений) ====================
   const allCommands = [
     commands.bold,
     commands.italic,
     commands.strikethrough,
     commands.hr,
-    // Было: titleGroup,
-    // Теперь три отдельные кнопки:
     commands.title1,
     commands.title2,
     commands.title3,
@@ -253,7 +279,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
   return (
     <div className="space-y-6">
-      {/* Вся вёрстка остаётся без изменений */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -323,8 +348,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
           {(selectedPost || isCreating) && !isLoadingContent && (
             <>
+              {/* Форма метаданных (без изменений) */}
               <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
-                {/* форма метаданных – без изменений */}
+                {/* ... все поля (те же, что и раньше) ... */}
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
                     Заголовок *
@@ -472,6 +498,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </div>
               </div>
 
+              {/* Редактор */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
@@ -486,7 +513,25 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 />
               </div>
 
+              {/* Кнопки действий */}
               <div className="mt-6 flex justify-end gap-4">
+                {/* Кнопка Удалить (показываем только для существующей статьи, не в режиме создания) */}
+                {!isCreating && selectedPost && (
+                  <Button
+                    variant="destructive"
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                    disabled={deleteMutation.isPending}
+                    className="gap-2"
+                  >
+                    {deleteMutation.isPending ? (
+                      <Icon name="Loader2" size={16} className="animate-spin" />
+                    ) : (
+                      <Icon name="Trash2" size={16} />
+                    )}
+                    Удалить
+                  </Button>
+                )}
+
                 <Button variant="outline" onClick={handleCancel}>
                   Отмена
                 </Button>
@@ -522,6 +567,31 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
           )}
         </CardContent>
       </Card>
+
+      {/* Диалог подтверждения удаления */}
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Вы уверены?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Это действие нельзя отменить. Статья "{selectedPost?.title}" будет
+              навсегда удалена.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Удалить
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
