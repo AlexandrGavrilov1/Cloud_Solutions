@@ -4,30 +4,15 @@ import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
 import { StructuredData } from "@/components/SEO/StructuredData";
-import { vpnCategories } from "@/data/vpn-posts"; // пока оставляем, но может пригодиться
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import { useVpnPosts } from "@/hooks/useVpnPosts"; // импортируем хук
+import { useVpnPosts } from "@/hooks/useVpnPosts";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
-
-  // ========== ВРЕМЕННО ОТКЛЮЧЕНО: поиск и фильтрация ==========
-  // const [selectedCategory, setSelectedCategory] = useState("Все");
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const filteredPosts = posts.filter((post) => {
-  //   const matchesCategory =
-  //     selectedCategory === "Все" || post.category === selectedCategory;
-  //   const matchesSearch =
-  //     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     post.tags.some((tag) =>
-  //       tag.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     );
-  //   return matchesCategory && matchesSearch;
-  // });
-  // ============================================================
 
   // Обработка загрузки
   if (isLoading) {
@@ -100,47 +85,9 @@ const Vpn = () => {
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
                 Пошаговые руководства по развертыванию безопасных VPN серверов
               </p>
-
-              {/*
-                // ВРЕМЕННО ОТКЛЮЧЕНО: поле поиска
-                <div className="relative max-w-xl mx-auto">
-                  <Icon
-                    name="Search"
-                    size={20}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Поиск по инструкциям..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full h-14 pl-12 pr-4 bg-card border-2 border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
-                  />
-                </div>
-              */}
             </div>
           </div>
         </section>
-
-        {/*
-          // ВРЕМЕННО ОТКЛЮЧЕНО: кнопки категорий
-          <section className="py-8">
-            <div className="container mx-auto px-4 lg:px-8">
-              <div className="flex flex-wrap gap-2 justify-center">
-                {vpnCategories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    onClick={() => setSelectedCategory(category)}
-                    className="rounded-full"
-                  >
-                    {category}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </section>
-        */}
 
         <section className="py-12 pb-24">
           <div className="container mx-auto px-4 lg:px-8">
@@ -154,19 +101,6 @@ const Vpn = () => {
                 <p className="text-xl text-muted-foreground">
                   Инструкции не найдены
                 </p>
-                {/*
-                  // ВРЕМЕННО ОТКЛЮЧЕНО: кнопка сброса фильтров
-                  <Button
-                    variant="outline"
-                    className="mt-4"
-                    onClick={() => {
-                      setSearchQuery("");
-                      setSelectedCategory("Все");
-                    }}
-                  >
-                    Сбросить фильтры
-                  </Button>
-                */}
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
@@ -209,12 +143,57 @@ const Vpn = () => {
                           </div>
                         </div>
 
+                        {/* Заголовок остаётся обычной ссылкой на статью (без Markdown) */}
                         <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
                           {post.title}
                         </h2>
 
+                        {/* Описание с поддержкой Markdown (чтобы ссылки работали) */}
                         <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
-                          {post.excerpt}
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              p: ({ children }) => <span>{children}</span>,
+                              h1: "span",
+                              h2: "span",
+                              h3: "span",
+                              h4: "span",
+                              h5: "span",
+                              h6: "span",
+                              ul: "span",
+                              ol: "span",
+                              li: "span",
+                              blockquote: "span",
+                              pre: "span",
+                              code: ({
+                                inline,
+                                className,
+                                children,
+                                ...props
+                              }) => {
+                                if (inline)
+                                  return (
+                                    <code className={className} {...props}>
+                                      {children}
+                                    </code>
+                                  );
+                                return <span>{children}</span>;
+                              },
+                              a: ({ href, children, ...props }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  {...props}
+                                >
+                                  {children}
+                                </a>
+                              ),
+                              img: () => null,
+                            }}
+                          >
+                            {post.excerpt}
+                          </ReactMarkdown>
                         </p>
 
                         <div className="flex items-center justify-between pt-4 border-t border-border">
