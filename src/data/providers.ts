@@ -694,7 +694,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     name: "SprintHost",
     logo: "providers_logo/07_Sprinthost.jpg",
     rating: 9.3,
-    basePrice: 200,
+    basePrice: 90,
     cpuPrice: 150,
     ramPrice: 100,
     storagePrice: 8,
@@ -4595,7 +4595,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     name: "The Hosting",
     logo: "providers_logo/51_The_Hosting.JPG",
     rating: 8.5,
-    basePrice: 200,
+    basePrice: 90,
     cpuPrice: 200,
     ramPrice: 100,
     storagePrice: 9,
@@ -4743,7 +4743,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
 
     reviews: reviewsData[51] || [],
   },
-  /* {
+  {
     id: 52,
     name: "OVH",
     logo: "providers_logo/52_OVH.JPG",
@@ -4851,7 +4851,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     ],
 
     reviews: reviewsData[52] || [],
-  },*/
+  },
   {
     id: 53,
     name: "One Dash",

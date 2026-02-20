@@ -40,13 +40,9 @@ export const ClickStatsSection = ({
 }: ClickStatsSectionProps) => {
   const [chartView, setChartView] = useState<'bar' | 'pie' | 'line'>('bar');
   const [selectedMonth, setSelectedMonth] = useState<string>('all');
-  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'today' | 'yesterday' | 'custom'>('custom');
+  const [selectedPeriod, setSelectedPeriod] = useState<'1' | '7' | '30' | 'custom'>('custom');
   const [filteredStats, setFilteredStats] = useState<ClickStats[]>(clickStats);
   const [isLoadingMonth, setIsLoadingMonth] = useState(false);
-  const [todayStats, setTodayStats] = useState<ClickStats[]>([]);
-  const [yesterdayStats, setYesterdayStats] = useState<ClickStats[]>([]);
-  const [dayBeforeStats, setDayBeforeStats] = useState<ClickStats[]>([]);
-  const [isLoadingYesterday, setIsLoadingYesterday] = useState(true);
 
   const getAvailableMonths = () => {
     const months = [];
@@ -62,56 +58,12 @@ export const ClickStatsSection = ({
   };
 
   useEffect(() => {
-    const fetchYesterdayStats = async () => {
-      setIsLoadingYesterday(true);
-      try {
-        const now = new Date();
-        const todayStr = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().split('T')[0];
-        const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
-        const dayBefore = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2);
-        const dayBeforeStr = dayBefore.toISOString().split('T')[0];
-
-        const res = await fetch(
-          `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?view=daily&period=3`
-        );
-        if (res.ok) {
-          const data = await res.json();
-          const allDaily: DailyStats[] = data.daily_stats || [];
-          const tMap = new Map<number, number>();
-          const yMap = new Map<number, number>();
-          const dbMap = new Map<number, number>();
-          allDaily.forEach(s => {
-            if (s.date === todayStr) tMap.set(s.provider_id, (tMap.get(s.provider_id) || 0) + s.clicks);
-            if (s.date === yesterdayStr) yMap.set(s.provider_id, (yMap.get(s.provider_id) || 0) + s.clicks);
-            if (s.date === dayBeforeStr) dbMap.set(s.provider_id, (dbMap.get(s.provider_id) || 0) + s.clicks);
-          });
-          setTodayStats(Array.from(tMap.entries()).map(([provider_id, clicks]) => ({
-            provider_id, clicks, first_click: null, last_click: null
-          })));
-          setYesterdayStats(Array.from(yMap.entries()).map(([provider_id, clicks]) => ({
-            provider_id, clicks, first_click: null, last_click: null
-          })));
-          setDayBeforeStats(Array.from(dbMap.entries()).map(([provider_id, clicks]) => ({
-            provider_id, clicks, first_click: null, last_click: null
-          })));
-        }
-      } catch (error) {
-        console.error('Error fetching yesterday stats:', error);
-      } finally {
-        setIsLoadingYesterday(false);
-      }
-    };
-    fetchYesterdayStats();
-  }, []);
-
-  useEffect(() => {
     if (selectedMonth === 'all' && selectedPeriod === 'custom') {
       setFilteredStats(clickStats);
     }
   }, [clickStats, selectedMonth, selectedPeriod]);
 
-  const handlePeriodChange = async (period: '1' | '7' | '30' | 'today' | 'yesterday' | 'custom') => {
+  const handlePeriodChange = async (period: '1' | '7' | '30' | 'custom') => {
     setSelectedPeriod(period);
     
     if (period === 'custom') {
@@ -119,19 +71,6 @@ export const ClickStatsSection = ({
     }
 
     setSelectedMonth('all');
-
-    if (period === 'today') {
-      setFilteredStats(todayStats);
-      onPeriodChange('1');
-      return;
-    }
-
-    if (period === 'yesterday') {
-      setFilteredStats(yesterdayStats);
-      onPeriodChange('1');
-      return;
-    }
-
     setIsLoadingMonth(true);
     
     try {
@@ -182,17 +121,6 @@ export const ClickStatsSection = ({
     }
   };
 
-  const providerAdminLinks: { [key: number]: string } = {
-    53: 'https://rdp-onedash.ru/refer',
-    11: 'https://panel.hostland.ru/#profail',
-    7: 'https://cp.sprinthost.ru/wm/account/hello',
-    51: 'https://client.the.hosting/billmgr?startform=referralprogram.client',
-  };
-
-  const getProviderAdminLink = (providerId: number): string | null => {
-    return providerAdminLinks[providerId] || null;
-  };
-
   const getProviderName = (providerId: number) => {
     const nameMapping: { [key: number]: string } = {
       1029: 'HostKey',
@@ -215,20 +143,7 @@ export const ClickStatsSection = ({
     return provider?.name || `Provider #${providerId}`;
   };
 
-  const buildStatsFromDaily = (daily: DailyStats[]): ClickStats[] => {
-    const providerMap = new Map<number, number>();
-    daily.forEach(s => {
-      providerMap.set(s.provider_id, (providerMap.get(s.provider_id) || 0) + s.clicks);
-    });
-    return Array.from(providerMap.entries()).map(([provider_id, clicks]) => ({
-      provider_id, clicks, first_click: null, last_click: null
-    }));
-  };
-
-  const baseDisplayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' && selectedPeriod === 'custom' ? clickStats : filteredStats);
-  const displayStats = (selectedPeriod === '1' || selectedPeriod === '7' || selectedPeriod === '30') && selectedMonth === 'all' && dailyStats.length > 0
-    ? buildStatsFromDaily(dailyStats)
-    : baseDisplayStats;
+  const displayStats = isLoadingMonth ? filteredStats : (selectedMonth === 'all' && selectedPeriod === 'custom' ? clickStats : filteredStats);
   const totalClicks = displayStats.reduce((sum, s) => sum + s.clicks, 0);
   const topProvider = displayStats.length > 0 ? displayStats.reduce((prev, current) => 
     (prev.clicks > current.clicks) ? prev : current
@@ -258,42 +173,6 @@ export const ClickStatsSection = ({
     return Math.round(((lastDayClicks - prevDayClicks) / prevDayClicks) * 100);
   };
 
-  const sortedDisplayStats = [...displayStats].sort((a, b) => b.clicks - a.clicks);
-
-  const CustomXAxisTick = ({ x, y, payload }: any) => {
-    const link = (() => {
-      const stat = sortedDisplayStats.find(s => getProviderName(s.provider_id) === payload.value);
-      return stat ? getProviderAdminLink(stat.provider_id) : null;
-    })();
-
-    const text = (
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor="end"
-        fill={link ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}
-        fontSize={14}
-        fontWeight={600}
-        style={{ cursor: link ? 'pointer' : 'default' }}
-        transform={`rotate(-45)`}
-      >
-        {payload.value}
-      </text>
-    );
-
-    if (link) {
-      return (
-        <g transform={`translate(${x},${y})`}>
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            {text}
-          </a>
-        </g>
-      );
-    }
-    return <g transform={`translate(${x},${y})`}>{text}</g>;
-  };
-
   return (
     <div className="mb-8">
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b-2 border-primary/20 -mx-4 px-4 py-4 mb-6">
@@ -306,24 +185,6 @@ export const ClickStatsSection = ({
           </h2>
           <div className="flex gap-3 items-center">
             <div className="flex gap-2">
-              <Button
-                variant={selectedPeriod === 'today' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => handlePeriodChange('today')}
-                disabled={isLoadingMonth || isLoadingYesterday}
-                className="font-semibold"
-              >
-                Сегодня
-              </Button>
-              <Button
-                variant={selectedPeriod === 'yesterday' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => handlePeriodChange('yesterday')}
-                disabled={isLoadingMonth || isLoadingYesterday}
-                className="font-semibold"
-              >
-                Вчера
-              </Button>
               <Button
                 variant={selectedPeriod === '1' ? 'default' : 'outline'}
                 size="sm"
@@ -497,7 +358,7 @@ export const ClickStatsSection = ({
                     <div className="bg-card/30 rounded-xl p-6 border border-primary/10">
                       <ResponsiveContainer width="100%" height={450}>
                         <BarChart
-                          data={[...displayStats].sort((a, b) => b.clicks - a.clicks).map((stat, idx) => ({
+                          data={displayStats.map((stat, idx) => ({
                             name: getProviderName(stat.provider_id),
                             clicks: stat.clicks,
                             percentage: totalClicks > 0 ? Math.round((stat.clicks / totalClicks) * 100) : 0,
@@ -516,9 +377,12 @@ export const ClickStatsSection = ({
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} stroke="hsl(var(--border))" />
                       <XAxis 
                         dataKey="name" 
+                        angle={-45}
+                        textAnchor="end"
                         height={120}
+                        style={{ fontSize: '14px', fontWeight: '600', fill: 'hsl(var(--foreground))' }}
                         interval={0}
-                        tick={<CustomXAxisTick />}
+                        tick={{ fill: 'hsl(var(--foreground))' }}
                       />
                       <YAxis 
                         style={{ fontSize: '13px', fontWeight: '500', fill: 'hsl(var(--foreground))' }} 
@@ -554,7 +418,6 @@ export const ClickStatsSection = ({
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
-
                 </div>
               )}
 
@@ -563,7 +426,7 @@ export const ClickStatsSection = ({
                       <ResponsiveContainer width="50%" height={400}>
                         <PieChart>
                           <Pie
-                            data={[...displayStats].sort((a, b) => b.clicks - a.clicks).map(stat => ({
+                            data={displayStats.map(stat => ({
                               name: getProviderName(stat.provider_id),
                               value: stat.clicks
                             }))}
@@ -578,7 +441,7 @@ export const ClickStatsSection = ({
                             animationDuration={800}
                             paddingAngle={2}
                           >
-                            {[...displayStats].sort((a, b) => b.clicks - a.clicks).map((entry, index) => (
+                            {displayStats.map((entry, index) => (
                               <Cell 
                                 key={`cell-${index}`} 
                                 fill={COLORS[index % COLORS.length]}
@@ -614,19 +477,7 @@ export const ClickStatsSection = ({
                                 />
                                 <div className="flex-1 min-w-0">
                                   <div className="font-semibold text-foreground truncate">
-                                    {getProviderAdminLink(stat.provider_id) ? (
-                                      <a
-                                        href={getProviderAdminLink(stat.provider_id)!}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:text-primary underline decoration-dotted underline-offset-4 inline-flex items-center gap-1"
-                                      >
-                                        {getProviderName(stat.provider_id)}
-                                        <Icon name="ExternalLink" size={12} className="text-muted-foreground" />
-                                      </a>
-                                    ) : (
-                                      getProviderName(stat.provider_id)
-                                    )}
+                                    {getProviderName(stat.provider_id)}
                                   </div>
                                   <div className="flex items-center gap-2 mt-1">
                                     <div className="flex-1 bg-secondary h-2 rounded-full overflow-hidden">
