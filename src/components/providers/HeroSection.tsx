@@ -9,73 +9,90 @@ export const HeroSection = () => {
 
   return (
     <section
-      className="relative pt-20 pb-32 overflow-hidden"
+      className="relative py-16 sm:py-20 md:py-24 overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
+      }}
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px]"></div>
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px]"></div>
+      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — уменьшенное ========== */}
+      <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
+        <div
+          className="absolute left-[5%] top-0 
+               w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px]
+               h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]
+               rounded-full
+               blur-[40px] sm:blur-[50px] md:blur-[60px] lg:blur-[70px] xl:blur-[80px] 2xl:blur-[90px]
+               opacity-65"
+          style={{
+            background:
+              "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
+            transform: "translate(-10%, -35%)",
+          }}
+        />
+      </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-5xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 bg-accent border border-primary/30 rounded-full px-5 py-2.5">
-            <div className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-neon"></div>
-            <span className="text-sm font-bold text-primary">
-              {t("hero.badge")}
-            </span>
-          </div>
+      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ — адаптивное ========== */}
+      <div
+        className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
+                   right-0 sm:right-[5%] md:right-[8%] lg:right-[10%] xl:right-[12%]
+                   w-[250px] sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[550px]
+                   h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]"
+      >
+        <div
+          className="absolute right-0 top-1/2 -translate-y-1/2 
+                     w-full h-full
+                     rounded-full
+                     blur-[50px] sm:blur-[60px] md:blur-[70px] lg:blur-[75px] xl:blur-[80px]
+                     opacity-70"
+          style={{
+            background:
+              "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
+            transform: "translate(20%, -50%)",
+          }}
+        />
+      </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[1.1] tracking-tight">
-            <span className="block text-foreground">{t("hero.title1")} </span>
-            <span className="block">
-              <MatrixWord />
-            </span>
-            <span className="block text-foreground">{t("hero.title3")}</span>
-          </h1>
+      {/* Контент — поверх пятен */}
+      <div className="w-full px-4 lg:px-8 relative z-10">
+        <h1
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-4xl"
+          style={{
+            fontFamily: "'TT Travels Next Trl', sans-serif",
+            fontWeight: 700,
+          }}
+        >
+          <span className="block text-[#2B3038]">НАЙДИ</span>
+          <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
+          <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
+        </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
-            {t("hero.description")}
-          </p>
+        <p
+          className="text-xl md:text-2xl text-[#2B3038] max-w-2xl leading-relaxed mt-4"
+          style={{ fontFamily: "'TT Travels Next Trl', sans-serif" }}
+        >
+          Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
+          минут
+        </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button
-              size="lg"
-              className="h-14 px-8 text-base font-bold bg-primary text-background shadow-xl shadow-primary/30 hover:shadow-neon transition-all group rounded-xl w-full sm:w-auto sm:min-w-[220px]"
-              onClick={() => {
-                const providersSection = document.getElementById("providers");
-                if (providersSection) {
-                  providersSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }
-              }}
-            >
-              {t("Рейтинг")}
-              <Icon
-                name="ArrowRight"
-                size={20}
-                className="ml-2 group-hover:translate-x-1 transition-transform"
-              />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-14 px-8 text-base font-bold border-2 border-border rounded-xl hover:bg-accent hover:border-primary/50 transition-all w-full sm:w-auto sm:min-w-[220px]"
-              onClick={() => {
-                const guideSection = document.getElementById("guide");
-                if (guideSection) {
-                  guideSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }
-              }}
-            >
-              <Icon name="Lightbulb" size={18} className="mr-2" />
-              {t("Как выбрать?")}
-            </Button>
-          </div>
+        <div className="pt-4">
+          <Button
+            size="lg"
+            className="h-16 px-12 text-lg font-bold bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            onClick={() => {
+              const providersSection = document.getElementById("providers");
+              if (providersSection) {
+                providersSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }}
+          >
+            ВЫБРАТЬ
+          </Button>
         </div>
       </div>
     </section>

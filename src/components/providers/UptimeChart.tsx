@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Provider } from "./types";
 import { UptimeChartHeader } from "./UptimeChartHeader";
-import { UptimeProviderCard, calculateTotalDowntime } from "./UptimeProviderCard";
+import {
+  UptimeProviderCard,
+  calculateTotalDowntime,
+} from "./UptimeProviderCard";
 
 interface MonthlyDowntime {
   provider_id: number;
@@ -27,6 +30,25 @@ export const UptimeChart = ({
     new Set(),
   );
 
+  // Определяем глобальный топ-3 провайдеров по uptime (из всех провайдеров)
+  const globalTopThreeProviderIds = useMemo(() => {
+    return providers
+      .filter((p) => p.uptime30days !== undefined)
+      .sort((a, b) => {
+        const uptimeDiff = (b.uptime30days || 0) - (a.uptime30days || 0);
+        if (uptimeDiff !== 0) return uptimeDiff;
+        return calculateTotalDowntime(a.id) - calculateTotalDowntime(b.id);
+      })
+      .slice(0, 3)
+      .map((p) => p.id);
+  }, [providers]);
+
+  // Функция для определения места провайдера в глобальном топ-3
+  const getProviderPlace = (providerId: number) => {
+    const index = globalTopThreeProviderIds.indexOf(providerId);
+    return index !== -1 ? index + 1 : undefined;
+  };
+
   const providersWithUptime = providers
     .filter((p) => p.uptime30days !== undefined)
     .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -38,8 +60,7 @@ export const UptimeChart = ({
 
   const getUptimeColor = (uptime: number) => {
     if (uptime >= 99.95) return "rgb(0, 128, 0)";
-    if (uptime >= 99.9) return "rgb(251, 146, 60)";
-    if (uptime >= 99.5) return "rgb(253, 186, 116)";
+    if (uptime >= 99.5) return "rgb(251, 146, 60)";
     return "rgb(239, 68, 68)";
   };
 
@@ -73,9 +94,20 @@ export const UptimeChart = ({
   };
 
   const handleProviderClick = async (provider: Provider) => {
+    // Трекинг клика
+    await trackClick(provider.id);
+
+    // Яндекс.Метрика
+    if (typeof window !== "undefined" && (window as any).ym) {
+      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+        provider_id: provider.id,
+        provider_name: provider.name,
+      });
+    }
+
+    // Открытие сайта провайдера
     if (provider.url) {
-      trackClick(provider.id);
-      window.location.href = provider.url;
+      window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -104,46 +136,50 @@ export const UptimeChart = ({
 
           <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-              {providersWithUptime.map((provider, index) => (
-                <UptimeProviderCard
-                  key={provider.id}
-                  provider={provider}
-                  index={index}
-                  isExpanded={expandedProviders.has(provider.id)}
-                  onToggleExpand={() => handleToggleExpand(provider.id)}
-                  onProviderClick={handleProviderClick}
-                  getDowntimeMinutes={getDowntimeMinutes}
-                />
-              ))}
+              {providersWithUptime.map((provider, index) => {
+                const isTopThree = globalTopThreeProviderIds.includes(
+                  provider.id,
+                );
+                const place = getProviderPlace(provider.id);
+
+                return (
+                  <UptimeProviderCard
+                    key={provider.id}
+                    provider={provider}
+                    index={index}
+                    isExpanded={expandedProviders.has(provider.id)}
+                    onToggleExpand={() => handleToggleExpand(provider.id)}
+                    onProviderClick={() => handleProviderClick(provider)}
+                    getDowntimeMinutes={getDowntimeMinutes}
+                    isTopThree={isTopThree}
+                    place={place}
+                  />
+                );
+              })}
             </div>
 
             <div className="mt-4 md:mt-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-600"></div>
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500"></div>
                   <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
                     ≥ 99.95%
                   </span>
                 </div>
-                <div className="text-xs md:text-sm text-foreground">Отличный</div>
-              </div>
-              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
-                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
-                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-400"></div>
-                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
-                    ≥ 99.9%
-                  </span>
+                <div className="text-xs md:text-sm text-foreground">
+                  Отличный
                 </div>
-                <div className="text-xs md:text-sm text-foreground">Хороший</div>
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
                   <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-orange-500"></div>
                   <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
-                    ≥ 99.5%
+                    99.5% - 99.94%
                   </span>
                 </div>
-                <div className="text-xs md:text-sm text-foreground">Средний</div>
+                <div className="text-xs md:text-sm text-foreground">
+                  Средний
+                </div>
               </div>
               <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
                 <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
@@ -153,6 +189,17 @@ export const UptimeChart = ({
                   </span>
                 </div>
                 <div className="text-xs md:text-sm text-foreground">Низкий</div>
+              </div>
+              <div className="bg-background border border-border rounded-lg md:rounded-xl p-3 md:p-4">
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                  <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-gray-500"></div>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">
+                    N/A
+                  </span>
+                </div>
+                <div className="text-xs md:text-sm text-foreground">
+                  Неизвестно
+                </div>
               </div>
             </div>
           </div>
