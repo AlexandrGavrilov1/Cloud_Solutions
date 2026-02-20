@@ -1,4 +1,3 @@
-// src/components/providers/Header.tsx
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -25,6 +24,12 @@ export const Header = () => {
             />
           </a>
           <div className="hidden md:flex items-center gap-8 ml-12">
+            <a
+              href="/"
+              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
+            >
+              Как выбрать
+            </a>
             {/* Временно скрыто
             <a
               href="/gaming"
@@ -33,14 +38,6 @@ export const Header = () => {
               Игровые
             </a>
             */}
-            {/*===== Временно скрыто === */}
-            <a
-              href="/vpn"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
-            >
-              VPN
-            </a>
-            {/*=====================*/}
             <a
               href="/blog"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
@@ -114,16 +111,6 @@ export const Header = () => {
                 Игровые
               </a>
               */}
-              {/* ===== ДОБАВЛЕНО ===== */}
-              <a
-                href="/vpn"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Icon name="Lock" size={16} />
-                VPN
-              </a>
-              {/* ===================== */}
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"

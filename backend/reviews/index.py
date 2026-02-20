@@ -109,9 +109,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 SELECT 
                     provider_id,
                     COUNT(*) as registrations,
-                    COALESCE(SUM(balance), 0) as total_balance,
-                    COUNT(*) FILTER (WHERE registration_date::date = CURRENT_DATE) as registrations_today,
-                    COALESCE(SUM(balance) FILTER (WHERE registration_date::date = CURRENT_DATE), 0) as balance_today
+                    COALESCE(SUM(balance), 0) as total_balance
                 FROM provider_registrations
                 GROUP BY provider_id
                 ORDER BY total_balance DESC
@@ -126,9 +124,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 stats.append({
                     'provider_id': row[0],
                     'registrations': row[1],
-                    'balance': float(row[2]),
-                    'registrations_today': row[3],
-                    'balance_today': float(row[4])
+                    'balance': float(row[2])
                 })
             
             return {
