@@ -547,11 +547,11 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="container mx-auto px-2 py-4">
+    <section id="providers" className="w-full px-4 lg:px-8 py-4">
       {isMobile ? (
         // ========== МОБИЛЬНАЯ ВЕРСИЯ (≤850px) ==========
         <div className="flex flex-col">
-          <div className="mb-4 flex items-center gap-2">
+          <div className="mb-3 flex items-center gap-1">
             <div className="flex-1">
               <SearchInput
                 value={searchQuery}
@@ -569,7 +569,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
             </button>
           </div>
 
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-3 flex items-center justify-between">
             <ProvidersCounter
               currentCount={Math.min(providersToShow, sortedProviders.length)}
               totalCount={sortedProviders.length}
@@ -607,7 +607,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
               {(sortedProviders.length > providersToShow ||
                 providersToShow > 9) && (
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-1 mt-4">
                   {sortedProviders.length > providersToShow && (
                     <button
                       onClick={() => setProvidersToShow((prev) => prev + 9)}
@@ -690,7 +690,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       ) : (
         // ========== ДЕСКТОП/ПЛАНШЕТ (>850px) ==========
         // ⚠️ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: добавили items-start, чтобы панель фильтров не растягивалась ⚠️
-        <div className="flex flex-row flex-nowrap gap-4 items-start">
+        <div className="flex flex-row flex-nowrap gap-3 items-start">
           {/* Панель фильтров — всегда открыта, естественная высота */}
           <FilterPanelAlwaysOpen
             className="w-[30%] min-w-[208px] max-w-[280px] lg:w-[340px] lg:min-w-[340px] lg:max-w-[340px]"
@@ -699,8 +699,8 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
           {/* Правая колонка — контент */}
           <div className="flex-1 min-w-0">
-            <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-              <div className="space-y-2 w-full sm:w-auto">
+            <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
+              <div className="space-y-1 w-full sm:w-auto">
                 <SearchInput
                   value={searchQuery}
                   onChange={setSearchQuery}
@@ -748,7 +748,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
 
                 {(sortedProviders.length > providersToShow ||
                   providersToShow > incrementCount) && (
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 mt-6">
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-1 mt-4">
                     {sortedProviders.length > providersToShow && (
                       <button
                         onClick={() =>

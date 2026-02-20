@@ -5,21 +5,18 @@ import { Footer } from "@/components/providers/Footer";
 import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
 import { StructuredData } from "@/components/StructuredData";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
-import { vpnPosts } from "@/data/vpn-posts";
+import { vpnPosts } from "@/data/vpn-posts"; // для похожих статей (пока статика)
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import MDEditor from "@uiw/react-md-editor";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import MDEditor from "@uiw/react-md-editor"; // импортируем MDEditor
 import { useVpnPost } from "@/hooks/useVpnPosts";
-import { useTheme } from "@/contexts/ThemeContext";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
-  const { theme } = useTheme();
 
+  // Похожие статьи (пока из статики)
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
@@ -108,90 +105,12 @@ const VpnPost = () => {
                   </span>
                 </div>
 
-                {/* Заголовок с поддержкой Markdown и выравниванием по центру */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-center">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      p: ({ children }) => <span>{children}</span>,
-                      h1: "span",
-                      h2: "span",
-                      h3: "span",
-                      h4: "span",
-                      h5: "span",
-                      h6: "span",
-                      ul: "span",
-                      ol: "span",
-                      li: "span",
-                      blockquote: "span",
-                      pre: "span",
-                      code: ({ inline, className, children, ...props }) => {
-                        if (inline)
-                          return (
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          );
-                        return <span>{children}</span>;
-                      },
-                      a: ({ href, children, ...props }) => (
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          {...props}
-                        >
-                          {children}
-                        </a>
-                      ),
-                      img: () => null,
-                    }}
-                  >
-                    {post.title}
-                  </ReactMarkdown>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
+                  {post.title}
                 </h1>
 
-                {/* Описание с поддержкой Markdown и выравниванием по центру */}
-                <p className="text-lg text-muted-foreground mb-6 text-center">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      p: ({ children }) => <span>{children}</span>,
-                      h1: "span",
-                      h2: "span",
-                      h3: "span",
-                      h4: "span",
-                      h5: "span",
-                      h6: "span",
-                      ul: "span",
-                      ol: "span",
-                      li: "span",
-                      blockquote: "span",
-                      pre: "span",
-                      code: ({ inline, className, children, ...props }) => {
-                        if (inline)
-                          return (
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          );
-                        return <span>{children}</span>;
-                      },
-                      a: ({ href, children, ...props }) => (
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          {...props}
-                        >
-                          {children}
-                        </a>
-                      ),
-                      img: () => null,
-                    }}
-                  >
-                    {post.excerpt}
-                  </ReactMarkdown>
+                <p className="text-lg text-muted-foreground mb-6">
+                  {post.excerpt}
                 </p>
               </div>
 
@@ -205,23 +124,11 @@ const VpnPost = () => {
                 </div>
               )}
 
-              {/* Контент с тёмной темой и поддержкой увеличения картинок */}
-              <div data-color-mode={theme === "dark" ? "dark" : "light"}>
+              {/* Контент с использованием MDEditor.Markdown — добавлены отступы */}
+              <div>
                 <MDEditor.Markdown
                   source={post.content}
-                  components={{
-                    img({ node, ...props }) {
-                      return (
-                        <a
-                          href={props.src}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <img {...props} />
-                        </a>
-                      );
-                    },
-                  }}
+                  style={{ padding: "2rem 3rem" }}
                 />
               </div>
 

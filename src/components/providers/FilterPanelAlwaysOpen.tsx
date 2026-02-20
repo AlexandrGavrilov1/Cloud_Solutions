@@ -66,6 +66,7 @@ interface FilterPanelAlwaysOpenProps {
   clientTypeOptions: ClientType[];
 
   className?: string;
+  showHeader?: boolean; // новый проп для управления заголовком
 }
 
 export const FilterPanelAlwaysOpen = ({
@@ -149,6 +150,7 @@ export const FilterPanelAlwaysOpen = ({
 
   clientTypeOptions = ["Физлицо", "Юрлицо"],
   className = "",
+  showHeader = true, // по умолчанию заголовок показываем
 }: FilterPanelAlwaysOpenProps) => {
   const { t } = useLanguage();
   const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
@@ -391,84 +393,59 @@ export const FilterPanelAlwaysOpen = ({
     </label>
   );
 
-  const CheckboxSection = () => (
-    <div className="space-y-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-1.5">
-        <div className="flex items-center gap-1.5">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-            Фильтры
-          </h3>
-          {activeFiltersCount > 0 && (
-            <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-bold">
-                {activeFiltersCount}
-              </span>
-            </div>
-          )}
-        </div>
-        {hasActiveFilters && (
-          <button
-            type="button"
-            onClick={clearFilters}
-            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors cursor-pointer select-none px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            Сбросить
-          </button>
-        )}
+  // Сетка чекбоксов (без заголовка)
+  const CheckboxGrid = () => (
+    <div className="grid grid-cols-2 gap-1.5">
+      <div className="space-y-1">
+        <FilterCheckbox
+          id="filter-fz152"
+          checked={filterFZ152}
+          onChange={setFilterFZ152}
+          label="152-ФЗ"
+        />
+        <FilterCheckbox
+          id="filter-1c"
+          checked={filter1C}
+          onChange={setFilter1C}
+          label="1С"
+        />
+        <FilterCheckbox
+          id="filter-trial"
+          checked={filterTrialPeriod}
+          onChange={setFilterTrialPeriod}
+          label="Тестовый период"
+        />
+        <FilterCheckbox
+          id="filter-order-before-registration"
+          checked={filterOrderBeforeRegistration}
+          onChange={setFilterOrderBeforeRegistration}
+          label="Заказ до регистрации"
+        />
       </div>
-
-      <div className="grid grid-cols-2 gap-1.5">
-        <div className="space-y-1">
-          <FilterCheckbox
-            id="filter-fz152"
-            checked={filterFZ152}
-            onChange={setFilterFZ152}
-            label="152-ФЗ"
-          />
-          <FilterCheckbox
-            id="filter-1c"
-            checked={filter1C}
-            onChange={setFilter1C}
-            label="1С"
-          />
-          <FilterCheckbox
-            id="filter-trial"
-            checked={filterTrialPeriod}
-            onChange={setFilterTrialPeriod}
-            label="Тестовый период"
-          />
-          <FilterCheckbox
-            id="filter-order-before-registration"
-            checked={filterOrderBeforeRegistration}
-            onChange={setFilterOrderBeforeRegistration}
-            label="Заказ до регистрации"
-          />
-        </div>
-        <div className="space-y-1">
-          <FilterCheckbox
-            id="filter-kii"
-            checked={filterKII}
-            onChange={setFilterKII}
-            label="КИИ"
-          />
-          <FilterCheckbox
-            id="filter-ai"
-            checked={filterAI}
-            onChange={setFilterAI}
-            label="AI"
-          />
-          <FilterCheckbox
-            id="filter-mobile-app"
-            checked={filterMobileApp}
-            onChange={setFilterMobileApp}
-            label="Моб. приложение"
-          />
-        </div>
+      <div className="space-y-1">
+        <FilterCheckbox
+          id="filter-kii"
+          checked={filterKII}
+          onChange={setFilterKII}
+          label="КИИ"
+        />
+        <FilterCheckbox
+          id="filter-ai"
+          checked={filterAI}
+          onChange={setFilterAI}
+          label="AI"
+        />
+        <FilterCheckbox
+          id="filter-mobile-app"
+          checked={filterMobileApp}
+          onChange={setFilterMobileApp}
+          label="Моб. приложение"
+        />
       </div>
     </div>
   );
 
-  // Аккордеон — убираем отображение valueText, если он пустой
+  // Аккордеон
   const AccordionSection = ({
     title,
     isOpen,
@@ -548,7 +525,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеоны с изменённым valueText (убраны "Любой", "Любая", "Любое", "Любые") ---
+  // --- Аккордеоны ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
@@ -662,7 +639,6 @@ export const FilterPanelAlwaysOpen = ({
       };
     }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
 
-    // valueText: если оба значения по умолчанию – пустая строка, иначе отображаем диапазон
     const isDefault =
       (filterMinDatacenters === null || filterMinDatacenters === 0) &&
       (filterMaxDatacenters === null || filterMaxDatacenters === 15);
@@ -744,7 +720,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.fstek;
     const valueText =
       filterFSTEK.length === 0
-        ? "" // убрали "Любой"
+        ? ""
         : filterFSTEK.length === 1
           ? filterFSTEK[0]
           : `${filterFSTEK.length} выбрано`;
@@ -769,7 +745,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.location;
     const valueText =
       filterLocation.length === 0
-        ? "" // убрали "Любая"
+        ? ""
         : filterLocation.length === 1
           ? filterLocation[0]
           : `${filterLocation.length} выбрано`;
@@ -794,7 +770,6 @@ export const FilterPanelAlwaysOpen = ({
 
   const GpuAccordion = () => {
     const isOpen = dropdownsOpen.gpu;
-    const hasSelection = filterHasGPU || filterGPU.length > 0;
     let valueText = "";
     if (filterHasGPU) {
       valueText = "Есть GPU";
@@ -838,7 +813,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.virtualization;
     const valueText =
       filterVirtualization.length === 0
-        ? "" // убрали "Любая"
+        ? ""
         : filterVirtualization.length === 1
           ? filterVirtualization[0]
           : `${filterVirtualization.length} выбрано`;
@@ -869,7 +844,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.diskType;
     const valueText =
       filterDiskType.length === 0
-        ? "" // убрали "Любой"
+        ? ""
         : filterDiskType.length === 1
           ? filterDiskType[0]
           : `${filterDiskType.length} выбрано`;
@@ -896,7 +871,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.cpu;
     const valueText =
       filterCPU.length === 0
-        ? "" // убрали "Любой"
+        ? ""
         : filterCPU.length === 1
           ? filterCPU[0]
           : `${filterCPU.length} выбрано`;
@@ -923,7 +898,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.os;
     const valueText =
       filterOS.length === 0
-        ? "" // убрали "Любая"
+        ? ""
         : filterOS.length === 1
           ? filterOS[0]
           : `${filterOS.length} выбрано`;
@@ -950,7 +925,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.additionalServices;
     const valueText =
       filterAdditionalServices.length === 0
-        ? "" // убрали "Любые"
+        ? ""
         : filterAdditionalServices.length === 1
           ? filterAdditionalServices[0]
           : `${filterAdditionalServices.length} выбрано`;
@@ -975,7 +950,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.paymentMethod;
     const valueText =
       filterPaymentMethod.length === 0
-        ? "" // убрали "Любой"
+        ? ""
         : filterPaymentMethod.length === 1
           ? filterPaymentMethod[0]
           : `${filterPaymentMethod.length} выбрано`;
@@ -1006,7 +981,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.registrationData;
     const valueText =
       filterRegistrationData.length === 0
-        ? "" // убрали "Любые"
+        ? ""
         : filterRegistrationData.length === 1
           ? filterRegistrationData[0]
           : `${filterRegistrationData.length} выбрано`;
@@ -1031,7 +1006,7 @@ export const FilterPanelAlwaysOpen = ({
     const isOpen = dropdownsOpen.clientType;
     const valueText =
       filterClientType.length === 0
-        ? "" // убрали "Любой"
+        ? ""
         : filterClientType.length === 1
           ? filterClientType[0]
           : `${filterClientType.length} выбрано`;
@@ -1055,8 +1030,7 @@ export const FilterPanelAlwaysOpen = ({
   return (
     <div
       ref={panelRef}
-      className={`flex-shrink-0 bg-white dark:bg-gray-900 p-3 border-r border-gray-200 dark:border-gray-800 ${className}`}
-      // Нет фиксированной высоты — панель растягивается по содержимому
+      className={`flex-shrink-0 bg-transparent p-3 ${className}`}
     >
       <style jsx global>{`
         .scrollbar-thin::-webkit-scrollbar {
@@ -1081,8 +1055,37 @@ export const FilterPanelAlwaysOpen = ({
         }
       `}</style>
 
-      <CheckboxSection />
+      {/* Заголовок и кнопка сброса — только если showHeader === true */}
+      {showHeader && (
+        <div className="flex items-center justify-between mb-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+              Фильтры
+            </h3>
+            {activeFiltersCount > 0 && (
+              <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+                <span className="text-xs text-white font-bold">
+                  {activeFiltersCount}
+                </span>
+              </div>
+            )}
+          </div>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              Сбросить
+            </button>
+          )}
+        </div>
+      )}
 
+      {/* Сетка чекбоксов всегда отображается */}
+      <CheckboxGrid />
+
+      {/* Аккордеоны */}
       <div className="space-y-0">
         <FstekAccordion />
         <LocationAccordion />

@@ -4,11 +4,7 @@ import { VpnPost } from "@/data/vpn-posts";
 const VPN_POSTS_API =
   "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9";
 
-// ==================== Вспомогательные функции ====================
-
-/**
- * Преобразует поля из snake_case (как в БД) в camelCase (как в интерфейсе)
- */
+// Преобразование snake_case в camelCase
 const transformPost = (data: any): VpnPost => {
   return {
     ...data,
@@ -18,11 +14,7 @@ const transformPost = (data: any): VpnPost => {
   };
 };
 
-// ==================== GET-запросы ====================
-
-/**
- * Получение списка всех статей (без контента)
- */
+// Получение списка всех статей
 const fetchPosts = async (): Promise<VpnPost[]> => {
   const res = await fetch(VPN_POSTS_API);
   if (!res.ok) {
@@ -33,9 +25,7 @@ const fetchPosts = async (): Promise<VpnPost[]> => {
   return data.map(transformPost);
 };
 
-/**
- * Получение одной статьи по slug (с полным контентом)
- */
+// Получение одной статьи по slug
 const fetchPostBySlug = async (slug: string): Promise<VpnPost> => {
   const res = await fetch(`${VPN_POSTS_API}?slug=${slug}`);
   if (!res.ok) {
@@ -49,11 +39,7 @@ const fetchPostBySlug = async (slug: string): Promise<VpnPost> => {
   return transformPost(data);
 };
 
-// ==================== POST-запрос (создание) ====================
-
-/**
- * Создание новой статьи
- */
+// Создание новой статьи (POST)
 const createPost = async (data: Partial<VpnPost>): Promise<VpnPost> => {
   const token = localStorage.getItem("admin_token");
   if (!token) {
@@ -74,11 +60,7 @@ const createPost = async (data: Partial<VpnPost>): Promise<VpnPost> => {
   return transformPost(await res.json());
 };
 
-// ==================== PUT-запрос (обновление) ====================
-
-/**
- * Обновление существующей статьи
- */
+// Обновление существующей статьи (PUT)
 const updatePost = async (
   data: Partial<VpnPost> & { slug: string },
 ): Promise<VpnPost> => {
@@ -99,50 +81,19 @@ const updatePost = async (
     throw new Error(err.error || "Ошибка сохранения");
   }
   const result = await res.json();
-  // Предполагается, что PUT возвращает обновлённый объект статьи
-  return transformPost(result);
+  return transformPost(result.post);
 };
 
-// ==================== DELETE-запрос (удаление) ====================
-
-/**
- * Удаление статьи по slug
- */
-const deletePost = async (slug: string): Promise<void> => {
-  const token = localStorage.getItem("admin_token");
-  if (!token) {
-    throw new Error("Не найден токен авторизации");
-  }
-  const res = await fetch(VPN_POSTS_API, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Auth-Token": token,
-    },
-    body: JSON.stringify({ slug }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || "Ошибка удаления");
-  }
-};
-
-// ==================== Хуки ====================
-
-/**
- * Хук для получения списка всех статей
- */
+// Хук для получения списка статей
 export const useVpnPosts = () => {
   return useQuery({
     queryKey: ["vpn-posts"],
     queryFn: fetchPosts,
-    staleTime: 5 * 60 * 1000, // 5 минут
+    staleTime: 5 * 60 * 1000,
   });
 };
 
-/**
- * Хук для получения одной статьи по slug
- */
+// Хук для получения одной статьи
 export const useVpnPost = (slug?: string) => {
   return useQuery({
     queryKey: ["vpn-post", slug],
@@ -152,9 +103,7 @@ export const useVpnPost = (slug?: string) => {
   });
 };
 
-/**
- * Хук для создания новой статьи
- */
+// Хук для создания статьи
 export const useCreateVpnPost = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -165,9 +114,7 @@ export const useCreateVpnPost = () => {
   });
 };
 
-/**
- * Хук для обновления существующей статьи
- */
+// Хук для обновления статьи
 export const useUpdateVpnPost = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -177,20 +124,6 @@ export const useUpdateVpnPost = () => {
       queryClient.invalidateQueries({
         queryKey: ["vpn-post", updatedPost.slug],
       });
-    },
-  });
-};
-
-/**
- * Хук для удаления статьи
- */
-export const useDeleteVpnPost = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deletePost,
-    onSuccess: (_, slug) => {
-      queryClient.invalidateQueries({ queryKey: ["vpn-posts"] });
-      queryClient.invalidateQueries({ queryKey: ["vpn-post", slug] });
     },
   });
 };
