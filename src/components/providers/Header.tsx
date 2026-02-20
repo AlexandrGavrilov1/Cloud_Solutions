@@ -33,7 +33,7 @@ export const Header = () => {
               Игровые
             </a>
             */}
-            {/*===== Временно скрыто === */}
+            {/*===== Временно скрыто === 
             <a
               href="/vpn"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
