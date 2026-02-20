@@ -1,7 +1,10 @@
 {
-  "vpn-posts": "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9",
-  "onedash-proxy": "https://functions.poehali.dev/5bdf179c-9b43-46eb-a042-c52b651f946c",
   "auth-social": "https://functions.poehali.dev/b41c80f0-ea03-4690-aeed-e4161955b6f9",
+  "uptime-monitor": "https://functions.poehali.dev/6941acec-bbea-4d5b-bf20-ecdbe1d872cd",
+  "uptime-checker": "https://functions.poehali.dev/7da24ed4-141e-4454-88ce-17f66c8f98da",
+  "redirect": "https://functions.poehali.dev/562b0684-4d1d-44b7-b48e-35caea154b20",
+  "auth-oauth": "https://functions.poehali.dev/77aa7fd4-d3f8-4446-ac8a-403c30251a54",
+  "feedback": "https://functions.poehali.dev/57569d96-5fa9-4681-99ff-ecf0bcac037f",
   "visitors": "https://functions.poehali.dev/94b30990-d971-403f-a237-849453d2ec73",
   "clicks": "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
   "auth": "https://functions.poehali.dev/ccab6b74-68f9-4520-ad0e-701c27393f9d",

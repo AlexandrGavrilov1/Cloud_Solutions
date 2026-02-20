@@ -21,8 +21,11 @@ export const UptimeChartHeader = ({
           </span>
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground px-4">
-          Uptime провайдеров
+          Uptime провайдеров за 2025 год
         </h2>
+        <p className="text-base md:text-xl text-muted-foreground px-4">
+          Реальная статистика доступности серверов
+        </p>
       </div>
 
       <div className="bg-gradient-to-br from-card via-card to-accent/20 border-2 border-border rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">

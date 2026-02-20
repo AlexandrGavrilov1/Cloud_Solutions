@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
-@import url("https://fonts.cdnfonts.com/css/tt-travels-next-trial");
 
 @tailwind base;
 @tailwind components;
@@ -233,64 +232,3 @@
     }
   }
 }
-
-/* ===== Дополнительные стили для статей (красная строка, скролл кода) ===== */
-.prose h2 + p,
-.prose h3 + p,
-.prose h4 + p {
-  text-indent: 2rem; /* Красная строка для первого абзаца после заголовков */
-}
-
-.prose pre {
-  overflow-x: auto; /* Горизонтальный скролл для блоков кода */
-  white-space: pre;
-  word-wrap: normal;
-}
-/* Отступы для контента статьи (усиленный селектор) */
-body div[data-color-mode="light"] > div.wmde-markdown {
-  padding: 2rem 3rem !important;
-}
-/* Стили для маркированных и нумерованных списков в статьях */
-.wmde-markdown ul {
-  list-style-type: disc !important;
-  padding-left: 2rem !important;
-}
-
-.wmde-markdown ol {
-  list-style-type: decimal !important;
-  padding-left: 2rem !important;
-}
-
-.wmde-markdown li {
-  margin-bottom: 0.25rem !important;
-}
-
-/* Отступы для контента статьи (усиленный селектор) */
-body div[data-color-mode="light"] > div.wmde-markdown,
-body div[data-color-mode="dark"] > div.wmde-markdown {
-  padding: 2rem 3rem !important;
-}
-
-/* Стили для маркированных и нумерованных списков в статьях */
-.wmde-markdown ul {
-  list-style-type: disc !important;
-  padding-left: 2rem !important;
-}
-
-.wmde-markdown ol {
-  list-style-type: decimal !important;
-  padding-left: 2rem !important;
-}
-
-.wmde-markdown li {
-  margin-bottom: 0.25rem !important;
-}
-
-/* === 3. Центрирование изображений в статьях === */
-.wmde-markdown img {
-  display: block !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-/* Дополнительно: можно добавить скругление и тени для блоков кода, 
-   но они уже заданы в компоненте через className */

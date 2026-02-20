@@ -7,18 +7,16 @@ interface MonthlyData {
 interface MonthlyUptimeGraphProps {
   data: MonthlyData[];
   providerId: number;
-  year: number;
 }
 
 export const MonthlyUptimeGraph = ({
   data,
   providerId,
-  year,
 }: MonthlyUptimeGraphProps) => {
   return (
     <div className="border-t border-border pt-3 md:pt-4">
       <h4 className="text-xs md:text-sm font-bold text-foreground mb-3 md:mb-4">
-        График Uptime по месяцам {year}
+        График Uptime по месяцам 2025
       </h4>
 
       <div className="relative h-48 md:h-64 mb-2">
@@ -116,9 +114,21 @@ export const MonthlyUptimeGraph = ({
                 const x = segmentWidth * idx + segmentWidth / 2;
                 let y = 200 - (normalizedHeight / 100) * 200;
 
+                const isProvider14JuneOrSeptember =
+                  providerId === 14 && (idx === 5 || idx === 8);
+                const isProvider15 = providerId === 15 && idx >= 7;
+                const isProvider7May = providerId === 7 && idx === 4;
+
                 if (dataPoint.uptime < 99.5) {
                   y = 200;
                 }
+                // if (
+                //   isProvider14JuneOrSeptember ||
+                //   isProvider15 ||
+                //   isProvider7May
+                // ) {
+                //   y = 200;
+                // }
 
                 let fillColor = "rgb(0, 128, 0)";
                 if (dataPoint.uptime < 99.5) {
@@ -147,7 +157,7 @@ export const MonthlyUptimeGraph = ({
                       textAnchor="middle"
                       fontSize="9"
                       className="hidden md:block md:text-[10px]"
-                      fill={fillColor}
+                      fill="currentColor"
                       fontWeight="600"
                       style={{
                         animation: `pointAppear 0.4s ease-out ${idx * 0.05 + 0.3}s both`,
@@ -186,11 +196,11 @@ export const MonthlyUptimeGraph = ({
       <div className="flex flex-wrap items-center gap-2 md:gap-4 text-[10px] md:text-xs mt-3 md:mt-4 pt-2 border-t border-border">
         <div className="flex items-center gap-1 md:gap-1.5">
           <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-green-500"></div>
-          <span className="text-muted-foreground">≥ 99.95%</span>
+          <span className="text-muted-foreground">100%</span>
         </div>
         <div className="flex items-center gap-1 md:gap-1.5">
           <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-orange-500"></div>
-          <span className="text-muted-foreground">99.5% - 99.94%</span>
+          <span className="text-muted-foreground">99.5-99.99%</span>
         </div>
         <div className="flex items-center gap-1 md:gap-1.5">
           <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded bg-red-500"></div>

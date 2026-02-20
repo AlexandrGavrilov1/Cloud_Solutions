@@ -67,7 +67,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         
-        query = f"SELECT id, username, password_hash FROM t_p4153566_vds_rating_portal.admin_users WHERE username = '{username_escaped}'"
+        query = f"SELECT id, username, password_hash FROM admin_users WHERE username = '{username_escaped}'"
         cursor.execute(query)
         
         db_user = cursor.fetchone()
@@ -94,7 +94,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         token = secrets.token_urlsafe(32)
         
         cursor.execute(
-            f"INSERT INTO t_p4153566_vds_rating_portal.admin_tokens (user_id, token) VALUES ({user['id']}, '{token}') ON CONFLICT (user_id) DO UPDATE SET token = EXCLUDED.token, created_at = CURRENT_TIMESTAMP"
+            f"INSERT INTO admin_tokens (user_id, token) VALUES ({user['id']}, '{token}') ON CONFLICT (user_id) DO UPDATE SET token = EXCLUDED.token, created_at = CURRENT_TIMESTAMP"
         )
         conn.commit()
         cursor.close()
@@ -133,7 +133,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute(
-            f"SELECT u.id, u.username FROM t_p4153566_vds_rating_portal.admin_tokens t JOIN t_p4153566_vds_rating_portal.admin_users u ON t.user_id = u.id WHERE t.token = '{token_escaped}' AND t.created_at > NOW() - INTERVAL '7 days'"
+            f"SELECT u.id, u.username FROM admin_tokens t JOIN admin_users u ON t.user_id = u.id WHERE t.token = '{token_escaped}' AND t.created_at > NOW() - INTERVAL '7 days'"
         )
         
         user = cursor.fetchone()

@@ -100,47 +100,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     if method == 'GET':
         params = event.get('queryStringParameters') or {}
-        request_type = params.get('type')
-        
-        if request_type == 'stats':
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                SELECT 
-                    provider_id,
-                    COUNT(*) as registrations,
-                    COALESCE(SUM(balance), 0) as total_balance,
-                    COUNT(*) FILTER (WHERE registration_date::date = CURRENT_DATE) as registrations_today,
-                    COALESCE(SUM(balance) FILTER (WHERE registration_date::date = CURRENT_DATE), 0) as balance_today
-                FROM provider_registrations
-                GROUP BY provider_id
-                ORDER BY total_balance DESC
-                """
-            )
-            results = cursor.fetchall()
-            cursor.close()
-            conn.close()
-            
-            stats = []
-            for row in results:
-                stats.append({
-                    'provider_id': row[0],
-                    'registrations': row[1],
-                    'balance': float(row[2]),
-                    'registrations_today': row[3],
-                    'balance_today': float(row[4])
-                })
-            
-            return {
-                'statusCode': 200,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                'body': json.dumps({'stats': stats}),
-                'isBase64Encoded': False
-            }
-        
         provider_id = params.get('provider_id')
         status = params.get('status', 'approved')
         

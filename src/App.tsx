@@ -1,4 +1,4 @@
-// src/App.tsx
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,10 +17,6 @@ import Uptime from "./pages/Uptime";
 import Promo from "./pages/Promo";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-// ===== ДОБАВЛЕНО =====
-import Vpn from "./pages/Vpn";
-import VpnPost from "./pages/VpnPost";
-// =====================
 import AIData from "./pages/AIData";
 import Gaming from "./pages/Gaming";
 import AuthCallback from "./pages/AuthCallback";
@@ -34,20 +30,17 @@ const VisitorTracker = () => {
   useEffect(() => {
     const trackVisitor = async () => {
       try {
-        await fetch(
-          "https://functions.poehali.dev/94b30990-d971-403f-a237-849453d2ec73",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+        await fetch('https://functions.poehali.dev/94b30990-d971-403f-a237-849453d2ec73', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+        });
       } catch (error) {
-        console.error("Error tracking visitor:", error);
+        console.error('Error tracking visitor:', error);
       }
     };
-
+    
     trackVisitor();
     notifySitemapUpdate();
   }, []);
@@ -55,7 +48,7 @@ const VisitorTracker = () => {
   useEffect(() => {
     notifyPageUpdate(location.pathname);
   }, [location.pathname]);
-
+  
   return null;
 };
 
@@ -78,10 +71,6 @@ const App = () => (
               <Route path="/promo" element={<Promo />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
-              {/* ===== ДОБАВЛЕНО ===== */}
-              <Route path="/vpn" element={<Vpn />} />
-              <Route path="/vpn/:slug" element={<VpnPost />} />
-              {/* ===================== */}
               <Route path="/ai-data" element={<AIData />} />
               <Route path="/gaming" element={<Gaming />} />
               <Route path="/auth/callback" element={<AuthCallback />} />

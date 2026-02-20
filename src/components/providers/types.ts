@@ -1,4 +1,3 @@
-// types.ts
 export interface Review {
   author: string;
   text: string;
@@ -24,13 +23,6 @@ export interface TechnicalSpecs {
     available: boolean;
     managed: boolean;
   };
-  // Добавляем поддержку GPU
-  gpuModels?: string[];
-  // Добавляем поддержку 1C
-  supports1C?: boolean;
-  // Добавляем поддержку AI
-  supportsAI?: boolean;
-  aiFeatures?: string[];
 }
 
 export interface ServiceGuarantees {
@@ -53,7 +45,7 @@ export interface PricingDetails {
     percent: number;
   }[];
   paymentMethods: string[];
-  minPrice?: number;
+  minPrice: number;
 }
 
 export interface MonthlyUptime {
@@ -62,6 +54,7 @@ export interface MonthlyUptime {
   downtime_minutes: number;
 }
 
+// Новые типы для данных регистрации (теперь просто массив строк)
 export type RegistrationDataField =
   | "ФИО"
   | "Email"
@@ -77,51 +70,24 @@ export type RegistrationDataField =
   | "Регистрация в сторонних сервисах"
   | "Скан удостоверения личности";
 
-export type ClientType = "Физлицо" | "Юрлицо";
-
-export type AdditionalServiceType =
-  | "Аудит инфраструктуры"
-  | "Проектирование инфраструктуры"
-  | "Миграция в облако"
-  | "Импортозамещение"
-  | "Консультация по ИБ"
-  | "Аттестация по ФСТЭК"
-  | "Другие гос. лицензии";
-
-// Добавляем интерфейс для реферальной программы
-export interface ReferralProgram {
-  available: boolean;
-  commissionRules: {
-    service: string;
-    commission: string;
-  }[];
-  minPayout?: number;
-  payoutMethods?: string[];
-}
-
-// Добавляем интерфейс для контактов
-export interface ContactInfo {
-  website?: string;
-  email?: string;
-  phone?: string;
-  supportEmail?: string;
-  salesEmail?: string;
-  address?: string;
-  workingHours?: string;
-  socialMedia?: {
-    telegram?: string;
-    vkontakte?: string;
-    youtube?: string;
-    habr?: string;
-  };
-}
+export type ClientType =
+  | "Физлицо"
+  | "Самозанятый"
+  | "ИП"
+  | "ООО"
+  | "НКО"
+  | "Госучреждение"
+  | "Иностранная компания";
 
 export interface Provider {
   id: number;
   name: string;
   logo: string;
   rating: number;
-  basePrice: number; // Только число, 0 = "цена по запросу"
+  basePrice: number;
+  cpuPrice: number;
+  ramPrice: number;
+  storagePrice: number;
   features: string[];
   locations: string[];
   trialDays?: number;
@@ -131,15 +97,22 @@ export interface Provider {
   reviews: Review[];
   fz152Compliant: boolean;
   fz152Level?: string;
+
+  // Обновленные поля для ФСТЭК
   fstekCompliant: boolean;
   fstekCertifications: string[];
   fstekLevel?: string;
+
+  // Новые поля
   kiiPlacement: boolean;
   mobileApp: boolean;
   orderBeforeRegistration: boolean;
-  additionalServicesList: AdditionalServiceType[];
+  itConsulting: string[];
+
+  // Обновленные поля для данных регистрации и типа клиента (теперь массивы строк)
   registrationData: RegistrationDataField[];
   supportedClientTypes: ClientType[];
+
   technicalSpecs: TechnicalSpecs;
   serviceGuarantees: ServiceGuarantees;
   additionalServices: AdditionalServices;
@@ -149,8 +122,10 @@ export interface Provider {
   caseStudies?: string[];
   uptime30days?: number;
   monthlyUptimeData?: MonthlyUptime[];
-  // Добавляем новые поля
-  about?: string; // Описание провайдера
-  contactInfo?: ContactInfo; // Контактная информация
-  referralProgram?: ReferralProgram; // Реферальная программа
+}
+
+export interface ResourceConfig {
+  cpu: number;
+  ram: number;
+  storage: number;
 }
