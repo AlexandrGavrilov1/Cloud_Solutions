@@ -24,6 +24,15 @@
       "expectedStatus": 401,
       "expectedBody": {"error": "string"},
       "bodyMatcher": "partial"
+    },
+    {
+      "name": "Delete without auth",
+      "method": "DELETE",
+      "path": "/",
+      "body": {"slug": "test-nonexistent"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
     }
   ]
 }

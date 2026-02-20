@@ -18,17 +18,18 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    slug: 'managed-servisy-dlya-biznesa',
-    title: 'Managed сервисы для бизнеса: Когда стоит доплатить за управление',
-    excerpt: 'Разбираемся, что такое managed сервисы, чем они отличаются от обычного VPS и когда переплата за управление серверами оправдана для вашего бизнеса.',
-    author: 'Команда VPS Rating',
-    date: '23.11.2025',
-    datePublished: '2025-11-23T14:00:00+03:00',
-    dateModified: '2025-11-23T14:00:00+03:00',
-    readTime: '9 мин',
-    category: 'Руководства',
-    tags: ['Managed', 'VPS', 'Бизнес', 'Управление'],
-    image: 'https://cdn.poehali.dev/files/blog-managed.jpg',
+    slug: "managed-servisy-dlya-biznesa",
+    title: "Managed сервисы для бизнеса: Когда стоит доплатить за управление",
+    excerpt:
+      "Разбираемся, что такое managed сервисы, чем они отличаются от обычного VPS и когда переплата за управление серверами оправдана для вашего бизнеса.",
+    author: "Команда TopCloudhub",
+    date: "23.11.2025",
+    datePublished: "2025-11-23T14:00:00+03:00",
+    dateModified: "2025-11-23T14:00:00+03:00",
+    readTime: "9 мин",
+    category: "Руководства",
+    tags: ["Managed", "VPS", "Бизнес", "Управление"],
+    image: "https://cdn.poehali.dev/files/blog-managed.jpg",
     views: 0,
     content: `# Managed сервисы для бизнеса: Когда стоит доплатить за управление
 
@@ -199,21 +200,22 @@ Managed сервисы — это инвестиция в своё время и
 
 **Золотое правило**: Если час вашего времени стоит больше, чем стоимость managed услуги, — берите managed.
 
-Для крупных проектов нужна команда DevOps, но managed покрывает базовые задачи и даёт вашим инженерам больше времени на развитие продукта.`
+Для крупных проектов нужна команда DevOps, но managed покрывает базовые задачи и даёт вашим инженерам больше времени на развитие продукта.`,
   },
   {
     id: 2,
-    slug: 'kak-vybrat-vps-hosting-2025',
-    title: 'Как выбрать VPS хостинг в 2025 году: Полное руководство',
-    excerpt: 'Подробное руководство по выбору VPS хостинга: от анализа требований проекта до сравнения провайдеров. Узнайте, на что обратить внимание при выборе виртуального сервера.',
-    author: 'Команда VPS Rating',
-    date: '09.11.2025',
-    datePublished: '2025-11-09T10:00:00+03:00',
-    dateModified: '2025-11-23T10:00:00+03:00',
-    readTime: '8 мин',
-    category: 'Руководства',
-    tags: ['VPS', 'Хостинг', 'Выбор провайдера'],
-    image: 'https://cdn.poehali.dev/files/blog-vps-choice.jpg',
+    slug: "kak-vybrat-vps-hosting-2025",
+    title: "Как выбрать VPS хостинг в 2025 году: Полное руководство",
+    excerpt:
+      "Подробное руководство по выбору VPS хостинга: от анализа требований проекта до сравнения провайдеров. Узнайте, на что обратить внимание при выборе виртуального сервера.",
+    author: "Команда TopCloudhub",
+    date: "09.11.2025",
+    datePublished: "2025-11-09T10:00:00+03:00",
+    dateModified: "2025-11-23T10:00:00+03:00",
+    readTime: "8 мин",
+    category: "Руководства",
+    tags: ["VPS", "Хостинг", "Выбор провайдера"],
+    image: "https://cdn.poehali.dev/files/blog-vps-choice.jpg",
     views: 0,
     content: `# Как выбрать VPS хостинг в 2025 году: Полное руководство
 
@@ -260,19 +262,20 @@ VPS (Virtual Private Server) — это виртуальный выделенн�
 
 ## Заключение
 
-Правильный выбор VPS хостинга — это баланс между производительностью, надёжностью и стоимостью.`
+Правильный выбор VPS хостинга — это баланс между производительностью, надёжностью и стоимостью.`,
   },
   {
     id: 2,
-    slug: 'kak-vybrat-vps-hosting-2025',
-    title: 'NVMe vs SSD: В чём разница и что выбрать для VPS?',
-    excerpt: 'Подробное сравнение NVMe и SSD дисков для VPS хостинга. Тесты производительности, реальные примеры и рекомендации по выбору типа диска для разных проектов.',
-    author: 'Команда VPS Rating',
-    date: '08.11.2025',
-    readTime: '6 мин',
-    category: 'Технологии',
-    tags: ['NVMe', 'SSD', 'Производительность'],
-    image: 'https://cdn.poehali.dev/files/blog-nvme-ssd.jpg',
+    slug: "kak-vybrat-vps-hosting-2025",
+    title: "NVMe vs SSD: В чём разница и что выбрать для VPS?",
+    excerpt:
+      "Подробное сравнение NVMe и SSD дисков для VPS хостинга. Тесты производительности, реальные примеры и рекомендации по выбору типа диска для разных проектов.",
+    author: "Команда TopCloudhub",
+    date: "08.11.2025",
+    readTime: "6 мин",
+    category: "Технологии",
+    tags: ["NVMe", "SSD", "Производительность"],
+    image: "https://cdn.poehali.dev/files/blog-nvme-ssd.jpg",
     views: 0,
     content: `# NVMe vs SSD: В чём разница и что выбрать для VPS?
 
@@ -338,19 +341,20 @@ SSD достаточно для:
 
 1. NVMe в 3-10 раз быстрее обычных SSD в реальных задачах
 2. Для production проектов выбирайте NVMe
-3. Переплата 30-50% оправдана увеличением производительности.`
+3. Переплата 30-50% оправдана увеличением производительности.`,
   },
   {
     id: 3,
-    slug: 'nvme-vs-ssd-sravnenie',
-    title: 'Миграция сайта на VPS: Пошаговая инструкция',
-    excerpt: 'Подробное руководство по переносу сайта с shared-хостинга на VPS. Инструкции для WordPress, Drupal, Laravel и других CMS. Без простоев и потери данных.',
-    author: 'Команда VPS Rating',
-    date: '07.11.2025',
-    readTime: '10 мин',
-    category: 'Руководства',
-    tags: ['Миграция', 'VPS', 'WordPress', 'Инструкция'],
-    image: 'https://cdn.poehali.dev/files/blog-migration.jpg',
+    slug: "nvme-vs-ssd-sravnenie",
+    title: "Миграция сайта на VPS: Пошаговая инструкция",
+    excerpt:
+      "Подробное руководство по переносу сайта с shared-хостинга на VPS. Инструкции для WordPress, Drupal, Laravel и других CMS. Без простоев и потери данных.",
+    author: "Команда TopCloudhub",
+    date: "07.11.2025",
+    readTime: "10 мин",
+    category: "Руководства",
+    tags: ["Миграция", "VPS", "WordPress", "Инструкция"],
+    image: "https://cdn.poehali.dev/files/blog-migration.jpg",
     views: 0,
     content: `# Миграция сайта на VPS: Пошаговая инструкция
 
@@ -430,19 +434,20 @@ SSD достаточно для:
 - Главная страница открывается
 - Авторизация работает
 - Формы отправляются
-- Изображения загружаются`
+- Изображения загружаются`,
   },
   {
     id: 4,
-    slug: 'migraciya-na-vps-instrukciya',
-    title: '152-ФЗ для сайтов: Что нужно знать владельцам бизнеса',
-    excerpt: 'Федеральный закон о персональных данных простым языком. Когда нужен хостинг с 152-ФЗ, какие штрафы за нарушение и как выбрать сертифицированный дата-центр.',
-    author: 'Команда VPS Rating',
-    date: '06.11.2025',
-    readTime: '7 мин',
-    category: 'Право',
-    tags: ['152-ФЗ', 'Безопасность', 'Законодательство'],
-    image: 'https://cdn.poehali.dev/files/blog-152fz.jpg',
+    slug: "migraciya-na-vps-instrukciya",
+    title: "152-ФЗ для сайтов: Что нужно знать владельцам бизнеса",
+    excerpt:
+      "Федеральный закон о персональных данных простым языком. Когда нужен хостинг с 152-ФЗ, какие штрафы за нарушение и как выбрать сертифицированный дата-центр.",
+    author: "Команда TopCloudhub",
+    date: "06.11.2025",
+    readTime: "7 мин",
+    category: "Право",
+    tags: ["152-ФЗ", "Безопасность", "Законодательство"],
+    image: "https://cdn.poehali.dev/files/blog-152fz.jpg",
     views: 0,
     content: `# 152-ФЗ для сайтов: Что нужно знать владельцам бизнеса
 
@@ -479,19 +484,20 @@ SSD достаточно для:
 
 ## Заключение
 
-Соблюдение 152-ФЗ — обязательное требование для бизнеса, работающего с персональными данными.`
+Соблюдение 152-ФЗ — обязательное требование для бизнеса, работающего с персональными данными.`,
   },
   {
     id: 5,
-    slug: 'ddos-zaschita-vps',
-    title: 'DDoS защита для VPS: Нужна ли и как выбрать?',
-    excerpt: 'Всё о DDoS атаках на VPS: типы угроз, методы защиты, сравнение решений от провайдеров. Узнайте, как защитить свой сайт от атак без переплаты.',
-    author: 'Команда VPS Rating',
-    date: '05.11.2025',
-    readTime: '9 мин',
-    category: 'Безопасность',
-    tags: ['DDoS', 'Безопасность', 'Защита'],
-    image: 'https://cdn.poehali.dev/files/blog-ddos.jpg',
+    slug: "ddos-zaschita-vps",
+    title: "DDoS защита для VPS: Нужна ли и как выбрать?",
+    excerpt:
+      "Всё о DDoS атаках на VPS: типы угроз, методы защиты, сравнение решений от провайдеров. Узнайте, как защитить свой сайт от атак без переплаты.",
+    author: "Команда VPS Rating",
+    date: "05.11.2025",
+    readTime: "9 мин",
+    category: "Безопасность",
+    tags: ["DDoS", "Безопасность", "Защита"],
+    image: "https://cdn.poehali.dev/files/blog-ddos.jpg",
     views: 0,
     content: `# DDoS защита для VPS: Нужна ли и как выбрать?
 
@@ -560,19 +566,20 @@ DDoS (Distributed Denial of Service) — атака на сервер множе
 
 ## Заключение
 
-DDoS защита — важный элемент безопасности для любого серьёзного проекта.`
+DDoS защита — важный элемент безопасности для любого серьёзного проекта.`,
   },
   {
     id: 6,
-    slug: 'kubernetes-na-vps-2025',
-    title: 'Kubernetes на VPS: Полный гайд по развертыванию в 2025',
-    excerpt: 'Пошаговое руководство по установке и настройке Kubernetes кластера на VPS. От выбора конфигурации до мониторинга. Реальные примеры и best practices для production.',
-    author: 'Команда VPS Rating',
-    date: '10.11.2025',
-    readTime: '12 мин',
-    category: 'Технологии',
-    tags: ['Kubernetes', 'DevOps', 'Контейнеризация', 'Production'],
-    image: 'https://cdn.poehali.dev/files/blog-kubernetes.jpg',
+    slug: "kubernetes-na-vps-2025",
+    title: "Kubernetes на VPS: Полный гайд по развертыванию в 2025",
+    excerpt:
+      "Пошаговое руководство по установке и настройке Kubernetes кластера на VPS. От выбора конфигурации до мониторинга. Реальные примеры и best practices для production.",
+    author: "Команда VPS Rating",
+    date: "10.11.2025",
+    readTime: "12 мин",
+    category: "Технологии",
+    tags: ["Kubernetes", "DevOps", "Контейнеризация", "Production"],
+    image: "https://cdn.poehali.dev/files/blog-kubernetes.jpg",
     views: 0,
     content: `# Kubernetes на VPS: Полный гайд по развертыванию в 2025
 
@@ -817,19 +824,20 @@ Kubernetes на VPS — отличное решение для тех, кто:
 - Официальная документация Kubernetes
 - K3s документация (k3s.io)
 - Awesome Kubernetes (список инструментов и гайдов)
-- r/kubernetes — сообщество на Reddit`
+- r/kubernetes — сообщество на Reddit`,
   },
   {
     id: 6,
-    slug: 'kubernetes-na-vps-polnoe-rukovodstvo',
-    title: 'Kubernetes на VPS: Полное руководство по развёртыванию',
-    excerpt: 'Пошаговое руководство по установке и настройке Kubernetes кластера на VPS. Узнайте, как развернуть K8s с минимальными ресурсами и какие провайдеры лучше подходят для контейнеризации.',
-    author: 'Команда VPS Rating',
-    date: '14.11.2025',
-    readTime: '12 мин',
-    category: 'Технологии',
-    tags: ['Kubernetes', 'Docker', 'Контейнеры', 'DevOps'],
-    image: 'https://cdn.poehali.dev/files/blog-kubernetes.jpg',
+    slug: "kubernetes-na-vps-polnoe-rukovodstvo",
+    title: "Kubernetes на VPS: Полное руководство по развёртыванию",
+    excerpt:
+      "Пошаговое руководство по установке и настройке Kubernetes кластера на VPS. Узнайте, как развернуть K8s с минимальными ресурсами и какие провайдеры лучше подходят для контейнеризации.",
+    author: "Команда VPS Rating",
+    date: "14.11.2025",
+    readTime: "12 мин",
+    category: "Технологии",
+    tags: ["Kubernetes", "Docker", "Контейнеры", "DevOps"],
+    image: "https://cdn.poehali.dev/files/blog-kubernetes.jpg",
     content: `# Kubernetes на VPS: Полное руководство по развёртыванию
 
 Kubernetes (K8s) — стандарт оркестрации контейнеров для современных приложений. В этом руководстве разберём, как развернуть полноценный кластер на VPS серверах.
@@ -1097,8 +1105,14 @@ Kubernetes на VPS — реальный и экономичный вариан�
 ✅ Мониторинг и бэкапы etcd — обязательны
 
 Для начала рекомендуем попробовать managed решения (Selectel, REG.RU) — это проще и надёжнее. Self-hosted K8s оправдан для крупных проектов с DevOps командой.`,
-    views: 0
+    views: 0,
   },
 ];
 
-export const blogCategories = ['Все', 'Руководства', 'Технологии', 'Безопасность', 'Право'];
+export const blogCategories = [
+  "Все",
+  "Руководства",
+  "Технологии",
+  "Безопасность",
+  "Право",
+];
