@@ -547,7 +547,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="w-full px-4 lg:px-8 py-4">
+    <section id="providers" className="w-full px-4 lg:px-[3.5cm] py-4">
       {isMobile ? (
         // ========== МОБИЛЬНАЯ ВЕРСИЯ (≤850px) ==========
         <div className="flex flex-col">
