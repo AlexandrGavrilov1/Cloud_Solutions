@@ -99,8 +99,8 @@ const VpnPost = () => {
 
       <main>
         <article className="pt-32 pb-16">
-          {/* Внешний контейнер на всю ширину с отступами 3.5 см (как в Header) */}
-          <div className="w-full px-4 lg:px-[3.5cm]">
+          {/* Внешний контейнер на всю ширину с отступами, синхронизированными с хедером */}
+          <div className="w-full px-4 3xl:px-[185px]">
             {/* Кнопка возврата */}
             <Link
               to="/vpn"
@@ -275,7 +275,7 @@ const VpnPost = () => {
         {/* Похожие статьи */}
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-accent/30">
-            <div className="w-full px-4 lg:px-[3.5cm]">
+            <div className="w-full px-4 3xl:px-[185px]">
               <h2 className="text-3xl font-extrabold text-foreground mb-8">
                 Похожие статьи
               </h2>
