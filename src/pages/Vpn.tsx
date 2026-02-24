@@ -65,10 +65,9 @@ const Vpn = () => {
         <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]"></div>
           <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/20 rounded-full blur-[120px]"></div>
-          {/* Внешний контейнер на всю ширину с отступами как в Header и VpnPost */}
+          {/* Изменено: container mx-auto px-4 lg:px-8 → w-full px-4 3xl:px-[185px] */}
           <div className="w-full px-4 3xl:px-[185px] relative z-10">
-            {/* Убраны внутренние ограничители max-w-4xl и mx-auto, контент занимает всю ширину с отступами */}
-            <div className="text-center space-y-6">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
               <div className="inline-flex items-center gap-2 bg-accent border border-primary/30 rounded-full px-5 py-2.5">
                 <Icon name="Shield" size={16} className="text-primary" />
                 <span className="text-sm font-bold text-primary">
@@ -78,7 +77,7 @@ const Vpn = () => {
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground leading-tight">
                 Собственный VPN на VPS
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground">
+              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
                 Пошаговые руководства по развертыванию безопасных VPN серверов
               </p>
             </div>
@@ -87,7 +86,7 @@ const Vpn = () => {
 
         {/* Сетка статей */}
         <section className="py-12 pb-24">
-          {/* Внешний контейнер на всю ширину с отступами */}
+          {/* Изменено: container mx-auto px-4 lg:px-8 → w-full px-4 3xl:px-[185px] */}
           <div className="w-full px-4 3xl:px-[185px]">
             {posts.length === 0 ? (
               <div className="text-center py-16">
@@ -101,8 +100,7 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              {/* Убраны max-w-7xl и mx-auto, сетка теперь на всю ширину с отступами */}
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                 {posts.map((post) => (
                   <VpnCard key={post.id} post={post} />
                 ))}
