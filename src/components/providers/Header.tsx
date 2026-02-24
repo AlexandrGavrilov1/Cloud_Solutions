@@ -21,7 +21,7 @@ export const Header = () => {
             className="flex items-center hover:opacity-90 transition-opacity"
           >
             <img
-              src="https://cdn.poehali.dev/files/58a4ec73-d599-4708-9d67-43780b87fd56.png"
+              src="/TCH_logo/logo_v9.png"
               alt="TopCloudHub Logo"
               className="h-[60px] w-auto transition-opacity duration-300"
             />
