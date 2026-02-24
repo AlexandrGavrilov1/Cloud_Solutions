@@ -99,7 +99,8 @@ const VpnPost = () => {
 
       <main>
         <article className="pt-32 pb-16">
-          <div className="container mx-auto px-4 lg:px-8">
+          {/* ИЗМЕНЕНО: lg:px-8 → lg:px-[3.5cm] */}
+          <div className="container mx-auto px-4 lg:px-[3.5cm]">
             <div className="max-w-4xl mx-auto">
               {/* Кнопка возврата */}
               <Link
@@ -278,7 +279,8 @@ const VpnPost = () => {
         {/* Похожие статьи */}
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-accent/30">
-            <div className="container mx-auto px-4 lg:px-8">
+            {/* ИЗМЕНЕНО: lg:px-8 → lg:px-[3.5cm] */}
+            <div className="container mx-auto px-4 lg:px-[3.5cm]">
               <div className="max-w-6xl mx-auto">
                 <h2 className="text-3xl font-extrabold text-foreground mb-8">
                   Похожие статьи
