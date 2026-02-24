@@ -196,7 +196,7 @@ const VpnPost = () => {
                 </ReactMarkdown>
               </p>
 
-              {/* Тонкая линия (цвет из переменной border с прозрачностью) */}
+              {/* Тонкая линия */}
               <hr className="border-t border-border/50 my-6" />
 
               {/* Метаданные */}
@@ -337,11 +337,11 @@ const VpnPost = () => {
         )}
       </main>
 
-      {/* Кнопка прокрутки вверх */}
+      {/* Кнопка прокрутки вверх – справа по центру экрана */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
+          className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
           aria-label="Прокрутить вверх"
         >
           <Icon
