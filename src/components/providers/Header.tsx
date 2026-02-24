@@ -13,7 +13,7 @@ export const Header = () => {
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
       {/* Отступы: горизонтальные 185px на десктопе, вертикальные 20px везде */}
-      <div className="w-full px-4 py-5 lg:px-[185px]">
+      <div className="w-full px-4 py-5 3xl:px-[185px]>
         <div className="flex items-center h-16">
           {/* Логотип без изменений (сохраняем пропорции) */}
           <a
