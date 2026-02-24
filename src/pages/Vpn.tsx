@@ -65,8 +65,7 @@ const Vpn = () => {
         <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]"></div>
           <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/20 rounded-full blur-[120px]"></div>
-          {/* Изменено: lg:px-8 → lg:px-[185px] */}
-          <div className="container mx-auto px-4 lg:px-[185px] relative z-10">
+          <div className="container mx-auto px-4 lg:px-8 relative z-10">
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <div className="inline-flex items-center gap-2 bg-accent border border-primary/30 rounded-full px-5 py-2.5">
                 <Icon name="Shield" size={16} className="text-primary" />
@@ -86,8 +85,7 @@ const Vpn = () => {
 
         {/* Сетка статей */}
         <section className="py-12 pb-24">
-          {/* Изменено: lg:px-8 → lg:px-[185px] */}
-          <div className="container mx-auto px-4 lg:px-[185px]">
+          <div className="container mx-auto px-4 lg:px-8">
             {posts.length === 0 ? (
               <div className="text-center py-16">
                 <Icon
