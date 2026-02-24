@@ -12,10 +12,8 @@ export const Header = () => {
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Отступы: горизонтальные 185px на десктопе, вертикальные 20px везде */}
-      <div className="w-full px-4 py-5 lg:px-[185px]">
+      <div className="w-full px-4 lg:px-[3.5cm]">
         <div className="flex items-center h-16">
-          {/* Логотип с фиксированными размерами 217x46 */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -23,39 +21,35 @@ export const Header = () => {
             <img
               src="https://cdn.poehali.dev/files/58a4ec73-d599-4708-9d67-43780b87fd56.png"
               alt="TopCloudHub Logo"
-              className="w-[217px] h-[46px] transition-opacity duration-300"
+              className="h-[40px] w-auto transition-opacity duration-300"
             />
           </a>
-
-          {/* Десктопное меню */}
           <div className="hidden md:flex items-center gap-8 ml-12">
             <a
               href="/vpn"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
             <a
               href="/blog"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
             </a>
             <a
               href="/uptime"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
             </a>
             <a
               href="/promo"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
             </a>
           </div>
-
-          {/* Переключатель темы на десктопе */}
           <div className="hidden md:flex items-center ml-auto">
             <button
               onClick={toggleTheme}
@@ -70,7 +64,6 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Мобильные иконки (меню и тема) */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
@@ -96,8 +89,6 @@ export const Header = () => {
             </button>
           </div>
         </div>
-
-        {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
