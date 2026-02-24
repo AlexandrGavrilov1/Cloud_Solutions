@@ -14,7 +14,7 @@ export const Header = () => {
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#2B3038] border-b border-[#2B3038]">
       <div className="w-full px-4 lg:px-[3.5cm]">
         {" "}
-        {/* Изменено: отступы 3.5 см на десктопе */}
+        {/* Изменено: отступы 3.5 см на дестопе */}
         <div className="flex items-center h-16">
           <a
             href="/"
