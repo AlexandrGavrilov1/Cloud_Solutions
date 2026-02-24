@@ -12,7 +12,9 @@ export const Header = () => {
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#2B3038] border-b border-[#2B3038]">
-      <div className="w-full px-4 lg:px-8">
+      <div className="w-full px-4 lg:px-[3.5cm]">
+        {" "}
+        {/* Изменено: отступы 3.5 см на десктопе */}
         <div className="flex items-center h-16">
           <a
             href="/"
@@ -25,22 +27,12 @@ export const Header = () => {
             />
           </a>
           <div className="hidden md:flex items-center gap-8 ml-12">
-            {/* Временно скрыто
-            <a
-              href="/gaming"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
-            >
-              Игровые
-            </a>
-            */}
-            {/*===== Временно скрыто === */}
             <a
               href="/vpn"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
-            {/*=====================*/}
             <a
               href="/blog"
               className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
@@ -74,7 +66,6 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Мобильная шапка: иконки прижаты вправо и всегда белые */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
@@ -100,21 +91,9 @@ export const Header = () => {
             </button>
           </div>
         </div>
-
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
-              {/* Временно скрыто
-              <a
-                href="/gaming"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Icon name="Gamepad2" size={16} />
-                Игровые
-              </a>
-              */}
-              {/* ===== ДОБАВЛЕНО ===== */}
               <a
                 href="/vpn"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
@@ -123,7 +102,6 @@ export const Header = () => {
                 <Icon name="Lock" size={16} />
                 VPN
               </a>
-              {/* ===================== */}
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
