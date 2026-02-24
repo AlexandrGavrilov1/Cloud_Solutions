@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
@@ -20,6 +20,9 @@ const VpnPost = () => {
   const { data: post, isLoading, error } = useVpnPost(slug);
   const { theme } = useTheme();
 
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Похожие статьи (пока из статики)
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
@@ -32,9 +35,23 @@ const VpnPost = () => {
     }
   };
 
+  // Прокрутка вверх
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Отслеживание прокрутки для показа/скрытия кнопки
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-[#FEFDFF] flex items-center justify-center">
         <Icon name="Loader2" size={48} className="animate-spin text-primary" />
       </div>
     );
@@ -45,7 +62,7 @@ const VpnPost = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#FEFDFF]">
       <OpenGraph
         title={post.title}
         description={post.excerpt}
@@ -87,114 +104,120 @@ const VpnPost = () => {
         <article className="pt-32 pb-16">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto">
+              {/* Кнопка возврата */}
               <Link
                 to="/vpn"
-                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8"
+                className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors mb-8"
               >
                 <Icon name="ArrowLeft" size={20} />
                 <span className="font-semibold">Вернуться к разделу VPN</span>
               </Link>
 
-              <div className="mb-8">
-                <div className="flex flex-wrap items-center gap-3 mb-6">
-                  <Badge className="bg-primary/10 text-primary border-primary/30">
-                    {post.category}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {post.readTime}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {post.date}
-                  </span>
-                </div>
+              {/* Заголовок статьи (выровнен влево) */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-left">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    p: ({ children }) => <span>{children}</span>,
+                    h1: "span",
+                    h2: "span",
+                    h3: "span",
+                    h4: "span",
+                    h5: "span",
+                    h6: "span",
+                    ul: "span",
+                    ol: "span",
+                    li: "span",
+                    blockquote: "span",
+                    pre: "span",
+                    code: ({ inline, className, children, ...props }) => {
+                      if (inline)
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      return <span>{children}</span>;
+                    },
+                    a: ({ href, children, ...props }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        {...props}
+                      >
+                        {children}
+                      </a>
+                    ),
+                    img: () => null,
+                  }}
+                >
+                  {post.title}
+                </ReactMarkdown>
+              </h1>
 
-                {/* Заголовок с поддержкой Markdown и выравниванием по центру */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-center">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      p: ({ children }) => <span>{children}</span>,
-                      h1: "span",
-                      h2: "span",
-                      h3: "span",
-                      h4: "span",
-                      h5: "span",
-                      h6: "span",
-                      ul: "span",
-                      ol: "span",
-                      li: "span",
-                      blockquote: "span",
-                      pre: "span",
-                      code: ({ inline, className, children, ...props }) => {
-                        if (inline)
-                          return (
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          );
-                        return <span>{children}</span>;
-                      },
-                      a: ({ href, children, ...props }) => (
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          {...props}
-                        >
-                          {children}
-                        </a>
-                      ),
-                      img: () => null,
-                    }}
-                  >
-                    {post.title}
-                  </ReactMarkdown>
-                </h1>
+              {/* Краткое описание (выровнено влево) */}
+              <p className="text-lg text-muted-foreground mb-6 text-left">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    p: ({ children }) => <span>{children}</span>,
+                    h1: "span",
+                    h2: "span",
+                    h3: "span",
+                    h4: "span",
+                    h5: "span",
+                    h6: "span",
+                    ul: "span",
+                    ol: "span",
+                    li: "span",
+                    blockquote: "span",
+                    pre: "span",
+                    code: ({ inline, className, children, ...props }) => {
+                      if (inline)
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      return <span>{children}</span>;
+                    },
+                    a: ({ href, children, ...props }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        {...props}
+                      >
+                        {children}
+                      </a>
+                    ),
+                    img: () => null,
+                  }}
+                >
+                  {post.excerpt}
+                </ReactMarkdown>
+              </p>
 
-                {/* Описание с поддержкой Markdown и выравниванием по центру */}
-                <p className="text-lg text-muted-foreground mb-6 text-center">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      p: ({ children }) => <span>{children}</span>,
-                      h1: "span",
-                      h2: "span",
-                      h3: "span",
-                      h4: "span",
-                      h5: "span",
-                      h6: "span",
-                      ul: "span",
-                      ol: "span",
-                      li: "span",
-                      blockquote: "span",
-                      pre: "span",
-                      code: ({ inline, className, children, ...props }) => {
-                        if (inline)
-                          return (
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          );
-                        return <span>{children}</span>;
-                      },
-                      a: ({ href, children, ...props }) => (
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          {...props}
-                        >
-                          {children}
-                        </a>
-                      ),
-                      img: () => null,
-                    }}
-                  >
-                    {post.excerpt}
-                  </ReactMarkdown>
-                </p>
+              {/* Тонкая линия под описанием */}
+              <hr className="border-t border-[#272832]/50 my-6" />
+
+              {/* Метаданные: категория, дата, время */}
+              <div className="flex items-center gap-6 text-sm text-foreground mb-8">
+                {/* Категория без рамки, только цвет primary */}
+                <span className="text-primary font-medium">
+                  {post.category}
+                </span>
+                {/* Дата */}
+                <span>{post.date}</span>
+                {/* Время чтения с иконкой часов */}
+                <span className="flex items-center gap-1">
+                  <Icon name="Clock" size={14} className="text-foreground" />
+                  {post.readTime}
+                </span>
               </div>
 
+              {/* Изображение статьи (если есть) */}
               {post.image && (
                 <div className="w-full mb-12">
                   <img
@@ -225,6 +248,7 @@ const VpnPost = () => {
                 />
               </div>
 
+              {/* Теги */}
               <div className="mt-12 pt-8 border-t border-border">
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag, idx) => (
@@ -235,11 +259,12 @@ const VpnPost = () => {
                 </div>
               </div>
 
+              {/* Кнопка перехода к провайдеру */}
               {post.providerUrl && post.providerName && (
                 <div className="mt-8 text-center">
                   <Button
                     asChild
-                    className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg"
+                    className="bg-[#FF931F] text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg hover:bg-primary/90 transition-all"
                   >
                     <a
                       href={post.providerUrl}
@@ -256,6 +281,7 @@ const VpnPost = () => {
           </div>
         </article>
 
+        {/* Похожие статьи */}
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-accent/30">
             <div className="container mx-auto px-4 lg:px-8">
@@ -316,6 +342,21 @@ const VpnPost = () => {
           </section>
         )}
       </main>
+
+      {/* Кнопка прокрутки вверх */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-[#FF931F] transition-colors z-50"
+          aria-label="Прокрутить вверх"
+        >
+          <Icon
+            name="ArrowUp"
+            size={20}
+            className="text-foreground hover:text-white transition-colors"
+          />
+        </button>
+      )}
 
       <Footer />
     </div>
