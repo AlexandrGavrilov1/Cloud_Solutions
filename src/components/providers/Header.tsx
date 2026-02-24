@@ -23,7 +23,7 @@ export const Header = () => {
             <img
               src="https://cdn.poehali.dev/files/58a4ec73-d599-4708-9d67-43780b87fd56.png"
               alt="TopCloudHub Logo"
-              className="h-[48px] w-auto transition-opacity duration-300"
+              className="h-[60px] w-auto transition-opacity duration-300"
             />
           </a>
 
