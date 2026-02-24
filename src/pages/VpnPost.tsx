@@ -99,7 +99,7 @@ const VpnPost = () => {
 
       <main>
         <article className="pt-32 pb-16">
-          {/* Внешний контейнер на всю ширину с отступами, синхронизированными с хедером */}
+          {/* Внешний контейнер на всю ширину с отступами */}
           <div className="w-full px-4 3xl:px-[185px]">
             {/* Кнопка возврата */}
             <Link
@@ -220,8 +220,8 @@ const VpnPost = () => {
               </div>
             )}
 
-            {/* Контент с ограниченной шириной (теги и кнопка внутри) */}
-            <div className="max-w-[1050px] w-full">
+            {/* Контент с ограниченной шириной и центрированием */}
+            <div className="max-w-[1050px] w-full mx-auto">
               {/* Текст статьи */}
               <div data-color-mode={theme === "dark" ? "dark" : "light"}>
                 <MDEditor.Markdown
