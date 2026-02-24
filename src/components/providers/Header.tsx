@@ -23,7 +23,7 @@ export const Header = () => {
             <img
               src="/TCH_logo/logo_v9.png"
               alt="TopCloudHub Logo"
-              className="h-[60px] w-auto transition-opacity duration-300"
+              className="className="h-[40px] w-auto -mt-[2px] transition-opacity duration-300"
             />
           </a>
 
