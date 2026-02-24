@@ -304,5 +304,23 @@ body div[data-color-mode="dark"] > div.wmde-markdown {
   background-color: var(--tw-prose-pre-bg, #1e1e1e) !important;
   color: #f8f8f2 !important; /* Добавлено для читаемости текста в блоках кода */
 }
+/* Стили для кнопки копирования в блоках кода */
+.wmde-markdown pre .copied {
+  background-color: #ff931f !important; /* фон кнопки */
+  border-color: #ff931f !important; /* граница, если есть */
+}
+
+.wmde-markdown pre .copied svg {
+  stroke: #ffffff !important; /* цвет иконки (белый для контраста) */
+  fill: #ffffff !important;
+}
+
+/* Если нужно изменить цвет иконки на сам #FF931F (без фона), используйте: */
+/*
+.wmde-markdown pre .copied svg {
+  stroke: #FF931F !important;
+  fill: #FF931F !important;
+}
+*/
 /* Дополнительно: можно добавить скругление и тени для блоков кода, 
    но они уже заданы в компоненте через className */
