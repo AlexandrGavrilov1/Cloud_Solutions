@@ -292,5 +292,16 @@ body div[data-color-mode="dark"] > div.wmde-markdown {
   margin-left: auto !important;
   margin-right: auto !important;
 }
+/* Убираем белый фон у Markdown-контента, делаем его прозрачным */
+.wmde-markdown,
+.wmde-markdown-color {
+  background-color: transparent !important;
+}
+
+/* При этом сохраняем фон для блоков кода (чтобы они оставались тёмными) */
+.wmde-markdown pre,
+.wmde-markdown code {
+  background-color: var(--tw-prose-pre-bg, #1e1e1e) !important;
+}
 /* Дополнительно: можно добавить скругление и тени для блоков кода, 
    но они уже заданы в компоненте через className */
