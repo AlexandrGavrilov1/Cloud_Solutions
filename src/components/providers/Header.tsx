@@ -12,7 +12,8 @@ export const Header = () => {
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      <div className="w-full px-4 lg:px-[3.5cm]">
+      {/* Изменено: добавлены вертикальные отступы py-5 (20px) и горизонтаьные lg:px-[185px] */}
+      <div className="w-full px-4 py-5 lg:px-[185px]">
         <div className="flex items-center h-16">
           <a
             href="/"
@@ -89,6 +90,7 @@ export const Header = () => {
             </button>
           </div>
         </div>
+
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
