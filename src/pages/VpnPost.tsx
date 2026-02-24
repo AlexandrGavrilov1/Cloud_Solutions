@@ -209,7 +209,7 @@ const VpnPost = () => {
               </span>
             </div>
 
-            {/* Изображение статьи */}
+            {/* Изображение статьи (на всю ширину) */}
             {post.image && (
               <div className="w-full mb-12">
                 <img
@@ -220,55 +220,58 @@ const VpnPost = () => {
               </div>
             )}
 
-            {/* Контент */}
-            <div data-color-mode={theme === "dark" ? "dark" : "light"}>
-              <MDEditor.Markdown
-                source={post.content}
-                components={{
-                  img({ node, ...props }) {
-                    return (
-                      <a
-                        href={props.src}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img {...props} />
-                      </a>
-                    );
-                  },
-                }}
-              />
-            </div>
-
-            {/* Теги */}
-            <div className="mt-12 pt-8 border-t border-border">
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, idx) => (
-                  <Badge key={idx} variant="outline" className="text-sm">
-                    #{tag}
-                  </Badge>
-                ))}
+            {/* Контент с ограниченной шириной (теги и кнопка внутри) */}
+            <div className="max-w-[1050px] w-full">
+              {/* Текст статьи */}
+              <div data-color-mode={theme === "dark" ? "dark" : "light"}>
+                <MDEditor.Markdown
+                  source={post.content}
+                  components={{
+                    img({ node, ...props }) {
+                      return (
+                        <a
+                          href={props.src}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img {...props} />
+                        </a>
+                      );
+                    },
+                  }}
+                />
               </div>
-            </div>
 
-            {/* Кнопка провайдера */}
-            {post.providerUrl && post.providerName && (
-              <div className="mt-8 text-center">
-                <Button
-                  asChild
-                  className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg hover:bg-primary/90 transition-all"
-                >
-                  <a
-                    href={post.providerUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleProviderClick}
+              {/* Теги */}
+              <div className="mt-12 pt-8 border-t border-border">
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag, idx) => (
+                    <Badge key={idx} variant="outline" className="text-sm">
+                      #{tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Кнопка провайдера */}
+              {post.providerUrl && post.providerName && (
+                <div className="mt-8 text-center">
+                  <Button
+                    asChild
+                    className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg hover:bg-primary/90 transition-all"
                   >
-                    Перейти на {post.providerName}
-                  </a>
-                </Button>
-              </div>
-            )}
+                    <a
+                      href={post.providerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleProviderClick}
+                    >
+                      Перейти на {post.providerName}
+                    </a>
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </article>
 
