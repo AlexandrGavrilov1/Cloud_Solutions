@@ -12,9 +12,10 @@ export const Header = () => {
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Изменено: добавлены вертикальные отступы py-5 (20px) и горизонтаьные lg:px-[185px] */}
+      {/* Отступы: горизонтальные 185px на десктопе, вертикальные 20px везде */}
       <div className="w-full px-4 py-5 lg:px-[185px]">
         <div className="flex items-center h-16">
+          {/* Логотип без изменений (сохраняем пропорции) */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -25,32 +26,36 @@ export const Header = () => {
               className="h-[40px] w-auto transition-opacity duration-300"
             />
           </a>
+
+          {/* Десктопное меню (только для md и выше) */}
           <div className="hidden md:flex items-center gap-8 ml-12">
             <a
               href="/vpn"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
             <a
               href="/blog"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
             </a>
             <a
               href="/uptime"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
             </a>
             <a
               href="/promo"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
             </a>
           </div>
+
+          {/* Переключатель темы на десктопе (размер иконки 20px) */}
           <div className="hidden md:flex items-center ml-auto">
             <button
               onClick={toggleTheme}
@@ -59,12 +64,13 @@ export const Header = () => {
             >
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
-                size={18}
+                size={20}
                 className="text-white"
               />
             </button>
           </div>
 
+          {/* Мобильные иконки (оставляем как есть) */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
@@ -91,6 +97,7 @@ export const Header = () => {
           </div>
         </div>
 
+        {/* Мобильное выпадающее меню (без изменений) */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
