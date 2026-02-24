@@ -35,18 +35,19 @@ export const HeroSection = () => {
       </div>
 
       {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ — адаптивное ========== */}
+      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ — увеличенное и ближе к краю ========== */}
       <div
         className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
-                   right-0 sm:right-[5%] md:right-[8%] lg:right-[10%] xl:right-[12%]
-                   w-[250px] sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[550px]
-                   h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]"
+             right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]  /* уменьшены right */
+             w-[350px] sm:w-[450px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px]      /* увеличены размеры */
+             h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]"
       >
         <div
           className="absolute right-0 top-1/2 -translate-y-1/2 
-                     w-full h-full
-                     rounded-full
-                     blur-[50px] sm:blur-[60px] md:blur-[70px] lg:blur-[75px] xl:blur-[80px]
-                     opacity-70"
+               w-full h-full
+               rounded-full
+               blur-[60px] sm:blur-[70px] md:blur-[80px] lg:blur-[90px] xl:blur-[100px] 2xl:blur-[110px]  /* усилено размытие */
+               opacity-70"
           style={{
             background:
               "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
