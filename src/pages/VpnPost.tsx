@@ -99,8 +99,8 @@ const VpnPost = () => {
 
       <main>
         <article className="pt-32 pb-16">
-          {/* Внешний контейнер с отступами 3.5 см на десктопе */}
-          <div className="container mx-auto px-4 lg:px-[3.5cm]">
+          {/* Внешний контейнер на всю ширину с отступами 3.5 см (как в Header) */}
+          <div className="w-full px-4 lg:px-[3.5cm]">
             {/* Кнопка возврата */}
             <Link
               to="/vpn"
@@ -275,59 +275,57 @@ const VpnPost = () => {
         {/* Похожие статьи */}
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-accent/30">
-            <div className="container mx-auto px-4 lg:px-[3.5cm]">
-              <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl font-extrabold text-foreground mb-8">
-                  Похожие статьи
-                </h2>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost) => (
-                    <Link
-                      key={relatedPost.id}
-                      to={`/vpn/${relatedPost.slug}`}
-                      className="group"
-                    >
-                      <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
-                        <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-                          {relatedPost.image ? (
-                            <img
-                              src={relatedPost.image}
-                              alt={relatedPost.title}
-                              className="object-cover w-full h-full"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Icon
-                                name="FileText"
-                                size={48}
-                                className="text-primary/30"
-                              />
-                            </div>
-                          )}
-                        </div>
-                        <div className="p-5 flex-1 flex flex-col">
-                          <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
-                            {relatedPost.category}
-                          </Badge>
-                          <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                            {relatedPost.title}
-                          </h3>
-                          <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
-                            {relatedPost.excerpt}
-                          </p>
-                          <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
-                            Читать
+            <div className="w-full px-4 lg:px-[3.5cm]">
+              <h2 className="text-3xl font-extrabold text-foreground mb-8">
+                Похожие статьи
+              </h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                {relatedPosts.map((relatedPost) => (
+                  <Link
+                    key={relatedPost.id}
+                    to={`/vpn/${relatedPost.slug}`}
+                    className="group"
+                  >
+                    <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
+                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
+                        {relatedPost.image ? (
+                          <img
+                            src={relatedPost.image}
+                            alt={relatedPost.title}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
                             <Icon
-                              name="ArrowRight"
-                              size={16}
-                              className="group-hover:translate-x-1 transition-transform"
+                              name="FileText"
+                              size={48}
+                              className="text-primary/30"
                             />
                           </div>
+                        )}
+                      </div>
+                      <div className="p-5 flex-1 flex flex-col">
+                        <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
+                          {relatedPost.category}
+                        </Badge>
+                        <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                          {relatedPost.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
+                          {relatedPost.excerpt}
+                        </p>
+                        <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
+                          Читать
+                          <Icon
+                            name="ArrowRight"
+                            size={16}
+                            className="group-hover:translate-x-1 transition-transform"
+                          />
                         </div>
-                      </article>
-                    </Link>
-                  ))}
-                </div>
+                      </div>
+                    </article>
+                  </Link>
+                ))}
               </div>
             </div>
           </section>
