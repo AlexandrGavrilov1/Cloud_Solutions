@@ -264,5 +264,44 @@ body div[data-color-mode="light"] > div.wmde-markdown {
 .wmde-markdown li {
   margin-bottom: 0.25rem !important;
 }
+
+/* Отступы для контента статьи (усиленный селектор) */
+body div[data-color-mode="light"] > div.wmde-markdown,
+body div[data-color-mode="dark"] > div.wmde-markdown {
+  padding: 2rem 3rem !important;
+}
+
+/* Стили для маркированных и нумерованных списков в статьях */
+.wmde-markdown ul {
+  list-style-type: disc !important;
+  padding-left: 2rem !important;
+}
+
+.wmde-markdown ol {
+  list-style-type: decimal !important;
+  padding-left: 2rem !important;
+}
+
+.wmde-markdown li {
+  margin-bottom: 0.25rem !important;
+}
+
+/* === 3. Центрирование изображений в статьях === */
+.wmde-markdown img {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+/* Убираем белый фон у Markdown-контента, делаем его прозрачным */
+.wmde-markdown,
+.wmde-markdown-color {
+  background-color: transparent !important;
+}
+
+/* При этом сохраняем фон для блоков кода (чтобы они оставались тёмными) */
+.wmde-markdown pre,
+.wmde-markdown code {
+  background-color: var(--tw-prose-pre-bg, #1e1e1e) !important;
+}
 /* Дополнительно: можно добавить скругление и тени для блоков кода, 
    но они уже заданы в компоненте через className */

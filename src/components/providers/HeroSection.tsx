@@ -56,7 +56,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Контент — поверх пятен */}
-      <div className="w-full px-4 lg:px-8 relative z-10">
+      <div className="w-full px-4 lg:px-[3.5cm] relative z-10">
         <h1
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-4xl"
           style={{
