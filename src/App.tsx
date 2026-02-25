@@ -65,8 +65,8 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            {/* Добавлена обёртка с основным шрифтом Stem */}
-            <div className="font-sans">
+            {/* Теперь по умолчанию используется Stem-Light */}
+            <div className="font-sans font-light">
               <VisitorTracker />
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -92,5 +92,4 @@ const App = () => (
     </ThemeProvider>
   </QueryClientProvider>
 );
-
 export default App;
