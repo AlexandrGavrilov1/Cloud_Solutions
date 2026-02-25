@@ -981,7 +981,7 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно — плавное, обрезано только сверху */}
+        {/* Мягкое оранжевое пятно — плавное появление сверху */}
         <div
           className="absolute left-1/2 -translate-x-1/2 w-[200px] h-[200px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none rounded-full"
           style={{
@@ -989,10 +989,10 @@ export const ProviderCard = ({
             background:
               "radial-gradient(circle at center 70%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255,245,235,0.4) 75%, transparent 90%)",
             filter: "blur(35px)",
-            // Маска: верхние 100px (половина круга) прозрачны, остальное видимо
-            mask: "linear-gradient(to bottom, transparent 0px, transparent 100px, black 100px, black 100%)",
+            // Маска: прозрачно вверху, плавный переход, непрозрачно внизу
+            mask: "linear-gradient(to bottom, transparent 0px, transparent 80px, black 120px, black 200px)",
             WebkitMask:
-              "linear-gradient(to bottom, transparent 0px, transparent 100px, black 100px, black 100%)",
+              "linear-gradient(to bottom, transparent 0px, transparent 80px, black 120px, black 200px)",
           }}
         />
 
