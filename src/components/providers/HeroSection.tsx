@@ -64,8 +64,9 @@ export const HeroSection = () => {
         </h1>
 
         <p className="text-[24px] font-medium text-[#2B3038] max-w-3xl leading-relaxed mt-4">
-        Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару минут
-
+          Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
+          минут
+        </p>
         <div className="pt-4">
           <Button
             className="h-[1.7cm] w-[6.5cm] text-[17px] font-medium bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
