@@ -17,7 +17,7 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ======== ПЯТНО НАД СЛОВОМ «НАЙДИ» ======== */}
+      {/* ======= ПЯТНО НАД СЛОВОМ «НАЙДИ» ======= */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
         <div
           className="absolute left-[5%] top-0 
