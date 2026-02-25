@@ -132,10 +132,10 @@ export const SortPanel = ({
       </button>
 
       {/* Цена: кастомный комбинированный контрол */}
-      <div className="tracking-wider flex items-center">
+      <div className=" flex items-center">
         <button
           onClick={() => onSortPrice("desc")}
-          className={`text-xs transition-colors ${
+          className={`tracking-widest text-xs transition-colors ${
             sortBy === "price"
               ? "text-[#FF931F]"
               : "text-white hover:text-[#FF931F]"
@@ -147,7 +147,7 @@ export const SortPanel = ({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className={`ml-1 p-0.5 rounded-sm transition-colors ${
+              className={` tracking-widest ml-1 p-0.5 rounded-sm transition-colors ${
                 sortBy === "price"
                   ? "text-[#FF931F]"
                   : "text-white/70 hover:text-[#FF931F]"
