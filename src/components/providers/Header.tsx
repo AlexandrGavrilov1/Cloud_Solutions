@@ -25,7 +25,7 @@ export const Header = () => {
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Внутренний контейнер сс динамическими отступами */}
+      {/* Внутренний контейнер с динамическими отступами */}
       <div
         className={`
           w-full px-4 
@@ -34,8 +34,15 @@ export const Header = () => {
           3xl:px-[185px]
         `}
       >
-        <div className="flex items-center h-16">
-          {/* Логотип */}
+        {/* Контейнер с содержимым, меняет выравнивание при скролле */}
+        <div
+          className={`
+            flex items-center h-16
+            transition-all duration-300
+            ${isScrolled ? "items-end pb-1" : "items-center"}
+          `}
+        >
+          {/* Логотип (убираем отрицательный отступ) */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -43,7 +50,7 @@ export const Header = () => {
             <img
               src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
               alt="TopCloudHub Logo"
-              className="h-[60px] w-auto -mt-5 transition-opacity duration-300"
+              className="h-[60px] w-auto transition-opacity duration-300"
             />
           </a>
 
@@ -111,7 +118,7 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню */}
+        {/* Мобильное выпадающее меню (без изменений) */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
