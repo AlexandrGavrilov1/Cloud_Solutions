@@ -18,17 +18,8 @@ export default {
       },
     },
     extend: {
-      screens: {
-        "3xl": "1600px",
-      },
-      fontFamily: {
-        sans: ["Stem", "sans-serif"], // основной текст – Stem
-        heading: ["TT Travels Next Trial", "sans-serif"], // заголовки – TT Travels
-
-        outline: ["TT Travels Next Trial Outline", "sans-serif"], // При необходимости можно добавить дополнительные семейства, например, для Outline:
-        // outline: ['TT Travels Next Trial Outline', 'sans-serif'],
-      },
       fontSize: {
+        // Новые размеры шрифта для компактных карточек
         xxs: "10px",
         xs: "12px",
         sm: "13px",
@@ -40,6 +31,7 @@ export default {
         "4xl": "24px",
       },
       spacing: {
+        // Более мелкие spacing для компактных карточек
         "0.5": "2px",
         "1": "4px",
         "1.5": "6px",
@@ -111,12 +103,20 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {
