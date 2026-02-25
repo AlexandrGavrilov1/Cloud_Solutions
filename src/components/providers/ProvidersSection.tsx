@@ -21,7 +21,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [searchQuery, setSearchQuery] = useState("");
 
-  // --- Состояние сортировки и направления цены ---
+  // --- Состояние сортировки и направления цены --
   const [sortBy, setSortBy] = useState<"popular" | "rating" | "price">(() => {
     const saved = localStorage.getItem("sortBy");
     if (saved === "rating" || saved === "price" || saved === "popular")
