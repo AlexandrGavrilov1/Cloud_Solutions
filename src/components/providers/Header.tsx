@@ -3,17 +3,37 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = 10;
+      setIsScrolled(window.scrollY > scrollThreshold);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Устанавливаем начальное состояние
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Отступы: горизонтальные 185px на десктопе, вертикальные 20px везде */}
-      <div className="w-full px-4 py-3 3xl:px-[185px]">
+      {/* Внутренний контейнер сс динамическими отступами */}
+      <div
+        className={`
+          w-full px-4 
+          transition-all duration-300 
+          ${isScrolled ? "py-1" : "py-3"} 
+          3xl:px-[185px]
+        `}
+      >
         <div className="flex items-center h-16">
           {/* Логотип */}
           <a
@@ -27,39 +47,23 @@ export const Header = () => {
             />
           </a>
 
-          {/* Десктопное меню – теперь с font-normal (Stem-Regular) */}
+          {/* Десктопное меню */}
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
-            {/* Временно скрыто
-            <a
-              href="/gaming"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
-            >
-              Игровые
-            </a>
-            */}
-            {/*===== Временно скрыто ==
-            <a
-              href="/vpn"
-              className="text-sm font-medium text-white hover:text-[#FF931F] transition-colors"
-            >
-              VPN
-            </a>
-            {/*=====================*/}
             <a
               href="/blog"
-              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
             </a>
             <a
               href="/uptime"
-              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
             </a>
             <a
               href="/promo"
-              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
             </a>
@@ -107,18 +111,10 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню – также font-normal для ссылок */}
+        {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
-              {/* <a
-                href="/vpn"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Icon name="Lock" size={16} />
-                VPN
-              </a> */}
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
@@ -150,7 +146,6 @@ export const Header = () => {
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
                 {theme === "light" ? "Тёмная тема" : "Светлая тема"}
               </button>
-              {/* Кнопка "Начать" оставлена с font-bold, так как это акцентный элемент */}
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
