@@ -28,7 +28,7 @@ export const Header = () => {
           </a>
 
           {/* Десктопное меню – теперь с font-normal (Stem-Regular) */}
-          <div className="hidden md:flex items-center gap-8 ml-12 tracking-wide">
+          <div className="hidden md:flex items-center gap-8 ml-12 tracking-wider">
             <a
               href="/vpn"
               className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
