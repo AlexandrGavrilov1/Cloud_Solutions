@@ -258,7 +258,7 @@ export const ProviderCardHeader = ({
 
         <Button
           size="sm"
-          className=" bg-[#FF931F] hover:bg-[#E6831A] text-white  px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 group"
+          className=" font-extralight tracking-widest bg-[#FF931F] hover:bg-[#E6831A] text-white  px-3 py-1.5 rounded-full flex items-center justify-center gap-1 h-8 group"
           onClick={handleProviderClickWithTracking}
         >
           Попробовать
