@@ -34,7 +34,7 @@ export const HeroSection = () => {
         />
       </div>
 
-      {/* ========= ПЯТНО У ПРАВОЙ ГРАНИЦЫ ========= */}
+      {/* ======== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ======== */}
       <div
         className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
              right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
