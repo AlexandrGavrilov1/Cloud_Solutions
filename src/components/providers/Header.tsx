@@ -101,6 +101,7 @@ export const Header = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
+              /*{" "}
               <a
                 href="/vpn"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
@@ -108,7 +109,8 @@ export const Header = () => {
               >
                 <Icon name="Lock" size={16} />
                 VPN
-              </a>
+              </a>{" "}
+              */
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
