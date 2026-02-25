@@ -122,7 +122,7 @@ export const SortPanel = ({
       {/* Рейтинг */}
       <button
         onClick={onSortRating}
-        className={`tracking-wide text-xs transition-colors ${
+        className={`tracking-wider text-xs transition-colors ${
           sortBy === "rating"
             ? "text-[#FF931F]"
             : "text-white hover:text-[#FF931F]"
