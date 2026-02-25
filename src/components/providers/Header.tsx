@@ -70,7 +70,7 @@ export const Header = () => {
       <div
         className={`
           w-full px-4 
-          transition-all duration-500 ease-in-out
+          transition-all duration-1000 ease-in-out
           ${paddingReduced ? "py-px" : "py-3"} 
           3xl:px-[185px]
         `}
@@ -80,7 +80,7 @@ export const Header = () => {
         <div
           className={`
             flex items-center h-16
-            transition-all duration-500 ease-in-out
+            transition-all duration-1000 ease-in-out
             ${logoShifted ? "items-end pb-1" : "items-center"}
           `}
           style={{ willChange: "padding, margin" }}
@@ -94,7 +94,7 @@ export const Header = () => {
               src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
               alt="TopCloudHub Logo"
               className={`
-                h-[60px] w-auto transition-all duration-500 ease-in-out
+                h-[60px] w-auto transition-all duration-1000 ease-in-out
                 ${!logoShifted ? "-mt-5" : ""}
               `}
             />
