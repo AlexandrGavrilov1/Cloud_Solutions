@@ -57,36 +57,33 @@ export const HeroSection = () => {
 
       {/* Контент — поверх пятен */}
       <div className="w-full px-4 3xl:px-[185px] relative z-10">
-       <h1
-  className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl"
->
-  <span className="block text-[#2B3038]">НАЙДИ</span>
-  <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
-  <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
-</h1>
+        <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
+          <span className="block text-[#2B3038]">НАЙДИ</span>
+          <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
+          <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
+        </h1>
 
-        <p
-  className="text-[24px] text-[#2B3038] max-w-2xl leading-relaxed mt-4"
->
-  Сравни характеристики, цены и отзывы. Выбери лучшее решение
-  за&nbsp;пару&nbsp;минут
-</p>
+        <p className="text-[24px] text-[#2B3038] max-w-2xl leading-relaxed mt-4">
+          Сравни характеристики, цены и отзывы. Выбери лучшее решение
+          за&nbsp;пару&nbsp;минут
+        </p>
 
-       <div className="pt-4">
-  <Button
-  className="h-[1.7cm] w-[6.5cm] text-[17px] font-medium bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
-  onClick={() => {
-    const providersSection = document.getElementById("providers");
-    if (providersSection) {
-      providersSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }}
->
-  ВЫБРАТЬ
-</Button>
+        <div className="pt-4">
+          <Button
+            className="h-[1.7cm] w-[6.5cm] text-[17px] font-medium bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            onClick={() => {
+              const providersSection = document.getElementById("providers");
+              if (providersSection) {
+                providersSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }}
+          >
+            ВЫБРАТЬ
+          </Button>
+        </div>
       </div>
     </section>
   );
