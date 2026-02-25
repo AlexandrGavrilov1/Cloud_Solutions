@@ -11,6 +11,7 @@ export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Отслеживание прокрутки для изменения отступов
   useEffect(() => {
     const handleScroll = () => {
       const scrollThreshold = 10;
@@ -18,31 +19,31 @@ export const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Устанавливаем начальное состояние
+    handleScroll(); // установка начального состояния
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Внутренний контейнер с динамическими отступами */}
+      {/* Внешний контейнер с динамическими вертикальными отступами */}
       <div
         className={`
           w-full px-4 
           transition-all duration-300 
-          ${isScrolled ? "py-0.1" : "py-3"} 
+          ${isScrolled ? "py-1" : "py-3"} 
           3xl:px-[185px]
         `}
       >
-        {/* Контейнер с содержимым, меняет выравнивание при скролле */}
+        {/* Контейнер с содержимым – постоянное выравнивание по нижнему краю */}
         <div
           className={`
-            flex items-center h-16
+            flex h-16
             transition-all duration-300
-            ${isScrolled ? "items-end pb-1" : "items-center"}
+            ${isScrolled ? "items-end pb-1" : "items-end"}
           `}
         >
-          {/* Логотип (убираем отрицательный отступ) */}
+          {/* Логотип (без отрицательного отступа) */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -56,6 +57,21 @@ export const Header = () => {
 
           {/* Десктопное меню */}
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
+            {/* Временно скрытые пункты меню (можно раскомментировать при необходимости) */}
+            {/*
+            <a
+              href="/gaming"
+              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
+            >
+              Игровые
+            </a>
+            <a
+              href="/vpn"
+              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
+            >
+              VPN
+            </a>
+            */}
             <a
               href="/blog"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
@@ -118,10 +134,11 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню (без изменений) */}
+        {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
+              {/* Ссылки мобильного меню */}
               <a
                 href="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
@@ -153,6 +170,7 @@ export const Header = () => {
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
                 {theme === "light" ? "Тёмная тема" : "Светлая тема"}
               </button>
+              {/* Кнопка "Начать" – акцентный элемент, остаётся жирным */}
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
