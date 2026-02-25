@@ -72,7 +72,7 @@ export const ProviderCardHeader = ({
         {/* Информация о провайдере */}
         <div className="flex-1 min-w-0 flex flex-col gap-0.5">
           <div className="flex items-start justify-between gap-1">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
+            <h3 className="tracking-normal text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
               {provider.name}
             </h3>
             {onCompareClick && (
