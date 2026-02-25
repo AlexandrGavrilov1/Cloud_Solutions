@@ -110,7 +110,7 @@ export const SortPanel = ({
       {/* Популярные */}
       <button
         onClick={onSortPopular}
-        className={`tracking-wider text-xs transition-colors ${
+        className={`tracking-widest text-xs transition-colors ${
           sortBy === "popular"
             ? "text-[#FF931F]"
             : "text-white hover:text-[#FF931F]"
@@ -122,7 +122,7 @@ export const SortPanel = ({
       {/* Рейтинг */}
       <button
         onClick={onSortRating}
-        className={`tracking-wider text-xs transition-colors ${
+        className={`tracking-widest text-xs transition-colors ${
           sortBy === "rating"
             ? "text-[#FF931F]"
             : "text-white hover:text-[#FF931F]"
@@ -163,7 +163,7 @@ export const SortPanel = ({
           >
             <DropdownMenuItem
               onClick={() => onSortPrice("desc")}
-              className={`tracking-wider cursor-pointer text-xs ${
+              className={`tracking-widest cursor-pointer text-xs ${
                 sortBy === "price" && priceSortOrder === "desc"
                   ? "text-[#FF931F] bg-white/10"
                   : "text-white hover:text-[#FF931F] hover:bg-white/10"
@@ -180,7 +180,7 @@ export const SortPanel = ({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onSortPrice("asc")}
-              className={`tracking-wider cursor-pointer text-xs ${
+              className={`tracking-widest cursor-pointer text-xs ${
                 sortBy === "price" && priceSortOrder === "asc"
                   ? "text-[#FF931F] bg-white/10"
                   : "text-white hover:text-[#FF931F] hover:bg-white/10"
