@@ -17,7 +17,7 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» ========== */}
+      {/* ====== ПЯТНО НАД СЛОВОМ «НАЙДИ» ====== */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
         <div
           className="absolute left-[5%] top-0 
@@ -34,7 +34,7 @@ export const HeroSection = () => {
         />
       </div>
 
-      {/* ========= ПЯТНО У ПРАВОЙ ГРАНИЦЫ ========= */}
+      {/* ===== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ===== */}
       <div
         className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
              right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
@@ -57,31 +57,20 @@ export const HeroSection = () => {
 
       {/* Контент — поверх пятен */}
       <div className="w-full px-4 3xl:px-[185px] relative z-10">
-        <h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-4xl"
-          style={{
-            fontFamily: "'TT Travels Next Trl', sans-serif",
-            fontWeight: 700,
-          }}
-        >
+        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
           <span className="block text-[#2B3038]">НАЙДИ</span>
           <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
         </h1>
 
-        <p
-          className="text-xl md:text-2xl text-[#2B3038] max-w-2xl leading-relaxed mt-4"
-          style={{ fontFamily: "'TT Travels Next Trl', sans-serif" }}
-        >
-          {/* Использован неразрывный пробел между словами "пару" и "минут" */}
+        <p className="text-[24px] text-[#2B3038] max-w-2xl leading-relaxed mt-4">
           Сравни характеристики, цены и отзывы. Выбери лучшее решение
           за&nbsp;пару&nbsp;минут
         </p>
 
         <div className="pt-4">
           <Button
-            size="lg"
-            className="h-16 px-12 text-lg font-bold bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="h-[1.7cm] w-[6.5cm] text-[17px] font-medium bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {

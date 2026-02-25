@@ -15,7 +15,7 @@ export const Header = () => {
       {/* Отступы: горизонтальные 185px на десктопе, вертикальные 20px везде */}
       <div className="w-full px-4 py-5 3xl:px-[185px]">
         <div className="flex items-center h-16">
-          {/* Логотип без изменений (сохраняем пропорции) */}
+          {/* Логотип */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -27,35 +27,35 @@ export const Header = () => {
             />
           </a>
 
-          {/* Десктопное меню (только для md и выше) */}
-          <div className="hidden md:flex items-center gap-8 ml-12">
+          {/* Десктопное меню – теперь с font-normal (Stem-Regular) */}
+          <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
             <a
               href="/vpn"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
             <a
               href="/blog"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
             </a>
             <a
               href="/uptime"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
             </a>
             <a
               href="/promo"
-              className="text-[15px] font-medium text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
             </a>
           </div>
 
-          {/* Переключатель темы на десктопе (размер иконки 20px) */}
+          {/* Переключатель темы на десктопе */}
           <div className="hidden md:flex items-center ml-auto">
             <button
               onClick={toggleTheme}
@@ -70,7 +70,7 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Мобильные иконки (оставляем как есть) */}
+          {/* Мобильные иконки */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
@@ -97,13 +97,13 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню (без изменений) */}
+        {/* Мобильное выпадающее меню – также font-normal для ссылок */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
               <a
                 href="/vpn"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Lock" size={16} />
@@ -111,7 +111,7 @@ export const Header = () => {
               </a>
               <a
                 href="/blog"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="BookOpen" size={16} />
@@ -119,7 +119,7 @@ export const Header = () => {
               </a>
               <a
                 href="/uptime"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Activity" size={16} />
@@ -127,19 +127,20 @@ export const Header = () => {
               </a>
               <a
                 href="/promo"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Tag" size={16} />
                 Акции
               </a>
               <button
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all text-left"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all text-left"
                 onClick={toggleTheme}
               >
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
                 {theme === "light" ? "Тёмная тема" : "Светлая тема"}
               </button>
+              {/* Кнопка "Начать" оставлена с font-bold, так как это акцентный элемент */}
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
