@@ -3,44 +3,93 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // общее состояние скролла
+  const [logoShifted, setLogoShifted] = useState(false); // состояние для логотипа
+  const [paddingReduced, setPaddingReduced] = useState(false); // состояние для отступов
+  const lastScrollY = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     const handleScroll = () => {
+      const currentScrollY = window.scrollY;
       const scrollThreshold = 10;
-      setIsScrolled(window.scrollY > scrollThreshold);
+      const isCurrentlyScrolled = currentScrollY > scrollThreshold;
+
+      // Определяем направление скролла
+      const scrollingDown = currentScrollY > lastScrollY.current;
+
+      // Очищаем предыдущий таймаут
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      if (isCurrentlyScrolled) {
+        // Скроллим вниз или уже внизу
+        if (scrollingDown) {
+          // Сначала смещаем логотип, затем уменьшаем отступы
+          setLogoShifted(true);
+          timeoutRef.current = setTimeout(() => {
+            setPaddingReduced(true);
+          }, 100); // задержка 100 мс
+        } else {
+          // Если уже были внизу и продолжаем скроллить вниз – оставляем как есть
+          setLogoShifted(true);
+          setPaddingReduced(true);
+        }
+      } else {
+        // Скроллим вверх к началу
+        if (!scrollingDown) {
+          // Сначала увеличиваем отступы, затем поднимаем логотип
+          setPaddingReduced(false);
+          timeoutRef.current = setTimeout(() => {
+            setLogoShifted(false);
+          }, 100);
+        } else {
+          // Если уже были наверху – сбрасываем всё
+          setPaddingReduced(false);
+          setLogoShifted(false);
+        }
+      }
+
+      lastScrollY.current = currentScrollY;
+      setIsScrolled(isCurrentlyScrolled);
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll();
+    handleScroll(); // инициализация
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
+      {/* Внутренний контейнер с динамическими отступами */}
       <div
         className={`
           w-full px-4 
           transition-all duration-300 
-          ${isScrolled ? "py-0.1" : "py-3"} 
+          ${paddingReduced ? "py-1" : "py-3"} 
           3xl:px-[185px]
         `}
       >
+        {/* Контейнер с содержимым */}
         <div
           className={`
             flex items-center h-16
             transition-all duration-300
-            ${isScrolled ? "items-end pb-1" : "items-center"}
+            ${logoShifted ? "items-end pb-1" : "items-center"}
           `}
         >
-          {/* Логотип с условным отрицательным отступом в обычном состоянии */}
+          {/* Логотип (условный отрицательный отступ при обычном состоянии) */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -50,7 +99,7 @@ export const Header = () => {
               alt="TopCloudHub Logo"
               className={`
                 h-[60px] w-auto transition-opacity duration-300
-                ${!isScrolled ? "-mt-5" : ""}
+                ${!logoShifted ? "-mt-5" : ""}
               `}
             />
           </a>
@@ -119,7 +168,7 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню */}
+        {/* Мобильное выпадающее меню (без изменений) */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
