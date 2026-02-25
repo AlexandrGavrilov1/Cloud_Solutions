@@ -24,7 +24,8 @@ export default {
       fontFamily: {
         sans: ["Stem", "sans-serif"], // основной текст – Stem
         heading: ["TT Travels Next Trial", "sans-serif"], // заголовки – TT Travels
-        // При необходимости можно добавить дополнительные семейства, например, для Outline:
+
+        outline: ["TT Travels Next Trial Outline", "sans-serif"], // При необходимости можно добавить дополнительные семейства, например, для Outline:
         // outline: ['TT Travels Next Trial Outline', 'sans-serif'],
       },
       fontSize: {

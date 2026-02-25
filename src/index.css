@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
-@import url("https://fonts.cdnfonts.com/css/tt-travels-next-trial");
+/*@import url("https://fonts.cdnfonts.com/css/tt-travels-next-trial");*/
 
 /* === Подключение Stem (OpenType) === */
 @font-face {
@@ -92,9 +92,24 @@
 }
 @font-face {
   font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial Thin Italic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
   src: url("/fonts/TT Travels Next Trial ExtraLight.ttf") format("truetype");
   font-weight: 200;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial ExtraLight Italic.ttf")
+    format("truetype");
+  font-weight: 200;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -106,9 +121,23 @@
 }
 @font-face {
   font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial Light Italic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
   src: url("/fonts/TT Travels Next Trial Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -120,9 +149,24 @@
 }
 @font-face {
   font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial Medium Italic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
   src: url("/fonts/TT Travels Next Trial DemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial DemiBold Italic.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -134,9 +178,24 @@
 }
 @font-face {
   font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial Bold Italic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
   src: url("/fonts/TT Travels Next Trial ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial ExtraBold Italic.ttf")
+    format("truetype");
+  font-weight: 800;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -146,7 +205,29 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "TT Travels Next Trial";
+  src: url("/fonts/TT Travels Next Trial Black Italic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
 /* Добавьте италики и Outline варианты по аналогии */
+@font-face {
+  font-family: "TT Travels Next Trial Outline";
+  src: url("/fonts/TT Travels Next Trial Black Outline.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Travels Next Trial Outline";
+  src: url("/fonts/TT Travels Next Trial Black Outline Italic.ttf")
+    format("truetype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
