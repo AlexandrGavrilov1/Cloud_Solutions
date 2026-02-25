@@ -981,15 +981,15 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
-        {/* Мягкое оранжевое пятно — без видимых границ прямоугольника */}
+        {/* Мягкое оранжевое пятно */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 w-[300px] h-[250px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden"
+          className="absolute left-1/2 -translate-x-1/2 w-[500px] h-[250px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden"
           style={{ top: 0 }}
         >
           <div
             className="absolute left-1/2 -translate-x-1/2 w-[200px] h-[200px] rounded-full"
             style={{
-              top: "-100px", // центр круга на верхней границе
+              top: "-100px",
               background:
                 "radial-gradient(circle at center 70%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255,245,235,0.4) 75%, transparent 90%)",
               filter: "blur(35px)",

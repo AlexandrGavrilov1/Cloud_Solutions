@@ -17,10 +17,8 @@ import Uptime from "./pages/Uptime";
 import Promo from "./pages/Promo";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-// ===== ДОБАВЛЕНО =====
 import Vpn from "./pages/Vpn";
 import VpnPost from "./pages/VpnPost";
-// =====================
 import AIData from "./pages/AIData";
 import Gaming from "./pages/Gaming";
 import AuthCallback from "./pages/AuthCallback";
@@ -67,32 +65,31 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <VisitorTracker />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/uptime" element={<Uptime />} />
-              <Route path="/promo" element={<Promo />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              {/* ===== ДОБАВЛЕНО ===== */}
-              <Route path="/vpn" element={<Vpn />} />
-              <Route path="/vpn/:slug" element={<VpnPost />} />
-              {/* ===================== */}
-              <Route path="/ai-data" element={<AIData />} />
-              <Route path="/gaming" element={<Gaming />} />
-              <Route path="/auth/callback" element={<AuthCallback />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            {/* Теперь по умолчанию используется Stem-Light */}
+            <div className="font-sans font-extralight tracking-wider">
+              <VisitorTracker />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/uptime" element={<Uptime />} />
+                <Route path="/promo" element={<Promo />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/vpn" element={<Vpn />} />
+                <Route path="/vpn/:slug" element={<VpnPost />} />
+                <Route path="/ai-data" element={<AIData />} />
+                <Route path="/gaming" element={<Gaming />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
-
 export default App;

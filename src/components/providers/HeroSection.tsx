@@ -17,7 +17,7 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ========== ПЯТНО НАД СЛОВОМ «НАЙДИ» — уменьшенное ========== */}
+      {/* ====== ПЯТНО НАД СЛОВОМ «НАЙДИ» ====== */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
         <div
           className="absolute left-[5%] top-0 
@@ -34,18 +34,18 @@ export const HeroSection = () => {
         />
       </div>
 
-      {/* ========== ПЯТНО У ПРАВОЙ ГРАНИЦЫ — адаптивное ========== */}
+      {/* ===== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ===== */}
       <div
         className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
-                   right-0 sm:right-[5%] md:right-[8%] lg:right-[10%] xl:right-[12%]
-                   w-[250px] sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[550px]
-                   h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px] 2xl:h-[550px]"
+             right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
+             w-[350px] sm:w-[450px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px]
+             h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]"
       >
         <div
           className="absolute right-0 top-1/2 -translate-y-1/2 
                      w-full h-full
                      rounded-full
-                     blur-[50px] sm:blur-[60px] md:blur-[70px] lg:blur-[75px] xl:blur-[80px]
+                     blur-[60px] sm:blur-[70px] md:blur-[80px] lg:blur-[90px] xl:blur-[100px] 2xl:blur-[110px]
                      opacity-70"
           style={{
             background:
@@ -56,31 +56,20 @@ export const HeroSection = () => {
       </div>
 
       {/* Контент — поверх пятен */}
-      <div className="w-full px-4 lg:px-8 relative z-10">
-        <h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-4xl"
-          style={{
-            fontFamily: "'TT Travels Next Trl', sans-serif",
-            fontWeight: 700,
-          }}
-        >
+      <div className="w-full px-4 3xl:px-[185px] relative z-10">
+        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
           <span className="block text-[#2B3038]">НАЙДИ</span>
           <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
         </h1>
 
-        <p
-          className="text-xl md:text-2xl text-[#2B3038] max-w-2xl leading-relaxed mt-4"
-          style={{ fontFamily: "'TT Travels Next Trl', sans-serif" }}
-        >
+        <p className="text-[24px] font-medium text-[#2B3038] max-w-3xl leading-relaxed mt-4">
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
-
         <div className="pt-4">
           <Button
-            size="lg"
-            className="h-16 px-12 text-lg font-bold bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="h-[1.7cm] w-[6.5cm] text-[17px] font-medium bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
