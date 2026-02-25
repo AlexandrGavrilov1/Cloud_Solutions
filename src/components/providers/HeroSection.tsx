@@ -80,8 +80,7 @@ export const HeroSection = () => {
 
         <div className="pt-4">
           <Button
-            size="lg"
-            className="h-16 px-10 text-lg font-bold bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="h-[1.7cm] w-[6.5cm] text-lg font-bold bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
