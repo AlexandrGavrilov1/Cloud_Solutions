@@ -28,7 +28,7 @@ export const Header = () => {
           </a>
 
           {/* Десктопное меню – теперь с font-normal (Stem-Regular) */}
-          <div className="hidden md:flex items-center gap-8 ml-12 ">
+          <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
             <a
               href="/vpn"
               className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
@@ -37,19 +37,19 @@ export const Header = () => {
             </a>
             <a
               href="/blog"
-              className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
             </a>
             <a
               href="/uptime"
-              className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
             </a>
             <a
               href="/promo"
-              className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
             </a>
