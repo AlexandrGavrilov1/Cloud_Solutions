@@ -21,7 +21,7 @@ export const Header = () => {
       const scrollThreshold = 10;
       const isCurrentlyScrolled = currentScrollY > scrollThreshold;
 
-      // Определяем направление скролла
+      // Определяем направление скрола
       const scrollingDown = currentScrollY > lastScrollY.current;
 
       // Очищаем предыдущий таймаут
