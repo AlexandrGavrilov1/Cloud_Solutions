@@ -30,7 +30,7 @@ export const Header = () => {
         className={`
           w-full px-4 
           transition-all duration-300 
-          ${isScrolled ? "py-0.5" : "py-3"} 
+          ${isScrolled ? "py-0.1" : "py-3"} 
           3xl:px-[185px]
         `}
       >
