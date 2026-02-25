@@ -73,22 +73,23 @@ export const Header = () => {
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
       {/* Внутренний контейнер с динамическими отступами */}
-      <div
-        className={`
-          w-full px-4 
-          transition-all duration-300 
-          ${paddingReduced ? "py-px" : "py-3"} 
-          3xl:px-[185px]
-        `}
-      >
+     className={`
+    w-full px-4 
+    transition-all duration-500 ease-in-out
+    ${paddingReduced ? "py-px" : "py-3"} 
+    3xl:px-[185px]
+  `}
+  style={{ willChange: 'padding' }}
+>
         {/* Контейнер с содержимым */}
         <div
-          className={`
-            flex items-center h-16
-            transition-all duration-300
-            ${logoShifted ? "items-end pb-1" : "items-center"}
-          `}
-        >
+    className={`
+      flex items-center h-16
+      transition-all duration-500 ease-in-out
+      ${logoShifted ? "items-end pb-1" : "items-center"}
+    `}
+    style={{ willChange: 'padding, margin' }}
+  >
           {/* Логотип (условный отрицательный отступ при обычном состоянии) */}
           <a
             href="/"
@@ -98,7 +99,7 @@ export const Header = () => {
               src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
               alt="TopCloudHub Logo"
               className={`
-                h-[60px] w-auto transition-opacity duration-300
+                h-[60px] w-auto transition-opacity duration-500 ease-in-out
                 ${!logoShifted ? "-mt-5" : ""}
               `}
             />
