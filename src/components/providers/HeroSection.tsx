@@ -69,7 +69,7 @@ export const HeroSection = () => {
         </p>
         <div className="pt-4">
           <Button
-            className="font-normal  tracking-wider h-[1.7cm] w-[6.5cm] text-[17px] font-medium bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="font-normal  tracking-wider h-[1.7cm] w-[6.5cm] text-[17px]  bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
