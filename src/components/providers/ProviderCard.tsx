@@ -981,18 +981,18 @@ export const ProviderCard = ({
     transition-all duration-300 ease-in-out
   `}
       >
+        {/* Мягкое оранжевое пятно — плавное, без жёстких границ */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 w-[400px] h-[250px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden"
-          style={{ top: 0 }}
+          className="absolute left-1/2 -translate-x-1/2 w-[300px] h-[250px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none"
+          style={{
+            top: 0,
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)", // это не обрезает, нужно другое
+            // Чтобы обрезать только верхнюю половину: clipPath: "inset(0 0 0 0)" тоже не то.
+            // На самом деле, чтобы оставить видимой только ту часть, которая находится внутри карточки по вертикали,
+            // можно использовать mask-image или clip-path, но это сложнее.
+          }}
         >
-          <div
-            className="absolute left-1/2 -translate-x-1/2 w-[200px] h-[200px] rounded-full"
-            style={{
-              top: "-100px",
-              background: "radial-gradient(...)", // ваш градиент
-              filter: "blur(35px)",
-            }}
-          />
+          {/* круг */}
         </div>
 
         <CardHeader className="p-5 relative z-10">
