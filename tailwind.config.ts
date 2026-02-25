@@ -18,14 +18,9 @@ export default {
       },
     },
     extend: {
+      // ✅ Добавляем кастомный брейкпоинт 3xl
       screens: {
         "3xl": "1600px",
-      },
-      fontFamily: {
-        sans: ["Stem", "sans-serif"], // основной текст – Stem
-        heading: ["TT Travels Next Trial", "sans-serif"], // заголовки – TT Travels
-        // При необходимости можно добавить дополнительные семейства, например, для Outline:
-        // outline: ['TT Travels Next Trial Outline', 'sans-serif'],
       },
       fontSize: {
         xxs: "10px",
@@ -110,12 +105,20 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {
