@@ -53,14 +53,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, []);
 
   const isMobile = windowWidth <= 850;
-  const isTenCardsMode = !isMobile && windowWidth >= 950 && windowWidth < 1280;
+  const isTenCardsMode = !isMobile && windowWidth >= 950 && windowWidth < 1600;
   const incrementCount = isTenCardsMode ? 10 : 9;
 
   // --- Количество отображаемых карточек (пагинация) ---
   const [providersToShow, setProvidersToShow] = useState(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth <= 850) return 9;
-      if (window.innerWidth >= 950 && window.innerWidth < 1280) return 10;
+      if (window.innerWidth >= 950 && window.innerWidth < 1600) return 10;
       return 9;
     }
     return 9;
@@ -547,7 +547,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="w-full px-4 lg:px-8 py-4">
+    <section id="providers" className="w-full px-4 3xl:px-[185px] py-4">
       {isMobile ? (
         // ========== МОБИЛЬНАЯ ВЕРСИЯ (≤850px) ==========
         <div className="flex flex-col">
