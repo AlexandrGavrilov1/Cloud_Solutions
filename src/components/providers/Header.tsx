@@ -31,25 +31,25 @@ export const Header = () => {
           <div className="hidden md:flex items-center gap-8 ml-12 ">
             <a
               href="/vpn"
-              className="text-[14px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px]  text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
             <a
               href="/blog"
-              className="text-[14px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
             </a>
             <a
               href="/uptime"
-              className="text-[14px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
             </a>
             <a
               href="/promo"
-              className="text-[14px] font-normal text-white hover:text-[#FF931F] transition-colors"
+              className="text-[15px] font-normal text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
             </a>
