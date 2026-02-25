@@ -18,23 +18,21 @@ export const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Устанавливаем начальное состояние
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Внутренний контейнер с динамическими отступами */}
       <div
         className={`
           w-full px-4 
           transition-all duration-300 
-          ${isScrolled ? "py-0.1" : "py-3"} 
+          ${isScrolled ? "py-1" : "py-3"} 
           3xl:px-[185px]
         `}
       >
-        {/* Контейнер с содержимым, меняет выравнивание при скролле */}
         <div
           className={`
             flex items-center h-16
@@ -42,7 +40,7 @@ export const Header = () => {
             ${isScrolled ? "items-end pb-1" : "items-center"}
           `}
         >
-          {/* Логотип (убираем отрицательный отступ) */}
+          {/* Логотип с условным отрицательным отступом в обычном состоянии */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -50,7 +48,10 @@ export const Header = () => {
             <img
               src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
               alt="TopCloudHub Logo"
-              className="h-[60px] w-auto transition-opacity duration-300"
+              className={`
+                h-[60px] w-auto transition-opacity duration-300
+                ${!isScrolled ? "-mt-5" : ""}
+              `}
             />
           </a>
 
@@ -118,7 +119,7 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню (без изменений) */}
+        {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
