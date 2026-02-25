@@ -57,7 +57,7 @@ export const HeroSection = () => {
 
       {/* Контент — поверх пятен */}
       <div className="w-full px-4 3xl:px-[185px] relative z-10">
-        <h1 className="font-heading text-[60px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
+        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
           <span className="block text-[#2B3038]">НАЙДИ</span>
           <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
