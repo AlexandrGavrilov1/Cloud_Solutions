@@ -289,33 +289,36 @@ body div[data-color-mode="dark"] > div.wmde-markdown {
   color: #272932 !important;
 }
 
-/* Кнопка копирования — всегда видима */
+/* Кнопка копирования — всегда видима, без рамки, фон как у блоков кода */
 .wmde-markdown pre .copied {
   opacity: 1 !important;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  background-color: #f8f8fa !important;
-  border: 1px solid #27293280 !important; /* рамка с прозрачностью 50% */
+  background-color: #e0e0e2 !important; /* тот же цвет, что у блоков кода */
+  border: none !important; /* убираем рамку */
   border-radius: 4px !important;
   padding: 4px 8px !important;
   margin: 4px !important;
   box-shadow: none !important;
-  transition: border-color 0.2s ease !important;
+  transition:
+    stroke 0.2s ease,
+    fill 0.2s ease !important;
   cursor: pointer !important;
 }
 
-/* Иконки внутри кнопки (копирование/галочка) */
+/* Иконки внутри кнопки — темнее на 40% */
 .wmde-markdown pre .copied svg {
-  stroke: #272932 !important;
-  fill: #272932 !important;
+  stroke: #868686 !important;
+  fill: #868686 !important;
   width: 16px;
   height: 16px;
 }
 
-/* При наведении меняем цвет рамки и иконок */
-.wmde-markdown pre .copied:hover {
-  border-color: #ff931f !important;
+/* При наведении иконка становится оранжевой */
+.wmde-markdown pre .copied:hover svg {
+  stroke: #ff931f !important;
+  fill: #ff931f !important;
 }
 
 .wmde-markdown pre .copied:hover svg {
