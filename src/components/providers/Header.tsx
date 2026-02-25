@@ -77,7 +77,7 @@ export const Header = () => {
         className={`
           w-full px-4 
           transition-all duration-300 
-          ${paddingReduced ? "py-0.05" : "py-3"} 
+          ${paddingReduced ? "py-px" : "py-3"} 
           3xl:px-[185px]
         `}
       >
