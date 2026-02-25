@@ -66,13 +66,11 @@ export const HeroSection = () => {
 </h1>
 
         <p
-          className="text-xl md:text-2xl text-[#2B3038] max-w-2xl leading-relaxed mt-4"
-          style={{ fontFamily: "'TT Travels Next Trl', sans-serif" }}
-        >
-          {/* Использован неразрывный пробел между словами "пару" и "минут" */}
-          Сравни характеристики, цены и отзывы. Выбери лучшее решение
-          за&nbsp;пару&nbsp;минут
-        </p>
+  className="text-[24px] text-[#2B3038] max-w-2xl leading-relaxed mt-4"
+>
+  Сравни характеристики, цены и отзывы. Выбери лучшее решение
+  за&nbsp;пару&nbsp;минут
+</p>
 
        <div className="pt-4">
   <Button
