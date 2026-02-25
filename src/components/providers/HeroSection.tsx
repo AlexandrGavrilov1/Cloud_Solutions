@@ -64,8 +64,8 @@ export const HeroSection = () => {
         </h1>
 
         <p className="text-[24px] text-[#2B3038] max-w-2xl leading-relaxed mt-4">
-          Сравни характеристики, цены и отзывы. Выбери лучшее решение
-          за&nbsp;пару&nbsp;минут
+          Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
+          минут
         </p>
 
         <div className="pt-4">
