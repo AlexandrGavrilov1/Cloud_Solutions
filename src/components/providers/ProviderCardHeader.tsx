@@ -91,7 +91,7 @@ export const ProviderCardHeader = ({
                   onMouseLeave={() => setShowCompareTooltip(false)}
                   aria-label="Сравнить"
                 >
-                  <Icon name="GitCompareArrows" size={14} />
+                  <Icon name="GitCompareArrows" size={16} />
                 </button>
                 {showCompareTooltip && (
                   <div className="absolute z-10 top-full right-0 mt-1 px-2 py-1 bg-[E3E3E3] text-[6B6A6A] text-xs  whitespace-nowrap shadow">
