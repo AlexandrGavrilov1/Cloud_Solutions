@@ -110,7 +110,7 @@ export const ProviderCardHeader = ({
               size={14}
               className="fill-[FF931F] text-[FF931F]"
             />
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-[272932] dark:text-white">
               {avgRating.toFixed(1)}
             </span>
           </div>
