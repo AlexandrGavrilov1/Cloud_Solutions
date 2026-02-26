@@ -31,7 +31,7 @@ export const SearchInput = ({
           bg-background border-2 border-border rounded-xl
           focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 
           transition-all text-sm text-foreground placeholder:text-muted-foreground 
-          font-medium hover:border-primary/50
+          font-extralight tracking-wider hover:border-primary/50
         "
         aria-label={placeholder}
       />
