@@ -3,89 +3,46 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 export const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [logoShifted, setLogoShifted] = useState(false); // смещение логотипа (items-end / -mt-5)
-  const [paddingReduced, setPaddingReduced] = useState(false); // уменьшение вертикальных отступов
-  const lastScrollY = useRef(0);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
       const scrollThreshold = 10;
-      const isCurrentlyScrolled = currentScrollY > scrollThreshold;
-      const scrollingDown = currentScrollY > lastScrollY.current;
-
-      // Очищаем предыдущий таймаут
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-      if (isCurrentlyScrolled) {
-        // Прокручено вниз или уже внизу
-        if (scrollingDown) {
-          // Сначала смещаем логотип, затем уменьшаем отступы
-          setLogoShifted(true);
-          timeoutRef.current = setTimeout(() => {
-            setPaddingReduced(true);
-          }, 100);
-        } else {
-          // Если уже были внизу и продолжаем скроллить вниз – оставляем как есть
-          setLogoShifted(true);
-          setPaddingReduced(true);
-        }
-      } else {
-        // Вернулись наверх
-        if (!scrollingDown) {
-          // Сначала увеличиваем отступы, затем поднимаем логотип
-          setPaddingReduced(false);
-          timeoutRef.current = setTimeout(() => {
-            setLogoShifted(false);
-          }, 100);
-        } else {
-          // Уже наверху – сбрасываем всё
-          setPaddingReduced(false);
-          setLogoShifted(false);
-        }
-      }
-
-      lastScrollY.current = currentScrollY;
+      setIsScrolled(window.scrollY > scrollThreshold);
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // инициализация
+    handleScroll(); // Устанавливаем начальное состояние
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Внешний контейнер с динамическими вертикальными отступами */}
+      {/* Внутренний контейнер с динамическими отступами */}
       <div
         className={`
           w-full px-4 
-          transition-all duration-1000 ease-in-out
-          ${paddingReduced ? "py-px" : "py-3"} 
+          transition-all duration-300 
+          ${isScrolled ? "py-0.1" : "py-3"} 
           3xl:px-[185px]
         `}
-        style={{ willChange: "padding" }}
       >
-        {/* Контейнер с содержимым (меняет выравнивание и отступ снизу) */}
+        {/* Контейнер с содержимым, меняет выравнивание при скролле */}
         <div
           className={`
             flex items-center h-16
-            transition-all duration-1000 ease-in-out
-            ${logoShifted ? "items-end pb-1" : "items-center"}
+            transition-all duration-300
+            ${isScrolled ? "items-end pb-1" : "items-center"}
           `}
-          style={{ willChange: "padding, margin" }}
         >
-          {/* Логотип (с условным отрицательным отступом в обычном состоянии) */}
+          {/* Логотип (убираем отрицательный отступ) */}
           <a
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity"
@@ -93,10 +50,7 @@ export const Header = () => {
             <img
               src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
               alt="TopCloudHub Logo"
-              className={`
-                h-[60px] w-auto transition-all duration-1000 ease-in-out
-                ${!logoShifted ? "-mt-5" : ""}
-              `}
+              className="h-[60px] w-auto transition-opacity duration-300"
             />
           </a>
 
@@ -164,7 +118,7 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню */}
+        {/* Мобильное выпадающее меню (без изменений) */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
@@ -199,7 +153,6 @@ export const Header = () => {
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
                 {theme === "light" ? "Тёмная тема" : "Светлая тема"}
               </button>
-              {/* Кнопка "Начать" – акцентный элемент, остаётся жирной */}
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
