@@ -69,7 +69,7 @@ export const ProviderCardHeader = ({
           </div>
         </div>
 
-        {/* Информация о провайдере */}
+        {/* Информация оо провайдере */}
         <div className="flex-1 min-w-0 flex flex-col gap-0.5">
           <div className="flex items-start justify-between gap-1">
             <h3 className="tracking-wide text-lg font-medium text-[#1D1E20] dark:text-white leading-tight truncate">
