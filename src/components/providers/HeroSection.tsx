@@ -59,11 +59,11 @@ export const HeroSection = () => {
       <div className="w-full px-4 3xl:px-[185px] relative z-10">
         <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
           <span className="block text-[#2B3038]">НАЙДИ</span>
-          <span className="block text-[#FF931F]">ИДЕАЛЬНОЕ ОБЛАКО</span>
+          <span className="block text-[#FF7A00]">ИДЕАЛЬНОЕ ОБЛАКО</span>
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
         </h1>
 
-        <p className="text-[24px] font-medium text-[#2B3038] max-w-3xl leading-relaxed mt-4">
+        <p className="text-[24px] text-[#272932] max-w-3xl leading-relaxed mt-4">
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
