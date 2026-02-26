@@ -94,9 +94,9 @@ export const ProviderCardHeader = ({
                   <Icon name="GitCompareArrows" size={14} />
                 </button>
                 {showCompareTooltip && (
-                  <div className="absolute z-10 top-full right-0 mt-1 px-2 py-1 bg-[E3E3E3] text-white text-xs  whitespace-nowrap shadow">
+                  <div className="absolute z-10 top-full right-0 mt-1 px-2 py-1 bg-[E3E3E3] text-[6B6A6A] text-xs  whitespace-nowrap shadow">
                     Сравнить
-                    <div className="absolute -top-1 right-2 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                    <div className="absolute -top-1 right-2 w-2 h-2 bg-[E3E3E3] transform rotate-45"></div>
                   </div>
                 )}
               </div>
