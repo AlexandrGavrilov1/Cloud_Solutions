@@ -66,7 +66,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             {/* Теперь по умолчанию используется Stem-Light */}
-            <div className="font-sans font-extralight tracking-widest">
+            <div className="font-sans font-extralight tracking-wider">
               <VisitorTracker />
               <Routes>
                 <Route path="/" element={<Index />} />
