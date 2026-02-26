@@ -247,7 +247,7 @@ export const ProviderCardHeader = ({
               <Icon
                 name="Gift"
                 size={14}
-                className="text-[#FF391F] flex-shrink-0"
+                className="text-[#FF931F] flex-shrink-0"
               />
               <span className="text-xs text-[#272932] dark:text-white">
                 {provider.trialDays} {getDaysWord(provider.trialDays)} бесплатно
