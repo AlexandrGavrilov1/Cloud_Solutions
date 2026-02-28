@@ -21,7 +21,7 @@ export const ProvidersList = ({
   toggleComparison,
 }: ProvidersListProps) => {
   return (
-    <div className="grid grid-cols-1 min-[950px]:grid-cols-2 xl:grid-cols-3 gap-2">
+    <div className="grid grid-cols-1 min-[950px]:grid-cols-2 3xl:grid-cols-3 gap-2">
       {filteredProviders.map((provider, index) => (
         <ProviderCard
           key={provider.id}
