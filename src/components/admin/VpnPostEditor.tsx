@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -33,7 +33,7 @@ import {
   useDeleteVpnPost,
 } from "@/hooks/useVpnPosts";
 
-// ==================== Кастомные команды ====================
+// ==================== Кастомные команды (оставляем для совместимости) ====================
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
@@ -140,20 +140,6 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
-// ==================== Группа заголовков (не используется, но можно раскомментировать при необходимости) ====================
-// const titleGroup: ICommand = {
-//   type: 'group',
-//   name: "titleGroup",
-//   keyCommand: "titleGroup",
-//   buttonProps: { "aria-label": "Заголовки" },
-//   icon: <span style={{ fontSize: 14 }}>H</span>,
-//   children: [
-//     commands.title1,
-//     commands.title2,
-//     commands.title3,
-//   ],
-// };
-
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
 }
@@ -174,6 +160,11 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  // Состояния для кастомной панели
+  const [currentFont, setCurrentFont] = useState("Stem");
+  const [currentSize, setCurrentSize] = useState("16");
+  const [currentColor, setCurrentColor] = useState("#000000");
 
   // Поля метаданных
   const [title, setTitle] = useState("");
@@ -348,31 +339,289 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // Команды для панели инструментов
-  const allCommands = [
-    commands.bold,
-    commands.italic,
-    commands.strikethrough,
-    commands.hr,
-    commands.title1,
-    commands.title2,
-    commands.title3,
-    commands.link,
-    commands.quote,
-    commands.code,
-    commands.codeBlock,
-    commands.image,
-    commands.unorderedListCommand,
-    commands.orderedListCommand,
-    commands.checkedListCommand,
-    commands.table,
-    alignLeftCommand,
-    alignCenterCommand,
-    alignRightCommand,
-    alignJustifyCommand,
-    fontSizeIncreaseCommand,
-    fontSizeDecreaseCommand,
-  ];
+  // Функция для вставки стиля
+  const applyStyle = (api: any, style: string) => {
+    const selection = api.getSelection?.() || api.getSelectedText?.();
+    const text = selection || "текст";
+    const wrapped = `<span style="${style}">${text}</span>`;
+    api.replaceSelection(wrapped);
+  };
+
+  // Вставка заголовка (Markdown)
+  const insertHeading = (api: any, level: number) => {
+    const prefix = "#".repeat(level) + " ";
+    api.replaceSelection(prefix);
+  };
+
+  // Кастомная панель инструментов
+  const customToolbar = useCallback(
+    (commands: any, api: any) => {
+      return (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            padding: "8px",
+            flexWrap: "wrap",
+            borderBottom: "1px solid #e2e8f0",
+            backgroundColor: "#f8fafc",
+          }}
+        >
+          {/* Выпадающий список для заголовков */}
+          <select
+            onChange={(e) => {
+              const level = parseInt(e.target.value);
+              if (!isNaN(level)) {
+                insertHeading(api, level);
+              }
+            }}
+            defaultValue=""
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+            }}
+          >
+            <option value="" disabled>
+              Заголовок
+            </option>
+            <option value="1">H1</option>
+            <option value="2">H2</option>
+            <option value="3">H3</option>
+            <option value="4">H4</option>
+            <option value="5">H5</option>
+            <option value="6">H6</option>
+          </select>
+
+          {/* Кнопки жирный / курсив / подчёркнутый */}
+          <button
+            onClick={() => {
+              const selection = api.getSelection?.() || api.getSelectedText?.();
+              const text = selection || "текст";
+              api.replaceSelection(`<b>${text}</b>`);
+            }}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <b>B</b>
+          </button>
+          <button
+            onClick={() => {
+              const selection = api.getSelection?.() || api.getSelectedText?.();
+              const text = selection || "текст";
+              api.replaceSelection(`<i>${text}</i>`);
+            }}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <i>I</i>
+          </button>
+          <button
+            onClick={() => {
+              const selection = api.getSelection?.() || api.getSelectedText?.();
+              const text = selection || "текст";
+              api.replaceSelection(`<u>${text}</u>`);
+            }}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <u>U</u>
+          </button>
+
+          {/* Кнопки выравнивания (используем готовые команды) */}
+          <button
+            onClick={() => api.executeCommand(alignLeftCommand)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 20 20">
+              <path
+                d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => api.executeCommand(alignCenterCommand)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 20 20">
+              <path
+                d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => api.executeCommand(alignRightCommand)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 20 20">
+              <path
+                d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => api.executeCommand(alignJustifyCommand)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 20 20">
+              <path
+                d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+
+          {/* Увеличение/уменьшение шрифта */}
+          <button
+            onClick={() => api.executeCommand(fontSizeIncreaseCommand)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            A+
+          </button>
+          <button
+            onClick={() => api.executeCommand(fontSizeDecreaseCommand)}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+              background: "white",
+              cursor: "pointer",
+            }}
+          >
+            A-
+          </button>
+
+          {/* Выбор шрифта */}
+          <select
+            value={currentFont}
+            onChange={(e) => {
+              const font = e.target.value;
+              setCurrentFont(font);
+              applyStyle(api, `font-family: '${font}', sans-serif;`);
+            }}
+            style={{
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+            }}
+          >
+            <option value="Stem">Stem</option>
+            <option value="TT Travels Next Trial">TT Travels</option>
+          </select>
+
+          {/* Размер шрифта (числовое поле с подсказками) */}
+          <input
+            type="number"
+            value={currentSize}
+            onChange={(e) => setCurrentSize(e.target.value)}
+            onBlur={() => applyStyle(api, `font-size: ${currentSize}px;`)}
+            list="sizeList"
+            style={{
+              width: "80px",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+            }}
+          />
+          <datalist id="sizeList">
+            <option value="12" />
+            <option value="14" />
+            <option value="16" />
+            <option value="18" />
+            <option value="20" />
+            <option value="24" />
+            <option value="30" />
+            <option value="36" />
+          </datalist>
+
+          {/* Цвет (выбор из палитры) */}
+          <input
+            type="color"
+            value={currentColor}
+            onChange={(e) => {
+              setCurrentColor(e.target.value);
+              applyStyle(api, `color: ${e.target.value};`);
+            }}
+            style={{
+              width: "40px",
+              height: "30px",
+              border: "1px solid #cbd5e1",
+              borderRadius: "4px",
+            }}
+          />
+
+          {/* Ручной ввод цвета (HEX без #) */}
+          <input
+            type="text"
+            placeholder="HEX без #"
+            value={currentColor.replace("#", "")}
+            onChange={(e) => {
+              const val = e.target.value
+                .replace(/[^0-9A-Fa-f]/g, "")
+                .slice(0, 6);
+              setCurrentColor("#" + val);
+            }}
+            onBlur={() => applyStyle(api, `color: ${currentColor};`)}
+            style={{
+              width: "100px",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #cbd5e1",
+            }}
+          />
+        </div>
+      );
+    },
+    [currentFont, currentSize, currentColor],
+  );
 
   return (
     <div className="space-y-6">
@@ -594,7 +843,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </div>
               </div>
 
-              {/* Редактор */}
+              {/* Редактор с кастомной панелью */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
@@ -605,7 +854,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   preview="live"
                   height={500}
                   visibleDragbar={false}
-                  commands={allCommands}
+                  renderToolbar={customToolbar}
                 />
               </div>
 
