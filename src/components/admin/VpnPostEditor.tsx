@@ -34,6 +34,8 @@ import {
 } from "@/hooks/useVpnPosts";
 
 // ==================== Кастомные команды ====================
+
+// Выравнивание
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
@@ -106,6 +108,7 @@ const alignJustifyCommand: ICommand = {
   },
 };
 
+// Размер шрифта
 const fontSizeIncreaseCommand: ICommand = {
   name: "fontSizeIncrease",
   keyCommand: "fontSizeIncrease",
@@ -140,19 +143,71 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
-// ==================== Группа заголовков (не используется, но можно раскомментировать при необходимости) ====================
-// const titleGroup: ICommand = {
-//   type: 'group',
-//   name: "titleGroup",
-//   keyCommand: "titleGroup",
-//   buttonProps: { "aria-label": "Заголовки" },
-//   icon: <span style={{ fontSize: 14 }}>H</span>,
-//   children: [
-//     commands.title1,
-//     commands.title2,
-//     commands.title3,
-//   ],
-// };
+// ==================== НОВЫЕ КОМАНДЫ: ШРИФТЫ ====================
+const fontStemCommand: ICommand = {
+  name: "fontStem",
+  keyCommand: "fontStem",
+  buttonProps: { "aria-label": "Шрифт Stem" },
+  icon: <span style={{ fontSize: 12, fontWeight: "bold" }}>Stem</span>,
+  execute: (state, api) => {
+    const text = `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+const fontTTCommand: ICommand = {
+  name: "fontTT",
+  keyCommand: "fontTT",
+  buttonProps: { "aria-label": "Шрифт TT Travels" },
+  icon: <span style={{ fontSize: 12, fontWeight: "bold" }}>TT</span>,
+  execute: (state, api) => {
+    const text = `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// ==================== НОВЫЕ КОМАНДЫ: ЦВЕТ ТЕКСТА ====================
+const colorOrangeCommand: ICommand = {
+  name: "colorOrange",
+  keyCommand: "colorOrange",
+  buttonProps: { "aria-label": "Оранжевый текст (#FF931F)" },
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "#FF931F",
+        borderRadius: 2,
+      }}
+    />
+  ),
+  execute: (state, api) => {
+    const text = `<span style="color: #FF931F;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+const colorDarkCommand: ICommand = {
+  name: "colorDark",
+  keyCommand: "colorDark",
+  buttonProps: { "aria-label": "Тёмный текст (#2B3038)" },
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "#2B3038",
+        borderRadius: 2,
+      }}
+    />
+  ),
+  execute: (state, api) => {
+    const text = `<span style="color: #2B3038;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// ==================== Основной компонент ====================
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -348,7 +403,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // Команды для панели инструментов
+  // Команды для панели инструментов (включая новые)
   const allCommands = [
     commands.bold,
     commands.italic,
@@ -372,6 +427,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     alignJustifyCommand,
     fontSizeIncreaseCommand,
     fontSizeDecreaseCommand,
+    fontStemCommand,
+    fontTTCommand,
+    colorOrangeCommand,
+    colorDarkCommand,
   ];
 
   return (
