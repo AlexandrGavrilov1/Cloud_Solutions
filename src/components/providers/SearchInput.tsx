@@ -28,10 +28,10 @@ export const SearchInput = ({
         placeholder={placeholder}
         className="
           w-full pl-9 pr-8 h-9
-          bg-background border border-border rounded-xl
+          bg-background border-2 border-border rounded-xl
           focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 
           transition-all text-sm text-foreground placeholder:text-muted-foreground 
-          font-extralight tracking-wider hover:border-primary/50
+          font-medium hover:border-primary/50
         "
         aria-label={placeholder}
       />

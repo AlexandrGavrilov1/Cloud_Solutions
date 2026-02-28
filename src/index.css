@@ -1,233 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
-/*@import url("https://fonts.cdnfonts.com/css/tt-travels-next-trial");*/
-
-/* === Подключение Stem (OpenType) === */
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Thin.otf") format("opentype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Hairline.otf") format("opentype");
-  font-weight: 150;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-ExtraLight.otf") format("opentype");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-ExtraLightItalic.otf") format("opentype");
-  font-weight: 200;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-LightItalic.otf") format("opentype");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Italic.otf") format("opentype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-MediumItalic.otf") format("opentype");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Stem";
-  src: url("/fonts/Stem-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-/* Добавьте другие начертания Stem, если есть (например, BoldItalic) */
-
-/* === Подключение локальных шрифтов TT Travels Next Trial (TrueType) === */
-/* (Раскомментируйте нужные начертания, если хотите использовать локальные файлы вместо CDN)* */
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Thin.ttf") format("truetype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Thin Italic.ttf") format("truetype");
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial ExtraLight.ttf") format("truetype");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial ExtraLight Italic.ttf")
-    format("truetype");
-  font-weight: 200;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Light Italic.ttf") format("truetype");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Medium Italic.ttf") format("truetype");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial DemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial DemiBold Italic.ttf")
-    format("truetype");
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Bold Italic.ttf") format("truetype");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial ExtraBold.ttf") format("truetype");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial ExtraBold Italic.ttf")
-    format("truetype");
-  font-weight: 800;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Black.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial";
-  src: url("/fonts/TT Travels Next Trial Black Italic.ttf") format("truetype");
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
-/* Добавьте италики и Outline варианты по аналогии */
-@font-face {
-  font-family: "TT Travels Next Trial Outline";
-  src: url("/fonts/TT Travels Next Trial Black Outline.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Travels Next Trial Outline";
-  src: url("/fonts/TT Travels Next Trial Black Outline Italic.ttf")
-    format("truetype");
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
+@import url("https://fonts.cdnfonts.com/css/tt-travels-next-trial");
 
 @tailwind base;
 @tailwind components;
@@ -235,26 +7,36 @@
 
 @layer base {
   :root {
-    --background: 240 7% 99%;
+    --background: 220 14% 96%;
     --foreground: 0 0% 10%;
+
     --card: 0 0% 100%;
     --card-foreground: 0 0% 10%;
+
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
+
     --primary: 27 100% 60%;
     --primary-foreground: 0 0% 10%;
+
     --secondary: 33 100% 50%;
     --secondary-foreground: 0 0% 10%;
+
     --muted: 220 14% 92%;
     --muted-foreground: 0 0% 45%;
+
     --accent: 220 14% 95%;
     --accent-foreground: 0 0% 10%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
+
     --border: 220 13% 88%;
     --input: 0 0% 98%;
     --ring: 27 100% 60%;
+
     --radius: 1.25rem;
+
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 10%;
     --sidebar-primary: 27 100% 60%;
@@ -268,23 +50,32 @@
   .dark {
     --background: 0 0% 7%;
     --foreground: 0 0% 98%;
+
     --card: 0 0% 10%;
     --card-foreground: 0 0% 98%;
+
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 98%;
+
     --primary: 27 100% 60%;
     --primary-foreground: 0 0% 7%;
+
     --secondary: 33 100% 50%;
     --secondary-foreground: 0 0% 7%;
+
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
+
     --accent: 0 0% 14%;
     --accent-foreground: 27 100% 60%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
+
     --border: 0 0% 20%;
     --input: 0 0% 18%;
     --ring: 27 100% 60%;
+
     --sidebar-background: 0 0% 7%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 27 100% 60%;
@@ -300,9 +91,15 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
-    /* font-family удалён – теперь через Tailwind */
+    font-family:
+      "Plus Jakarta Sans",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
   }
 }
 
@@ -310,32 +107,41 @@
   .text-balance {
     text-wrap: balance;
   }
+
   .gradient-text {
     @apply bg-gradient-to-r from-[#FF9933] via-[#FF8800] to-[#FF6600] bg-clip-text text-transparent;
   }
+
   .glass-effect {
     @apply bg-card/40 backdrop-blur-2xl border border-border/30;
   }
+
   .shadow-glow {
     box-shadow: 0 20px 60px -15px rgba(255, 153, 51, 0.4);
   }
+
   .shadow-neon {
     box-shadow:
       0 0 20px rgba(255, 153, 51, 0.5),
       0 0 40px rgba(255, 153, 51, 0.3);
   }
+
   .shadow-soft {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   }
+
   .hover-lift {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
   .hover-lift:hover {
     box-shadow: 0 20px 40px rgba(255, 153, 51, 0.2);
   }
+
   .group:hover .hover-lift {
     transform: translateY(-4px);
   }
+
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -344,6 +150,7 @@
       opacity: 1;
     }
   }
+
   @keyframes slide-in-from-bottom {
     from {
       transform: translateY(16px);
@@ -352,18 +159,23 @@
       transform: translateY(0);
     }
   }
+
   .animate-in {
     animation-fill-mode: both;
   }
+
   .fade-in {
     animation-name: fade-in;
   }
+
   .slide-in-from-bottom-4 {
     animation-name: slide-in-from-bottom;
   }
+
   .duration-500 {
     animation-duration: 500ms;
   }
+
   @keyframes matrix-glitch {
     0%,
     100% {
@@ -391,10 +203,12 @@
       opacity: 0.95;
     }
   }
+
   .matrix-glitch {
     animation: matrix-glitch 0.15s ease-in-out infinite;
     letter-spacing: 0.03em;
   }
+
   @keyframes lineGrow {
     from {
       transform: scaleY(0);
@@ -407,6 +221,7 @@
       opacity: 0.3;
     }
   }
+
   @keyframes pointAppear {
     from {
       transform: scale(0);
@@ -419,75 +234,18 @@
   }
 }
 
-/* ===== Дополнительные стили для статей ===== */
+/* ===== Дополнительные стили для статей (красная строка, скролл кода) ===== */
 .prose h2 + p,
 .prose h3 + p,
 .prose h4 + p {
-  text-indent: 2rem;
+  text-indent: 2rem; /* Красная строка для первого абзаца после заголовков */
 }
+
 .prose pre {
-  overflow-x: auto;
+  overflow-x: auto; /* Горизонтальный скролл для блоков кода */
   white-space: pre;
   word-wrap: normal;
 }
-body div[data-color-mode="light"] > div.wmde-markdown,
-body div[data-color-mode="dark"] > div.wmde-markdown {
-  padding: 2rem 3rem !important;
-}
-.wmde-markdown ul {
-  list-style-type: disc !important;
-  padding-left: 2rem !important;
-}
-.wmde-markdown ol {
-  list-style-type: decimal !important;
-  padding-left: 2rem !important;
-}
-.wmde-markdown li {
-  margin-bottom: 0.25rem !important;
-}
-.wmde-markdown img {
-  display: block !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-.wmde-markdown,
-.wmde-markdown-color {
-  background-color: transparent !important;
-}
 
-/* === Стили для блоков кода и кнопки копирования === */
-.wmde-markdown pre,
-.wmde-markdown code {
-  background-color: #e0e0e2 !important;
-  color: #272932 !important;
-}
-.wmde-markdown pre .copied {
-  opacity: 1 !important;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  background-color: #e0e0e2 !important;
-  border: none !important;
-  border-radius: 4px !important;
-  padding: 4px 8px !important;
-  margin: 4px !important;
-  box-shadow: none !important;
-  transition:
-    stroke 0.2s ease,
-    fill 0.2s ease !important;
-  cursor: pointer !important;
-}
-.wmde-markdown pre .copied svg {
-  stroke: #868686 !important;
-  fill: #868686 !important;
-  width: 16px;
-  height: 16px;
-  stroke-width: 1 !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
-  vector-effect: non-scaling-stroke !important;
-}
-.wmde-markdown pre .copied:hover svg {
-  stroke: #ff931f !important;
-  fill: #ff931f !important;
-}
+/* Дополнительно: можно добавить скругление и тени для блоков кода, 
+   но они уже заданы в компоненте через className */

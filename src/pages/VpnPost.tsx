@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/pages/VpnPost.tsx
+import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
@@ -9,54 +10,30 @@ import { vpnPosts } from "@/data/vpn-posts";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import MDEditor from "@uiw/react-md-editor";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useVpnPost } from "@/hooks/useVpnPosts";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data: post, isLoading, error } = useVpnPost(slug);
-  const { theme } = useTheme();
+  const post = vpnPosts.find((p) => p.slug === slug);
 
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  if (!post) {
+    return <Navigate to="/vpn" replace />;
+  }
 
   const relatedPosts = vpnPosts
-    .filter((p) => p.id !== post?.id && p.category === post?.category)
+    .filter((p) => p.id !== post.id && p.category === post.category)
     .slice(0, 3);
 
   const handleProviderClick = () => {
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
-        provider_name: post?.providerName,
+        provider_name: post.providerName,
       });
     }
   };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (error || !post) {
-    return <Navigate to="/vpn" replace />;
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -99,150 +76,122 @@ const VpnPost = () => {
 
       <main>
         <article className="pt-32 pb-16">
-          {/* Внешний контейнер на всю ширину с отступами */}
-          <div className="w-full px-4 3xl:px-[185px]">
-            {/* Кнопка возврата */}
-            <Link
-              to="/vpn"
-              className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors mb-8"
-            >
-              <Icon name="ArrowLeft" size={20} />
-              <span className="font-semibold">Вернуться к разделу VPN</span>
-            </Link>
-
-            {/* Заголовок статьи */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-left">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  p: ({ children }) => <span>{children}</span>,
-                  h1: "span",
-                  h2: "span",
-                  h3: "span",
-                  h4: "span",
-                  h5: "span",
-                  h6: "span",
-                  ul: "span",
-                  ol: "span",
-                  li: "span",
-                  blockquote: "span",
-                  pre: "span",
-                  code: ({ inline, className, children, ...props }) => {
-                    if (inline)
-                      return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    return <span>{children}</span>;
-                  },
-                  a: ({ href, children, ...props }) => (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      {...props}
-                    >
-                      {children}
-                    </a>
-                  ),
-                  img: () => null,
-                }}
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <Link
+                to="/vpn"
+                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8"
               >
-                {post.title}
-              </ReactMarkdown>
-            </h1>
+                <Icon name="ArrowLeft" size={20} />
+                <span className="font-semibold">Вернуться к разделу VPN</span>
+              </Link>
 
-            {/* Краткое описание */}
-            <p className="text-lg text-muted-foreground mb-6 text-left">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  p: ({ children }) => <span>{children}</span>,
-                  h1: "span",
-                  h2: "span",
-                  h3: "span",
-                  h4: "span",
-                  h5: "span",
-                  h6: "span",
-                  ul: "span",
-                  ol: "span",
-                  li: "span",
-                  blockquote: "span",
-                  pre: "span",
-                  code: ({ inline, className, children, ...props }) => {
-                    if (inline)
-                      return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    return <span>{children}</span>;
-                  },
-                  a: ({ href, children, ...props }) => (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      {...props}
-                    >
-                      {children}
-                    </a>
-                  ),
-                  img: () => null,
-                }}
-              >
-                {post.excerpt}
-              </ReactMarkdown>
-            </p>
+              <div className="mb-8">
+                <div className="flex flex-wrap items-center gap-3 mb-6">
+                  <Badge className="bg-primary/10 text-primary border-primary/30">
+                    {post.category}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    {post.readTime}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {post.date}
+                  </span>
+                </div>
 
-            {/* Тонкая линия */}
-            <hr className="border-t border-border/50 my-6" />
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
+                  {post.title}
+                </h1>
 
-            {/* Метаданные */}
-            <div className="flex items-center gap-6 text-sm text-foreground mb-8">
-              <span className="text-primary font-medium">{post.category}</span>
-              <span>{post.date}</span>
-              <span className="flex items-center gap-1">
-                <Icon name="Clock" size={14} className="text-foreground" />
-                {post.readTime}
-              </span>
-            </div>
+                <p className="text-lg text-muted-foreground mb-6">
+                  {post.excerpt}
+                </p>
 
-            {/* Изображение статьи (на всю ширину) */}
-            {post.image && (
-              <div className="w-full mb-12">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-auto rounded-2xl shadow-lg"
-                />
+                {/* Авторский блок закомментирован */}
+                {/* <div className="flex items-center gap-3 pb-8 border-b border-border">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Icon name="User" size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">
+                      {post.author}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Эксперт TopCloudhub
+                    </div>
+                  </div>
+                </div> */}
               </div>
-            )}
 
-            {/* Контент с ограниченной шириной и центрированием */}
-            <div className="max-w-[1050px] w-full mx-auto">
-              {/* Текст статьи */}
-              <div data-color-mode={theme === "dark" ? "dark" : "light"}>
-                <MDEditor.Markdown
-                  source={post.content}
+              {post.image && (
+                <div className="w-full mb-12">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-auto rounded-2xl shadow-lg"
+                  />
+                </div>
+              )}
+
+              <div
+                className="prose prose-lg max-w-none
+                prose-headings:font-bold prose-headings:text-foreground
+                prose-h1:text-4xl prose-h1:mb-6
+                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
+                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
+                prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-foreground prose-strong:font-bold
+                prose-ul:my-6 prose-ul:text-muted-foreground
+                prose-ol:my-6 prose-ol:text-muted-foreground
+                prose-li:my-2
+                prose-code:text-primary prose-code:bg-accent prose-code:px-2 prose-code:py-1 prose-code:rounded
+                prose-pre:bg-transparent prose-pre:p-0 prose-pre:border-0
+                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic
+                prose-table:border-2 prose-table:border-border
+                prose-th:bg-accent prose-th:p-3 prose-th:text-foreground
+                prose-td:p-3 prose-td:border prose-td:border-border
+                prose-img:w-[30%] prose-img:mx-auto prose-img:rounded-xl prose-img:my-8 prose-img:shadow-md
+              "
+              >
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
                   components={{
-                    img({ node, ...props }) {
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      if (!inline && match) {
+                        return (
+                          <SyntaxHighlighter
+                            style={vscDarkPlus}
+                            language={match[1]}
+                            PreTag="div"
+                            className="rounded-xl my-6 overflow-x-auto"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        );
+                      }
                       return (
-                        <a
-                          href={props.src}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <img {...props} />
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                    // 👇 Добавлено: все ссылки открываются в новой вкладке
+                    a({ node, children, ...props }) {
+                      return (
+                        <a target="_blank" rel="noopener noreferrer" {...props}>
+                          {children}
                         </a>
                       );
                     },
                   }}
-                />
+                >
+                  {post.content}
+                </ReactMarkdown>
               </div>
 
-              {/* Теги */}
               <div className="mt-12 pt-8 border-t border-border">
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag, idx) => (
@@ -253,12 +202,11 @@ const VpnPost = () => {
                 </div>
               </div>
 
-              {/* Кнопка провайдера */}
               {post.providerUrl && post.providerName && (
                 <div className="mt-8 text-center">
                   <Button
                     asChild
-                    className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg hover:bg-primary/90 transition-all"
+                    className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg"
                   >
                     <a
                       href={post.providerUrl}
@@ -275,80 +223,71 @@ const VpnPost = () => {
           </div>
         </article>
 
-        {/* Похожие статьи */}
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-accent/30">
-            <div className="w-full px-4 3xl:px-[185px]">
-              <h2 className="text-3xl font-extrabold text-foreground mb-8">
-                Похожие статьи
-              </h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                {relatedPosts.map((relatedPost) => (
-                  <Link
-                    key={relatedPost.id}
-                    to={`/vpn/${relatedPost.slug}`}
-                    className="group"
-                  >
-                    <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
-                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-                        {relatedPost.image ? (
-                          <img
-                            src={relatedPost.image}
-                            alt={relatedPost.title}
-                            className="object-cover w-full h-full"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="container mx-auto px-4 lg:px-8">
+              <div className="max-w-6xl mx-auto">
+                <h2 className="text-3xl font-extrabold text-foreground mb-8">
+                  Похожие статьи
+                </h2>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                  {relatedPosts.map((relatedPost) => (
+                    <Link
+                      key={relatedPost.id}
+                      to={`/vpn/${relatedPost.slug}`}
+                      className="group"
+                    >
+                      <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
+                        <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
+                          {relatedPost.image ? (
+                            <img
+                              src={relatedPost.image}
+                              alt={relatedPost.title}
+                              className="object-cover w-full h-full"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Icon
+                                name="FileText"
+                                size={48}
+                                className="text-primary/30"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="p-5 flex-1 flex flex-col">
+                          <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
+                            {relatedPost.category}
+                          </Badge>
+
+                          <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                            {relatedPost.title}
+                          </h3>
+
+                          <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
+                            {relatedPost.excerpt}
+                          </p>
+
+                          <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
+                            Читать
                             <Icon
-                              name="FileText"
-                              size={48}
-                              className="text-primary/30"
+                              name="ArrowRight"
+                              size={16}
+                              className="group-hover:translate-x-1 transition-transform"
                             />
                           </div>
-                        )}
-                      </div>
-                      <div className="p-5 flex-1 flex flex-col">
-                        <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
-                          {relatedPost.category}
-                        </Badge>
-                        <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {relatedPost.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
-                          {relatedPost.excerpt}
-                        </p>
-                        <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
-                          Читать
-                          <Icon
-                            name="ArrowRight"
-                            size={16}
-                            className="group-hover:translate-x-1 transition-transform"
-                          />
                         </div>
-                      </div>
-                    </article>
-                  </Link>
-                ))}
+                      </article>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
         )}
       </main>
-
-      {/* Кнопка прокрутки вверх */}
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
-          aria-label="Прокрутить вверх"
-        >
-          <Icon
-            name="ArrowUp"
-            size={20}
-            className="text-foreground hover:text-background transition-colors"
-          />
-        </button>
-      )}
 
       <Footer />
     </div>

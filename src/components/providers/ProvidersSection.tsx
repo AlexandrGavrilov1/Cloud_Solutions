@@ -21,7 +21,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   );
   const [searchQuery, setSearchQuery] = useState("");
 
-  // --- Состояние сортировки и направления цены --
+  // --- Состояние сортировки и направления цены ---
   const [sortBy, setSortBy] = useState<"popular" | "rating" | "price">(() => {
     const saved = localStorage.getItem("sortBy");
     if (saved === "rating" || saved === "price" || saved === "popular")
@@ -53,14 +53,14 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }, []);
 
   const isMobile = windowWidth <= 850;
-  const isTenCardsMode = !isMobile && windowWidth >= 950 && windowWidth < 1600;
+  const isTenCardsMode = !isMobile && windowWidth >= 950 && windowWidth < 1280;
   const incrementCount = isTenCardsMode ? 10 : 9;
 
   // --- Количество отображаемых карточек (пагинация) ---
   const [providersToShow, setProvidersToShow] = useState(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth <= 850) return 9;
-      if (window.innerWidth >= 950 && window.innerWidth < 1600) return 10;
+      if (window.innerWidth >= 950 && window.innerWidth < 1280) return 10;
       return 9;
     }
     return 9;
@@ -547,7 +547,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
   }
 
   return (
-    <section id="providers" className="w-full px-4 3xl:px-[185px] py-4">
+    <section id="providers" className="w-full px-4 lg:px-8 py-4">
       {isMobile ? (
         // ========== МОБИЛЬНАЯ ВЕРСИЯ (≤850px) ==========
         <div className="flex flex-col">
@@ -611,7 +611,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                   {sortedProviders.length > providersToShow && (
                     <button
                       onClick={() => setProvidersToShow((prev) => prev + 9)}
-                      className="tracking-widest group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background    text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <span className="relative flex items-center justify-center gap-1.5">
                         Показать ещё 9
@@ -640,7 +640,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                           setProvidersToShow(sortedProviders.length);
                         }
                       }}
-                      className="tracking-widest group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background   text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                      className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                     >
                       <span className="relative flex items-center justify-center gap-1.5">
                         {providersToShow === sortedProviders.length
@@ -754,7 +754,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                         onClick={() =>
                           setProvidersToShow((prev) => prev + incrementCount)
                         }
-                        className="tracking-widest group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background  text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                        className="group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                       >
                         <span className="relative flex items-center justify-center gap-1.5">
                           Показать ещё {incrementCount}
@@ -787,7 +787,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
                             setProvidersToShow(sortedProviders.length);
                           }
                         }}
-                        className="tracking-widest group relative px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-background   text-base rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+                        className="group relative px-6 py-3 bg-gradient-to-r from-secondary to-secondary/80 text-background font-bold text-base rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
                       >
                         <span className="relative flex items-center justify-center gap-1.5">
                           {providersToShow === sortedProviders.length
