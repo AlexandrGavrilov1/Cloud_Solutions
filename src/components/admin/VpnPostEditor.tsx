@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -33,7 +33,7 @@ import {
   useDeleteVpnPost,
 } from "@/hooks/useVpnPosts";
 
-// ==================== Кастомные команды (оставляем для совместимости) ====================
+// ==================== Существующие кастомные команды ====================
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
@@ -140,6 +140,76 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
+// ==================== НОВЫЕ КОМАНДЫ ДЛЯ ШРИФТОВ И ЦВЕТОВ ====================
+
+// Шрифт Stem
+const fontStemCommand: ICommand = {
+  name: "fontStem",
+  keyCommand: "fontStem",
+  buttonProps: { "aria-label": "Шрифт Stem" },
+  icon: <span style={{ fontSize: 12 }}>Stem</span>,
+  execute: (state, api) => {
+    const text = `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// Шрифт TT Travels Next Trial
+const fontTTCommand: ICommand = {
+  name: "fontTT",
+  keyCommand: "fontTT",
+  buttonProps: { "aria-label": "Шрифт TT Travels" },
+  icon: <span style={{ fontSize: 12 }}>TT</span>,
+  execute: (state, api) => {
+    const text = `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// Цвет оранжевый #FF931F
+const colorOrangeCommand: ICommand = {
+  name: "colorOrange",
+  keyCommand: "colorOrange",
+  buttonProps: { "aria-label": "Оранжевый (#FF931F)" },
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "#FF931F",
+        borderRadius: 2,
+      }}
+    />
+  ),
+  execute: (state, api) => {
+    const text = `<span style="color: #FF931F;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// Цвет тёмный #272832
+const colorDarkCommand: ICommand = {
+  name: "colorDark",
+  keyCommand: "colorDark",
+  buttonProps: { "aria-label": "Тёмный (#272832)" },
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "#272832",
+        borderRadius: 2,
+      }}
+    />
+  ),
+  execute: (state, api) => {
+    const text = `<span style="color: #272832;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// ==================== Основной компонент ====================
+
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
 }
@@ -160,11 +230,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
-  // Состояния для кастомной панели
-  const [currentFont, setCurrentFont] = useState("Stem");
-  const [currentSize, setCurrentSize] = useState("16");
-  const [currentColor, setCurrentColor] = useState("#000000");
 
   // Поля метаданных
   const [title, setTitle] = useState("");
@@ -339,29 +404,38 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // Функция для вставки стиля
-  const applyStyle = (api: any, style: string) => {
-    const selection = api.getSelection?.() || api.getSelectedText?.();
-    const text = selection || "текст";
-    const wrapped = `<span style="${style}">${text}</span>`;
-    api.replaceSelection(wrapped);
-  };
-
-  // Вставка заголовка (Markdown)
-  const insertHeading = (api: any, level: number) => {
-    const prefix = "#".repeat(level) + " ";
-    api.replaceSelection(prefix);
-  };
-
-  // ============= ТЕСТОВАЯ ПАНЕЛЬ =============
-  const customToolbar = useCallback((commands: any, api: any) => {
-    return (
-      <div style={{ background: "red", padding: 10, color: "white" }}>
-        ТЕСТОВАЯ ПАНЕЛЬ
-      </div>
-    );
-  }, []);
-  // ============================================
+  // Собираем все команды для панели инструментов
+  const allCommands = [
+    commands.bold,
+    commands.italic,
+    commands.strikethrough,
+    commands.hr,
+    commands.title1,
+    commands.title2,
+    commands.title3,
+    commands.title4,
+    commands.title5,
+    commands.title6,
+    commands.link,
+    commands.quote,
+    commands.code,
+    commands.codeBlock,
+    commands.image,
+    commands.unorderedListCommand,
+    commands.orderedListCommand,
+    commands.checkedListCommand,
+    commands.table,
+    alignLeftCommand,
+    alignCenterCommand,
+    alignRightCommand,
+    alignJustifyCommand,
+    fontSizeIncreaseCommand,
+    fontSizeDecreaseCommand,
+    fontStemCommand,
+    fontTTCommand,
+    colorOrangeCommand,
+    colorDarkCommand,
+  ];
 
   return (
     <div className="space-y-6">
@@ -583,7 +657,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 </div>
               </div>
 
-              {/* Редактор с кастомной панелью */}
+              {/* Редактор с панелью инструментов (стандартной + наши кнопки) */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
@@ -594,7 +668,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   preview="live"
                   height={500}
                   visibleDragbar={false}
-                  renderToolbar={customToolbar}
+                  commands={allCommands}
                 />
               </div>
 
