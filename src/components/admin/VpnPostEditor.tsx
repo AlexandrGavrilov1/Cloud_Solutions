@@ -108,7 +108,7 @@ const alignJustifyCommand: ICommand = {
   },
 };
 
-// Размер шрифта
+// Размер шрифта (отдельные команды для увеличения/уменьшения)
 const fontSizeIncreaseCommand: ICommand = {
   name: "fontSizeIncrease",
   keyCommand: "fontSizeIncrease",
@@ -143,34 +143,136 @@ const fontSizeDecreaseCommand: ICommand = {
   },
 };
 
-// ==================== НОВЫЕ КОМАНДЫ: ШРИФТЫ ====================
-const fontStemCommand: ICommand = {
-  name: "fontStem",
-  keyCommand: "fontStem",
-  buttonProps: { "aria-label": "Шрифт Stem" },
-  icon: <span style={{ fontSize: 12, fontWeight: "bold" }}>Stem</span>,
-  execute: (state, api) => {
-    const text = `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
+// ==================== НОВЫЕ ГРУППЫ КОМАНД ====================
+
+// Группа выбора шрифта
+const fontGroup: ICommand = {
+  type: "group",
+  name: "fontGroup",
+  keyCommand: "fontGroup",
+  buttonProps: { "aria-label": "Выбрать шрифт" },
+  icon: <span style={{ fontSize: 12 }}>Шрифт</span>,
+  children: [
+    {
+      name: "fontStem",
+      keyCommand: "fontStem",
+      buttonProps: { "aria-label": "Stem" },
+      icon: <span style={{ fontSize: 12 }}>Stem</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "fontTT",
+      keyCommand: "fontTT",
+      buttonProps: { "aria-label": "TT Travels" },
+      icon: <span style={{ fontSize: 12 }}>TT Travels</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+  ],
 };
 
-const fontTTCommand: ICommand = {
-  name: "fontTT",
-  keyCommand: "fontTT",
-  buttonProps: { "aria-label": "Шрифт TT Travels" },
-  icon: <span style={{ fontSize: 12, fontWeight: "bold" }}>TT</span>,
-  execute: (state, api) => {
-    const text = `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
+// Группа выбора размера шрифта (готовые значения)
+const fontSizeGroup: ICommand = {
+  type: "group",
+  name: "fontSizeGroup",
+  keyCommand: "fontSizeGroup",
+  buttonProps: { "aria-label": "Размер шрифта" },
+  icon: <span style={{ fontSize: 12 }}>Размер</span>,
+  children: [
+    {
+      name: "size12",
+      keyCommand: "size12",
+      buttonProps: { "aria-label": "12px" },
+      icon: <span>12px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 12px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size14",
+      keyCommand: "size14",
+      buttonProps: { "aria-label": "14px" },
+      icon: <span>14px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 14px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size16",
+      keyCommand: "size16",
+      buttonProps: { "aria-label": "16px" },
+      icon: <span>16px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 16px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size18",
+      keyCommand: "size18",
+      buttonProps: { "aria-label": "18px" },
+      icon: <span>18px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 18px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size20",
+      keyCommand: "size20",
+      buttonProps: { "aria-label": "20px" },
+      icon: <span>20px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 20px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size24",
+      keyCommand: "size24",
+      buttonProps: { "aria-label": "24px" },
+      icon: <span>24px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 24px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size30",
+      keyCommand: "size30",
+      buttonProps: { "aria-label": "30px" },
+      icon: <span>30px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 30px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "size36",
+      keyCommand: "size36",
+      buttonProps: { "aria-label": "36px" },
+      icon: <span>36px</span>,
+      execute: (state, api) => {
+        const text = `<span style="font-size: 36px;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+  ],
 };
 
-// ==================== НОВЫЕ КОМАНДЫ: ЦВЕТ ТЕКСТА ====================
-const colorOrangeCommand: ICommand = {
-  name: "colorOrange",
-  keyCommand: "colorOrange",
-  buttonProps: { "aria-label": "Оранжевый текст (#FF931F)" },
+// Группа выбора цвета с предустановками и возможностью ввода произвольного кода
+const colorGroup: ICommand = {
+  type: "group",
+  name: "colorGroup",
+  keyCommand: "colorGroup",
+  buttonProps: { "aria-label": "Цвет текста" },
   icon: (
     <div
       style={{
@@ -181,30 +283,80 @@ const colorOrangeCommand: ICommand = {
       }}
     />
   ),
-  execute: (state, api) => {
-    const text = `<span style="color: #FF931F;">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
-};
-
-const colorDarkCommand: ICommand = {
-  name: "colorDark",
-  keyCommand: "colorDark",
-  buttonProps: { "aria-label": "Тёмный текст (#2B3038)" },
-  icon: (
-    <div
-      style={{
-        width: 14,
-        height: 14,
-        backgroundColor: "#2B3038",
-        borderRadius: 2,
-      }}
-    />
-  ),
-  execute: (state, api) => {
-    const text = `<span style="color: #2B3038;">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
+  children: [
+    {
+      name: "colorOrange",
+      keyCommand: "colorOrange",
+      buttonProps: { "aria-label": "Оранжевый (#FF931F)" },
+      icon: (
+        <div
+          style={{
+            width: 14,
+            height: 14,
+            backgroundColor: "#FF931F",
+            borderRadius: 2,
+          }}
+        />
+      ),
+      execute: (state, api) => {
+        const text = `<span style="color: #FF931F;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "colorDark",
+      keyCommand: "colorDark",
+      buttonProps: { "aria-label": "Тёмный (#272832)" },
+      icon: (
+        <div
+          style={{
+            width: 14,
+            height: 14,
+            backgroundColor: "#272832",
+            borderRadius: 2,
+          }}
+        />
+      ),
+      execute: (state, api) => {
+        const text = `<span style="color: #272832;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "colorBlue",
+      keyCommand: "colorBlue",
+      buttonProps: { "aria-label": "Синий (#424BFF)" },
+      icon: (
+        <div
+          style={{
+            width: 14,
+            height: 14,
+            backgroundColor: "#424BFF",
+            borderRadius: 2,
+          }}
+        />
+      ),
+      execute: (state, api) => {
+        const text = `<span style="color: #424BFF;">${state.selectedText || "текст"}</span>`;
+        api.replaceSelection(text);
+      },
+    },
+    {
+      name: "colorCustom",
+      keyCommand: "colorCustom",
+      buttonProps: { "aria-label": "Ввести свой цвет" },
+      icon: <span style={{ fontSize: 12 }}>🎨</span>,
+      execute: (state, api) => {
+        const colorCode = window.prompt("Введите цвет в HEX (без #)", "");
+        if (colorCode && /^[0-9A-Fa-f]{6}$/.test(colorCode)) {
+          const text = `<span style="color: #${colorCode};">${state.selectedText || "текст"}</span>`;
+          api.replaceSelection(text);
+        } else if (colorCode) {
+          alert("Неверный формат. Введите 6 символов (0-9, A-F).");
+        }
+      },
+    },
+  ],
 };
 
 // ==================== Основной компонент ====================
@@ -403,7 +555,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // Команды для панели инструментов (включая новые)
+  // Все команды для панели инструментов
   const allCommands = [
     commands.bold,
     commands.italic,
@@ -427,10 +579,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     alignJustifyCommand,
     fontSizeIncreaseCommand,
     fontSizeDecreaseCommand,
-    fontStemCommand,
-    fontTTCommand,
-    colorOrangeCommand,
-    colorDarkCommand,
+    fontGroup,
+    fontSizeGroup,
+    colorGroup,
   ];
 
   return (
