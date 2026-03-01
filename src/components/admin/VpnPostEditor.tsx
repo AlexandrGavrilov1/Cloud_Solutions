@@ -187,24 +187,65 @@ const colorOrangeCommand: ICommand = {
   },
 };
 
-// Цвет тёмный #272832
+// Цвет тёмный #272932 (исправлено с #272832 на #272932)
 const colorDarkCommand: ICommand = {
   name: "colorDark",
   keyCommand: "colorDark",
-  buttonProps: { "aria-label": "Тёмный (#272832)" },
+  buttonProps: { "aria-label": "Тёмный (#272932)" },
   icon: (
     <div
       style={{
         width: 14,
         height: 14,
-        backgroundColor: "#272832",
+        backgroundColor: "#272932",
         borderRadius: 2,
       }}
     />
   ),
   execute: (state, api) => {
-    const text = `<span style="color: #272832;">${state.selectedText || "текст"}</span>`;
+    const text = `<span style="color: #272932;">${state.selectedText || "текст"}</span>`;
     api.replaceSelection(text);
+  },
+};
+
+// ==================== НОВЫЕ КОМАНДЫ ДЛЯ СТИЛЕЙ (ПО ЗАПРОСУ) ====================
+
+// Заголовок 1: TT Travels, bold, 36px, #272932, left
+const heading1StyleCommand: ICommand = {
+  name: "heading1Style",
+  keyCommand: "heading1Style",
+  buttonProps: { "aria-label": "Заголовок 1 (TT Travels, 36px)" },
+  icon: <span style={{ fontSize: 12 }}>H1</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Заголовок 1";
+    const wrapped = `<span class="font-heading font-bold text-[36px]" style="color: #272932; text-align: left;">${text}</span>`;
+    api.replaceSelection(wrapped);
+  },
+};
+
+// Текст 1: Stem Medium, 18px, #272932, justify
+const body1StyleCommand: ICommand = {
+  name: "body1Style",
+  keyCommand: "body1Style",
+  buttonProps: { "aria-label": "Текст 1 (Stem Medium, 18px)" },
+  icon: <span style={{ fontSize: 12 }}>T1</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Текст 1";
+    const wrapped = `<span class="font-sans font-medium text-[18px]" style="color: #272932; text-align: justify;">${text}</span>`;
+    api.replaceSelection(wrapped);
+  },
+};
+
+// Текст 2: Stem Regular, 18px, #272932, justify
+const body2StyleCommand: ICommand = {
+  name: "body2Style",
+  keyCommand: "body2Style",
+  buttonProps: { "aria-label": "Текст 2 (Stem Regular, 18px)" },
+  icon: <span style={{ fontSize: 12 }}>T2</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Текст 2";
+    const wrapped = `<span class="font-sans font-normal text-[18px]" style="color: #272932; text-align: justify;">${text}</span>`;
+    api.replaceSelection(wrapped);
   },
 };
 
@@ -404,7 +445,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     }
   };
 
-  // Собираем все команды для панели инструментов
+  // Собираем все команды для панели инструментов (включая новые стили)
   const allCommands = [
     commands.bold,
     commands.italic,
@@ -435,6 +476,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     fontTTCommand,
     colorOrangeCommand,
     colorDarkCommand,
+    // Новые команды стилей
+    heading1StyleCommand,
+    body1StyleCommand,
+    body2StyleCommand,
   ];
 
   return (
