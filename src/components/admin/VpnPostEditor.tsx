@@ -187,7 +187,7 @@ const colorOrangeCommand: ICommand = {
   },
 };
 
-// Цвет тёмный #272932 (исправлено с #272832 на #272932)
+// Цвет тёмный #272932
 const colorDarkCommand: ICommand = {
   name: "colorDark",
   keyCommand: "colorDark",
@@ -204,6 +204,27 @@ const colorDarkCommand: ICommand = {
   ),
   execute: (state, api) => {
     const text = `<span style="color: #272932;">${state.selectedText || "текст"}</span>`;
+    api.replaceSelection(text);
+  },
+};
+
+// ==================== ДОБАВЛЕННАЯ КОМАНДА: тёмный 50% прозрачности ====================
+const colorDark50Command: ICommand = {
+  name: "colorDark50",
+  keyCommand: "colorDark50",
+  buttonProps: { "aria-label": "Тёмный 50%" },
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "rgba(39, 41, 50, 0.5)",
+        borderRadius: 2,
+      }}
+    />
+  ),
+  execute: (state, api) => {
+    const text = `<span style="color: rgba(39, 41, 50, 0.5);">${state.selectedText || "текст"}</span>`;
     api.replaceSelection(text);
   },
 };
@@ -476,7 +497,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     fontTTCommand,
     colorOrangeCommand,
     colorDarkCommand,
-    // Новые команды стилей
+    colorDark50Command, // <-- ДОБАВЛЕННАЯ КОМАНДА
     heading1StyleCommand,
     body1StyleCommand,
     body2StyleCommand,
