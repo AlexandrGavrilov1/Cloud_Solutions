@@ -4,10 +4,15 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import { VpnPost } from "@/data/vpn-posts";
+import removeMarkdown from "remove-markdown";
 
-// Функция для удаления Markdown-ссылок (оставляет только текст)
-const stripMarkdownLinks = (text: string): string => {
-  return text.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+// Функция для полной очистки текста от Markdown и HTML-тегов
+const cleanText = (text: string): string => {
+  if (!text) return "";
+  // Сначала удаляем Markdown-синтаксис (включая ссылки, жирный и т.д.)
+  const withoutMarkdown = removeMarkdown(text);
+  // Затем удаляем оставшиеся HTML-теги (например, <span>, <b> и т.п.)
+  return withoutMarkdown.replace(/<[^>]*>/g, "");
 };
 
 interface VpnCardProps {
@@ -23,7 +28,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
           {post.image ? (
             <img
               src={post.image}
-              alt={post.title}
+              alt={cleanText(post.title)}
               className="object-cover w-full h-full"
             />
           ) : (
@@ -37,44 +42,52 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
-              {post.category}
+              {cleanText(post.category)}
             </Badge>
-            <span className="text-xs text-muted-foreground">{post.readTime}</span>
+            <span className="text-xs text-muted-foreground">
+              {cleanText(post.readTime)}
+            </span>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Icon name="Eye" size={12} />
               <span>{post.views?.toLocaleString() ?? 0}</span>
             </div>
           </div>
 
-          {/* Заголовок – удаляем Markdown-ссылки */}
+          {/* Заголовок – очищенный от Markdown и HTML */}
           <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-            {stripMarkdownLinks(post.title)}
+            {cleanText(post.title)}
           </h2>
 
-          {/* Описание – удаляем Markdown-ссылки */}
+          {/* Описание – очищенное */}
           <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
-            {stripMarkdownLinks(post.excerpt)}
+            {cleanText(post.excerpt)}
           </p>
 
           {/* Нижняя часть с тегами и кнопкой */}
           <div className="flex items-center justify-between pt-4 border-t border-border">
             <div className="flex flex-wrap gap-1">
               {post.tags.slice(0, 2).map((tag, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
+                <Badge
+                  key={idx}
+                  variant="outline"
+                  className="text-xs font-normal"
+                >
                   {tag}
                 </Badge>
               ))}
             </div>
             <div className="flex items-center gap-1 text-primary font-semibold text-sm">
               Читать
-              <Icon name="ArrowRight" size={16} className="group-hover:translate-x-1 transition-transform" />
+              <Icon
+                name="ArrowRight"
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </div>
           </div>
 
           {/* Дата */}
-          <div className="mt-3 text-xs text-muted-foreground">
-            {post.date}
-          </div>
+          <div className="mt-3 text-xs text-muted-foreground">{post.date}</div>
         </div>
       </article>
     </Link>
