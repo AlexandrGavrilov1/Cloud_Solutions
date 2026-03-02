@@ -34,7 +34,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
       <article className="relative bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col group-hover:-translate-y-1 duration-300">
         {/* Оранжевое пятно при наведении (снизу) */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 w-[400px] h-[400px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none rounded-full"
+          className="absolute left-1/2 -translate-x-1/2 w-[300px] h-[300px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none rounded-full"
           style={{
             bottom: "-100px",
             background:
