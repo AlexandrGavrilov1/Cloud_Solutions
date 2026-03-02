@@ -270,6 +270,26 @@ const body2StyleCommand: ICommand = {
   },
 };
 
+// ==================== НОВАЯ КОМАНДА ДЛЯ СПИСКА (как T2) ====================
+const listStyleCommand: ICommand = {
+  name: "listStyle",
+  keyCommand: "listStyle",
+  buttonProps: { "aria-label": "Список (как T2)" },
+  icon: <span style={{ fontSize: 12 }}>📋</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Элемент списка";
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
+    const listItems = lines
+      .map(
+        (line) =>
+          `<li class="font-sans font-normal text-[18px]" style="color: #272932; text-align: justify;">${line}</li>`,
+      )
+      .join("");
+    const wrapped = `<ul class="list-disc pl-5">${listItems}</ul>`;
+    api.replaceSelection(wrapped);
+  },
+};
+
 // ==================== Основной компонент ====================
 
 interface VpnPostEditorProps {
@@ -497,10 +517,11 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     fontTTCommand,
     colorOrangeCommand,
     colorDarkCommand,
-    colorDark50Command, // <-- ДОБАВЛЕННАЯ КОМАНДА
+    colorDark50Command,
     heading1StyleCommand,
     body1StyleCommand,
     body2StyleCommand,
+    listStyleCommand, // <-- ДОБАВЛЕННАЯ КОМАНДА
   ];
 
   return (
