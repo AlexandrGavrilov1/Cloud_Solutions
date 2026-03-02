@@ -270,23 +270,87 @@ const body2StyleCommand: ICommand = {
   },
 };
 
-// ==================== НОВАЯ КОМАНДА ДЛЯ СПИСКА (как T2) ====================
-const listStyleCommand: ICommand = {
-  name: "listStyle",
-  keyCommand: "listStyle",
-  buttonProps: { "aria-label": "Список (как T2)" },
-  icon: <span style={{ fontSize: 12 }}>📋</span>,
+// ==================== КОМАНДЫ ДЛЯ СПИСКОВ (T2-стиль, разные маркеры, уменьшенные отступы) ====================
+
+// Вспомогательная функция для создания элемента списка с общими стилями
+const createListItem = (content: string) => {
+  return `<li class="font-sans font-normal text-[18px] leading-tight" style="color: #272932; text-align: justify;">${content}</li>`;
+};
+
+// Нумерованный список
+const numberedListCommand: ICommand = {
+  name: "numberedList",
+  keyCommand: "numberedList",
+  buttonProps: {
+    "aria-label": "Нумерованный список (T2, уменьшенные отступы)",
+  },
+  icon: <span style={{ fontSize: 12 }}>1.</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Элемент списка";
     const lines = text.split("\n").filter((line) => line.trim() !== "");
-    const listItems = lines
+    const listItems = lines.map((line) => createListItem(line)).join("");
+    const wrapped = `<ol class="list-decimal pl-5 space-y-1">${listItems}</ol>`;
+    api.replaceSelection(wrapped);
+  },
+};
+
+// Маркированный список с кругами
+const discListCommand: ICommand = {
+  name: "discList",
+  keyCommand: "discList",
+  buttonProps: {
+    "aria-label": "Маркированный список (круги, T2, уменьшенные отступы)",
+  },
+  icon: <span style={{ fontSize: 12 }}>•</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Элемент списка";
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
+    const listItems = lines.map((line) => createListItem(line)).join("");
+    const wrapped = `<ul class="list-disc pl-5 space-y-1">${listItems}</ul>`;
+    api.replaceSelection(wrapped);
+  },
+};
+
+// Маркированный список с квадратами
+const squareListCommand: ICommand = {
+  name: "squareList",
+  keyCommand: "squareList",
+  buttonProps: {
+    "aria-label": "Маркированный список (квадраты, T2, уменьшенные отступы)",
+  },
+  icon: <span style={{ fontSize: 12 }}>■</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Элемент списка";
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
+    const listItems = lines.map((line) => createListItem(line)).join("");
+    const wrapped = `<ul class="list-square pl-5 space-y-1">${listItems}</ul>`;
+    api.replaceSelection(wrapped);
+  },
+};
+
+// Список с галочками (кастомный стиль)
+const checkListCommand: ICommand = {
+  name: "checkList",
+  keyCommand: "checkList",
+  buttonProps: { "aria-label": "Список с галочками (T2, уменьшенные отступы)" },
+  icon: <span style={{ fontSize: 12 }}>✓</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "Элемент списка";
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
+    const listItems = lines.map((line) => createListItem(line)).join("");
+    // Для галочек используем кастомный стиль через класс, определённый в index.css или инлайн
+    const wrapped = `<ul class="pl-5 space-y-1" style="list-style: none; padding-left: 1.25rem;">${listItems.replace(/<li /g, '<li style="position: relative; padding-left: 1.5rem;" ')}</ul>`;
+    // Дополнительно добавим стили для галочек через внутренний <span> или через глобальный CSS
+    // Проще добавить инлайн-стили для каждого li: псевдоэлемент не получится через инлайн, поэтому вставим символ галочки.
+    // Но лучше создать класс в index.css, но мы можем и так:
+    const checkItems = lines
       .map(
         (line) =>
-          `<li class="font-sans font-normal text-[18px]" style="color: #272932; text-align: justify;">${line}</li>`,
+          `<li class="font-sans font-normal text-[18px] leading-tight" style="color: #272932; text-align: justify; list-style-type: none; position: relative; padding-left: 1.5rem;">✓ ${line}</li>`,
       )
       .join("");
-    const wrapped = `<ul class="list-disc pl-5">${listItems}</ul>`;
-    api.replaceSelection(wrapped);
+    const wrappedWithChecks = `<ul class="space-y-1">${checkItems}</ul>`;
+    api.replaceSelection(wrappedWithChecks);
   },
 };
 
@@ -521,7 +585,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     heading1StyleCommand,
     body1StyleCommand,
     body2StyleCommand,
-    listStyleCommand, // <-- ДОБАВЛЕННАЯ КОМАНДА
+    numberedListCommand,
+    discListCommand,
+    squareListCommand,
+    checkListCommand,
   ];
 
   return (
