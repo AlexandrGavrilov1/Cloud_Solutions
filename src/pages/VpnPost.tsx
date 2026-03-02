@@ -16,7 +16,7 @@ import rehypeRaw from "rehype-raw";
 import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
 
-// Компонент для рендеринга Markdown сс поддержкой HTML
+// Компонент для рендеринга Markdown с поддержкой HTML
 const MarkdownContent = ({ children }: { children: string }) => (
   <ReactMarkdown
     remarkPlugins={[remarkGfm]}
@@ -61,6 +61,7 @@ const VpnPost = () => {
   const { theme } = useTheme();
 
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showScrollDown, setShowScrollDown] = useState(false);
 
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
@@ -78,11 +79,29 @@ const VpnPost = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // Кнопка "вверх" появляется, когда прокрутили вниз от верха более чем на 300px
+      setShowScrollTop(scrollY > 300);
+
+      // Кнопка "вниз" появляется, если до нижней границы документа больше 300px
+      setShowScrollDown(scrollY + windowHeight < documentHeight - 300);
     };
+
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // инициализация
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -307,6 +326,7 @@ const VpnPost = () => {
         )}
       </main>
 
+      {/* Кнопка прокрутки вверх */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
@@ -315,6 +335,21 @@ const VpnPost = () => {
         >
           <Icon
             name="ArrowUp"
+            size={20}
+            className="text-foreground hover:text-background transition-colors"
+          />
+        </button>
+      )}
+
+      {/* Кнопка прокрутки вниз */}
+      {showScrollDown && (
+        <button
+          onClick={scrollToBottom}
+          className="fixed right-8 top-1/2 -translate-y-1/2 mt-16 w-12 h-12 rounded-full bg-background shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
+          aria-label="Прокрутить вниз"
+        >
+          <Icon
+            name="ArrowDown"
             size={20}
             className="text-foreground hover:text-background transition-colors"
           />
