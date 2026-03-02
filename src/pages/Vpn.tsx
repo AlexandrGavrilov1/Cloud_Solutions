@@ -140,7 +140,7 @@ const Vpn = () => {
           </div>
         </section>
 
-        {/* Сетка статей (теперь без внутреннего ограничителя, края совпадают с героем) */}
+        {/* Сетка статей (добавлен id для скролла) */}
         <section id="vpn-articles" className="py-12 pb-24">
           <div className="w-full px-4 3xl:px-[185px]">
             {posts.length === 0 ? (
@@ -155,7 +155,7 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                 {posts.map((post) => (
                   <VpnCard key={post.id} post={post} />
                 ))}
