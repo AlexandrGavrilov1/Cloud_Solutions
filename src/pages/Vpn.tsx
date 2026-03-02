@@ -70,11 +70,9 @@ const Vpn = () => {
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <div className="inline-flex items-center gap-2 bg-accent border border-primary/30 rounded-full px-5 py-2.5">
                 <Icon name="Shield" size={16} className="text-primary" />
-                <span className="text-sm font-bold text-primary">
-                  VPN инструкции
-                </span>
+                <span className="text-sm text-primary">VPN инструкции</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading text-foreground leading-tight">
                 Собственный VPN на VPS
               </h1>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
