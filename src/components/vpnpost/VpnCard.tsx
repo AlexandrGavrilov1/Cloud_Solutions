@@ -31,7 +31,18 @@ interface VpnCardProps {
 export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
   return (
     <Link to={`/vpn/${post.slug}`} className="group">
-      <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
+      <article className="relative bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col group-hover:-translate-y-1 duration-300">
+        {/* Оранжевое пятно при наведении (снизу) */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 w-[200px] h-[200px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none rounded-full"
+          style={{
+            bottom: "-100px",
+            background:
+              "radial-gradient(circle at center 70%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255,245,235,0.4) 75%, transparent 90%)",
+            filter: "blur(35px)",
+          }}
+        />
+
         {/* Изображение */}
         <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
           {post.image ? (
@@ -86,7 +97,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
                 </Badge>
               ))}
             </div>
-            <div className="flex items-center gap-1 text-primary  text-sm">
+            <div className="flex items-center gap-1 text-primary text-sm">
               Читать
               <Icon
                 name="ArrowRight"
