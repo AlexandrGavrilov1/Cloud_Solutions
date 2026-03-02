@@ -165,7 +165,7 @@ const fontTTCommand: ICommand = {
   },
 };
 
-// Цвет оранжевый #FF931F
+// Цвет оранжевый #FF931F (остаётся оранжевым в обеих темах)
 const colorOrangeCommand: ICommand = {
   name: "colorOrange",
   keyCommand: "colorOrange",
@@ -181,12 +181,12 @@ const colorOrangeCommand: ICommand = {
     />
   ),
   execute: (state, api) => {
-    const text = `<span style="color: #FF931F;">${state.selectedText || "текст"}</span>`;
+    const text = `<span class="text-[#FF931F] dark:text-[#FF931F]">${state.selectedText || "текст"}</span>`;
     api.replaceSelection(text);
   },
 };
 
-// Цвет тёмный #272932
+// Цвет тёмный #272932 (в тёмной теме становится белым)
 const colorDarkCommand: ICommand = {
   name: "colorDark",
   keyCommand: "colorDark",
@@ -202,12 +202,12 @@ const colorDarkCommand: ICommand = {
     />
   ),
   execute: (state, api) => {
-    const text = `<span style="color: #272932;">${state.selectedText || "текст"}</span>`;
+    const text = `<span class="text-[#272932] dark:text-white">${state.selectedText || "текст"}</span>`;
     api.replaceSelection(text);
   },
 };
 
-// Цвет тёмный 50% прозрачности
+// Цвет тёмный 50% прозрачности (в тёмной теме белый с 50% прозрачностью)
 const colorDark50Command: ICommand = {
   name: "colorDark50",
   keyCommand: "colorDark50",
@@ -223,14 +223,14 @@ const colorDark50Command: ICommand = {
     />
   ),
   execute: (state, api) => {
-    const text = `<span style="color: rgba(39, 41, 50, 0.5);">${state.selectedText || "текст"}</span>`;
+    const text = `<span class="text-[#272932]/50 dark:text-white/50">${state.selectedText || "текст"}</span>`;
     api.replaceSelection(text);
   },
 };
 
 // ==================== КОМАНДЫ ДЛЯ СТИЛЕЙ (полная версия для основного контента) ====================
 
-// Заголовок 1: TT Travels, bold, 36px, #272932, left
+// Заголовок 1: TT Travels, bold, 36px, адаптивный цвет, left
 const heading1StyleCommand: ICommand = {
   name: "heading1Style",
   keyCommand: "heading1Style",
@@ -238,12 +238,12 @@ const heading1StyleCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Заголовок 1";
-    const wrapped = `<span class="font-heading font-bold text-[36px]" style="color: #272932; text-align: left;">${text}</span>`;
+    const wrapped = `<span class="font-heading font-bold text-[36px] text-[#272932] dark:text-white text-left">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 1: Stem Medium, 18px, #272932, justify
+// Текст 1: Stem Medium, 18px, адаптивный цвет, justify
 const body1StyleCommand: ICommand = {
   name: "body1Style",
   keyCommand: "body1Style",
@@ -251,12 +251,12 @@ const body1StyleCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст 1";
-    const wrapped = `<span class="font-sans font-medium text-[18px]" style="color: #272932; text-align: justify;">${text}</span>`;
+    const wrapped = `<span class="font-sans font-medium text-[18px] text-[#272932] dark:text-white text-justify">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 2: Stem Regular, 18px, #272932, justify
+// Текст 2: Stem Regular, 18px, адаптивный цвет, justify
 const body2StyleCommand: ICommand = {
   name: "body2Style",
   keyCommand: "body2Style",
@@ -264,14 +264,14 @@ const body2StyleCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T2</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст 2";
-    const wrapped = `<span class="font-sans font-normal text-[18px]" style="color: #272932; text-align: justify;">${text}</span>`;
+    const wrapped = `<span class="font-sans font-normal text-[18px] text-[#272932] dark:text-white text-justify">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// ==================== НОВЫЕ КОМАНДЫ ДЛЯ МЕТАДАННЫХ (по запросу) ====================
+// ==================== НОВЫЕ КОМАНДЫ ДЛЯ МЕТАДАННЫХ ====================
 
-// Заголовок для метаполей: TT Travels, bold, 48px, #272932, left
+// Заголовок для метаполей: TT Travels, bold, 48px, адаптивный цвет, left
 const metaHeading1Command: ICommand = {
   name: "metaHeading1",
   keyCommand: "metaHeading1",
@@ -279,12 +279,12 @@ const metaHeading1Command: ICommand = {
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Заголовок";
-    const wrapped = `<span class="font-heading font-bold text-[48px]" style="color: #272932; text-align: left;">${text}</span>`;
+    const wrapped = `<span class="font-heading font-bold text-[48px] text-[#272932] dark:text-white text-left">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 1 для метаполей: Stem Medium, 24px, #272932, left
+// Текст для метаполей: Stem Medium, 24px, адаптивный цвет, left
 const metaText1Command: ICommand = {
   name: "metaText1",
   keyCommand: "metaText1",
@@ -292,16 +292,19 @@ const metaText1Command: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст";
-    const wrapped = `<span class="font-sans font-medium text-[24px]" style="color: #272932; text-align: left;">${text}</span>`;
+    const wrapped = `<span class="font-sans font-medium text-[24px] text-[#272932] dark:text-white text-left">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// ==================== КОМАНДЫ ДЛЯ СПИСКОВ (оставлены как есть) ====================
+// ==================== КОМАНДЫ ДЛЯ СПИСКОВ ====================
+
+// Вспомогательная функция для элемента списка
 const createListItem = (content: string) => {
-  return `<li class="font-sans font-normal text-[18px] leading-tight" style="color: #272932; text-align: justify;">${content}</li>`;
+  return `<li class="font-sans font-normal text-[18px] leading-tight text-[#272932] dark:text-white text-justify">${content}</li>`;
 };
 
+// Нумерованный список
 const numberedListCommand: ICommand = {
   name: "numberedList",
   keyCommand: "numberedList",
@@ -316,6 +319,7 @@ const numberedListCommand: ICommand = {
   },
 };
 
+// Маркированный список с кругами
 const discListCommand: ICommand = {
   name: "discList",
   keyCommand: "discList",
@@ -330,6 +334,7 @@ const discListCommand: ICommand = {
   },
 };
 
+// Маркированный список с квадратами
 const squareListCommand: ICommand = {
   name: "squareList",
   keyCommand: "squareList",
@@ -344,6 +349,7 @@ const squareListCommand: ICommand = {
   },
 };
 
+// Список с галочками
 const checkListCommand: ICommand = {
   name: "checkList",
   keyCommand: "checkList",
@@ -355,7 +361,7 @@ const checkListCommand: ICommand = {
     const checkItems = lines
       .map(
         (line) =>
-          `<li class="font-sans font-normal text-[18px] leading-tight" style="color: #272932; text-align: justify; list-style-type: none; position: relative; padding-left: 1.5rem;">✓ ${line}</li>`,
+          `<li class="font-sans font-normal text-[18px] leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['✓'] before:absolute before:left-0">${line}</li>`,
       )
       .join("");
     const wrappedWithChecks = `<ul class="space-y-1">${checkItems}</ul>`;
