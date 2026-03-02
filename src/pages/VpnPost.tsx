@@ -208,7 +208,7 @@ const VpnPost = () => {
               <div className="mt-12 pt-8 border-t border-border">
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag, idx) => (
-                    <Badge key={idx} variant="outline" className="text-sm">
+                    <Badge key={idx} variant="outline">
                       #{tag}
                     </Badge>
                   ))}
