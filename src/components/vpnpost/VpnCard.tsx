@@ -4,15 +4,24 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import { VpnPost } from "@/data/vpn-posts";
-import removeMarkdown from "remove-markdown";
 
-// Функция для полной очистки текста от Markdown и HTML-тегов
+// Функция для удаления Markdown-разметки и HTML-тегов
 const cleanText = (text: string): string => {
   if (!text) return "";
-  // Сначала удаляем Markdown-синтаксис (включая ссылки, жирный и т.д.)
-  const withoutMarkdown = removeMarkdown(text);
-  // Затем удаляем оставшиеся HTML-теги (например, <span>, <b> и т.п.)
-  return withoutMarkdown.replace(/<[^>]*>/g, "");
+  // Удаляем HTML-теги
+  let result = text.replace(/<[^>]*>/g, "");
+  // Удаляем Markdown-ссылки [text](url)
+  result = result.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1");
+  // Удаляем Markdown-жирный и курсив (**text** или *text*)
+  result = result.replace(/(\*\*|__)(.*?)\1/g, "$2");
+  result = result.replace(/(\*|_)(.*?)\1/g, "$2");
+  // Удаляем Markdown-заголовки (# text)
+  result = result.replace(/^#+\s+/gm, "");
+  // Удаляем Markdown-списки (- text или * text)
+  result = result.replace(/^[\*\-\+]\s+/gm, "");
+  // Удаляем оставшиеся обратные кавычки (код)
+  result = result.replace(/`/g, "");
+  return result;
 };
 
 interface VpnCardProps {
@@ -53,7 +62,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
             </div>
           </div>
 
-          {/* Заголовок – очищенный от Markdown и HTML */}
+          {/* Заголовок – очищенный от разметки */}
           <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {cleanText(post.title)}
           </h2>
