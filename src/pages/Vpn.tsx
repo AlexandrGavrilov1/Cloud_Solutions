@@ -72,7 +72,7 @@ const Vpn = () => {
                 <Icon name="Shield" size={16} className="text-primary" />
                 <span className="text-sm text-primary">VPN инструкции</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading text-foreground leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-heading font-bold text-foreground leading-tight">
                 Собственный VPN на VPS
               </h1>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
