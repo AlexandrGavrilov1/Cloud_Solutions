@@ -15,6 +15,44 @@ import remarkGfm from "remark-gfm";
 import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
 
+// Общие компоненты для рендеринга Markdown без лишних обёрток
+const MarkdownSpan = ({ children }: { children: string }) => (
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm]}
+    components={{
+      p: ({ children }) => <span>{children}</span>,
+      h1: "span",
+      h2: "span",
+      h3: "span",
+      h4: "span",
+      h5: "span",
+      h6: "span",
+      ul: "span",
+      ol: "span",
+      li: "span",
+      blockquote: "span",
+      pre: "span",
+      code: ({ inline, className, children, ...props }) => {
+        if (inline)
+          return (
+            <code className={className} {...props}>
+              {children}
+            </code>
+          );
+        return <span>{children}</span>;
+      },
+      a: ({ href, children, ...props }) => (
+        <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+          {children}
+        </a>
+      ),
+      img: () => null,
+    }}
+  >
+    {children}
+  </ReactMarkdown>
+);
+
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
@@ -99,9 +137,7 @@ const VpnPost = () => {
 
       <main>
         <article className="pt-32 pb-16">
-          {/* Внешний контейнер на всю ширину с отступами */}
           <div className="w-full px-4 3xl:px-[185px]">
-            {/* Кнопка возврата */}
             <Link
               to="/vpn"
               className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors mb-8"
@@ -110,106 +146,31 @@ const VpnPost = () => {
               <span className="font-semibold">Вернуться к разделу VPN</span>
             </Link>
 
-            {/* Заголовок статьи */}
+            {/* Заголовок статьи (уже использует ReactMarkdown) */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-left">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  p: ({ children }) => <span>{children}</span>,
-                  h1: "span",
-                  h2: "span",
-                  h3: "span",
-                  h4: "span",
-                  h5: "span",
-                  h6: "span",
-                  ul: "span",
-                  ol: "span",
-                  li: "span",
-                  blockquote: "span",
-                  pre: "span",
-                  code: ({ inline, className, children, ...props }) => {
-                    if (inline)
-                      return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    return <span>{children}</span>;
-                  },
-                  a: ({ href, children, ...props }) => (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      {...props}
-                    >
-                      {children}
-                    </a>
-                  ),
-                  img: () => null,
-                }}
-              >
-                {post.title}
-              </ReactMarkdown>
+              <MarkdownSpan>{post.title}</MarkdownSpan>
             </h1>
 
             {/* Краткое описание */}
             <p className="text-lg text-muted-foreground mb-6 text-left">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  p: ({ children }) => <span>{children}</span>,
-                  h1: "span",
-                  h2: "span",
-                  h3: "span",
-                  h4: "span",
-                  h5: "span",
-                  h6: "span",
-                  ul: "span",
-                  ol: "span",
-                  li: "span",
-                  blockquote: "span",
-                  pre: "span",
-                  code: ({ inline, className, children, ...props }) => {
-                    if (inline)
-                      return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    return <span>{children}</span>;
-                  },
-                  a: ({ href, children, ...props }) => (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      {...props}
-                    >
-                      {children}
-                    </a>
-                  ),
-                  img: () => null,
-                }}
-              >
-                {post.excerpt}
-              </ReactMarkdown>
+              <MarkdownSpan>{post.excerpt}</MarkdownSpan>
             </p>
 
-            {/* Тонкая линия */}
             <hr className="border-t border-border/50 my-6" />
 
             {/* Метаданные */}
             <div className="flex items-center gap-6 text-sm text-foreground mb-8">
-              <span className="text-primary font-medium">{post.category}</span>
+              <span className="text-primary font-medium">
+                <MarkdownSpan>{post.category}</MarkdownSpan>
+              </span>
               <span>{post.date}</span>
               <span className="flex items-center gap-1">
                 <Icon name="Clock" size={14} className="text-foreground" />
-                {post.readTime}
+                <MarkdownSpan>{post.readTime}</MarkdownSpan>
               </span>
             </div>
 
-            {/* Изображение статьи (на всю ширину) */}
+            {/* Изображение статьи */}
             {post.image && (
               <div className="w-full mb-12">
                 <img
@@ -220,9 +181,8 @@ const VpnPost = () => {
               </div>
             )}
 
-            {/* Контент с ограниченной шириной и центрированием */}
+            {/* Контент */}
             <div className="max-w-[1050px] w-full mx-auto">
-              {/* Текст статьи */}
               <div data-color-mode={theme === "dark" ? "dark" : "light"}>
                 <MDEditor.Markdown
                   source={post.content}
@@ -266,7 +226,8 @@ const VpnPost = () => {
                       rel="noopener noreferrer"
                       onClick={handleProviderClick}
                     >
-                      Перейти на {post.providerName}
+                      Перейти на{" "}
+                      <MarkdownSpan>{post.providerName}</MarkdownSpan>
                     </a>
                   </Button>
                 </div>
@@ -309,13 +270,13 @@ const VpnPost = () => {
                       </div>
                       <div className="p-5 flex-1 flex flex-col">
                         <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
-                          {relatedPost.category}
+                          <MarkdownSpan>{relatedPost.category}</MarkdownSpan>
                         </Badge>
                         <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {relatedPost.title}
+                          <MarkdownSpan>{relatedPost.title}</MarkdownSpan>
                         </h3>
                         <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
-                          {relatedPost.excerpt}
+                          <MarkdownSpan>{relatedPost.excerpt}</MarkdownSpan>
                         </p>
                         <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
                           Читать
@@ -335,7 +296,6 @@ const VpnPost = () => {
         )}
       </main>
 
-      {/* Кнопка прокрутки вверх */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
