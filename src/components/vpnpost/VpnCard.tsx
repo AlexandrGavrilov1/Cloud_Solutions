@@ -63,7 +63,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
           </div>
 
           {/* Заголовок – очищенный от разметки */}
-          <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+          <h2 className="font-heading text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {cleanText(post.title)}
           </h2>
 
@@ -85,7 +85,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
                 </Badge>
               ))}
             </div>
-            <div className="flex items-center gap-1 text-primary font-semibold text-sm">
+            <div className="flex items-center gap-1 text-primary  text-sm">
               Читать
               <Icon
                 name="ArrowRight"
