@@ -369,6 +369,20 @@ const checkListCommand: ICommand = {
   },
 };
 
+// ==================== НОВАЯ КОМАНДА: ОЧИСТКА ФОРМАТИРОВАНИЯ ====================
+const clearFormattingCommand: ICommand = {
+  name: "clearFormatting",
+  keyCommand: "clearFormatting",
+  buttonProps: { "aria-label": "Очистить форматирование" },
+  icon: <span style={{ fontSize: 12 }}>Tx</span>,
+  execute: (state, api) => {
+    const text = state.selectedText || "";
+    // Удаляем все HTML-теги
+    const plainText = text.replace(/<[^>]*>/g, "");
+    api.replaceSelection(plainText);
+  },
+};
+
 // ==================== Массивы команд ====================
 
 // Полный набор для основного редактора контента
@@ -410,6 +424,7 @@ const fullCommands = [
   discListCommand,
   squareListCommand,
   checkListCommand,
+  clearFormattingCommand, // добавлено
 ];
 
 // Минимальный набор для метаполей
@@ -420,6 +435,7 @@ const metaCommands = [
   colorOrangeCommand,
   colorDarkCommand,
   colorDark50Command,
+  clearFormattingCommand, // добавлено
 ];
 
 // ==================== Основной компонент ====================
