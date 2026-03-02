@@ -504,3 +504,14 @@ body div[data-color-mode="dark"] > div.wmde-markdown {
   stroke: #ff931f !important;
   fill: #ff931f !important;
 }
+
+/* === Классы для адаптивного цвета текста === */
+.text-theme-orange {
+  color: hsl(var(--primary)) !important;
+}
+.text-theme-dark {
+  color: hsl(var(--foreground)) !important;
+}
+.text-theme-dark-50 {
+  color: hsla(var(--foreground), 0.5) !important;
+}
