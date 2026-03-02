@@ -16,7 +16,7 @@ import rehypeRaw from "rehype-raw";
 import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
 
-// Компонент для рендеринга Markdown с поддержкой HTML
+// Компонент для рендеринга Markdown сс поддержкой HTML
 const MarkdownContent = ({ children }: { children: string }) => (
   <ReactMarkdown
     remarkPlugins={[remarkGfm]}
