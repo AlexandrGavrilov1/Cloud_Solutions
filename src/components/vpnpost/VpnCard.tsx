@@ -76,7 +76,11 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
           <div className="flex items-center justify-between pt-4 border-t border-border">
             <div className="flex flex-wrap gap-1">
               {post.tags.slice(0, 2).map((tag, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs ">
+                <Badge
+                  key={idx}
+                  variant="outline"
+                  className="text-xs font-sans"
+                >
                   {tag}
                 </Badge>
               ))}
