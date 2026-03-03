@@ -676,7 +676,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   <SelectContent>
                     {posts?.map((post) => (
                       <SelectItem key={post.id} value={post.slug}>
-                        {post.title}
+                        {post.title.replace(/<[^>]*>/g, "")}
                       </SelectItem>
                     ))}
                   </SelectContent>
