@@ -238,12 +238,12 @@ const heading1StyleCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Заголовок 1";
-    const wrapped = `<span class="font-heading font-bold text-[36px] text-[#272932] dark:text-white text-left">${text}</span>`;
+    const wrapped = `<span class="font-heading font-bold text-[36px] text-[#272932] dark:text-white text-left block">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 1: Stem Medium, 18px, адаптивный цвет, justify
+// Текст 1: Stem Medium, 18px, адаптивный цвет, justify, красная строка
 const body1StyleCommand: ICommand = {
   name: "body1Style",
   keyCommand: "body1Style",
@@ -251,12 +251,12 @@ const body1StyleCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст 1";
-    const wrapped = `<span class="font-sans font-medium text-[18px] text-[#272932] dark:text-white text-justify">${text}</span>`;
+    const wrapped = `<span class="font-sans font-medium text-[18px] text-[#272932] dark:text-white text-justify block indent-[2rem]">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 2: Stem Regular, 18px, адаптивный цвет, justify
+// Текст 2: Stem Regular, 18px, адаптивный цвет, justify, красная строка
 const body2StyleCommand: ICommand = {
   name: "body2Style",
   keyCommand: "body2Style",
@@ -264,7 +264,7 @@ const body2StyleCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T2</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст 2";
-    const wrapped = `<span class="font-sans font-normal text-[18px] text-[#272932] dark:text-white text-justify">${text}</span>`;
+    const wrapped = `<span class="font-sans font-normal text-[18px] text-[#272932] dark:text-white text-justify block indent-[2rem]">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
@@ -279,7 +279,7 @@ const metaHeading1Command: ICommand = {
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Заголовок";
-    const wrapped = `<span class="font-heading font-bold text-[48px] text-[#272932] dark:text-white text-left">${text}</span>`;
+    const wrapped = `<span class="font-heading font-bold text-[48px] text-[#272932] dark:text-white text-left block">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
@@ -292,14 +292,14 @@ const metaText1Command: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст";
-    const wrapped = `<span class="font-sans font-medium text-[24px] text-[#272932] dark:text-white text-left">${text}</span>`;
+    const wrapped = `<span class="font-sans font-medium text-[24px] text-[#272932] dark:text-white text-left block">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
 // ==================== КОМАНДЫ ДЛЯ СПИСКОВ ====================
 
-// Вспомогательная функция для элемента списка
+// Вспомогательная функция для элемента списка (уже с выравниванием по ширине)
 const createListItem = (content: string) => {
   return `<li class="font-sans font-normal text-[18px] leading-tight text-[#272932] dark:text-white text-justify">${content}</li>`;
 };
@@ -424,7 +424,7 @@ const fullCommands = [
   discListCommand,
   squareListCommand,
   checkListCommand,
-  clearFormattingCommand, // добавлено
+  clearFormattingCommand,
 ];
 
 // Минимальный набор для метаполей
@@ -435,7 +435,7 @@ const metaCommands = [
   colorOrangeCommand,
   colorDarkCommand,
   colorDark50Command,
-  clearFormattingCommand, // добавлено
+  clearFormattingCommand,
 ];
 
 // ==================== Основной компонент ====================
