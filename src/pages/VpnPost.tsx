@@ -87,13 +87,10 @@ const VpnPost = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Появляются, когда страница прокручена более чем на 20px
       setShowScrollButtons(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // инициализация
-
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -200,6 +197,17 @@ const VpnPost = () => {
                 <MDEditor.Markdown
                   source={post.content}
                   components={{
+                    // Добавляем обработку для обычных ссылок
+                    a: ({ node, ...props }) => (
+                      <a
+                        href={props.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        {...props}
+                      >
+                        {props.children}
+                      </a>
+                    ),
                     img({ node, ...props }) {
                       return (
                         <a
@@ -318,7 +326,7 @@ const VpnPost = () => {
         )}
       </main>
 
-      {/* Кнопки перемотки появляются вместе при скролле */}
+      {/* Кнопки перемотки */}
       {showScrollButtons && (
         <>
           <button
