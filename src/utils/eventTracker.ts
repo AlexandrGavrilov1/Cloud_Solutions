@@ -11,6 +11,7 @@ export const trackEvent = (
   target_id: string,
   source?: string,
 ) => {
+  console.log("🎯 visitorId in trackEvent:", visitorId);
   const sessionId = getSessionId(); // используем импортированную функцию
 
   const page_path = window.location.pathname;
