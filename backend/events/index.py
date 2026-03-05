@@ -1,7 +1,6 @@
 """
 Unified event tracking with all required fields.
-Uniqueness: for events with visitor_uuid – (event_type, target_id, visitor_uuid)
-           for events without visitor_uuid – (event_type, target_id, visitor_ip)
+Now records every event without uniqueness checks.
 """
 
 import json
@@ -28,7 +27,7 @@ def handler(event, context):
     method = event.get('httpMethod', 'GET')
     path = event.get('path', '').rstrip('/')
 
-    # CORS preflight — handle before ANY path check
+    # CORS preflight
     if method == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -48,7 +47,7 @@ def handler(event, context):
 
     conn = psycopg2.connect(dsn)
 
-    # GET /count или GET /?action=count – получить количество уникальных событий
+    # GET /count – получить количество уникальных событий (для аналитики)
     if method == 'GET' and (path == '/count' or path == ''):
         params = event.get('queryStringParameters', {}) or {}
         event_type = params.get('type')
@@ -73,7 +72,7 @@ def handler(event, context):
         finally:
             conn.close()
 
-    # POST /event – запись события
+    # POST /event – запись события (без проверок на уникальность)
     elif method == 'POST' and (path == '/event' or path == ''):
         try:
             body = json.loads(event.get('body', '{}'))
@@ -114,61 +113,41 @@ def handler(event, context):
 
         try:
             with conn.cursor() as cur:
+                # Вставляем запись всегда, без предварительной проверки
                 if visitor_uuid:
                     cur.execute("""
-                        SELECT id FROM {}.events
-                        WHERE event_type = %s AND target_id = %s AND visitor_uuid = %s
-                    """.format(SCHEMA), (event_type, target_id, visitor_uuid))
-                else:
-                    cur.execute("""
-                        SELECT id FROM {}.events
-                        WHERE event_type = %s AND target_id = %s AND visitor_ip = %s AND visitor_uuid IS NULL
-                    """.format(SCHEMA), (event_type, target_id, visitor_ip))
-
-                existing = cur.fetchone()
-
-                if not existing:
-                    if visitor_uuid:
-                        cur.execute("""
-                            INSERT INTO {}.events (
-                                event_type, target_id, source, page_path, visitor_agent,
-                                referer, session_id, utm_source, utm_medium, utm_campaign,
-                                utm_term, utm_content, visitor_uuid, visitor_ip
-                            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                        """.format(SCHEMA), (
+                        INSERT INTO {}.events (
                             event_type, target_id, source, page_path, visitor_agent,
                             referer, session_id, utm_source, utm_medium, utm_campaign,
                             utm_term, utm_content, visitor_uuid, visitor_ip
-                        ))
-                    else:
-                        cur.execute("""
-                            INSERT INTO {}.events (
-                                event_type, target_id, source, page_path, visitor_agent,
-                                referer, session_id, utm_source, utm_medium, utm_campaign,
-                                utm_term, utm_content, visitor_ip
-                            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                        """.format(SCHEMA), (
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """.format(SCHEMA), (
+                        event_type, target_id, source, page_path, visitor_agent,
+                        referer, session_id, utm_source, utm_medium, utm_campaign,
+                        utm_term, utm_content, visitor_uuid, visitor_ip
+                    ))
+                else:
+                    cur.execute("""
+                        INSERT INTO {}.events (
                             event_type, target_id, source, page_path, visitor_agent,
                             referer, session_id, utm_source, utm_medium, utm_campaign,
                             utm_term, utm_content, visitor_ip
-                        ))
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """.format(SCHEMA), (
+                        event_type, target_id, source, page_path, visitor_agent,
+                        referer, session_id, utm_source, utm_medium, utm_campaign,
+                        utm_term, utm_content, visitor_ip
+                    ))
 
-                    if event_type == 'page_view':
-                        cur.execute("""
-                            UPDATE {}.vpn_posts SET views = views + 1
-                            WHERE slug = %s
-                        """.format(SCHEMA), (target_id,))
+                # Если это просмотр статьи, увеличиваем счётчик в vpn_posts
+                if event_type == 'page_view':
+                    cur.execute("""
+                        UPDATE {}.vpn_posts SET views = views + 1
+                        WHERE slug = %s
+                    """.format(SCHEMA), (target_id,))
 
-                    conn.commit()
-                    new_event = True
-                else:
-                    new_event = False
-                    conn.commit()
-
-                return response(200, {
-                    'success': True,
-                    'new_event': new_event
-                })
+                conn.commit()
+                return response(200, {'success': True})
         except Exception as e:
             conn.rollback()
             return response(500, {'error': str(e)})
