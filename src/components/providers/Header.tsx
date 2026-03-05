@@ -56,13 +56,13 @@ export const Header = () => {
 
           {/* Десктопное меню */}
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
-            {/* <a
+            <a
               href="/vpn"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </a>
-              <a
+            {/*<a
               href="/blog"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
