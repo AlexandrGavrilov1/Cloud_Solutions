@@ -7,14 +7,15 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useVpnPosts } from "@/hooks/useVpnPosts";
 import { VpnCard } from "@/components/vpnpost/VpnCard";
-import { useTrackEvent } from "@/hooks/useTrackEvent"; // ✅ добавлено
+import { useTrackEvent } from "@/hooks/useTrackEvent";
 
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
-  const track = useTrackEvent(); // ✅ хук для событий
+  const track = useTrackEvent();
 
-  // ✅ Отслеживаем посещение страницы со списком статей
+  // ✅ Лог для отслеживания вызова track
   useEffect(() => {
+    console.log("🟢 Vpn component mounted, calling track section_visit");
     track("section_visit", "vpn-list");
   }, [track]);
 

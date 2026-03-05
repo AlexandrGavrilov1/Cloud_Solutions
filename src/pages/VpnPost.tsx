@@ -15,7 +15,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useTrackEvent } from "@/hooks/useTrackEvent"; // ✅ добавлено
+import { useTrackEvent } from "@/hooks/useTrackEvent";
 
 // Компонент для рендеринга Markdown с поддержкой HTML
 const MarkdownContent = ({ children }: { children: string }) => (
@@ -60,7 +60,7 @@ const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
   const { theme } = useTheme();
-  const track = useTrackEvent(); // ✅ хук для отправки событий
+  const track = useTrackEvent();
 
   const [showScrollButtons, setShowScrollButtons] = useState(false);
 
@@ -68,15 +68,23 @@ const VpnPost = () => {
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
 
-  // ✅ Отслеживаем просмотр статьи
+  // ✅ Лог для отслеживания просмотра статьи
   useEffect(() => {
     if (slug) {
+      console.log(
+        "🟢 VpnPost component mounted, calling page_view for slug:",
+        slug,
+      );
       track("page_view", slug);
     }
   }, [slug, track]);
 
   // ✅ Обработчик клика по провайдеру (кнопка внизу)
   const handleProviderClick = () => {
+    console.log(
+      "🔵 provider_click from article_button, providerName:",
+      post?.providerName,
+    );
     track("provider_click", post?.providerName || "unknown", "article_button");
 
     if (typeof window !== "undefined" && (window as any).ym) {
@@ -216,6 +224,10 @@ const VpnPost = () => {
                     a: ({ node, href, children, ...props }) => {
                       const handleClick = (e: React.MouseEvent) => {
                         e.preventDefault();
+                        console.log(
+                          "🔵 outbound_link from article_text, href:",
+                          href,
+                        );
                         track("outbound_link", href, "article_text");
                         window.open(href, "_blank", "noopener,noreferrer");
                       };

@@ -16,8 +16,11 @@ export const useVisitor = (): string | undefined => {
         expires: COOKIE_EXPIRY_DAYS,
         path: "/",
         sameSite: "lax",
-        secure: window.location.protocol === "https:", // обязательно для HTTPS
+        secure: window.location.protocol === "https:",
       });
+      console.log("🆕 Generated new visitorId:", storedId);
+    } else {
+      console.log("👤 Existing visitorId:", storedId);
     }
     setVisitorId(storedId);
   }, []);

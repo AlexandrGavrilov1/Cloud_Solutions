@@ -1,5 +1,6 @@
 // src/utils/eventTracker.ts
 import { v4 as uuidv4 } from "uuid";
+
 const API_BASE_URL =
   "https://functions.poehali.dev/540fd4ac-812f-4cac-b72b-9ae038b22774";
 
@@ -30,21 +31,34 @@ export const trackEvent = (
     utm_content: urlParams.get("utm_content") || undefined,
   };
 
+  const payload = {
+    event_type,
+    target_id,
+    source,
+    page_path,
+    visitor_agent,
+    referer,
+    session_id: sessionId,
+    ...utm,
+  };
+
+  console.log("📤 Sending event:", { visitorId, ...payload });
+
   fetch(`${API_BASE_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...(visitorId ? { "X-Visitor-ID": visitorId } : {}),
     },
-    body: JSON.stringify({
-      event_type,
-      target_id,
-      source,
-      page_path,
-      visitor_agent,
-      referer,
-      session_id: sessionId,
-      ...utm,
-    }),
-  }).catch((err) => console.error("Error tracking event:", err));
+    body: JSON.stringify(payload),
+  })
+    .then((res) => {
+      console.log("📥 Response status:", res.status);
+      if (!res.ok) {
+        console.error("Event response not OK", res.status);
+      } else {
+        console.log("Event sent successfully");
+      }
+    })
+    .catch((err) => console.error("Fetch error:", err));
 };
