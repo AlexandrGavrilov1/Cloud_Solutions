@@ -15,6 +15,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useTrackEvent } from "@/hooks/useTrackEvent"; // ✅ добавлено
 
 // Компонент для рендеринга Markdown с поддержкой HTML
 const MarkdownContent = ({ children }: { children: string }) => (
@@ -59,6 +60,7 @@ const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
   const { theme } = useTheme();
+  const track = useTrackEvent(); // ✅ хук для отправки событий
 
   const [showScrollButtons, setShowScrollButtons] = useState(false);
 
@@ -66,11 +68,24 @@ const VpnPost = () => {
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
 
+  // ✅ Отслеживаем просмотр статьи
+  useEffect(() => {
+    if (slug) {
+      track("page_view", slug);
+    }
+  }, [slug, track]);
+
+  // ✅ Обработчик клика по провайдеру (кнопка внизу)
   const handleProviderClick = () => {
+    track("provider_click", post?.providerName || "unknown", "article_button");
+
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
         provider_name: post?.providerName,
       });
+    }
+    if (post?.providerUrl) {
+      window.open(post.providerUrl, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -197,17 +212,25 @@ const VpnPost = () => {
                 <MDEditor.Markdown
                   source={post.content}
                   components={{
-                    // Добавляем обработку для обычных ссылок
-                    a: ({ node, ...props }) => (
-                      <a
-                        href={props.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        {...props}
-                      >
-                        {props.children}
-                      </a>
-                    ),
+                    // ✅ Добавлен трекинг кликов по ссылкам в тексте
+                    a: ({ node, href, children, ...props }) => {
+                      const handleClick = (e: React.MouseEvent) => {
+                        e.preventDefault();
+                        track("outbound_link", href, "article_text");
+                        window.open(href, "_blank", "noopener,noreferrer");
+                      };
+                      return (
+                        <a
+                          href={href}
+                          onClick={handleClick}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...props}
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
                     img({ node, ...props }) {
                       return (
                         <a

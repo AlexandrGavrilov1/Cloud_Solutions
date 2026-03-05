@@ -1,5 +1,4 @@
-// src/pages/Vpn.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
@@ -8,9 +7,16 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { useVpnPosts } from "@/hooks/useVpnPosts";
 import { VpnCard } from "@/components/vpnpost/VpnCard";
+import { useTrackEvent } from "@/hooks/useTrackEvent"; // ✅ добавлено
 
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
+  const track = useTrackEvent(); // ✅ хук для событий
+
+  // ✅ Отслеживаем посещение страницы со списком статей
+  useEffect(() => {
+    track("section_visit", "vpn-list");
+  }, [track]);
 
   const scrollToArticles = () => {
     const articlesSection = document.getElementById("vpn-articles");
@@ -68,7 +74,7 @@ const Vpn = () => {
       <Header />
 
       <main>
-        {/* Hero-секция (полностью как в HeroSection) */}
+        {/* Hero-секция */}
         <section
           className="relative py-16 sm:py-20 md:py-24 overflow-hidden"
           style={{
@@ -76,7 +82,6 @@ const Vpn = () => {
               "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
           }}
         >
-          {/* Пятно над словом «Собственный» */}
           <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
             <div
               className="absolute left-[5%] top-0 
@@ -93,7 +98,6 @@ const Vpn = () => {
             />
           </div>
 
-          {/* Пятно у правой границы */}
           <div
             className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
                  right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
@@ -114,7 +118,6 @@ const Vpn = () => {
             />
           </div>
 
-          {/* Контент поверх пятен */}
           <div className="w-full px-4 3xl:px-[185px] relative z-10">
             <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
               <span className="block text-[#2B3038]">
@@ -140,7 +143,7 @@ const Vpn = () => {
           </div>
         </section>
 
-        {/* Сетка статей (теперь без внутреннего ограничителя, края совпадают с героем) */}
+        {/* Сетка статей */}
         <section id="vpn-articles" className="py-12 pb-24">
           <div className="w-full px-4 3xl:px-[185px]">
             {posts.length === 0 ? (
