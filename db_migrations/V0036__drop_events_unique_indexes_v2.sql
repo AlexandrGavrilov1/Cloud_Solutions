@@ -1,0 +1,2 @@
+DROP INDEX IF EXISTS t_p4153566_vds_rating_portal.idx_events_unique_visitor;
+DROP INDEX IF EXISTS t_p4153566_vds_rating_portal.idx_events_unique_ip;
