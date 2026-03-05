@@ -99,7 +99,12 @@ def handler(event, context):
         utm_content = body.get('utm_content')
 
         headers = event.get('headers', {})
-        visitor_uuid = headers.get('X-Visitor-ID')
+        visitor_uuid = (
+            headers.get('X-Visitor-ID') or
+            headers.get('x-visitor-id') or
+            headers.get('X-Visitor-Id') or
+            body.get('visitor_uuid')
+        )
 
         visitor_ip = (
             headers.get('X-Forwarded-For', '').split(',')[0].strip() or
