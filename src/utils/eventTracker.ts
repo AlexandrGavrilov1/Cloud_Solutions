@@ -1,5 +1,6 @@
 // src/utils/eventTracker.ts
 import { v4 as uuidv4 } from "uuid";
+import { getSessionId } from "./visitor"; // теперь getSessionId импортируется из visitor.ts
 
 const API_BASE_URL =
   "https://functions.poehali.dev/540fd4ac-812f-4cac-b72b-9ae038b22774";
@@ -10,13 +11,7 @@ export const trackEvent = (
   target_id: string,
   source?: string,
 ) => {
-  const sessionId =
-    sessionStorage.getItem("session_id") ||
-    (() => {
-      const newId = uuidv4();
-      sessionStorage.setItem("session_id", newId);
-      return newId;
-    })();
+  const sessionId = getSessionId(); // используем импортированную функцию
 
   const page_path = window.location.pathname;
   const visitor_agent = navigator.userAgent;
@@ -55,7 +50,7 @@ export const trackEvent = (
     .then(async (res) => {
       console.log("📥 Response status:", res.status);
       if (!res.ok) {
-        const errorText = await res.text(); // получаем тело ошибки
+        const errorText = await res.text();
         console.error("❌ Error response body:", errorText);
       } else {
         console.log("✅ Event sent successfully");
