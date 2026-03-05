@@ -52,12 +52,13 @@ export const trackEvent = (
     },
     body: JSON.stringify(payload),
   })
-    .then((res) => {
+    .then(async (res) => {
       console.log("📥 Response status:", res.status);
       if (!res.ok) {
-        console.error("Event response not OK", res.status);
+        const errorText = await res.text(); // получаем тело ошибки
+        console.error("❌ Error response body:", errorText);
       } else {
-        console.log("Event sent successfully");
+        console.log("✅ Event sent successfully");
       }
     })
     .catch((err) => console.error("Fetch error:", err));
