@@ -61,13 +61,13 @@ export const Header = () => {
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
-            </a>*/}
+            </a>
             <a
               href="/blog"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
-            </a>
+            </a>*/}
             <a
               href="/uptime"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
