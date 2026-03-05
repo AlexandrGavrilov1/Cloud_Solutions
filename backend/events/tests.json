@@ -1,0 +1,42 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST - missing required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {"source": "card"},
+      "expectedStatus": 400,
+      "expectedBody": {"error": "event_type and target_id are required"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST - valid event",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "event_type": "provider_click",
+        "target_id": "test-provider",
+        "source": "card",
+        "page_path": "/providers",
+        "session_id": "test-session-001"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"success": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET / - count missing params returns 400",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400,
+      "expectedBody": {"error": "type and target are required"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
