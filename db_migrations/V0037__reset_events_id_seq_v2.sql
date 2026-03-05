@@ -1,0 +1,1 @@
+ALTER SEQUENCE t_p4153566_vds_rating_portal.events_id_seq RESTART WITH 1;
