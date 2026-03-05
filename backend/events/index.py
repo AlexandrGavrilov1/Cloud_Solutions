@@ -1,7 +1,7 @@
 """
 Unified event tracking:
 - Все события записываются в events (без проверок на уникальность).
-- Для page_view всегда увеличивается счётчик в vpn_posts (каждый просмотр).
+- Для page_view дополнительно проверяется уникальность (по visitor_uuid или visitor_ip) и при первом уникальном просмотре увеличивается счётчик в vpn_posts.
 """
 
 import json
@@ -48,7 +48,7 @@ def handler(event, context):
 
     conn = psycopg2.connect(dsn)
 
-    # GET /count – получение уникальных просмотров (для аналитики)
+    # GET /count – получение количества уникальных событий (для аналитики)
     if method == 'GET' and (path == '/count' or path == ''):
         params = event.get('queryStringParameters', {}) or {}
         event_type = params.get('type')
@@ -73,7 +73,7 @@ def handler(event, context):
         finally:
             conn.close()
 
-    # POST /event – запись события (всегда вставляем)
+    # POST /event – запись события
     elif method == 'POST' and (path == '/event' or path == ''):
         try:
             body = json.loads(event.get('body', '{}'))
@@ -114,7 +114,25 @@ def handler(event, context):
 
         try:
             with conn.cursor() as cur:
-                # Всегда вставляем запись в events (без проверки уникальности)
+                # --- Проверяем уникальность для page_view (до вставки) ---
+                is_first_view = False
+                if event_type == 'page_view':
+                    if visitor_uuid:
+                        cur.execute("""
+                            SELECT id FROM {}.events
+                            WHERE event_type = 'page_view' AND target_id = %s AND visitor_uuid = %s
+                            LIMIT 1
+                        """.format(SCHEMA), (target_id, visitor_uuid))
+                    else:
+                        cur.execute("""
+                            SELECT id FROM {}.events
+                            WHERE event_type = 'page_view' AND target_id = %s AND visitor_ip = %s AND visitor_uuid IS NULL
+                            LIMIT 1
+                        """.format(SCHEMA), (target_id, visitor_ip))
+                    existing = cur.fetchone()
+                    is_first_view = (existing is None)
+
+                # --- Всегда вставляем событие ---
                 if visitor_uuid:
                     cur.execute("""
                         INSERT INTO {}.events (
@@ -140,8 +158,8 @@ def handler(event, context):
                         utm_term, utm_content, visitor_ip
                     ))
 
-                # Если это просмотр статьи, увеличиваем счётчик (всегда)
-                if event_type == 'page_view':
+                # --- Если это первый уникальный просмотр, увеличиваем счётчик ---
+                if is_first_view:
                     cur.execute("""
                         UPDATE {}.vpn_posts SET views = views + 1
                         WHERE slug = %s
@@ -151,6 +169,8 @@ def handler(event, context):
                 return response(200, {'success': True})
         except Exception as e:
             conn.rollback()
+            # Логируем ошибку для отладки
+            print(f"ERROR in POST /event: {str(e)}")
             return response(500, {'error': str(e)})
         finally:
             conn.close()
