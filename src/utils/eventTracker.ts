@@ -1,20 +1,22 @@
-import { getVisitorId, getSessionId } from './visitor';
-
-// Базовый URL вашей функции
+// src/utils/eventTracker.ts
 const API_BASE_URL = 'https://functions.poehali.dev/540fd4ac-812f-4cac-b72b-9ae038b22774';
 
 export const trackEvent = (
+  visitorId: string | undefined,
   event_type: string,
   target_id: string,
   source?: string
 ) => {
-  const visitorId = getVisitorId();
-  const sessionId = getSessionId();
+  const sessionId = sessionStorage.getItem('session_id') || (() => {
+    const newId = uuidv4();
+    sessionStorage.setItem('session_id', newId);
+    return newId;
+  })();
+
   const page_path = window.location.pathname;
   const visitor_agent = navigator.userAgent;
   const referer = document.referrer || undefined;
 
-  // Парсим UTM-метки из текущего URL
   const urlParams = new URLSearchParams(window.location.search);
   const utm = {
     utm_source: urlParams.get('utm_source') || undefined,
