@@ -53,8 +53,10 @@ export const Header = () => {
               className="h-[60px] w-auto transition-opacity duration-300"
             />
           </a>
-          /* Десктопное меню
+
+          {/* Десктопное меню */}
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
+            /*
             <a
               href="/vpn"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
@@ -81,6 +83,7 @@ export const Header = () => {
               Акции
             </a>
           </div>
+
           {/* Переключатель темы на десктопе */}
           <div className="hidden md:flex items-center ml-auto">
             <button
@@ -95,6 +98,7 @@ export const Header = () => {
               />
             </button>
           </div>
+
           {/* Мобильные иконки */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
