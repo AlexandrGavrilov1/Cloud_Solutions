@@ -1,6 +1,7 @@
 """
-Unified event tracking with all required fields.
-Now records every event without uniqueness checks.
+Unified event tracking:
+- Все события записываются в events.
+- Для page_view проверяется уникальность (по visitor_uuid или visitor_ip) и при первом уникальном просмотре увеличивается счётчик в vpn_posts.
 """
 
 import json
@@ -47,7 +48,7 @@ def handler(event, context):
 
     conn = psycopg2.connect(dsn)
 
-    # GET /count – получить количество уникальных событий (для аналитики)
+    # GET /count – получение уникальных просмотров (для аналитики)
     if method == 'GET' and (path == '/count' or path == ''):
         params = event.get('queryStringParameters', {}) or {}
         event_type = params.get('type')
@@ -72,7 +73,7 @@ def handler(event, context):
         finally:
             conn.close()
 
-    # POST /event – запись события (без проверок на уникальность)
+    # POST /event – запись события
     elif method == 'POST' and (path == '/event' or path == ''):
         try:
             body = json.loads(event.get('body', '{}'))
@@ -113,7 +114,7 @@ def handler(event, context):
 
         try:
             with conn.cursor() as cur:
-                # Вставляем запись всегда, без предварительной проверки
+                # Всегда вставляем запись в events (даже для повторных просмотров)
                 if visitor_uuid:
                     cur.execute("""
                         INSERT INTO {}.events (
@@ -139,12 +140,30 @@ def handler(event, context):
                         utm_term, utm_content, visitor_ip
                     ))
 
-                # Если это просмотр статьи, увеличиваем счётчик в vpn_posts
+                # Для просмотра статьи дополнительно проверяем уникальность
                 if event_type == 'page_view':
-                    cur.execute("""
-                        UPDATE {}.vpn_posts SET views = views + 1
-                        WHERE slug = %s
-                    """.format(SCHEMA), (target_id,))
+                    # Проверяем, был ли уже уникальный просмотр от этого посетителя
+                    if visitor_uuid:
+                        cur.execute("""
+                            SELECT id FROM {}.events
+                            WHERE event_type = 'page_view' AND target_id = %s AND visitor_uuid = %s
+                            LIMIT 1
+                        """.format(SCHEMA), (target_id, visitor_uuid))
+                    else:
+                        cur.execute("""
+                            SELECT id FROM {}.events
+                            WHERE event_type = 'page_view' AND target_id = %s AND visitor_ip = %s AND visitor_uuid IS NULL
+                            LIMIT 1
+                        """.format(SCHEMA), (target_id, visitor_ip))
+
+                    existing = cur.fetchone()
+
+                    if not existing:
+                        # Это первый уникальный просмотр – увеличиваем счётчик в vpn_posts
+                        cur.execute("""
+                            UPDATE {}.vpn_posts SET views = views + 1
+                            WHERE slug = %s
+                        """.format(SCHEMA), (target_id,))
 
                 conn.commit()
                 return response(200, {'success': True})
