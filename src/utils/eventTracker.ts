@@ -30,7 +30,7 @@ export const trackEvent = (
     utm_content: urlParams.get("utm_content") || undefined,
   };
 
-  fetch(`${API_BASE_URL}/event`, {
+  fetch(`${API_BASE_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

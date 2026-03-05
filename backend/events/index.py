@@ -28,14 +28,14 @@ def handler(event, context):
     method = event.get('httpMethod', 'GET')
     path = event.get('path', '').rstrip('/')
 
-    # CORS preflight
+    # CORS preflight — handle before ANY path check
     if method == 'OPTIONS':
         return {
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, X-Visitor-ID',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, X-Visitor-ID, Authorization, X-Authorization',
                 'Access-Control-Max-Age': '86400'
             },
             'body': '',
