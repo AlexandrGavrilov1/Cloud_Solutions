@@ -1,7 +1,7 @@
 """
 Unified event tracking:
-- Все события записываются в events.
-- Для page_view проверяется уникальность (по visitor_uuid или visitor_ip) и при первом уникальном просмотре увеличивается счётчик в vpn_posts.
+- Все события записываются в events (без проверок на уникальность).
+- Для page_view дополнительно проверяется уникальность (по visitor_uuid или visitor_ip) и при первом уникальном просмотре увеличивается счётчик в vpn_posts.
 """
 
 import json
@@ -73,7 +73,7 @@ def handler(event, context):
         finally:
             conn.close()
 
-    # POST /event – запись события
+    # POST /event – запись события (всегда вставляем)
     elif method == 'POST' and (path == '/event' or path == ''):
         try:
             body = json.loads(event.get('body', '{}'))
@@ -114,7 +114,7 @@ def handler(event, context):
 
         try:
             with conn.cursor() as cur:
-                # Всегда вставляем запись в events (даже для повторных просмотров)
+                # Всегда вставляем запись в events (без проверки уникальности)
                 if visitor_uuid:
                     cur.execute("""
                         INSERT INTO {}.events (
@@ -140,9 +140,8 @@ def handler(event, context):
                         utm_term, utm_content, visitor_ip
                     ))
 
-                # Для просмотра статьи дополнительно проверяем уникальность
+                # Для просмотра статьи дополнительно проверяем уникальность для увеличения счётчика
                 if event_type == 'page_view':
-                    # Проверяем, был ли уже уникальный просмотр от этого посетителя
                     if visitor_uuid:
                         cur.execute("""
                             SELECT id FROM {}.events
@@ -157,7 +156,6 @@ def handler(event, context):
                         """.format(SCHEMA), (target_id, visitor_ip))
 
                     existing = cur.fetchone()
-
                     if not existing:
                         # Это первый уникальный просмотр – увеличиваем счётчик в vpn_posts
                         cur.execute("""
