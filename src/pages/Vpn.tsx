@@ -14,12 +14,12 @@ const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
-  // ✅ Лог монтирования/размонтирования компонента Vpn
+
   useEffect(() => {
     console.log("🔵 MOUNT Vpn");
     return () => console.log("🔴 UNMOUNT Vpn");
   }, []);
-  // ✅ Лог для отслеживания вызова track
+
   useEffect(() => {
     console.log("🟢 Vpn component mounted, calling track section_visit");
     track("section_visit", "vpn-list");
@@ -165,9 +165,15 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              // ✅ Flex-контейнер с центрированием для аккуратного отображения неполного последнего ряда
+              <div className="flex flex-wrap justify-center gap-6">
                 {posts.map((post) => (
-                  <VpnCard key={post.id} post={post} />
+                  <div
+                    key={post.id}
+                    className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md"
+                  >
+                    <VpnCard post={post} />
+                  </div>
                 ))}
               </div>
             )}
