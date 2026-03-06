@@ -14,7 +14,11 @@ const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
-
+  // ✅ Лог монтирования/размонтирования компонента Vpn
+  useEffect(() => {
+    console.log("🔵 MOUNT Vpn");
+    return () => console.log("🔴 UNMOUNT Vpn");
+  }, []);
   // ✅ Лог для отслеживания вызова track
   useEffect(() => {
     console.log("🟢 Vpn component mounted, calling track section_visit");

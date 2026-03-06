@@ -11,15 +11,14 @@ export const usePageTimer = (
 
   useEffect(() => {
     startTime.current = Date.now();
-    console.log(`[usePageTimer] START ${pageType}:${targetId}`);
+    console.log(`[usePageTimer] START ${pageType}:${targetId}`); // отладка
 
     const sendLeaveEvent = () => {
       const duration = Math.round((Date.now() - startTime.current) / 1000);
       console.log(
         `[usePageTimer] LEAVE ${pageType}:${targetId}, duration=${duration}s`,
       );
-      // Убираем проверку duration < 1 для отладки, позже можно вернуть
-      // if (duration < 1) return;
+      // if (duration < 1) return; // можно раскомментировать после отладки
 
       const visitorId = getVisitorId();
       trackEvent(visitorId, "page_leave", targetId, pageType, duration);

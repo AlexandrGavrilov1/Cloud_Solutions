@@ -69,7 +69,13 @@ const VpnPost = () => {
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
   usePageTimer("page_view", slug || "unknown");
-  // ✅ Лог для отслеживания просмотра статьи
+  // ✅ Лог монтирования/размонтирования компонента VpnPost
+  useEffect(() => {
+    console.log("🔵 MOUNT VpnPost", slug);
+    return () => console.log("🔴 UNMOUNT VpnPost", slug);
+  }, [slug]);
+
+  // ✅ Лог для отслеживания просмотра статьи (был)
   useEffect(() => {
     if (slug) {
       console.log(
