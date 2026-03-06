@@ -12,6 +12,7 @@ import { useTrackEvent } from "@/hooks/useTrackEvent";
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
   const track = useTrackEvent();
+  usePageTimer("section_visit", "vpn-list");
 
   // ✅ Лог для отслеживания вызова track
   useEffect(() => {
@@ -25,7 +26,7 @@ const Vpn = () => {
       articlesSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
-  usePageTimer("section_visit", "vpn-list");
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
