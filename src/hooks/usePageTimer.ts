@@ -8,18 +8,23 @@ export const usePageTimer = (
   pageType: "page_view" | "section_visit",
   targetId: string,
 ) => {
+  console.log("✅ usePageTimer initialized", pageType, targetId); // отладка
+
   const location = useLocation();
   const startTime = useRef<number>(Date.now());
   const prevPath = useRef<string>(location.pathname);
   const prevPageType = useRef<string>(pageType);
   const prevTargetId = useRef<string>(targetId);
 
-  // 1️⃣ ОТСЛЕЖИВАЕМ СМЕНУ ПУТИ (SPA-переходы)
+  // 1. ОТСЛЕЖИВАЕМ СМЕНУ ПУТИ
   useEffect(() => {
+    console.log("[usePageTimer] useEffect [path] running", {
+      path: location.pathname,
+    }); // отладка
+
     const currentPath = location.pathname;
     const now = Date.now();
 
-    // Если путь изменился – мы покинули предыдущую страницу
     if (prevPath.current !== currentPath) {
       const duration = Math.round((now - startTime.current) / 1000);
       console.log(
@@ -35,17 +40,15 @@ export const usePageTimer = (
         duration,
       );
 
-      // Сбрасываем таймер для новой страницы
       startTime.current = now;
       prevPath.current = currentPath;
     }
 
-    // В любом случае обновляем сохранённые тип и идентификатор (на случай, если они изменились без смены пути)
     prevPageType.current = pageType;
     prevTargetId.current = targetId;
   }, [location.pathname, pageType, targetId]);
 
-  // 2️⃣ ОБРАБОТКА ЗАКРЫТИЯ/ПЕРЕЗАГРУЗКИ ВКЛАДКИ (beforeunload)
+  // 2. ЗАКРЫТИЕ ВКЛАДКИ
   useEffect(() => {
     const handleBeforeUnload = () => {
       const duration = Math.round((Date.now() - startTime.current) / 1000);
@@ -58,5 +61,5 @@ export const usePageTimer = (
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [pageType, targetId]); // при изменении pageType/targetId обработчик обновится
+  }, [pageType, targetId]);
 };
