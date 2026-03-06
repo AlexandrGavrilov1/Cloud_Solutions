@@ -4,12 +4,14 @@ import Icon from "@/components/ui/icon";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom"; // ✅ импортируем Link и useNavigate
 
 export const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate(); // для программной навигации
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,14 +20,13 @@ export const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Устанавливаем начальное состояние
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
-      {/* Внутренний контейнер с динамическими отступами */}
       <div
         className={`
           w-full px-4 
@@ -34,7 +35,6 @@ export const Header = () => {
           3xl:px-[185px]
         `}
       >
-        {/* Контейнер с содержимым, меняет выравнивание при скролле */}
         <div
           className={`
             flex items-center h-16
@@ -42,9 +42,9 @@ export const Header = () => {
             ${isScrolled ? "items-end pb-1" : "items-center"}
           `}
         >
-          {/* Логотип (убираем отрицательный отступ) */}
-          <a
-            href="/"
+          {/* Логотип – теперь Link без перезагрузки */}
+          <Link
+            to="/"
             className="flex items-center hover:opacity-90 transition-opacity"
           >
             <img
@@ -52,34 +52,34 @@ export const Header = () => {
               alt="TopCloudHub Logo"
               className="h-[60px] w-auto transition-opacity duration-300"
             />
-          </a>
+          </Link>
 
-          {/* Десктопное меню */}
+          {/* Десктопное меню – заменяем a на Link */}
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
-            <a
-              href="/vpn"
+            <Link
+              to="/vpn"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
-            </a>
-            {/*<a
-              href="/blog"
+            </Link>
+            {/* <Link
+              to="/blog"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               Блог
-            </a>*/}
-            <a
-              href="/uptime"
+            </Link> */}
+            <Link
+              to="/uptime"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               {t("header.uptime")}
-            </a>
-            <a
-              href="/promo"
+            </Link>
+            <Link
+              to="/promo"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               Акции
-            </a>
+            </Link>
           </div>
 
           {/* Переключатель темы на десктопе */}
@@ -124,34 +124,34 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Мобильное выпадающее меню (без изменений) */}
+        {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
-              {/* <a
-                href="/blog"
+              {/* <Link
+                to="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="BookOpen" size={16} />
                 Блог
-              </a> */}
-              <a
-                href="/uptime"
+              </Link> */}
+              <Link
+                to="/uptime"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Activity" size={16} />
                 {t("header.uptime")}
-              </a>
-              <a
-                href="/promo"
+              </Link>
+              <Link
+                to="/promo"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Tag" size={16} />
                 Акции
-              </a>
+              </Link>
               <button
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all text-left"
                 onClick={toggleTheme}
@@ -162,7 +162,7 @@ export const Header = () => {
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  window.location.href = "/";
+                  navigate("/"); // ✅ используем navigate вместо window.location.href
                 }}
                 className="bg-primary text-background font-bold shadow-lg shadow-primary/30 w-full"
               >
