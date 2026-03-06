@@ -67,7 +67,7 @@ const VpnPost = () => {
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
-
+  usePageTimer("page_view", slug || "unknown");
   // ✅ Лог для отслеживания просмотра статьи
   useEffect(() => {
     if (slug) {

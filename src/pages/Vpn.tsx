@@ -12,6 +12,7 @@ import { useTrackEvent } from "@/hooks/useTrackEvent";
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
   const track = useTrackEvent();
+  usePageTimer("section_visit", "vpn-list");
 
   // ✅ Лог для отслеживания вызова track
   useEffect(() => {
