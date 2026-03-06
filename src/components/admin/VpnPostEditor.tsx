@@ -228,80 +228,79 @@ const colorDark50Command: ICommand = {
   },
 };
 
-// ==================== КОМАНДЫ ДЛЯ СТИЛЕЙ (полная версия для основного контента) ====================
-
-// Заголовок 1: TT Travels, bold, 36px, адаптивный цвет, left
-const heading1StyleCommand: ICommand = {
-  name: "heading1Style",
-  keyCommand: "heading1Style",
-  buttonProps: { "aria-label": "Заголовок 1 (TT Travels, 36px)" },
+// ==================== АДАПТИВНЫЕ КОМАНДЫ ДЛЯ СТИЛЕЙ (вместо старых неадаптивных) ====================
+// ✅ АДАПТИВНО: Заголовок раздела внутри статьи: TT Travels, bold, адаптивный размер, тёмная тема
+const heading1AdaptiveCommand: ICommand = {
+  name: "heading1Adaptive",
+  keyCommand: "heading1Adaptive",
+  buttonProps: { "aria-label": "Заголовок раздела (адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
-    const text = state.selectedText || "Заголовок 1";
-    const wrapped = `<span class="font-heading font-bold text-[36px] text-[#272932] dark:text-white text-left block">${text}</span>`;
+    const text = state.selectedText || "Заголовок раздела";
+    const wrapped = `<span class="font-heading font-bold text-2xl md:text-3xl lg:text-4xl text-[#272932] dark:text-white text-left block">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 1: Stem Medium, 18px, адаптивный цвет, justify, красная строка
-const body1StyleCommand: ICommand = {
-  name: "body1Style",
-  keyCommand: "body1Style",
-  buttonProps: { "aria-label": "Текст 1 (Stem Medium, 18px)" },
+// ✅ АДАПТИВНО: Текст 1: Stem Medium, адаптивный размер, выравнивание по ширине, красная строка
+const body1AdaptiveCommand: ICommand = {
+  name: "body1Adaptive",
+  keyCommand: "body1Adaptive",
+  buttonProps: { "aria-label": "Текст 1 (Stem Medium, адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст 1";
-    const wrapped = `<span class="font-sans font-medium text-[18px] text-[#272932] dark:text-white text-justify block indent-[2rem]">${text}</span>`;
+    const wrapped = `<span class="font-sans font-medium text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст 2: Stem Regular, 18px, адаптивный цвет, justify, красная строка
-const body2StyleCommand: ICommand = {
-  name: "body2Style",
-  keyCommand: "body2Style",
-  buttonProps: { "aria-label": "Текст 2 (Stem Regular, 18px)" },
+// ✅ АДАПТИВНО: Текст 2: Stem Regular, адаптивный размер, выравнивание по ширине, красная строка
+const body2AdaptiveCommand: ICommand = {
+  name: "body2Adaptive",
+  keyCommand: "body2Adaptive",
+  buttonProps: { "aria-label": "Текст 2 (Stem Regular, адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>T2</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст 2";
-    const wrapped = `<span class="font-sans font-normal text-[18px] text-[#272932] dark:text-white text-justify block indent-[2rem]">${text}</span>`;
+    const wrapped = `<span class="font-sans font-normal text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// ==================== НОВЫЕ КОМАНДЫ ДЛЯ МЕТАДАННЫХ ====================
-
-// Заголовок для метаполей: TT Travels, bold, 48px, адаптивный цвет, left
-const metaHeading1Command: ICommand = {
-  name: "metaHeading1",
-  keyCommand: "metaHeading1",
-  buttonProps: { "aria-label": "Заголовок H1 (48px)" },
+// ==================== АДАПТИВНЫЕ КОМАНДЫ ДЛЯ МЕТАДАННЫХ ====================
+// ✅ АДАПТИВНО: Заголовок для метаполей: TT Travels, bold, адаптивный размер
+const metaHeading1AdaptiveCommand: ICommand = {
+  name: "metaHeading1Adaptive",
+  keyCommand: "metaHeading1Adaptive",
+  buttonProps: { "aria-label": "Заголовок H1 (адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Заголовок";
-    const wrapped = `<span class="font-heading font-bold text-[48px] text-[#272932] dark:text-white text-left block">${text}</span>`;
+    const wrapped = `<span class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#272932] dark:text-white text-left block">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// Текст для метаполей: Stem Medium, 24px, адаптивный цвет, left
-const metaText1Command: ICommand = {
-  name: "metaText1",
-  keyCommand: "metaText1",
-  buttonProps: { "aria-label": "Текст T1 (24px)" },
+// ✅ АДАПТИВНО: Текст для метаполей: Stem Medium, адаптивный размер
+const metaText1AdaptiveCommand: ICommand = {
+  name: "metaText1Adaptive",
+  keyCommand: "metaText1Adaptive",
+  buttonProps: { "aria-label": "Текст T1 (адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Текст";
-    const wrapped = `<span class="font-sans font-medium text-[24px] text-[#272932] dark:text-white text-left block">${text}</span>`;
+    const wrapped = `<span class="font-sans font-medium text-xl md:text-2xl text-[#272932] dark:text-white text-left block">${text}</span>`;
     api.replaceSelection(wrapped);
   },
 };
 
-// ==================== КОМАНДЫ ДЛЯ СПИСКОВ ====================
+// ==================== КОМАНДЫ ДЛЯ СПИСКОВ (с адаптивным размером) ====================
 
-// Вспомогательная функция для элемента списка (уже с выравниванием по ширине)
+// Вспомогательная функция для элемента списка
 const createListItem = (content: string) => {
-  return `<li class="font-sans font-normal text-[18px] leading-tight text-[#272932] dark:text-white text-justify">${content}</li>`;
+  // ✅ АДАПТИВНО: используем text-base на мобильных, md:text-lg на десктопах
+  return `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify">${content}</li>`;
 };
 
 // Нумерованный список
@@ -361,7 +360,7 @@ const checkListCommand: ICommand = {
     const checkItems = lines
       .map(
         (line) =>
-          `<li class="font-sans font-normal text-[18px] leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['✓'] before:absolute before:left-0">${line}</li>`,
+          `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['✓'] before:absolute before:left-0">${line}</li>`,
       )
       .join("");
     const wrappedWithChecks = `<ul class="space-y-1">${checkItems}</ul>`;
@@ -369,7 +368,7 @@ const checkListCommand: ICommand = {
   },
 };
 
-// ==================== НОВАЯ КОМАНДА: ОЧИСТКА ФОРМАТИРОВАНИЯ ====================
+// ==================== КОМАНДА: ОЧИСТКА ФОРМАТИРОВАНИЯ ====================
 const clearFormattingCommand: ICommand = {
   name: "clearFormatting",
   keyCommand: "clearFormatting",
@@ -377,7 +376,6 @@ const clearFormattingCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>Tx</span>,
   execute: (state, api) => {
     const text = state.selectedText || "";
-    // Удаляем все HTML-теги
     const plainText = text.replace(/<[^>]*>/g, "");
     api.replaceSelection(plainText);
   },
@@ -385,7 +383,7 @@ const clearFormattingCommand: ICommand = {
 
 // ==================== Массивы команд ====================
 
-// Полный набор для основного редактора контента
+// Полный набор для основного редактора контента (с адаптивными командами вместо старых)
 const fullCommands = [
   commands.bold,
   commands.italic,
@@ -417,9 +415,9 @@ const fullCommands = [
   colorOrangeCommand,
   colorDarkCommand,
   colorDark50Command,
-  heading1StyleCommand,
-  body1StyleCommand,
-  body2StyleCommand,
+  heading1AdaptiveCommand, // ✅ АДАПТИВНО (заменили heading1StyleCommand)
+  body1AdaptiveCommand, // ✅ АДАПТИВНО (заменили body1StyleCommand)
+  body2AdaptiveCommand, // ✅ АДАПТИВНО (заменили body2StyleCommand)
   numberedListCommand,
   discListCommand,
   squareListCommand,
@@ -427,10 +425,10 @@ const fullCommands = [
   clearFormattingCommand,
 ];
 
-// Минимальный набор для метаполей
+// Минимальный набор для метаполей (с адаптивными командами вместо старых)
 const metaCommands = [
-  metaHeading1Command,
-  metaText1Command,
+  metaHeading1AdaptiveCommand, // ✅ АДАПТИВНО (заменили metaHeading1Command)
+  metaText1AdaptiveCommand, // ✅ АДАПТИВНО (заменили metaText1Command)
   commands.link,
   colorOrangeCommand,
   colorDarkCommand,
@@ -719,7 +717,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                       preview="edit"
                       height={80}
                       visibleDragbar={false}
-                      commands={metaCommands}
+                      commands={metaCommands} // ✅ используются адаптивные команды
                     />
                   </div>
                 </div>
@@ -911,7 +909,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   preview="live"
                   height={500}
                   visibleDragbar={false}
-                  commands={fullCommands}
+                  commands={fullCommands} // ✅ используются адаптивные команды
                 />
               </div>
 
