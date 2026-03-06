@@ -69,13 +69,17 @@ const VpnPost = () => {
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
   usePageTimer("page_view", slug || "unknown");
-  // ✅ Лог монтирования/размонтирования компонента VpnPost
+
+  // ✅ Сброс прокрутки в начало при монтировании или смене slug
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
+
   useEffect(() => {
     console.log("🔵 MOUNT VpnPost", slug);
     return () => console.log("🔴 UNMOUNT VpnPost", slug);
   }, [slug]);
 
-  // ✅ Лог для отслеживания просмотра статьи (был)
   useEffect(() => {
     if (slug) {
       console.log(
@@ -86,7 +90,6 @@ const VpnPost = () => {
     }
   }, [slug, track]);
 
-  // ✅ Обработчик клика по провайдеру (кнопка внизу)
   const handleProviderClick = () => {
     console.log(
       "🔵 provider_click from article_button, providerName:",
@@ -210,13 +213,13 @@ const VpnPost = () => {
               </span>
             </div>
 
-            {/* Изображение */}
+            {/* Изображение — уменьшенная высота, адаптив */}
             {post.image && (
               <div className="w-full mb-12">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-auto rounded-2xl shadow-lg"
+                  className="w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] object-cover rounded-2xl shadow-lg"
                 />
               </div>
             )}
@@ -227,7 +230,6 @@ const VpnPost = () => {
                 <MDEditor.Markdown
                   source={post.content}
                   components={{
-                    // ✅ Добавлен трекинг кликов по ссылкам в тексте
                     a: ({ node, href, children, ...props }) => {
                       const handleClick = (e: React.MouseEvent) => {
                         e.preventDefault();
@@ -368,29 +370,29 @@ const VpnPost = () => {
         )}
       </main>
 
-      {/* Кнопки перемотки */}
+      {/* Кнопки перемотки — полупрозрачные с размытием */}
       {showScrollButtons && (
         <>
           <button
             onClick={scrollToTop}
-            className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md shadow-lg border border-border/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all z-50 group"
+            className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
             aria-label="Прокрутить вверх"
           >
             <Icon
               name="ArrowUp"
               size={20}
-              className="text-foreground/80 group-hover:text-background transition-colors"
+              className="text-foreground hover:text-background transition-colors"
             />
           </button>
           <button
             onClick={scrollToBottom}
-            className="fixed right-8 top-1/2 -translate-y-1/2 mt-16 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md shadow-lg border border-border/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all z-50 group"
+            className="fixed right-8 top-1/2 -translate-y-1/2 mt-16 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
             aria-label="Прокрутить вниз"
           >
             <Icon
               name="ArrowDown"
               size={20}
-              className="text-foreground/80 group-hover:text-background transition-colors"
+              className="text-foreground hover:text-background transition-colors"
             />
           </button>
         </>
