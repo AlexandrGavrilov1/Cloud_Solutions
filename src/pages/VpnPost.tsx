@@ -373,7 +373,7 @@ const VpnPost = () => {
         <>
           <button
             onClick={scrollToTop}
-            className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/70 backdrop-blur-md shadow-lg border border-border/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all z-50 group"
+            className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md shadow-lg border border-border/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all z-50 group"
             aria-label="Прокрутить вверх"
           >
             <Icon
@@ -384,7 +384,7 @@ const VpnPost = () => {
           </button>
           <button
             onClick={scrollToBottom}
-            className="fixed right-8 top-1/2 -translate-y-1/2 mt-16 w-12 h-12 rounded-full bg-background/70 backdrop-blur-md shadow-lg border border-border/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all z-50 group"
+            className="fixed right-8 top-1/2 -translate-y-1/2 mt-16 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md shadow-lg border border-border/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all z-50 group"
             aria-label="Прокрутить вниз"
           >
             <Icon
