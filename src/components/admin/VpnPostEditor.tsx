@@ -32,7 +32,7 @@ import {
   useDeleteVpnPost,
 } from "@/hooks/useVpnPosts";
 
-// ==================== Существующие кастомные команды ====================
+// ==================== Существующие кастомные команды ===================
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
