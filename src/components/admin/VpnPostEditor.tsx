@@ -1,994 +1,404 @@
 import React, { useState, useEffect } from "react";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { Header } from "@/components/providers/Header";
+import { Footer } from "@/components/providers/Footer";
+import { StructuredData as SEOStructuredData } from "@/components/SEO/StructuredData";
+import { StructuredData } from "@/components/StructuredData";
+import { OpenGraph } from "@/components/SEO/OpenGraph";
+import { vpnPosts } from "@/data/vpn-posts";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { VpnPost } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
-import { toast } from "sonner";
-import MDEditor, { commands, ICommand } from "@uiw/react-md-editor";
-import {
-  useVpnPosts,
-  useVpnPost,
-  useCreateVpnPost,
-  useUpdateVpnPost,
-  useDeleteVpnPost,
-} from "@/hooks/useVpnPosts";
+import MDEditor from "@uiw/react-md-editor";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import { useVpnPost } from "@/hooks/useVpnPosts";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useTrackEvent } from "@/hooks/useTrackEvent";
+import { usePageTimer } from "@/hooks/usePageTimer";
 
-// ================== Существующие кастомные команды ===================
-const alignLeftCommand: ICommand = {
-  name: "alignLeft",
-  keyCommand: "alignLeft",
-  buttonProps: { "aria-label": "Выровнять по левому краю" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <path
-        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  execute: (state, api) => {
-    const text = `<p align="left">${state.selectedText || "текст"}</p>`;
-    api.replaceSelection(text);
-  },
-};
+// Компонент для рендеринга Markdown с поддержкой HTML
+const MarkdownContent = ({ children }: { children: string }) => (
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm]}
+    rehypePlugins={[rehypeRaw]}
+    components={{
+      p: ({ children }) => <span>{children}</span>,
+      h1: "span",
+      h2: "span",
+      h3: "span",
+      h4: "span",
+      h5: "span",
+      h6: "span",
+      ul: "span",
+      ol: "span",
+      li: "span",
+      blockquote: "span",
+      pre: "span",
+      code: ({ inline, className, children, ...props }) => {
+        if (inline)
+          return (
+            <code className={className} {...props}>
+              {children}
+            </code>
+          );
+        return <span>{children}</span>;
+      },
+      a: ({ href, children, ...props }) => (
+        <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+          {children}
+        </a>
+      ),
+      img: () => null,
+    }}
+  >
+    {children}
+  </ReactMarkdown>
+);
 
-const alignCenterCommand: ICommand = {
-  name: "alignCenter",
-  keyCommand: "alignCenter",
-  buttonProps: { "aria-label": "Выровнять по центру" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <path
-        d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  execute: (state, api) => {
-    const text = `<p align="center">${state.selectedText || "текст"}</p>`;
-    api.replaceSelection(text);
-  },
-};
+const VpnPost = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const { data: post, isLoading, error } = useVpnPost(slug);
+  const { theme } = useTheme();
+  const track = useTrackEvent();
 
-const alignRightCommand: ICommand = {
-  name: "alignRight",
-  keyCommand: "alignRight",
-  buttonProps: { "aria-label": "Выровнять по правому краю" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <path
-        d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  execute: (state, api) => {
-    const text = `<p align="right">${state.selectedText || "текст"}</p>`;
-    api.replaceSelection(text);
-  },
-};
+  const [showScrollButtons, setShowScrollButtons] = useState(false);
 
-const alignJustifyCommand: ICommand = {
-  name: "alignJustify",
-  keyCommand: "alignJustify",
-  buttonProps: { "aria-label": "Выровнять по ширине" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <path
-        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  execute: (state, api) => {
-    const text = `<p style="text-align: justify;">${state.selectedText || "текст"}</p>`;
-    api.replaceSelection(text);
-  },
-};
-
-const fontSizeIncreaseCommand: ICommand = {
-  name: "fontSizeIncrease",
-  keyCommand: "fontSizeIncrease",
-  buttonProps: { "aria-label": "Увеличить шрифт" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <text x="5" y="15" fontSize="14" fill="currentColor">
-        A+
-      </text>
-    </svg>
-  ),
-  execute: (state, api) => {
-    const text = `<font size="5">${state.selectedText || "текст"}</font>`;
-    api.replaceSelection(text);
-  },
-};
-
-const fontSizeDecreaseCommand: ICommand = {
-  name: "fontSizeDecrease",
-  keyCommand: "fontSizeDecrease",
-  buttonProps: { "aria-label": "Уменьшить шрифт" },
-  icon: (
-    <svg width="14" height="14" viewBox="0 0 20 20">
-      <text x="5" y="15" fontSize="14" fill="currentColor">
-        A-
-      </text>
-    </svg>
-  ),
-  execute: (state, api) => {
-    const text = `<font size="2">${state.selectedText || "текст"}</font>`;
-    api.replaceSelection(text);
-  },
-};
-
-// ==================== НОВЫЕ КОМАНДЫ ДЛЯ ШРИФТОВ И ЦВЕТОВ ====================
-
-// Шрифт Stem
-const fontStemCommand: ICommand = {
-  name: "fontStem",
-  keyCommand: "fontStem",
-  buttonProps: { "aria-label": "Шрифт Stem" },
-  icon: <span style={{ fontSize: 12 }}>Stem</span>,
-  execute: (state, api) => {
-    const text = `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
-};
-
-// Шрифт TT Travels Next Trial
-const fontTTCommand: ICommand = {
-  name: "fontTT",
-  keyCommand: "fontTT",
-  buttonProps: { "aria-label": "Шрифт TT Travels" },
-  icon: <span style={{ fontSize: 12 }}>TT</span>,
-  execute: (state, api) => {
-    const text = `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
-};
-
-// Цвет оранжевый #FF931F (остаётся оранжевым в обеих темах)
-const colorOrangeCommand: ICommand = {
-  name: "colorOrange",
-  keyCommand: "colorOrange",
-  buttonProps: { "aria-label": "Оранжевый (#FF931F)" },
-  icon: (
-    <div
-      style={{
-        width: 14,
-        height: 14,
-        backgroundColor: "#FF931F",
-        borderRadius: 2,
-      }}
-    />
-  ),
-  execute: (state, api) => {
-    const text = `<span class="text-[#FF931F] dark:text-[#FF931F]">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
-};
-
-// Цвет тёмный #272932 (в тёмной теме становится белым)
-const colorDarkCommand: ICommand = {
-  name: "colorDark",
-  keyCommand: "colorDark",
-  buttonProps: { "aria-label": "Тёмный (#272932)" },
-  icon: (
-    <div
-      style={{
-        width: 14,
-        height: 14,
-        backgroundColor: "#272932",
-        borderRadius: 2,
-      }}
-    />
-  ),
-  execute: (state, api) => {
-    const text = `<span class="text-[#272932] dark:text-white">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
-};
-
-// Цвет тёмный 50% прозрачности (в тёмной теме белый с 50% прозрачностью)
-const colorDark50Command: ICommand = {
-  name: "colorDark50",
-  keyCommand: "colorDark50",
-  buttonProps: { "aria-label": "Тёмный 50%" },
-  icon: (
-    <div
-      style={{
-        width: 14,
-        height: 14,
-        backgroundColor: "rgba(39, 41, 50, 0.5)",
-        borderRadius: 2,
-      }}
-    />
-  ),
-  execute: (state, api) => {
-    const text = `<span class="text-[#272932]/50 dark:text-white/50">${state.selectedText || "текст"}</span>`;
-    api.replaceSelection(text);
-  },
-};
-
-// ==================== АДАПТИВНЫЕ КОМАНДЫ ДЛЯ СТИЛЕЙ (вместо старых неадаптивных) ====================
-// ✅ АДАПТИВНО: Заголовок раздела внутри статьи: TT Travels, bold, адаптивный размер, тёмная тема
-const heading1AdaptiveCommand: ICommand = {
-  name: "heading1Adaptive",
-  keyCommand: "heading1Adaptive",
-  buttonProps: { "aria-label": "Заголовок раздела (адаптивный)" },
-  icon: <span style={{ fontSize: 12 }}>H1</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Заголовок раздела";
-    const wrapped = `<span class="font-heading font-bold text-2xl md:text-3xl lg:text-4xl text-[#272932] dark:text-white text-left block">${text}</span>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// ✅ АДАПТИВНО: Текст 1: Stem Medium, адаптивный размер, выравнивание по ширине, красная строка
-const body1AdaptiveCommand: ICommand = {
-  name: "body1Adaptive",
-  keyCommand: "body1Adaptive",
-  buttonProps: { "aria-label": "Текст 1 (Stem Medium, адаптивный)" },
-  icon: <span style={{ fontSize: 12 }}>T1</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Текст 1";
-    const wrapped = `<span class="font-sans font-medium text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// ✅ АДАПТИВНО: Текст 2: Stem Regular, адаптивный размер, выравнивание по ширине, красная строка
-const body2AdaptiveCommand: ICommand = {
-  name: "body2Adaptive",
-  keyCommand: "body2Adaptive",
-  buttonProps: { "aria-label": "Текст 2 (Stem Regular, адаптивный)" },
-  icon: <span style={{ fontSize: 12 }}>T2</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Текст 2";
-    const wrapped = `<span class="font-sans font-normal text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// ==================== АДАПТИВНЫЕ КОМАНДЫ ДЛЯ МЕТАДАННЫХ ====================
-// ✅ АДАПТИВНО: Заголовок для метаполей: TT Travels, bold, адаптивный размер
-const metaHeading1AdaptiveCommand: ICommand = {
-  name: "metaHeading1Adaptive",
-  keyCommand: "metaHeading1Adaptive",
-  buttonProps: { "aria-label": "Заголовок H1 (адаптивный)" },
-  icon: <span style={{ fontSize: 12 }}>H1</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Заголовок";
-    const wrapped = `<span class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#272932] dark:text-white text-left block">${text}</span>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// ✅ АДАПТИВНО: Текст для метаполей: Stem Medium, адаптивный размер
-const metaText1AdaptiveCommand: ICommand = {
-  name: "metaText1Adaptive",
-  keyCommand: "metaText1Adaptive",
-  buttonProps: { "aria-label": "Текст T1 (адаптивный)" },
-  icon: <span style={{ fontSize: 12 }}>T1</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Текст";
-    const wrapped = `<span class="font-sans font-medium text-xl md:text-2xl text-[#272932] dark:text-white text-left block">${text}</span>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// ==================== КОМАНДЫ ДЛЯ СПИСКОВ (с адаптивным размером) ====================
-
-// Вспомогательная функция для элемента списка
-const createListItem = (content: string) => {
-  // ✅ АДАПТИВНО: используем text-base на мобильных, md:text-lg на десктопах
-  return `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify">${content}</li>`;
-};
-
-// Нумерованный список
-const numberedListCommand: ICommand = {
-  name: "numberedList",
-  keyCommand: "numberedList",
-  buttonProps: { "aria-label": "Нумерованный список" },
-  icon: <span style={{ fontSize: 12 }}>1.</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Элемент списка";
-    const lines = text.split("\n").filter((line) => line.trim() !== "");
-    const listItems = lines.map((line) => createListItem(line)).join("");
-    const wrapped = `<ol class="list-decimal pl-5 space-y-1">${listItems}</ol>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// Маркированный список с кругами
-const discListCommand: ICommand = {
-  name: "discList",
-  keyCommand: "discList",
-  buttonProps: { "aria-label": "Маркированный список (круги)" },
-  icon: <span style={{ fontSize: 12 }}>•</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Элемент списка";
-    const lines = text.split("\n").filter((line) => line.trim() !== "");
-    const listItems = lines.map((line) => createListItem(line)).join("");
-    const wrapped = `<ul class="list-disc pl-5 space-y-1">${listItems}</ul>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// Маркированный список с квадратами
-const squareListCommand: ICommand = {
-  name: "squareList",
-  keyCommand: "squareList",
-  buttonProps: { "aria-label": "Маркированный список (квадраты)" },
-  icon: <span style={{ fontSize: 12 }}>■</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Элемент списка";
-    const lines = text.split("\n").filter((line) => line.trim() !== "");
-    const listItems = lines.map((line) => createListItem(line)).join("");
-    const wrapped = `<ul class="list-square pl-5 space-y-1">${listItems}</ul>`;
-    api.replaceSelection(wrapped);
-  },
-};
-
-// Список с галочками
-const checkListCommand: ICommand = {
-  name: "checkList",
-  keyCommand: "checkList",
-  buttonProps: { "aria-label": "Список с галочками" },
-  icon: <span style={{ fontSize: 12 }}>✓</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "Элемент списка";
-    const lines = text.split("\n").filter((line) => line.trim() !== "");
-    const checkItems = lines
-      .map(
-        (line) =>
-          `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['✓'] before:absolute before:left-0">${line}</li>`,
-      )
-      .join("");
-    const wrappedWithChecks = `<ul class="space-y-1">${checkItems}</ul>`;
-    api.replaceSelection(wrappedWithChecks);
-  },
-};
-
-// ==================== КОМАНДА: ОЧИСТКА ФОРМАТИРОВАНИЯ ====================
-const clearFormattingCommand: ICommand = {
-  name: "clearFormatting",
-  keyCommand: "clearFormatting",
-  buttonProps: { "aria-label": "Очистить форматирование" },
-  icon: <span style={{ fontSize: 12 }}>Tx</span>,
-  execute: (state, api) => {
-    const text = state.selectedText || "";
-    const plainText = text.replace(/<[^>]*>/g, "");
-    api.replaceSelection(plainText);
-  },
-};
-
-// ==================== Массивы команд ====================
-
-// Полный набор для основного редактора контента (с адаптивными командами вместо старых)
-const fullCommands = [
-  commands.bold,
-  commands.italic,
-  commands.strikethrough,
-  commands.hr,
-  commands.title1,
-  commands.title2,
-  commands.title3,
-  commands.title4,
-  commands.title5,
-  commands.title6,
-  commands.link,
-  commands.quote,
-  commands.code,
-  commands.codeBlock,
-  commands.image,
-  commands.unorderedListCommand,
-  commands.orderedListCommand,
-  commands.checkedListCommand,
-  commands.table,
-  alignLeftCommand,
-  alignCenterCommand,
-  alignRightCommand,
-  alignJustifyCommand,
-  fontSizeIncreaseCommand,
-  fontSizeDecreaseCommand,
-  fontStemCommand,
-  fontTTCommand,
-  colorOrangeCommand,
-  colorDarkCommand,
-  colorDark50Command,
-  heading1AdaptiveCommand, // ✅ АДАПТИВНО (заменили heading1StyleCommand)
-  body1AdaptiveCommand, // ✅ АДАПТИВНО (заменили body1StyleCommand)
-  body2AdaptiveCommand, // ✅ АДАПТИВНО (заменили body2StyleCommand)
-  numberedListCommand,
-  discListCommand,
-  squareListCommand,
-  checkListCommand,
-  clearFormattingCommand,
-];
-
-// Минимальный набор для метаполей (с адаптивными командами вместо старых)
-const metaCommands = [
-  metaHeading1AdaptiveCommand, // ✅ АДАПТИВНО (заменили metaHeading1Command)
-  metaText1AdaptiveCommand, // ✅ АДАПТИВНО (заменили metaText1Command)
-  commands.link,
-  colorOrangeCommand,
-  colorDarkCommand,
-  colorDark50Command,
-  clearFormattingCommand,
-];
-
-// ==================== Основной компонент ====================
-
-interface VpnPostEditorProps {
-  onSave?: (updatedPost: VpnPost) => void;
-}
-
-export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
-  const { data: posts, isLoading: isLoadingPosts } = useVpnPosts();
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
-  const {
-    data: selectedPost,
-    isLoading: isLoadingContent,
-    error,
-  } = useVpnPost(selectedSlug || undefined);
-  const createMutation = useCreateVpnPost();
-  const updateMutation = useUpdateVpnPost();
-  const deleteMutation = useDeleteVpnPost();
-
-  const [content, setContent] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
-  // Поля метаданных
-  const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
-  const [category, setCategory] = useState("");
-  const [readTime, setReadTime] = useState("");
-  const [author, setAuthor] = useState("");
-  const [providerName, setProviderName] = useState("");
-  const [image, setImage] = useState("");
-  const [providerUrl, setProviderUrl] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState("");
-
-  const [newPost, setNewPost] = useState<Partial<VpnPost>>({
-    title: "",
-    excerpt: "",
-    slug: "",
-    category: "VPN",
-    tags: [],
-    author: "Команда TopCloudHub",
-    date: new Date().toLocaleDateString("ru-RU"),
-    readTime: "5 мин",
-    image: "",
-    providerUrl: "",
-    providerName: "",
-  });
-
+  const relatedPosts = vpnPosts
+    .filter((p) => p.id !== post?.id && p.category === post?.category)
+    .slice(0, 3);
+  usePageTimer("page_view", slug || "unknown");
+  // ✅ Лог монтирования/размонтирования компонента VpnPost
   useEffect(() => {
-    if (selectedPost) {
-      setContent(selectedPost.content || "");
-      setTitle(selectedPost.title || "");
-      setExcerpt(selectedPost.excerpt || "");
-      setCategory(selectedPost.category || "");
-      setReadTime(selectedPost.readTime || "");
-      setAuthor(selectedPost.author || "");
-      setImage(selectedPost.image || "");
-      setProviderUrl(selectedPost.providerUrl || "");
-      setProviderName(selectedPost.providerName || "");
-      setTags(selectedPost.tags || []);
-      setIsCreating(false);
-    }
-  }, [selectedPost]);
+    console.log("🔵 MOUNT VpnPost", slug);
+    return () => console.log("🔴 UNMOUNT VpnPost", slug);
+  }, [slug]);
 
-  const handleAddTag = () => {
-    if (tagInput.trim()) {
-      setTags([...tags, tagInput.trim()]);
-      setTagInput("");
+  // ✅ Лог для отслеживания просмотра статьи (был)
+  useEffect(() => {
+    if (slug) {
+      console.log(
+        "🟢 VpnPost component mounted, calling page_view for slug:",
+        slug,
+      );
+      track("page_view", slug);
+    }
+  }, [slug, track]);
+
+  // ✅ Обработчик клика по провайдеру (кнопка внизу)
+  const handleProviderClick = () => {
+    console.log(
+      "🔵 provider_click from article_button, providerName:",
+      post?.providerName,
+    );
+    track("provider_click", post?.providerName || "unknown", "article_button");
+
+    if (typeof window !== "undefined" && (window as any).ym) {
+      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+        provider_name: post?.providerName,
+      });
+    }
+    if (post?.providerUrl) {
+      window.open(post.providerUrl, "_blank", "noopener,noreferrer");
     }
   };
 
-  const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter((t) => t !== tagToRemove));
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleCreateNew = () => {
-    setIsCreating(true);
-    setSelectedSlug(null);
-    setContent("");
-    setTitle("");
-    setExcerpt("");
-    setCategory("VPN");
-    setReadTime("5 мин");
-    setAuthor("Команда TopCloudHub");
-    setImage("");
-    setProviderUrl("");
-    setProviderName("");
-    setTags([]);
-    setNewPost({
-      title: "",
-      excerpt: "",
-      slug: "",
-      category: "VPN",
-      tags: [],
-      author: "Команда TopCloudHub",
-      date: new Date().toLocaleDateString("ru-RU"),
-      readTime: "5 мин",
-      image: "",
-      providerUrl: "",
-      providerName: "",
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
     });
   };
 
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-zа-яё0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButtons(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleTitleChange = (val: string | undefined) => {
-    const newTitle = val || "";
-    setTitle(newTitle);
-    if (isCreating) {
-      setNewPost({ ...newPost, title: newTitle, slug: generateSlug(newTitle) });
-    }
-  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
+      </div>
+    );
+  }
 
-  const handleCancel = () => {
-    setIsCreating(false);
-    setSelectedSlug(null);
-  };
-
-  const handleSave = async () => {
-    setIsSaving(true);
-    try {
-      if (isCreating) {
-        if (!title || !content) {
-          toast.error("Заголовок и содержимое обязательны");
-          return;
-        }
-        const newData = {
-          title,
-          content,
-          excerpt,
-          category,
-          read_time: readTime,
-          author,
-          image,
-          provider_url: providerUrl,
-          provider_name: providerName,
-          tags,
-          slug: generateSlug(title),
-        };
-        const created = await createMutation.mutateAsync(newData);
-        toast.success("Статья создана");
-        setSelectedSlug(created.slug);
-        setIsCreating(false);
-        onSave?.(created);
-      } else {
-        if (!selectedPost) return;
-        const updatedData = {
-          slug: selectedPost.slug,
-          content,
-          title,
-          excerpt,
-          category,
-          read_time: readTime,
-          author,
-          image,
-          provider_url: providerUrl,
-          provider_name: providerName,
-          tags,
-        };
-        const updated = await updateMutation.mutateAsync(updatedData);
-        toast.success("Статья сохранена");
-        setSelectedSlug(updated.slug);
-        onSave?.(updated);
-      }
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Ошибка при сохранении",
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!selectedPost) return;
-    try {
-      await deleteMutation.mutateAsync(selectedPost.slug);
-      toast.success("Статья удалена");
-      setSelectedSlug(null);
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Ошибка при удалении",
-      );
-    } finally {
-      setIsDeleteDialogOpen(false);
-    }
-  };
+  if (error || !post) {
+    return <Navigate to="/vpn" replace />;
+  }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="PenLine" size={20} className="text-primary" />
-              {isCreating
-                ? "Создание новой статьи"
-                : "Редактирование статьи VPN"}
-            </CardTitle>
-            <Button
-              variant="outline"
-              onClick={handleCreateNew}
-              disabled={isCreating}
-              className="gap-2"
+    <div className="min-h-screen bg-background">
+      <OpenGraph
+        title={post.title}
+        description={post.excerpt}
+        url={`https://topcloudhub.ru/vpn/${post.slug}`}
+        image={post.image || "https://topcloudhub.ru/og-image.png"}
+        type="article"
+        article={{
+          publishedTime: post.datePublished || post.date,
+          modifiedTime: post.dateModified || post.date,
+          author: post.author,
+          section: post.category,
+          tags: post.tags,
+        }}
+      />
+      <SEOStructuredData
+        type="article"
+        article={{
+          headline: post.title,
+          description: post.excerpt,
+          author: post.author,
+          datePublished: post.datePublished || post.date,
+          dateModified: post.dateModified || post.date,
+          image: post.image || "https://topcloudhub.ru/og-image.png",
+          url: `https://topcloudhub.ru/vpn/${post.slug}`,
+        }}
+      />
+      <SEOStructuredData
+        type="breadcrumb"
+        breadcrumbs={[
+          { name: "Главная", url: "https://topcloudhub.ru" },
+          { name: "VPN", url: "https://topcloudhub.ru/vpn" },
+          { name: post.title, url: `https://topcloudhub.ru/vpn/${post.slug}` },
+        ]}
+      />
+      <StructuredData type="article" data={post} />
+      <Header />
+
+      <main>
+        <article className="pt-32 pb-16">
+          <div className="w-full px-4 3xl:px-[185px]">
+            <Link
+              to="/vpn"
+              className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors mb-8"
             >
-              <Icon name="Plus" size={16} />
-              Новая статья
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {!isCreating && (
-            <div className="mb-6">
-              <label className="text-sm font-semibold text-foreground mb-2 block">
-                Выберите статью
-              </label>
-              {isLoadingPosts ? (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Icon name="Loader2" size={16} className="animate-spin" />
-                  Загрузка списка статей...
-                </div>
-              ) : (
-                <Select
-                  value={selectedSlug || ""}
-                  onValueChange={(slug) => setSelectedSlug(slug)}
-                >
-                  <SelectTrigger className="w-full max-w-md">
-                    <SelectValue placeholder="Выберите статью для редактирования" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {posts?.map((post) => (
-                      <SelectItem key={post.id} value={post.slug}>
-                        {post.title.replace(/<[^>]*>/g, "")}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+              <Icon name="ArrowLeft" size={20} />
+              <span>Вернуться к разделу VPN</span>
+            </Link>
+
+            {/* Заголовок */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight text-left">
+              <MarkdownContent>{post.title}</MarkdownContent>
+            </h1>
+
+            {/* Краткое описание */}
+            <p className="text-lg text-muted-foreground mb-6 text-left">
+              <MarkdownContent>{post.excerpt}</MarkdownContent>
+            </p>
+
+            <hr className="border-t border-border/50 my-6" />
+
+            {/* Метаданные */}
+            <div className="flex items-center gap-6 text-sm text-foreground mb-8">
+              <span className="text-primary font-medium">
+                <MarkdownContent>{post.category}</MarkdownContent>
+              </span>
+              <span>{post.date}</span>
+              <span className="flex items-center gap-1">
+                <Icon name="Clock" size={14} className="text-foreground" />
+                <MarkdownContent>{post.readTime}</MarkdownContent>
+              </span>
             </div>
-          )}
 
-          {error && (
-            <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-lg">
-              <p>Ошибка загрузки статьи: {error.message}</p>
-            </div>
-          )}
-
-          {isLoadingContent && (
-            <div className="flex items-center justify-center py-12">
-              <Icon
-                name="Loader2"
-                size={32}
-                className="animate-spin text-primary"
-              />
-            </div>
-          )}
-
-          {(selectedPost || isCreating) && !isLoadingContent && (
-            <>
-              <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
-                {/* Заголовок */}
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Заголовок *
-                  </label>
-                  <div
-                    data-color-mode="light"
-                    className="border rounded-lg overflow-hidden"
-                  >
-                    <MDEditor
-                      value={title}
-                      onChange={handleTitleChange}
-                      preview="edit"
-                      height={80}
-                      visibleDragbar={false}
-                      commands={metaCommands} // ✅ используются адаптивные команды
-                    />
-                  </div>
-                </div>
-
-                {/* Краткое описание */}
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Краткое описание (excerpt)
-                  </label>
-                  <div
-                    data-color-mode="light"
-                    className="border rounded-lg overflow-hidden"
-                  >
-                    <MDEditor
-                      value={excerpt}
-                      onChange={(val) => setExcerpt(val || "")}
-                      preview="edit"
-                      height={120}
-                      visibleDragbar={false}
-                      commands={metaCommands}
-                    />
-                  </div>
-                </div>
-
-                {isCreating && (
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Slug (URL) *
-                    </label>
-                    <Input
-                      value={newPost.slug || generateSlug(title)}
-                      onChange={(e) =>
-                        setNewPost({ ...newPost, slug: e.target.value })
-                      }
-                      placeholder="url-адрес-статьи"
-                      className="w-full"
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Генерируется автоматически из заголовка, можно изменить
-                    </p>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Категория
-                    </label>
-                    <div
-                      data-color-mode="light"
-                      className="border rounded-lg overflow-hidden"
-                    >
-                      <MDEditor
-                        value={category}
-                        onChange={(val) => setCategory(val || "")}
-                        preview="edit"
-                        height={60}
-                        visibleDragbar={false}
-                        commands={metaCommands}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Время чтения
-                    </label>
-                    <div
-                      data-color-mode="light"
-                      className="border rounded-lg overflow-hidden"
-                    >
-                      <MDEditor
-                        value={readTime}
-                        onChange={(val) => setReadTime(val || "")}
-                        preview="edit"
-                        height={60}
-                        visibleDragbar={false}
-                        commands={metaCommands}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Автор
-                  </label>
-                  <div
-                    data-color-mode="light"
-                    className="border rounded-lg overflow-hidden"
-                  >
-                    <MDEditor
-                      value={author}
-                      onChange={(val) => setAuthor(val || "")}
-                      preview="edit"
-                      height={60}
-                      visibleDragbar={false}
-                      commands={metaCommands}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      URL провайдера
-                    </label>
-                    <Input
-                      value={providerUrl}
-                      onChange={(e) => setProviderUrl(e.target.value)}
-                      placeholder="https://example.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Название провайдера
-                    </label>
-                    <div
-                      data-color-mode="light"
-                      className="border rounded-lg overflow-hidden"
-                    >
-                      <MDEditor
-                        value={providerName}
-                        onChange={(val) => setProviderName(val || "")}
-                        preview="edit"
-                        height={60}
-                        visibleDragbar={false}
-                        commands={metaCommands}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    URL изображения (превью)
-                  </label>
-                  <Input
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                    placeholder="/images/preview.jpg"
-                  />
-                </div>
-
-                {/* Теги */}
-                <div>
-                  <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Теги
-                  </label>
-                  <div className="flex gap-2 mb-2 flex-wrap">
-                    {tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="gap-1">
-                        {tag}
-                        <button
-                          onClick={() => handleRemoveTag(tag)}
-                          className="ml-1 hover:text-destructive"
-                        >
-                          <Icon name="X" size={12} />
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <Input
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      placeholder="Новый тег"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          handleAddTag();
-                        }
-                      }}
-                    />
-                    <Button onClick={handleAddTag} variant="outline">
-                      Добавить
-                    </Button>
-                  </div>
-                </div>
+            {/* Изображение */}
+            {post.image && (
+              <div className="w-full mb-12">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-auto rounded-2xl shadow-lg"
+                />
               </div>
+            )}
 
-              {/* Основной контент */}
-              <div
-                data-color-mode="light"
-                className="border rounded-lg overflow-hidden"
-              >
-                <MDEditor
-                  value={content}
-                  onChange={(val) => setContent(val || "")}
-                  preview="live"
-                  height={500}
-                  visibleDragbar={false}
-                  commands={fullCommands} // ✅ используются адаптивные команды
+            {/* Основной контент */}
+            <div className="max-w-[1050px] w-full mx-auto">
+              <div data-color-mode={theme === "dark" ? "dark" : "light"}>
+                <MDEditor.Markdown
+                  source={post.content}
+                  components={{
+                    // ✅ Добавлен трекинг кликов по ссылкам в тексте
+                    a: ({ node, href, children, ...props }) => {
+                      const handleClick = (e: React.MouseEvent) => {
+                        e.preventDefault();
+                        console.log(
+                          "🔵 outbound_link from article_text, href:",
+                          href,
+                        );
+                        track("outbound_link", href, "article_text");
+                        window.open(href, "_blank", "noopener,noreferrer");
+                      };
+                      return (
+                        <a
+                          href={href}
+                          onClick={handleClick}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...props}
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
+                    img({ node, ...props }) {
+                      return (
+                        <a
+                          href={props.src}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img {...props} />
+                        </a>
+                      );
+                    },
+                  }}
                 />
               </div>
 
-              <div className="mt-6 flex justify-end gap-4">
-                {!isCreating && selectedPost && (
-                  <Button
-                    variant="destructive"
-                    onClick={() => setIsDeleteDialogOpen(true)}
-                    disabled={deleteMutation.isPending}
-                    className="gap-2"
-                  >
-                    {deleteMutation.isPending ? (
-                      <Icon name="Loader2" size={16} className="animate-spin" />
-                    ) : (
-                      <Icon name="Trash2" size={16} />
-                    )}
-                    Удалить
-                  </Button>
-                )}
-
-                <Button variant="outline" onClick={handleCancel}>
-                  Отмена
-                </Button>
-                <Button
-                  onClick={handleSave}
-                  disabled={
-                    isSaving ||
-                    createMutation.isPending ||
-                    updateMutation.isPending
-                  }
-                  className="bg-primary text-background"
-                >
-                  {isSaving ||
-                  createMutation.isPending ||
-                  updateMutation.isPending ? (
-                    <>
-                      <Icon
-                        name="Loader2"
-                        size={16}
-                        className="mr-2 animate-spin"
-                      />
-                      Сохранение...
-                    </>
-                  ) : (
-                    <>
-                      <Icon name="Save" size={16} className="mr-2" />
-                      {isCreating ? "Создать" : "Сохранить изменения"}
-                    </>
-                  )}
-                </Button>
+              {/* Теги */}
+              <div className="mt-12 pt-8 border-t border-border">
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag, idx) => (
+                    <Badge
+                      key={idx}
+                      variant="outline"
+                      className="text-sm"
+                      style={{ fontWeight: 200 }}
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </>
-          )}
-        </CardContent>
-      </Card>
 
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Вы уверены?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Это действие нельзя отменить. Статья "{selectedPost?.title}" будет
-              навсегда удалена.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Удалить
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+              {/* Кнопка провайдера */}
+              {post.providerUrl && post.providerName && (
+                <div className="mt-8 text-center">
+                  <Button
+                    asChild
+                    className="bg-primary text-background font-bold shadow-lg shadow-primary/30 px-8 py-6 text-lg hover:bg-primary/90 transition-all"
+                  >
+                    <a
+                      href={post.providerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleProviderClick}
+                    >
+                      Перейти на{" "}
+                      <MarkdownContent>{post.providerName}</MarkdownContent>
+                    </a>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </article>
+
+        {/* Похожие статьи */}
+        {relatedPosts.length > 0 && (
+          <section className="py-16 bg-accent/30">
+            <div className="w-full px-4 3xl:px-[185px]">
+              <h2 className="text-3xl font-extrabold text-foreground mb-8">
+                Похожие статьи
+              </h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                {relatedPosts.map((relatedPost) => (
+                  <Link
+                    key={relatedPost.id}
+                    to={`/vpn/${relatedPost.slug}`}
+                    className="group"
+                  >
+                    <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
+                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
+                        {relatedPost.image ? (
+                          <img
+                            src={relatedPost.image}
+                            alt={relatedPost.title}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Icon
+                              name="FileText"
+                              size={48}
+                              className="text-primary/30"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-5 flex-1 flex flex-col">
+                        <Badge className="bg-primary/10 text-primary border-primary/30 text-xs w-fit mb-3">
+                          <MarkdownContent>
+                            {relatedPost.category}
+                          </MarkdownContent>
+                        </Badge>
+                        <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                          <MarkdownContent>{relatedPost.title}</MarkdownContent>
+                        </h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-2">
+                          <MarkdownContent>
+                            {relatedPost.excerpt}
+                          </MarkdownContent>
+                        </p>
+                        <div className="flex items-center gap-1 text-primary font-semibold text-sm mt-4">
+                          Читать
+                          <Icon
+                            name="ArrowRight"
+                            size={16}
+                            className="group-hover:translate-x-1 transition-transform"
+                          />
+                        </div>
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
+
+      {/* Кнопки перемотки — теперь полупрозрачные */}
+      {showScrollButtons && (
+        <>
+          <button
+            onClick={scrollToTop}
+            className="fixed right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
+            aria-label="Прокрутить вверх"
+          >
+            <Icon
+              name="ArrowUp"
+              size={20}
+              className="text-foreground hover:text-background transition-colors"
+            />
+          </button>
+          <button
+            onClick={scrollToBottom}
+            className="fixed right-8 top-1/2 -translate-y-1/2 mt-16 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm shadow-lg border border-border flex items-center justify-center hover:bg-primary transition-colors z-50"
+            aria-label="Прокрутить вниз"
+          >
+            <Icon
+              name="ArrowDown"
+              size={20}
+              className="text-foreground hover:text-background transition-colors"
+            />
+          </button>
+        </>
+      )}
+
+      <Footer />
     </div>
   );
 };
+
+export default VpnPost;
