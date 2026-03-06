@@ -1,7 +1,7 @@
 // src/hooks/usePageTimer.ts
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { getVisitorId } from "@/utils/visitor"; // getSessionId не нужен, он внутри trackEvent
+import { getVisitorId } from "@/utils/visitor";
 import { trackEvent } from "@/utils/eventTracker";
 
 export const usePageTimer = (
@@ -14,7 +14,7 @@ export const usePageTimer = (
   const prevPageType = useRef<string>(pageType);
   const prevTargetId = useRef<string>(targetId);
 
-  // 1. Отслеживаем изменение пути (SPA-переходы)
+  // 1️⃣ ОТСЛЕЖИВАЕМ СМЕНУ ПУТИ (SPA-переходы)
   useEffect(() => {
     const currentPath = location.pathname;
     const now = Date.now();
@@ -40,24 +40,12 @@ export const usePageTimer = (
       prevPath.current = currentPath;
     }
 
-    // В любом случае обновляем сохранённые тип и идентификатор
+    // В любом случае обновляем сохранённые тип и идентификатор (на случай, если они изменились без смены пути)
     prevPageType.current = pageType;
     prevTargetId.current = targetId;
   }, [location.pathname, pageType, targetId]);
 
-  // 2. Отправка при размонтировании компонента (например, переход между /vpn и /vpn/:slug)
-  useEffect(() => {
-    return () => {
-      const duration = Math.round((Date.now() - startTime.current) / 1000);
-      console.log(
-        `[usePageTimer] LEAVE on unmount: ${pageType}:${targetId}, duration=${duration}s`,
-      );
-      const visitorId = getVisitorId();
-      trackEvent(visitorId, "page_leave", targetId, pageType, duration);
-    };
-  }, [pageType, targetId]);
-
-  // 3. Обработка закрытия/перезагрузки вкладки (beforeunload)
+  // 2️⃣ ОБРАБОТКА ЗАКРЫТИЯ/ПЕРЕЗАГРУЗКИ ВКЛАДКИ (beforeunload)
   useEffect(() => {
     const handleBeforeUnload = () => {
       const duration = Math.round((Date.now() - startTime.current) / 1000);
@@ -70,5 +58,5 @@ export const usePageTimer = (
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [pageType, targetId]);
+  }, [pageType, targetId]); // при изменении pageType/targetId обработчик обновится
 };
