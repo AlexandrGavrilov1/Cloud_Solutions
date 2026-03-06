@@ -11,30 +11,31 @@ export const usePageTimer = (
 
   useEffect(() => {
     startTime.current = Date.now();
-    console.log(`🕒 usePageTimer START for ${pageType}:${targetId}`); // отладка
+    console.log(`[usePageTimer] START ${pageType}:${targetId}`);
 
     const sendLeaveEvent = () => {
       const duration = Math.round((Date.now() - startTime.current) / 1000);
       console.log(
-        `🕒 usePageTimer LEAVE for ${pageType}:${targetId}, duration=${duration}s`,
-      ); // отладка
-      if (duration < 1) return;
+        `[usePageTimer] LEAVE ${pageType}:${targetId}, duration=${duration}s`,
+      );
+      // Убираем проверку duration < 1 для отладки, позже можно вернуть
+      // if (duration < 1) return;
 
       const visitorId = getVisitorId();
       trackEvent(visitorId, "page_leave", targetId, pageType, duration);
     };
 
     const handleBeforeUnload = () => {
-      console.log("🕒 beforeunload"); // отладка
+      console.log("[usePageTimer] beforeunload");
       sendLeaveEvent();
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      console.log(`🕒 usePageTimer CLEANUP for ${pageType}:${targetId}`); // отладка
+      console.log(`[usePageTimer] CLEANUP ${pageType}:${targetId}`);
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      sendLeaveEvent(); // отправка при размонтировании (SPA-переход)
+      sendLeaveEvent(); // отправка при SPA-переходе
     };
   }, [pageType, targetId]);
 };
