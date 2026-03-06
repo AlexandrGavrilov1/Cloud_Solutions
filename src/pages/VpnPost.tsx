@@ -16,6 +16,7 @@ import rehypeRaw from "rehype-raw";
 import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTrackEvent } from "@/hooks/useTrackEvent";
+import { usePageTimer } from "@/hooks/usePageTimer";
 
 // Компонент для рендеринга Markdown с поддержкой HTML
 const MarkdownContent = ({ children }: { children: string }) => (

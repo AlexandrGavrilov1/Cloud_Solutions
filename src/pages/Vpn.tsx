@@ -8,6 +8,7 @@ import Icon from "@/components/ui/icon";
 import { useVpnPosts } from "@/hooks/useVpnPosts";
 import { VpnCard } from "@/components/vpnpost/VpnCard";
 import { useTrackEvent } from "@/hooks/useTrackEvent";
+import { usePageTimer } from "@/hooks/usePageTimer";
 
 const Vpn = () => {
   const { data: posts = [], isLoading, error } = useVpnPosts();
