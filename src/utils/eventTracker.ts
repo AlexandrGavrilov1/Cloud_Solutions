@@ -10,6 +10,7 @@ export const trackEvent = (
   event_type: string,
   target_id: string,
   source?: string,
+  duration?: number,
 ) => {
   console.log("🎯 visitorId in trackEvent:", visitorId);
   const sessionId = getSessionId(); // используем импортированную функцию
@@ -35,6 +36,7 @@ export const trackEvent = (
     visitor_agent,
     referer,
     session_id: sessionId,
+    duration,
     ...utm,
   };
 
