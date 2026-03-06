@@ -219,7 +219,7 @@ const VpnPost = () => {
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] object-cover rounded-2xl shadow-lg"
+                  className="w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] object-contain bg-muted/20 rounded-2xl shadow-lg"
                 />
               </div>
             )}
