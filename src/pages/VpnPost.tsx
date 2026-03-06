@@ -67,7 +67,7 @@ const VpnPost = () => {
   const relatedPosts = vpnPosts
     .filter((p) => p.id !== post?.id && p.category === post?.category)
     .slice(0, 3);
-  usePageTimer("page_view", slug || "unknown");
+
   // ✅ Лог для отслеживания просмотра статьи
   useEffect(() => {
     if (slug) {
@@ -116,7 +116,7 @@ const VpnPost = () => {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  usePageTimer("page_view", slug || "unknown");
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
