@@ -1,0 +1,1 @@
+ALTER TABLE t_p4153566_vds_rating_portal.events ADD COLUMN duration INTEGER;
