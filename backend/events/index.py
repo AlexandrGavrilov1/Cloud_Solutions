@@ -97,6 +97,7 @@ def handler(event, context):
         utm_campaign = body.get('utm_campaign')
         utm_term = body.get('utm_term')
         utm_content = body.get('utm_content')
+        duration = body.get('duration')  # ✅ новое поле (целое число секунд)
 
         headers = event.get('headers', {})
         visitor_uuid = (
@@ -137,30 +138,30 @@ def handler(event, context):
                     existing = cur.fetchone()
                     is_first_view = (existing is None)
 
-                # --- Всегда вставляем событие ---
+                # --- Всегда вставляем событие (с duration) ---
                 if visitor_uuid:
                     cur.execute("""
                         INSERT INTO {}.events (
                             event_type, target_id, source, page_path, visitor_agent,
                             referer, session_id, utm_source, utm_medium, utm_campaign,
-                            utm_term, utm_content, visitor_uuid, visitor_ip
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            utm_term, utm_content, visitor_uuid, visitor_ip, duration
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """.format(SCHEMA), (
                         event_type, target_id, source, page_path, visitor_agent,
                         referer, session_id, utm_source, utm_medium, utm_campaign,
-                        utm_term, utm_content, visitor_uuid, visitor_ip
+                        utm_term, utm_content, visitor_uuid, visitor_ip, duration
                     ))
                 else:
                     cur.execute("""
                         INSERT INTO {}.events (
                             event_type, target_id, source, page_path, visitor_agent,
                             referer, session_id, utm_source, utm_medium, utm_campaign,
-                            utm_term, utm_content, visitor_ip
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            utm_term, utm_content, visitor_ip, duration
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """.format(SCHEMA), (
                         event_type, target_id, source, page_path, visitor_agent,
                         referer, session_id, utm_source, utm_medium, utm_campaign,
-                        utm_term, utm_content, visitor_ip
+                        utm_term, utm_content, visitor_ip, duration
                     ))
 
                 # --- Если это первый уникальный просмотр, увеличиваем счётчик ---
@@ -174,7 +175,6 @@ def handler(event, context):
                 return response(200, {'success': True})
         except Exception as e:
             conn.rollback()
-            # Логируем ошибку для отладки
             print(f"ERROR in POST /event: {str(e)}")
             return response(500, {'error': str(e)})
         finally:
