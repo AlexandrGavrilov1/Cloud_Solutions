@@ -174,7 +174,7 @@ export const EventsStatsSection = () => {
                     className={timeline.isFetching ? "animate-spin" : ""}
                   />
                 </Button>
-                <ExportButton
+                <CSVExportButton
                   data={timeline.data?.timeline ?? []}
                   filename={`timeline_${period}`}
                   columns={[
@@ -257,7 +257,7 @@ export const EventsStatsSection = () => {
                     className={pages.isFetching ? "animate-spin" : ""}
                   />
                 </Button>
-                <ExportButton
+                <CSVExportButton
                   data={pages.data?.pages ?? []}
                   filename={`pages_${period}`}
                   columns={[
@@ -339,7 +339,7 @@ export const EventsStatsSection = () => {
                     className={articles.isFetching ? "animate-spin" : ""}
                   />
                 </Button>
-                <ExportButton
+                <CSVExportButton
                   data={articles.data?.articles ?? []}
                   filename={`articles_${period}`}
                   columns={[
