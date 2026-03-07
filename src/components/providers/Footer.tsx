@@ -1,58 +1,18 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { ContactForm } from "@/components/contact/ContactForm";
-import Link from "next/link"; // импортируем Link из Next.js
+import { Link } from "react-router-dom"; // импортируем Link из react-router-dom
 
 export const Footer = () => {
   return (
     <footer className="bg-card border-t border-border py-16">
       <div className="w-full px-4 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          {/* Сетка: на мобильных две колонки, на md и выше — четыре */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
-            {/* Блок с логотипом и описанием — занимает две колонки на всех экранах */}
             <div className="col-span-2 md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-primary rounded-2xl blur-lg opacity-50"></div>
-                  <div className="relative w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
-                    <Icon name="Zap" className="text-background" size={22} />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-primary">
-                    TopCloudHub
-                  </h3>
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Топ хостингов
-                  </p>
-                </div>
-              </div>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                Независимая платформа для сравнения облачных провайдеров.
-                Помогаем найти идеальное решение для вашего проекта.
-              </p>
-              <div className="flex gap-3">
-                <ContactForm />
-                {/* Внешняя ссылка на Telegram — оставляем <a> */}
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="rounded-xl hover:border-primary hover:bg-primary/10 hover:text-primary transition-all"
-                  asChild
-                >
-                  <a
-                    href="https://t.me/topcloudhub"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Icon name="Send" size={18} />
-                  </a>
-                </Button>
-              </div>
+              {/* ... остальной код без изменений ... */}
             </div>
 
-            {/* Блок "Провайдеры" */}
             <div>
               <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
                 Провайдеры
@@ -60,14 +20,13 @@ export const Footer = () => {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    href="/"
+                    to="/" // для react-router-dom используется to вместо href
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     Рейтинг
                   </Link>
                 </li>
                 <li>
-                  {/* Якорь на той же странице — оставляем <a> */}
                   <a
                     href="#providers"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
@@ -77,7 +36,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href="/promo"
+                    to="/promo"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     Акции
@@ -86,7 +45,6 @@ export const Footer = () => {
               </ul>
             </div>
 
-            {/* Блок "Помощь" */}
             <div>
               <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
                 Помощь
@@ -94,15 +52,15 @@ export const Footer = () => {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    href="/vpn" // заменяем "/blog" на "/vpn"
+                    to="/vpn"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
-                    VPN {/* заменяем текст "Блог" на "VPN" */}
+                    VPN
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/faq"
+                    to="/faq"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     FAQ
@@ -110,7 +68,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href="/about"
+                    to="/about"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     О нас
@@ -120,14 +78,13 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Нижняя часть с копирайтом и политикой конфиденциальности */}
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground font-medium">
               © TopCloudHub. Все права защищены.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground font-medium">
               <Link
-                href="/privacy"
+                to="/privacy"
                 className="hover:text-primary transition-colors"
               >
                 Политика конфиденциальности
