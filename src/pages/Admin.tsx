@@ -7,7 +7,7 @@ import { ReviewModerationSection } from "@/components/admin/ReviewModerationSect
 import { ProviderStatsSection } from "@/components/admin/ProviderStatsSection";
 import { generateSitemap, downloadSitemap } from "@/utils/sitemap-generator";
 // ===== ДОБАВЛЕНО =====
-import { VpnPostEditor } from "@/components/admin/VpnPostEditor"; //
+import { VpnPostEditor } from "@/components/admin/VpnPostEditor";
 // =====================
 
 interface Review {
@@ -33,6 +33,11 @@ interface DailyStats {
 }
 
 const Admin = () => {
+  // ✅ Сброс прокрутки в начало при монтировании
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
@@ -48,7 +53,7 @@ const Admin = () => {
   const [period, setPeriod] = useState<"1" | "7" | "30">("30");
   const [activeTab, setActiveTab] = useState<
     "stats" | "providers" | "reviews" | "onedash" | "vpn-edit"
-  >("stats"); // [!code ++]
+  >("stats");
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
   const [onedashError, setOnedashError] = useState("");
