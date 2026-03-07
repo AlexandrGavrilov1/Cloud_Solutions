@@ -1,15 +1,16 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { ContactForm } from "@/components/contact/ContactForm";
+import Link from "next/link"; // импортируем Link из Next.js
 
 export const Footer = () => {
   return (
     <footer className="bg-card border-t border-border py-16">
       <div className="w-full px-4 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          {/* Добавлен grid-cols-2 для мобильных */}
+          {/* Сетка: на мобильных две колонки, на md и выше — четыре */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
-            {/* Блок с логотипом занимает 2 колонки на всех экранах */}
+            {/* Блок с логотипом и описанием — занимает две колонки на всех экранах */}
             <div className="col-span-2 md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="relative">
@@ -33,6 +34,7 @@ export const Footer = () => {
               </p>
               <div className="flex gap-3">
                 <ContactForm />
+                {/* Внешняя ссылка на Telegram — оставляем <a> */}
                 <Button
                   size="icon"
                   variant="outline"
@@ -50,21 +52,22 @@ export const Footer = () => {
               </div>
             </div>
 
-            {/* Блок "Провайдеры" — на мобильных становится первой колонкой в паре */}
+            {/* Блок "Провайдеры" */}
             <div>
               <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
                 Провайдеры
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a
+                  <Link
                     href="/"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     Рейтинг
-                  </a>
+                  </Link>
                 </li>
                 <li>
+                  {/* Якорь на той же странице — оставляем <a> */}
                   <a
                     href="#providers"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
@@ -73,61 +76,62 @@ export const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/promo"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     Акции
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Блок "Помощь" — на мобильных становится второй колонкой в паре */}
+            {/* Блок "Помощь" */}
             <div>
               <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
                 Помощь
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="/blog"
+                  <Link
+                    href="/vpn" // заменяем "/blog" на "/vpn"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
-                    Блог
-                  </a>
+                    VPN {/* заменяем текст "Блог" на "VPN" */}
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/faq"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     FAQ
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="/about"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     О нас
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
           </div>
 
+          {/* Нижняя часть с копирайтом и политикой конфиденциальности */}
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground font-medium">
               © TopCloudHub. Все права защищены.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground font-medium">
-              <a
+              <Link
                 href="/privacy"
                 className="hover:text-primary transition-colors"
               >
                 Политика конфиденциальности
-              </a>
+              </Link>
             </div>
           </div>
         </div>
