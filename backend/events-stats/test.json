@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "GET - Summary (last 30 days)",
+      "method": "GET",
+      "path": "/?view=summary&period=30",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "unique_visitors": 0,
+        "sessions": 0,
+        "page_views": 0,
+        "provider_clicks": 0,
+        "outbound_clicks": 0,
+        "avg_duration": null,
+        "bounce_rate": null
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET - Timeline",
+      "method": "GET",
+      "path": "/?view=timeline&period=7",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET - Top pages",
+      "method": "GET",
+      "path": "/?view=pages&period=30",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET - Articles stats",
+      "method": "GET",
+      "path": "/?view=articles&period=30",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET - Sessions",
+      "method": "GET",
+      "path": "/?view=sessions&period=30",
+      "expectedStatus": 200
+    }
+  ]
+}
