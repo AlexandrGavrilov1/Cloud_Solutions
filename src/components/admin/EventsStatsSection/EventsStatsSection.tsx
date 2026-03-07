@@ -14,7 +14,7 @@ import {
 import { PeriodSelector } from "./components/PeriodSelector";
 import { ComparePeriodSelector } from "./components/ComparePeriodSelector";
 import { MetricCard } from "./components/MetricCard";
-import { ExportButton } from "./components/CSVExportButton";
+import { CSVExportButton } from "./components/CSVExportButton";
 import { SessionTable } from "./components/SessionTable";
 import { ChartFilters } from "./components/ChartFilters";
 import { ConfirmDialog } from "./components/ConfirmDialog"; // для будущих удалений
