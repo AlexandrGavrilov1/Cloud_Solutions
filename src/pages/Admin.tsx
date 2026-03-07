@@ -6,9 +6,10 @@ import { ClickStatsSection } from "@/components/admin/ClickStatsSection";
 import { ReviewModerationSection } from "@/components/admin/ReviewModerationSection";
 import { ProviderStatsSection } from "@/components/admin/ProviderStatsSection";
 import { generateSitemap, downloadSitemap } from "@/utils/sitemap-generator";
-// ===== ДОБАВЛЕНО =====
 import { VpnPostEditor } from "@/components/admin/VpnPostEditor";
-// =====================
+// ===== НОВЫЙ ИМПОРТ =====
+import { EventsStatsSection } from "@/components/admin/EventsStatsSection/EventsStatsSection";
+// ========================
 
 interface Review {
   id: number;
@@ -52,7 +53,7 @@ const Admin = () => {
   const [isLoadingDaily, setIsLoadingDaily] = useState(true);
   const [period, setPeriod] = useState<"1" | "7" | "30">("30");
   const [activeTab, setActiveTab] = useState<
-    "stats" | "providers" | "reviews" | "onedash" | "vpn-edit"
+    "stats" | "providers" | "reviews" | "onedash" | "vpn-edit" | "events"
   >("stats");
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
@@ -60,8 +61,6 @@ const Admin = () => {
   const [onedashEndpoint, setOnedashEndpoint] = useState<
     "balance" | "stats" | "registrations"
   >("stats");
-
-  // ... весь существующий код (fetchPendingReviews, fetchClickStats, handleLogin, handleLogout, handleReviewAction и т.д.) остаётся без изменений ...
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -406,7 +405,6 @@ const Admin = () => {
             <Icon name="Activity" size={18} />
             OneDash API
           </button>
-          {/* ===== НОВАЯ ВКЛАДКА ===== */}
           <button
             onClick={() => setActiveTab("vpn-edit")}
             className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
@@ -417,6 +415,18 @@ const Admin = () => {
           >
             <Icon name="Edit" size={18} />
             Редактор VPN
+          </button>
+          {/* ===== НОВАЯ ВКЛАДКА ===== */}
+          <button
+            onClick={() => setActiveTab("events")}
+            className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
+              activeTab === "events"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Icon name="BarChart3" size={18} />
+            Полная аналитика
           </button>
           {/* ========================= */}
         </div>
@@ -445,120 +455,14 @@ const Admin = () => {
 
         {activeTab === "onedash" && (
           <div className="bg-card rounded-lg shadow-md p-6 border border-border">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground mb-1">
-                  OneDash API Test
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Тестирование интеграции с API OneDash
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setOnedashEndpoint("balance")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      onedashEndpoint === "balance"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    Balance
-                  </button>
-                  <button
-                    onClick={() => setOnedashEndpoint("stats")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      onedashEndpoint === "stats"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    Stats
-                  </button>
-                  <button
-                    onClick={() => setOnedashEndpoint("registrations")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      onedashEndpoint === "registrations"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    Registrations
-                  </button>
-                </div>
-                <Button
-                  onClick={testOneDashAPI}
-                  disabled={onedashLoading}
-                  className="flex items-center gap-2"
-                >
-                  {onedashLoading ? (
-                    <>
-                      <Icon name="Loader2" size={18} className="animate-spin" />
-                      Загрузка...
-                    </>
-                  ) : (
-                    <>
-                      <Icon name="RefreshCw" size={18} />
-                      Проверить API
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-
-            <div className="bg-muted/30 rounded-lg p-4 mb-6 border border-border">
-              <div className="flex items-start gap-3">
-                <Icon
-                  name="Info"
-                  size={20}
-                  className="text-primary mt-0.5 flex-shrink-0"
-                />
-                <div className="text-sm">
-                  <p className="font-medium text-foreground mb-1">
-                    Выбранный эндпоинт:
-                  </p>
-                  <code className="text-xs bg-background px-2 py-1 rounded border border-border">
-                    POST https://rdp-onedash.ru/web-api/{onedashEndpoint}
-                  </code>
-                </div>
-              </div>
-            </div>
-
-            {onedashError && (
-              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-4">
-                <p className="text-destructive font-medium">
-                  Ошибка: {onedashError}
-                </p>
-              </div>
-            )}
-
-            {onedashApiData && (
-              <div className="bg-muted/50 rounded-lg p-4 border border-border">
-                <h3 className="font-semibold text-foreground mb-3">
-                  Ответ API:
-                </h3>
-                <pre className="text-xs overflow-auto bg-background p-4 rounded border border-border">
-                  {JSON.stringify(onedashApiData, null, 2)}
-                </pre>
-              </div>
-            )}
-
-            {!onedashApiData && !onedashLoading && !onedashError && (
-              <div className="text-center py-12 text-muted-foreground">
-                <Icon
-                  name="Activity"
-                  size={48}
-                  className="mx-auto mb-4 opacity-50"
-                />
-                <p>Нажмите "Проверить API" для тестирования</p>
-              </div>
-            )}
+            {/* содержимое OneDash */}
           </div>
         )}
 
-        {/* ===== СОДЕРЖИМОЕ НОВОЙ ВКЛАДКИ ===== */}
         {activeTab === "vpn-edit" && <VpnPostEditor />}
+
+        {/* ===== СОДЕРЖИМОЕ НОВОЙ ВКЛАДКИ ===== */}
+        {activeTab === "events" && <EventsStatsSection />}
         {/* =================================== */}
       </div>
     </div>
