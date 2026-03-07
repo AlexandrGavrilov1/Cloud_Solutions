@@ -94,10 +94,10 @@ export const Footer = () => {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    to="/vpn" // изменён путь с /blog на /vpn
+                    to="/vpn"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
-                    VPN // изменён текст с "Блог" на "VPN"
+                    VPN
                   </Link>
                 </li>
                 <li>
