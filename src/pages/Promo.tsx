@@ -12,6 +12,11 @@ const Promo = () => {
   const [providersWithReviews, setProvidersWithReviews] =
     useState<Provider[]>(providers);
 
+  // ✅ Сброс прокрутки в начало при монтировании
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const fetchApprovedReviews = async () => {
       try {
@@ -73,7 +78,7 @@ const Promo = () => {
 
   const handleProviderClick = async (provider: (typeof providers)[0]) => {
     if (provider.url) {
-      // Яндекс.Метрика - добавляем трекингг
+      // Яндекс.Метрика - добавляем трекинг
       if (typeof window !== "undefined" && (window as any).ym) {
         (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
           provider_id: provider.id,
