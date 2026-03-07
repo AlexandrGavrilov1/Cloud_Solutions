@@ -51,7 +51,7 @@ export const EventsStatsSection = () => {
   const [compareMode, setCompareMode] = useState<boolean>(false);
   const [comparePeriod, setComparePeriod] = useState<"1" | "7" | "30">("30");
 
-  // Хуки (автозагрузка отключена, грузим по кнопкам)
+  // Хуки (автозагрузка отключена, грузим по  кнопкам)
   const summary = useSummary(period);
   const timeline = useTimeline(period);
   const pages = useTopPages(period);
