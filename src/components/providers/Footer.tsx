@@ -67,7 +67,7 @@ export const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  {/* Якорь на той же странице — оставляем <a> */}
+                  {/* Якорь на той же странице —- оставляем <a> */}
                   <a
                     href="#providers"
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
