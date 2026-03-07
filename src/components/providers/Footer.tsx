@@ -7,8 +7,10 @@ export const Footer = () => {
     <footer className="bg-card border-t border-border py-16">
       <div className="w-full px-4 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
+          {/* Добавлен grid-cols-2 для мобильных */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
+            {/* Блок с логотипом занимает 2 колонки на всех экранах */}
+            <div className="col-span-2 md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary rounded-2xl blur-lg opacity-50"></div>
@@ -48,6 +50,7 @@ export const Footer = () => {
               </div>
             </div>
 
+            {/* Блок "Провайдеры" — на мобильных становится первой колонкой в паре */}
             <div>
               <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
                 Провайдеры
@@ -61,7 +64,6 @@ export const Footer = () => {
                     Рейтинг
                   </a>
                 </li>
-
                 <li>
                   <a
                     href="#providers"
@@ -81,6 +83,7 @@ export const Footer = () => {
               </ul>
             </div>
 
+            {/* Блок "Помощь" — на мобильных становится второй колонкой в паре */}
             <div>
               <h4 className="font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
                 Помощь
