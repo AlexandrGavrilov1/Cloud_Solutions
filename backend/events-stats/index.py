@@ -68,7 +68,7 @@ def handler(event, context):
                             FROM (
                                 SELECT session_id
                                 FROM events
-                                WHERE 1=1 {date_filter.replace('%s', '%s') if date_param else ''}
+                                WHERE 1=1 {date_filter}
                                 GROUP BY session_id
                                 HAVING COUNT(*) = 1
                             ) AS bounces
@@ -76,7 +76,7 @@ def handler(event, context):
                     FROM events
                     WHERE 1=1 {date_filter}
                 """
-                params_list = [date_param] if date_param is not None else []
+                params_list = [date_param, date_param] if date_param is not None else []
                 cur.execute(query, params_list)
                 row = cur.fetchone()
                 # Преобразуем Decimal в float
@@ -136,7 +136,7 @@ def handler(event, context):
                     article_clicks AS (
                         SELECT e.target_id, COUNT(*) AS clicks
                         FROM events e
-                        WHERE e.event_type = 'provider_click' AND e.page_path LIKE '/vpn/%' {date_filter}
+                        WHERE e.event_type = 'provider_click' AND e.page_path LIKE '/vpn/%%' {date_filter}
                         GROUP BY e.target_id
                     )
                     SELECT
@@ -150,7 +150,7 @@ def handler(event, context):
                     ORDER BY av.views DESC
                     LIMIT 50
                 """
-                params_list = [date_param] if date_param is not None else []
+                params_list = [date_param, date_param] if date_param is not None else []
                 cur.execute(query, params_list)
                 rows = cur.fetchall()
                 return cors_response(200, {'articles': rows})
