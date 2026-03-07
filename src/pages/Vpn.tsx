@@ -15,6 +15,11 @@ const Vpn = () => {
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
 
+  // ✅ Сброс прокрутки в начало при монтировании
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     console.log("🔵 MOUNT Vpn");
     return () => console.log("🔴 UNMOUNT Vpn");
@@ -165,7 +170,6 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              // ✅ Flex-контейнер с центрированием для аккуратного отображения неполного последнего ряда
               <div className="flex flex-wrap justify-center gap-6">
                 {posts.map((post) => (
                   <div
