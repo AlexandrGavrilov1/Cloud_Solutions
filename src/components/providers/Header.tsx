@@ -56,13 +56,13 @@ export const Header = () => {
 
           {/* Десктопное меню – заменяем a на Link */}
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
-            {/* <Link
+            <Link
               to="/vpn"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
               VPN
             </Link>
-             <Link
+            {/* <Link
               to="/blog"
               className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
             >
@@ -128,7 +128,7 @@ export const Header = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col gap-4">
-              {/* <Link
+              <Link
                 to="/vpn"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
@@ -136,7 +136,7 @@ export const Header = () => {
                 <Icon name="Shield" size={16} />
                 VPN
               </Link>
-               <Link
+              {/* <Link
                 to="/blog"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
