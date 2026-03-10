@@ -3075,7 +3075,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       },
     },
     serviceGuarantees: {
-      uptimeSLA: "99.9 ",
+      uptimeSLA: "96.55",
       supportResponseTime: "<  5 мин",
       moneyBackGuarantee: 0,
     },
