@@ -160,7 +160,7 @@ const Vpn = () => {
         </section>
 
         {/* Сетка статей — уменьшены вертикальные отступы и расстояние между карточками */}
-        <section id="vpn-articles" className="py-8">
+        <section id="vpn-articles" className="py-10">
           <div className="w-full px-4 3xl:px-[185px]">
             {posts.length === 0 ? (
               <div className="text-center py-16">
