@@ -57,19 +57,23 @@ export const HeroSection = () => {
 
       {/* Контент — поверх пятен */}
       <div className="w-full px-4 3xl:px-[185px] relative z-10">
-        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
+        {/* Заголовок с нижним отступом */}
+        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl mb-4">
           <span className="block text-[#2B3038]">НАЙДИ</span>
           <span className="block text-[#FF7A00]">ИДЕАЛЬНОЕ ОБЛАКО</span>
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
         </h1>
 
-        <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
+        {/* Параграф без верхнего отступа */}
+        <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight">
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
-        <div className="pt-4">
+
+        {/* Кнопка с увеличенным верхним отступом */}
+        <div className="pt-8">
           <Button
-            className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px]  bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
