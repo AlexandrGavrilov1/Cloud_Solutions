@@ -9,8 +9,7 @@ export const HeroSection = () => {
 
   return (
     <section
-      // Добавлен min-h-screen и flex flex-col
-      className="relative min-h-screen py-16 sm:py-20 md:py-24 overflow-hidden flex flex-col"
+      className="relative py-16 sm:py-20 md:py-24 overflow-hidden"
       style={{
         background:
           "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
@@ -18,7 +17,7 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* Пятна (без изменений) */}
+      {/* ====== ПЯТНО НАД СЛОВОМ «НАЙДИ» ====== */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
         <div
           className="absolute left-[5%] top-0 
@@ -35,6 +34,7 @@ export const HeroSection = () => {
         />
       </div>
 
+      {/* ===== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ==== */}
       <div
         className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
              right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
@@ -55,26 +55,21 @@ export const HeroSection = () => {
         />
       </div>
 
-      {/* Контент — flex-колонка, занимает всю высоту секции */}
-      <div className="w-full px-4 3xl:px-[185px] relative z-10 flex flex-col flex-1">
-        {/* Текстовый блок (верхняя часть) */}
-        <div>
-          <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
-            <span className="block text-[#2B3038]">НАЙДИ</span>
-            <span className="block text-[#FF7A00]">ИДЕАЛЬНОЕ ОБЛАКО</span>
-            <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
-          </h1>
+      {/* Контент — поверх пятен */}
+      <div className="w-full px-4 3xl:px-[185px] relative z-10">
+        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
+          <span className="block text-[#2B3038]">НАЙДИ</span>
+          <span className="block text-[#FF7A00]">ИДЕАЛЬНОЕ ОБЛАКО</span>
+          <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
+        </h1>
 
-          <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
-            Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
-            минут
-          </p>
-        </div>
-
-        {/* Контейнер для кнопки – занимает всё оставшееся пространство и центрирует кнопку по вертикали */}
-        <div className="flex-1 flex items-center justify-start">
+        <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
+          Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
+          минут
+        </p>
+        <div className="pt-4">
           <Button
-            className="font-extralight tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px]  bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
