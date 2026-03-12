@@ -67,23 +67,24 @@ export const HeroSection = () => {
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
-      </div>
-      <div className="pt-6">
-        <Button
-          className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px]  bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
-          onClick={() => {
-            const providersSection = document.getElementById("providers");
-            if (providersSection) {
-              providersSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }
-          }}
-        >
-          ВЫБРАТЬ
-        </Button>
-      </div>
+        </div>
+        <div className="div className="w-full px-4 3xl:px-[185px] relative z-10 pt-6">
+          <Button
+            className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px]  bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            onClick={() => {
+              const providersSection = document.getElementById("providers");
+              if (providersSection) {
+                providersSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }
+            }}
+          >
+            ВЫБРАТЬ
+          </Button>
+        </div>
+      
     </section>
   );
 };
