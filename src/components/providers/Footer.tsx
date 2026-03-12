@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"; // для навигации внутр
 
 export const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border py-16">
+    <footer className="bg-card border-t border-border py-10">
       <div className="w-full px-4 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Сетка: на мобильных две колонки, на md и выше — четыре */}
