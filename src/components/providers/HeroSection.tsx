@@ -9,7 +9,7 @@ export const HeroSection = () => {
 
   return (
     <section
-      className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-18 overflow-hidden"
+      className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16 overflow-hidden"
       style={{
         background:
           "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
@@ -69,7 +69,7 @@ export const HeroSection = () => {
         </p>
 
         {/* Кнопка с увеличенным верхним отступом */}
-        <div className="pt-8">
+        <div className="pt-10">
           <Button
             className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
