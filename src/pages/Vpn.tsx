@@ -160,7 +160,7 @@ const Vpn = () => {
         </section>
 
         {/* Сетка статей — уменьшены вертикальные отступы и расстояние между карточками */}
-        <section id="vpn-articles" className="py-10">
+        <section id="vpn-articles" className="py-8">
           <div className="w-full px-4 3xl:px-[185px]">
             {posts.length === 0 ? (
               <div className="text-center py-16">
@@ -174,9 +174,14 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 min-[950px]:grid-cols-2 3xl:grid-cols-3 gap-2">
+              <div className="flex flex-wrap justify-center gap-2">
                 {posts.map((post) => (
-                  <VpnCard key={post.id} post={post} />
+                  <div
+                    key={post.id}
+                    className="w-full min-[950px]:w-[calc((100%-8px)/2)] 3xl:w-[calc((100%-16px)/3)]"
+                  >
+                    <VpnCard post={post} />
+                  </div>
                 ))}
               </div>
             )}
