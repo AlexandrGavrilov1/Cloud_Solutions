@@ -6,10 +6,9 @@ import { ClickStatsSection } from "@/components/admin/ClickStatsSection";
 import { ReviewModerationSection } from "@/components/admin/ReviewModerationSection";
 import { ProviderStatsSection } from "@/components/admin/ProviderStatsSection";
 import { generateSitemap, downloadSitemap } from "@/utils/sitemap-generator";
+// ===== ДОБАВЛЕНО =====
 import { VpnPostEditor } from "@/components/admin/VpnPostEditor";
-// ===== НОВЫЙ ИМПОРТ =====
-import { EventsStatsSection } from "@/components/admin/EventsStatsSection/EventsStatsSection";
-// ========================
+// =====================
 
 interface Review {
   id: number;
@@ -52,17 +51,17 @@ const Admin = () => {
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [isLoadingDaily, setIsLoadingDaily] = useState(true);
   const [period, setPeriod] = useState<"1" | "7" | "30">("30");
-  // ===== ДОБАВЛЕН ТИП ВКЛАДКИ "events" =====
   const [activeTab, setActiveTab] = useState<
-    "stats" | "providers" | "reviews" | "onedash" | "vpn-edit" | "events"
+    "stats" | "providers" | "reviews" | "onedash" | "vpn-edit"
   >("stats");
-  // =========================================
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
   const [onedashError, setOnedashError] = useState("");
   const [onedashEndpoint, setOnedashEndpoint] = useState<
     "balance" | "stats" | "registrations"
   >("stats");
+
+  // ... весь существующий код (fetchPendingReviews, fetchClickStats, handleLogin, handleLogout, handleReviewAction и т.д.) остаётся без изменений ...
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -407,6 +406,7 @@ const Admin = () => {
             <Icon name="Activity" size={18} />
             OneDash API
           </button>
+          {/* ===== НОВАЯ ВКЛАДКА ===== */}
           <button
             onClick={() => setActiveTab("vpn-edit")}
             className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
@@ -417,18 +417,6 @@ const Admin = () => {
           >
             <Icon name="Edit" size={18} />
             Редактор VPN
-          </button>
-          {/* ===== НОВАЯ ВКЛАДКА ===== */}
-          <button
-            onClick={() => setActiveTab("events")}
-            className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
-              activeTab === "events"
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Icon name="BarChart3" size={18} />
-            Полная аналитика
           </button>
           {/* ========================= */}
         </div>
@@ -569,10 +557,9 @@ const Admin = () => {
           </div>
         )}
 
+        {/* ===== СОДЕРЖИМОЕ НОВОЙ ВКЛАДКИ ===== */}
         {activeTab === "vpn-edit" && <VpnPostEditor />}
-        {/* ===== НОВЫЙ КОНТЕНТ ===== */}
-        {activeTab === "events" && <EventsStatsSection />}
-        {/* ========================= */}
+        {/* =================================== */}
       </div>
     </div>
   );

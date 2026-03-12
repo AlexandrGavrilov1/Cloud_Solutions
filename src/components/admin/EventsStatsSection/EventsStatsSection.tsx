@@ -1,30 +1,24 @@
-import { useState, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import Icon from "@/components/ui/icon";
+import { useState, useCallback } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import Icon from '@/components/ui/icon';
 import {
   useSummary,
   useTimeline,
   useTopPages,
   useTopArticles,
   useSessions,
-} from "@/hooks/useEventsStats";
-import { PeriodSelector } from "./components/PeriodSelector";
-import { ComparePeriodSelector } from "./components/ComparePeriodSelector";
-import { MetricCard } from "./components/MetricCard";
-import { CSVExportButton } from "./components/CSVExportButton";
-import { SessionTable } from "./components/SessionTable";
-import { ChartFilters } from "./components/ChartFilters";
-import { ConfirmDialog } from "./components/ConfirmDialog"; // для будущих удалений
-import {
-  SummaryData,
-  TimelineItem,
-  PageStat,
-  ArticleStat,
-  SessionInfo,
-} from "./types";
+} from '@/hooks/useEventsStats';
+import { PeriodSelector } from './components/PeriodSelector';
+import { ComparePeriodSelector } from './components/ComparePeriodSelector';
+import { MetricCard } from './components/MetricCard';
+import { ExportButton } from './components/ExportButton';
+import { SessionTable } from './components/SessionTable';
+import { ChartFilters } from './components/ChartFilters';
+import { ConfirmDialog } from './components/ConfirmDialog'; // для будущих удалений
+import { SummaryData, TimelineItem, PageStat, ArticleStat, SessionInfo } from './types';
 import {
   LineChart,
   Line,
@@ -38,20 +32,17 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
-const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899"];
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
 
 export const EventsStatsSection = () => {
-  const [period, setPeriod] = useState<"1" | "7" | "30">("30");
-  const [selectedEventTypes, setSelectedEventTypes] = useState<string[]>([
-    "page_views",
-    "provider_clicks",
-  ]);
+  const [period, setPeriod] = useState<'1' | '7' | '30'>('30');
+  const [selectedEventTypes, setSelectedEventTypes] = useState<string[]>(['page_views', 'provider_clicks']);
   const [compareMode, setCompareMode] = useState<boolean>(false);
-  const [comparePeriod, setComparePeriod] = useState<"1" | "7" | "30">("30");
+  const [comparePeriod, setComparePeriod] = useState<'1' | '7' | '30'>('30');
 
-  // Хуки (автозагрузка отключена, грузим по  кнопкам)
+  // Хуки (автозагрузка отключена, грузим по кнопкам)
   const summary = useSummary(period);
   const timeline = useTimeline(period);
   const pages = useTopPages(period);
@@ -69,7 +60,7 @@ export const EventsStatsSection = () => {
 
   const handleCompare = (p1: string, p2: string) => {
     // Здесь можно реализовать сравнение, но пока просто выведем в консоль
-    console.log("Compare", p1, p2);
+    console.log('Compare', p1, p2);
     // В реальности запросим данные за оба периода и отобразим на одном графике
   };
 
@@ -82,11 +73,7 @@ export const EventsStatsSection = () => {
           <PeriodSelector value={period} onChange={setPeriod} />
           <ComparePeriodSelector onCompare={handleCompare} />
           <Button onClick={loadAll} variant="outline" className="gap-2">
-            <Icon
-              name="RefreshCw"
-              size={16}
-              className={summary.isFetching ? "animate-spin" : ""}
-            />
+            <Icon name="RefreshCw" size={16} className={summary.isFetching ? 'animate-spin' : ''} />
             Обновить всё
           </Button>
         </div>
@@ -96,25 +83,25 @@ export const EventsStatsSection = () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           label="Уникальные посетители"
-          value={summary.data?.unique_visitors ?? "—"}
+          value={summary.data?.unique_visitors ?? '—'}
           icon={<Icon name="Users" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
           label="Сессии"
-          value={summary.data?.sessions ?? "—"}
+          value={summary.data?.sessions ?? '—'}
           icon={<Icon name="Layers" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
           label="Просмотры страниц"
-          value={summary.data?.page_views ?? "—"}
+          value={summary.data?.page_views ?? '—'}
           icon={<Icon name="Eye" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
           label="Клики провайдеров"
-          value={summary.data?.provider_clicks ?? "—"}
+          value={summary.data?.provider_clicks ?? '—'}
           icon={<Icon name="MousePointerClick" size={20} />}
           loading={summary.isFetching}
         />
@@ -145,21 +132,9 @@ export const EventsStatsSection = () => {
                   selected={selectedEventTypes}
                   onChange={setSelectedEventTypes}
                   options={[
-                    {
-                      value: "page_views",
-                      label: "Просмотры",
-                      color: "#3b82f6",
-                    },
-                    {
-                      value: "provider_clicks",
-                      label: "Клики провайдеров",
-                      color: "#10b981",
-                    },
-                    {
-                      value: "outbound_clicks",
-                      label: "Внешние ссылки",
-                      color: "#f59e0b",
-                    },
+                    { value: 'page_views', label: 'Просмотры', color: '#3b82f6' },
+                    { value: 'provider_clicks', label: 'Клики провайдеров', color: '#10b981' },
+                    { value: 'outbound_clicks', label: 'Внешние ссылки', color: '#f59e0b' },
                   ]}
                 />
                 <Button
@@ -168,20 +143,16 @@ export const EventsStatsSection = () => {
                   onClick={() => timeline.refetch()}
                   disabled={timeline.isFetching}
                 >
-                  <Icon
-                    name="RefreshCw"
-                    size={14}
-                    className={timeline.isFetching ? "animate-spin" : ""}
-                  />
+                  <Icon name="RefreshCw" size={14} className={timeline.isFetching ? 'animate-spin' : ''} />
                 </Button>
-                <CSVExportButton
+                <ExportButton
                   data={timeline.data?.timeline ?? []}
                   filename={`timeline_${period}`}
                   columns={[
-                    { key: "date", label: "Дата" },
-                    { key: "page_views", label: "Просмотры" },
-                    { key: "provider_clicks", label: "Клики" },
-                    { key: "outbound_clicks", label: "Внешние" },
+                    { key: 'date', label: 'Дата' },
+                    { key: 'page_views', label: 'Просмотры' },
+                    { key: 'provider_clicks', label: 'Клики' },
+                    { key: 'outbound_clicks', label: 'Внешние' },
                   ]}
                 />
               </div>
@@ -189,11 +160,7 @@ export const EventsStatsSection = () => {
             <CardContent>
               {timeline.isFetching && !timeline.data && (
                 <div className="flex justify-center py-12">
-                  <Icon
-                    name="Loader2"
-                    size={32}
-                    className="animate-spin text-primary"
-                  />
+                  <Icon name="Loader2" size={32} className="animate-spin text-primary" />
                 </div>
               )}
               {timeline.data && timeline.data.timeline.length > 0 && (
@@ -203,37 +170,20 @@ export const EventsStatsSection = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {selectedEventTypes.includes("page_views") && (
-                      <Line
-                        type="monotone"
-                        dataKey="page_views"
-                        stroke="#3b82f6"
-                        name="Просмотры"
-                      />
+                    {selectedEventTypes.includes('page_views') && (
+                      <Line type="monotone" dataKey="page_views" stroke="#3b82f6" name="Просмотры" />
                     )}
-                    {selectedEventTypes.includes("provider_clicks") && (
-                      <Line
-                        type="monotone"
-                        dataKey="provider_clicks"
-                        stroke="#10b981"
-                        name="Клики провайдеров"
-                      />
+                    {selectedEventTypes.includes('provider_clicks') && (
+                      <Line type="monotone" dataKey="provider_clicks" stroke="#10b981" name="Клики провайдеров" />
                     )}
-                    {selectedEventTypes.includes("outbound_clicks") && (
-                      <Line
-                        type="monotone"
-                        dataKey="outbound_clicks"
-                        stroke="#f59e0b"
-                        name="Внешние ссылки"
-                      />
+                    {selectedEventTypes.includes('outbound_clicks') && (
+                      <Line type="monotone" dataKey="outbound_clicks" stroke="#f59e0b" name="Внешние ссылки" />
                     )}
                   </LineChart>
                 </ResponsiveContainer>
               )}
               {timeline.data && timeline.data.timeline.length === 0 && (
-                <p className="text-center text-muted-foreground py-12">
-                  Нет данных за выбранный период
-                </p>
+                <p className="text-center text-muted-foreground py-12">Нет данных за выбранный период</p>
               )}
             </CardContent>
           </Card>
@@ -245,26 +195,17 @@ export const EventsStatsSection = () => {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Топ страниц</CardTitle>
               <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => pages.refetch()}
-                  disabled={pages.isFetching}
-                >
-                  <Icon
-                    name="RefreshCw"
-                    size={14}
-                    className={pages.isFetching ? "animate-spin" : ""}
-                  />
+                <Button size="sm" variant="ghost" onClick={() => pages.refetch()} disabled={pages.isFetching}>
+                  <Icon name="RefreshCw" size={14} className={pages.isFetching ? 'animate-spin' : ''} />
                 </Button>
-                <CSVExportButton
+                <ExportButton
                   data={pages.data?.pages ?? []}
                   filename={`pages_${period}`}
                   columns={[
-                    { key: "page_path", label: "Страница" },
-                    { key: "views", label: "Просмотры" },
-                    { key: "unique_visitors", label: "Уникальные" },
-                    { key: "avg_duration", label: "Ср. время (сек)" },
+                    { key: 'page_path', label: 'Страница' },
+                    { key: 'views', label: 'Просмотры' },
+                    { key: 'unique_visitors', label: 'Уникальные' },
+                    { key: 'avg_duration', label: 'Ср. время (сек)' },
                   ]}
                 />
               </div>
@@ -272,11 +213,7 @@ export const EventsStatsSection = () => {
             <CardContent>
               {pages.isFetching && !pages.data && (
                 <div className="flex justify-center py-12">
-                  <Icon
-                    name="Loader2"
-                    size={32}
-                    className="animate-spin text-primary"
-                  />
+                  <Icon name="Loader2" size={32} className="animate-spin text-primary" />
                 </div>
               )}
               {pages.data && pages.data.pages.length > 0 && (
@@ -292,20 +229,11 @@ export const EventsStatsSection = () => {
                     </thead>
                     <tbody>
                       {pages.data.pages.map((page: PageStat) => (
-                        <tr
-                          key={page.page_path}
-                          className="border-b hover:bg-muted/50"
-                        >
-                          <td className="py-2 font-mono text-sm">
-                            {page.page_path}
-                          </td>
+                        <tr key={page.page_path} className="border-b hover:bg-muted/50">
+                          <td className="py-2 font-mono text-sm">{page.page_path}</td>
                           <td className="text-right">{page.views}</td>
                           <td className="text-right">{page.unique_visitors}</td>
-                          <td className="text-right">
-                            {page.avg_duration
-                              ? Math.round(page.avg_duration)
-                              : "—"}
-                          </td>
+                          <td className="text-right">{page.avg_duration ? Math.round(page.avg_duration) : '—'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -313,9 +241,7 @@ export const EventsStatsSection = () => {
                 </div>
               )}
               {pages.data && pages.data.pages.length === 0 && (
-                <p className="text-center text-muted-foreground py-12">
-                  Нет данных
-                </p>
+                <p className="text-center text-muted-foreground py-12">Нет данных</p>
               )}
             </CardContent>
           </Card>
@@ -327,27 +253,18 @@ export const EventsStatsSection = () => {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Статьи и конверсия в клик</CardTitle>
               <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => articles.refetch()}
-                  disabled={articles.isFetching}
-                >
-                  <Icon
-                    name="RefreshCw"
-                    size={14}
-                    className={articles.isFetching ? "animate-spin" : ""}
-                  />
+                <Button size="sm" variant="ghost" onClick={() => articles.refetch()} disabled={articles.isFetching}>
+                  <Icon name="RefreshCw" size={14} className={articles.isFetching ? 'animate-spin' : ''} />
                 </Button>
-                <CSVExportButton
+                <ExportButton
                   data={articles.data?.articles ?? []}
                   filename={`articles_${period}`}
                   columns={[
-                    { key: "target_id", label: "Slug статьи" },
-                    { key: "views", label: "Просмотры" },
-                    { key: "unique_visitors", label: "Уникальные" },
-                    { key: "clicks", label: "Клики" },
-                    { key: "conversion_rate", label: "Конверсия (%)" },
+                    { key: 'target_id', label: 'Slug статьи' },
+                    { key: 'views', label: 'Просмотры' },
+                    { key: 'unique_visitors', label: 'Уникальные' },
+                    { key: 'clicks', label: 'Клики' },
+                    { key: 'conversion_rate', label: 'Конверсия (%)' },
                   ]}
                 />
               </div>
@@ -355,11 +272,7 @@ export const EventsStatsSection = () => {
             <CardContent>
               {articles.isFetching && !articles.data && (
                 <div className="flex justify-center py-12">
-                  <Icon
-                    name="Loader2"
-                    size={32}
-                    className="animate-spin text-primary"
-                  />
+                  <Icon name="Loader2" size={32} className="animate-spin text-primary" />
                 </div>
               )}
               {articles.data && articles.data.articles.length > 0 && (
@@ -376,13 +289,8 @@ export const EventsStatsSection = () => {
                     </thead>
                     <tbody>
                       {articles.data.articles.map((art: ArticleStat) => (
-                        <tr
-                          key={art.target_id}
-                          className="border-b hover:bg-muted/50"
-                        >
-                          <td className="py-2 font-mono text-sm">
-                            {art.target_id}
-                          </td>
+                        <tr key={art.target_id} className="border-b hover:bg-muted/50">
+                          <td className="py-2 font-mono text-sm">{art.target_id}</td>
                           <td className="text-right">{art.views}</td>
                           <td className="text-right">{art.unique_visitors}</td>
                           <td className="text-right">{art.clicks}</td>
@@ -394,9 +302,7 @@ export const EventsStatsSection = () => {
                 </div>
               )}
               {articles.data && articles.data.articles.length === 0 && (
-                <p className="text-center text-muted-foreground py-12">
-                  Нет данных
-                </p>
+                <p className="text-center text-muted-foreground py-12">Нет данных</p>
               )}
             </CardContent>
           </Card>
