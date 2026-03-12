@@ -17,7 +17,7 @@ export const HeroSection = () => {
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ====== ПЯТНО НАД СЛОВОМ «НАЙДИ» ===== */}
+      {/* ====== ПЯТНО НАД СЛОВОМ «НАЙДИ» ====== */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
         <div
           className="absolute left-[5%] top-0 
@@ -63,7 +63,7 @@ export const HeroSection = () => {
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
         </h1>
 
-        <p className="font-regular text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
+        <p className="font-normal text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
