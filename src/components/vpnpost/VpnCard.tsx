@@ -75,9 +75,20 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
 
           {/* Заголовок – очищенный от разметки */}
           <h2 className="font-heading text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-            {cleanText(post.title)}
+            {(() => {
+              const title = cleanText(post.title);
+              // Ищем позицию первого вхождения " на " (с пробелами)
+              const index = title.indexOf(" на ");
+              if (index === -1) return title; // если нет — просто текст
+              return (
+                <>
+                  {title.substring(0, index)}
+                  <br />
+                  {title.substring(index + 1)} {/* "на Aeza.net за 10 минут" */}
+                </>
+              );
+            })()}
           </h2>
-
           {/* Описание – очищенное */}
           <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
             {cleanText(post.excerpt)}
