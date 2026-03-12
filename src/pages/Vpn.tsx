@@ -15,7 +15,7 @@ const Vpn = () => {
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
 
-  // ✅ Сброс прокрутки в начало при монтировании
+  // ✅ Сброс прокруeтки в начало прbи монтировании
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -140,7 +140,7 @@ const Vpn = () => {
               </span>
             </h1>
 
-            <p className="font-normal text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
+            <p className="font-medium text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
               Пошаговые руководства по развертыванию безопасных VPN серверов
             </p>
 
