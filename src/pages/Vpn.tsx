@@ -88,7 +88,7 @@ const Vpn = () => {
       <main>
         {/* Hero-секция — кнопка опущена, общая высота сохранена */}
         <section
-          className="relative pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-24 md:pb-20 overflow-hidden"
+          className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-14 overflow-hidden"
           style={{
             background:
               "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
@@ -148,7 +148,7 @@ const Vpn = () => {
             </p>
 
             {/* Увеличен верхний отступ кнопки */}
-            <div className="pt-8">
+            <div className="pt-10">
               <Button
                 className="font-extralight tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
                 onClick={scrollToArticles}
