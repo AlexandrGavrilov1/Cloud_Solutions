@@ -63,7 +63,7 @@ export const HeroSection = () => {
           <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
         </h1>
 
-        <p className="text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
+        <p className="font-regular text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
