@@ -174,14 +174,9 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="grid grid-cols-1 min-[950px]:grid-cols-2 3xl:grid-cols-3 gap-2">
                 {posts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-md"
-                  >
-                    <VpnCard post={post} />
-                  </div>
+                  <VpnCard key={post.id} post={post} />
                 ))}
               </div>
             )}
