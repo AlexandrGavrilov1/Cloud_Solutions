@@ -61,9 +61,9 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
         {/* Контент карточки */}
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex items-center gap-2 mb-3 flex-wrap">
-            <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
+            {/* <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
               {cleanText(post.category)}
-            </Badge>
+            </Badge>*/}
             <span className="text-xs text-muted-foreground">
               {cleanText(post.readTime)}
             </span>
