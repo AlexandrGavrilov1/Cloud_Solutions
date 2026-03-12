@@ -9,7 +9,7 @@ export const HeroSection = () => {
 
   return (
     <section
-      className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-14 overflow-hidden"
+      className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-10 overflow-hidden"
       style={{
         background:
           "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
