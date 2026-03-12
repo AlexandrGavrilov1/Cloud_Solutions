@@ -19,7 +19,7 @@ const cleanText = (text: string): string => {
   result = result.replace(/^#+\s+/gm, "");
   // Удаляем Markdown-списки (- text или * text)
   result = result.replace(/^[\*\-\+]\s+/gm, "");
-  // Удаляем оставшиеся обратные кавычки (код)
+  // Удаляем оставшиеся обратные кавычки (ко;д)
   result = result.replace(/`/g, "");
   return result;
 };
