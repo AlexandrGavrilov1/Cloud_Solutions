@@ -78,7 +78,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
             {(() => {
               const title = cleanText(post.title);
               // Ищем позицию первого вхождения " на " (с пробелами)
-              const index = title.indexOf(" на ");
+              const index = title.indexOf(" на Aeza ");
               if (index === -1) return title; // если нет — просто текст
               return (
                 <>
