@@ -143,7 +143,7 @@ const Vpn = () => {
               </span>
             </h1>
 
-            <p className="font-normal text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
+            <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
               Пошаговые руководства по развертыванию безопасных VPN серверов
             </p>
 
