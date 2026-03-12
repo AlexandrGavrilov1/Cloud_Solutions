@@ -31,7 +31,7 @@ interface VpnCardProps {
 export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
   return (
     <Link to={`/vpn/${post.slug}`} className="group">
-      <article className="relative bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col group-hover:-translate-y-1 duration-300">
+      <article className="relative bg-card border-2 border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col group-hover:-translate-y-1 duration-300">
         {/* Оранжевое пятно при наведении (снизу) */}
         <div
           className="absolute left-1/2 -translate-x-1/2 w-[300px] h-[250px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none rounded-full -z-10"
@@ -44,7 +44,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
         />
 
         {/* Изображение */}
-        <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
+        <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden rounded-2xl">
           {post.image ? (
             <img
               src={post.image}
