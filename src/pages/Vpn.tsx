@@ -15,7 +15,7 @@ const Vpn = () => {
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
 
-  // ✅ Сброс прокрутки в начало при монтировании
+  // Сброс прокрутки в начало при монтировании
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -86,14 +86,15 @@ const Vpn = () => {
       <Header />
 
       <main>
-        {/* Hero-секция */}
+        {/* Hero-секция — кнопка опущена, общая высота сохранена */}
         <section
-          className="relative py-16 sm:py-20 md:py-24 overflow-hidden"
+          className="relative pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-24 md:pb-20 overflow-hidden"
           style={{
             background:
               "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
           }}
         >
+          {/* Пятно над словом */}
           <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
             <div
               className="absolute left-[5%] top-0 
@@ -110,6 +111,7 @@ const Vpn = () => {
             />
           </div>
 
+          {/* Пятно у правой границы */}
           <div
             className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
                  right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
@@ -130,6 +132,7 @@ const Vpn = () => {
             />
           </div>
 
+          {/* Контент */}
           <div className="w-full px-4 3xl:px-[185px] relative z-10">
             <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
               <span className="block text-[#2B3038]">
@@ -144,7 +147,8 @@ const Vpn = () => {
               Пошаговые руководства по развертыванию безопасных VPN серверов
             </p>
 
-            <div className="pt-4">
+            {/* Увеличен верхний отступ кнопки */}
+            <div className="pt-8">
               <Button
                 className="font-extralight tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
                 onClick={scrollToArticles}
@@ -155,8 +159,8 @@ const Vpn = () => {
           </div>
         </section>
 
-        {/* Сетка статей */}
-        <section id="vpn-articles" className="py-12 pb-24">
+        {/* Сетка статей — уменьшены вертикальные отступы и расстояние между карточками */}
+        <section id="vpn-articles" className="py-8">
           <div className="w-full px-4 3xl:px-[185px]">
             {posts.length === 0 ? (
               <div className="text-center py-16">
@@ -170,7 +174,7 @@ const Vpn = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="flex flex-wrap justify-center gap-4">
                 {posts.map((post) => (
                   <div
                     key={post.id}
