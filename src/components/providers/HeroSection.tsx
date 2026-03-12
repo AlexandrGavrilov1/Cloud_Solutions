@@ -67,7 +67,7 @@ export const HeroSection = () => {
           Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
           минут
         </p>
-        <div className="pt-4">
+        <div className="pt-6">
           <Button
             className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px]  bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
             onClick={() => {
