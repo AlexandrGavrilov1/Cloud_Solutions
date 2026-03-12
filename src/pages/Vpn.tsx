@@ -15,7 +15,7 @@ const Vpn = () => {
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
 
-  // Сброос прокрутки в начало при монтировании
+  // Сброосс прокрутки в начало при монтировании
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
