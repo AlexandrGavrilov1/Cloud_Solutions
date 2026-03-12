@@ -90,7 +90,7 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
                 <Badge
                   key={idx}
                   variant="outline"
-                  className="text-sm text-[#272932]/50 border-[#272932]/50 dark:text-white/50 border-white/50"
+                  className="text-sm text-[#272932]/50 border-[#272932]/50 dark:text-white/50 dark:border-white/50"
                   style={{ fontWeight: 200 }}
                 >
                   #{tag}
