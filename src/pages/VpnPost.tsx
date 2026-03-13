@@ -203,9 +203,9 @@ const VpnPost = () => {
 
             {/* Метаданные */}
             <div className="flex items-center gap-6 text-sm text-foreground mb-8">
-              {/*<span className="text-primary font-medium">
+              <span className="text-primary font-medium">
                 <MarkdownContent>{post.category}</MarkdownContent>
-              </span>*/}
+              </span>
               <span>{post.date}</span>
               <span className="flex items-center gap-1">
                 <Icon name="Clock" size={14} className="text-foreground" />
