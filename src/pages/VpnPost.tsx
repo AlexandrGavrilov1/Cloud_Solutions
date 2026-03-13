@@ -18,7 +18,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTrackEvent } from "@/hooks/useTrackEvent";
 import { usePageTimer } from "@/hooks/usePageTimer";
 
-// Компонент для рендеринга Markdown с поддержкой HTML
+// Компонент для рендеринга Markdown с поддержкоой HTML
 const MarkdownContent = ({ children }: { children: string }) => (
   <ReactMarkdown
     remarkPlugins={[remarkGfm]}
