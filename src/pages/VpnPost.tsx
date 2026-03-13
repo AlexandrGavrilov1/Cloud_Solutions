@@ -258,8 +258,12 @@ const VpnPost = () => {
                           href={props.src}
                           target="_blank"
                           rel="noopener noreferrer"
+                          className="block w-full"
                         >
-                          <img {...props} />
+                          <img
+                            {...props}
+                            className="rounded-2xl max-w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] object-cover h-auto mx-auto"
+                          />
                         </a>
                       );
                     },
