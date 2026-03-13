@@ -185,7 +185,7 @@ const VpnPost = () => {
               to="/vpn"
               className="inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors mb-8"
             >
-              <Icon name="ArrowLeft" size={20} strokeWidth={1.5} />
+              <Icon name="ArrowLeft" size={20} strokeWidth={1} />
               <span>Вернуться к разделу VPN</span>
             </Link>
 
