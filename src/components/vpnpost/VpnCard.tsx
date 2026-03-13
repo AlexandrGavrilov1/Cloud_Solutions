@@ -76,17 +76,31 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
           {/* Заголовок – очищенный от разметки */}
           <h2 className="font-heading text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {(() => {
-              const title = cleanText(post.title);
-              // Ищем позицию первого вхождения " на " (с пробелами)
-              const index = title.indexOf(" на Aeza.net ");
-              if (index === -1) return title; // если нет — просто текст
-              return (
-                <>
-                  {title.substring(0, index)}
-                  <br />
-                  {title.substring(index + 1)} {/* "на Aeza.net за 10 минут" */}
-                </>
+              // Исходный заголовок (может содержать HTML-разметку)
+              const rawTitle = post.title;
+
+              // 1. Заменяем последовательность закрывающего и открывающего span на маркер
+              const withMarker = rawTitle.replace(
+                /<\/span>\s*<span[^>]*>/g,
+                "|||",
               );
+
+              // 2. Удаляем все остальные HTML-теги
+              const plainText = withMarker.replace(/<[^>]*>/g, "");
+
+              // 3. Если маркер найден, разбиваем текст и вставляем <br /> между частями
+              if (plainText.includes("|||")) {
+                const parts = plainText.split("|||");
+                return parts.map((part, index, array) => (
+                  <React.Fragment key={index}>
+                    {part}
+                    {index < array.length - 1 && <br />}
+                  </React.Fragment>
+                ));
+              } else {
+                // Если маркеров нет — просто возвращаем очищенный текст
+                return plainText;
+              }
             })()}
           </h2>
           {/* Описание – очищенное */}
