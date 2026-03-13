@@ -201,7 +201,7 @@ const VpnPost = () => {
 
             <hr className="border-t border-border/50 my-6" />
 
-            {/* Метаданные */}
+            {/* Метаданнные */}
             <div className="flex items-center gap-6 text-sm text-foreground mb-8">
               <span className="text-primary font-medium">
                 <MarkdownContent>{post.category}</MarkdownContent>
