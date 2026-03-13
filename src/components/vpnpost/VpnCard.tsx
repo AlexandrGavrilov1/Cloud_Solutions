@@ -76,7 +76,6 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
           {/* Заголовок – очищенный от разметки */}
           <h2 className="font-heading text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {(() => {
-              // Исходный заголовок (может содержать HTML-разметку)
               const rawTitle = post.title;
 
               // 1. Заменяем последовательность закрывающего и открывающего span на маркер
@@ -85,10 +84,16 @@ export const VpnCard: React.FC<VpnCardProps> = ({ post }) => {
                 "|||",
               );
 
-              // 2. Удаляем все остальные HTML-теги
-              const plainText = withMarker.replace(/<[^>]*>/g, "");
+              // 2. Удаляем все остальные HTML-теги (оставляем только текст)
+              const withoutTags = withMarker.replace(/<[^>]*>/g, "");
 
-              // 3. Если маркер найден, разбиваем текст и вставляем <br /> между частями
+              // 3. Убираем Markdown-ссылки [text](url) → оставляем только text
+              const plainText = withoutTags.replace(
+                /\[([^\]]+)\]\([^\)]+\)/g,
+                "$1",
+              );
+
+              // 4. Если маркер найден, разбиваем текст и вставляем <br /> между частями
               if (plainText.includes("|||")) {
                 const parts = plainText.split("|||");
                 return parts.map((part, index, array) => (
