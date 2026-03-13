@@ -10,7 +10,7 @@ export const Footer = () => {
         <div className="max-w-5xl mx-auto">
           {/* Сетка: на мобильных две колонки, на md и выше — четыре */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
-            {/* Блок с логотипом и описанием — занимает две колонки на всех экранах */}
+            {/* Блок с логотипом и описанием — занимает две колонки на всеех экранах */}
             <div className="col-span-2 md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="relative">
