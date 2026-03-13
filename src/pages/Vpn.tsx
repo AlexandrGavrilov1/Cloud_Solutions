@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Header } from "@/components/providers/Header";
 import { Footer } from "@/components/providers/Footer";
 import { OpenGraph } from "@/components/SEO/OpenGraph";
@@ -15,7 +15,21 @@ const Vpn = () => {
   const track = useTrackEvent();
   usePageTimer("section_visit", "vpn-list");
 
-  // Сброосс прокрутки в начало при монтировании
+  // Меняем местами карточки Aeza и Timeweb
+  const sortedPosts = useMemo(() => {
+    const postsCopy = [...posts];
+    const aezaIndex = postsCopy.findIndex((p) => p.slug === "aeza-vpn");
+    const timewebIndex = postsCopy.findIndex((p) => p.slug === "timeweb-vpn");
+    if (aezaIndex !== -1 && timewebIndex !== -1) {
+      [postsCopy[aezaIndex], postsCopy[timewebIndex]] = [
+        postsCopy[timewebIndex],
+        postsCopy[aezaIndex],
+      ];
+    }
+    return postsCopy;
+  }, [posts]);
+
+  // Сброс прокрутки в начало при монтировании
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -162,7 +176,7 @@ const Vpn = () => {
         {/* Сетка статей — уменьшены вертикальные отступы и расстояние между карточками */}
         <section id="vpn-articles" className="py-10">
           <div className="w-full px-4 3xl:px-[185px]">
-            {posts.length === 0 ? (
+            {sortedPosts.length === 0 ? (
               <div className="text-center py-16">
                 <Icon
                   name="FileQuestion"
@@ -175,7 +189,7 @@ const Vpn = () => {
               </div>
             ) : (
               <div className="flex flex-wrap justify-center gap-2">
-                {posts.map((post) => (
+                {sortedPosts.map((post) => (
                   <div
                     key={post.id}
                     className="w-full min-[950px]:w-[calc((100%-8px)/2)] 3xl:w-[calc((100%-16px)/3)]"
