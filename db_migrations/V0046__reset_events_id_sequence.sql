@@ -1,0 +1,1 @@
+SELECT setval(pg_get_serial_sequence('t_p4153566_vds_rating_portal.events', 'id'), 1, false);
