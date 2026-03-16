@@ -37,14 +37,21 @@ import {
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
-  buttonProps: { "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ Р»РµРІРѕРјСѓ РєСЂР°СЋ" },
+  buttonProps: {
+    "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ Р»РµРІРѕРјСѓ РєСЂР°СЋ",
+  },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
-      <path d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z" fill="currentColor" />
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h10v-2H3v2z"
+        fill="currentColor"
+      />
     </svg>
   ),
   execute: (state, api) => {
-    api.replaceSelection(`<p align="left">${state.selectedText || "С‚РµРєСЃС‚"}</p>`);
+    api.replaceSelection(
+      `<p align="left">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+    );
   },
 };
 
@@ -54,25 +61,37 @@ const alignCenterCommand: ICommand = {
   buttonProps: { "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ С†РµРЅС‚СЂСѓ" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
-      <path d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z" fill="currentColor" />
+      <path
+        d="M17 5H3V3h14v2zm-2 4H5v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
     </svg>
   ),
   execute: (state, api) => {
-    api.replaceSelection(`<p align="center">${state.selectedText || "С‚РµРєСЃС‚"}</p>`);
+    api.replaceSelection(
+      `<p align="center">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+    );
   },
 };
 
 const alignRightCommand: ICommand = {
   name: "alignRight",
   keyCommand: "alignRight",
-  buttonProps: { "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ РїСЂР°РІРѕРјСѓ РєСЂР°СЋ" },
+  buttonProps: {
+    "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ РїСЂР°РІРѕРјСѓ РєСЂР°СЋ",
+  },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
-      <path d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z" fill="currentColor" />
+      <path
+        d="M17 5H3V3h14v2zm0 4H7v2h10V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
     </svg>
   ),
   execute: (state, api) => {
-    api.replaceSelection(`<p align="right">${state.selectedText || "С‚РµРєСЃС‚"}</p>`);
+    api.replaceSelection(
+      `<p align="right">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+    );
   },
 };
 
@@ -82,11 +101,16 @@ const alignJustifyCommand: ICommand = {
   buttonProps: { "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ С€РёСЂРёРЅРµ" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
-      <path d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z" fill="currentColor" />
+      <path
+        d="M17 5H3V3h14v2zm0 4H3v2h14V9zM3 15h14v-2H3v2z"
+        fill="currentColor"
+      />
     </svg>
   ),
   execute: (state, api) => {
-    api.replaceSelection(`<p style="text-align: justify;">${state.selectedText || "С‚РµРєСЃС‚"}</p>`);
+    api.replaceSelection(
+      `<p style="text-align: justify;">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+    );
   },
 };
 
@@ -94,9 +118,17 @@ const fontSizeIncreaseCommand: ICommand = {
   name: "fontSizeIncrease",
   keyCommand: "fontSizeIncrease",
   buttonProps: { "aria-label": "РЈРІРµР»РёС‡РёС‚СЊ С€СЂРёС„С‚" },
-  icon: <svg width="14" height="14" viewBox="0 0 20 20"><text x="5" y="15" fontSize="14" fill="currentColor">A+</text></svg>,
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A+
+      </text>
+    </svg>
+  ),
   execute: (state, api) => {
-    api.replaceSelection(`<font size="5">${state.selectedText || "С‚РµРєСЃС‚"}</font>`);
+    api.replaceSelection(
+      `<font size="5">${state.selectedText || "С‚РµРєСЃС‚"}</font>`,
+    );
   },
 };
 
@@ -104,9 +136,17 @@ const fontSizeDecreaseCommand: ICommand = {
   name: "fontSizeDecrease",
   keyCommand: "fontSizeDecrease",
   buttonProps: { "aria-label": "РЈРјРµРЅСЊС€РёС‚СЊ С€СЂРёС„С‚" },
-  icon: <svg width="14" height="14" viewBox="0 0 20 20"><text x="5" y="15" fontSize="14" fill="currentColor">A-</text></svg>,
+  icon: (
+    <svg width="14" height="14" viewBox="0 0 20 20">
+      <text x="5" y="15" fontSize="14" fill="currentColor">
+        A-
+      </text>
+    </svg>
+  ),
   execute: (state, api) => {
-    api.replaceSelection(`<font size="2">${state.selectedText || "С‚РµРєСЃС‚"}</font>`);
+    api.replaceSelection(
+      `<font size="2">${state.selectedText || "С‚РµРєСЃС‚"}</font>`,
+    );
   },
 };
 
@@ -116,7 +156,9 @@ const fontStemCommand: ICommand = {
   buttonProps: { "aria-label": "РЁСЂРёС„С‚ Stem" },
   icon: <span style={{ fontSize: 12 }}>Stem</span>,
   execute: (state, api) => {
-    api.replaceSelection(`<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "С‚РµРєСЃС‚"}</span>`);
+    api.replaceSelection(
+      `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+    );
   },
 };
 
@@ -126,7 +168,9 @@ const fontTTCommand: ICommand = {
   buttonProps: { "aria-label": "РЁСЂРёС„С‚ TT Travels" },
   icon: <span style={{ fontSize: 12 }}>TT</span>,
   execute: (state, api) => {
-    api.replaceSelection(`<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "С‚РµРєСЃС‚"}</span>`);
+    api.replaceSelection(
+      `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+    );
   },
 };
 
@@ -134,9 +178,20 @@ const colorOrangeCommand: ICommand = {
   name: "colorOrange",
   keyCommand: "colorOrange",
   buttonProps: { "aria-label": "РћСЂР°РЅР¶РµРІС‹Р№ (#FF931F)" },
-  icon: <div style={{ width: 14, height: 14, backgroundColor: "#FF931F", borderRadius: 2 }} />,
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "#FF931F",
+        borderRadius: 2,
+      }}
+    />
+  ),
   execute: (state, api) => {
-    api.replaceSelection(`<span class="text-[#FF931F] dark:text-[#FF931F]">${state.selectedText || "С‚РµРєСЃС‚"}</span>`);
+    api.replaceSelection(
+      `<span class="text-[#FF931F] dark:text-[#FF931F]">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+    );
   },
 };
 
@@ -144,9 +199,20 @@ const colorDarkCommand: ICommand = {
   name: "colorDark",
   keyCommand: "colorDark",
   buttonProps: { "aria-label": "РўС‘РјРЅС‹Р№ (#272932)" },
-  icon: <div style={{ width: 14, height: 14, backgroundColor: "#272932", borderRadius: 2 }} />,
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "#272932",
+        borderRadius: 2,
+      }}
+    />
+  ),
   execute: (state, api) => {
-    api.replaceSelection(`<span class="text-[#272932] dark:text-white">${state.selectedText || "С‚РµРєСЃС‚"}</span>`);
+    api.replaceSelection(
+      `<span class="text-[#272932] dark:text-white">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+    );
   },
 };
 
@@ -154,42 +220,65 @@ const colorDark50Command: ICommand = {
   name: "colorDark50",
   keyCommand: "colorDark50",
   buttonProps: { "aria-label": "РўС‘РјРЅС‹Р№ 50%" },
-  icon: <div style={{ width: 14, height: 14, backgroundColor: "rgba(39, 41, 50, 0.5)", borderRadius: 2 }} />,
+  icon: (
+    <div
+      style={{
+        width: 14,
+        height: 14,
+        backgroundColor: "rgba(39, 41, 50, 0.5)",
+        borderRadius: 2,
+      }}
+    />
+  ),
   execute: (state, api) => {
-    api.replaceSelection(`<span class="text-[#272932]/50 dark:text-white/50">${state.selectedText || "С‚РµРєСЃС‚"}</span>`);
+    api.replaceSelection(
+      `<span class="text-[#272932]/50 dark:text-white/50">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+    );
   },
 };
 
 const heading1AdaptiveCommand: ICommand = {
   name: "heading1Adaptive",
   keyCommand: "heading1Adaptive",
-  buttonProps: { "aria-label": "Р—Р°РіРѕР»РѕРІРѕРє СЂР°Р·РґРµР»Р° (Р°РґР°РїС‚РёРІРЅС‹Р№)" },
+  buttonProps: {
+    "aria-label": "Р—Р°РіРѕР»РѕРІРѕРє СЂР°Р·РґРµР»Р° (Р°РґР°РїС‚РёРІРЅС‹Р№)",
+  },
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Р—Р°РіРѕР»РѕРІРѕРє СЂР°Р·РґРµР»Р°";
-    api.replaceSelection(`<span class="font-heading font-bold text-2xl md:text-3xl lg:text-4xl text-[#272932] dark:text-white text-left block">${text}</span>`);
+    api.replaceSelection(
+      `<span class="font-heading font-bold text-2xl md:text-3xl lg:text-4xl text-[#272932] dark:text-white text-left block">${text}</span>`,
+    );
   },
 };
 
 const body1AdaptiveCommand: ICommand = {
   name: "body1Adaptive",
   keyCommand: "body1Adaptive",
-  buttonProps: { "aria-label": "РўРµРєСЃС‚ 1 (Stem Medium, Р°РґР°РїС‚РёРІРЅС‹Р№)" },
+  buttonProps: {
+    "aria-label": "РўРµРєСЃС‚ 1 (Stem Medium, Р°РґР°РїС‚РёРІРЅС‹Р№)",
+  },
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "РўРµРєСЃС‚ 1";
-    api.replaceSelection(`<span class="font-sans font-medium text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`);
+    api.replaceSelection(
+      `<span class="font-sans font-medium text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`,
+    );
   },
 };
 
 const body2AdaptiveCommand: ICommand = {
   name: "body2Adaptive",
   keyCommand: "body2Adaptive",
-  buttonProps: { "aria-label": "РўРµРєСЃС‚ 2 (Stem Regular, Р°РґР°РїС‚РёРІРЅС‹Р№)" },
+  buttonProps: {
+    "aria-label": "РўРµРєСЃС‚ 2 (Stem Regular, Р°РґР°РїС‚РёРІРЅС‹Р№)",
+  },
   icon: <span style={{ fontSize: 12 }}>T2</span>,
   execute: (state, api) => {
     const text = state.selectedText || "РўРµРєСЃС‚ 2";
-    api.replaceSelection(`<span class="font-sans font-normal text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`);
+    api.replaceSelection(
+      `<span class="font-sans font-normal text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`,
+    );
   },
 };
 
@@ -200,7 +289,9 @@ const metaHeading1AdaptiveCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "Р—Р°РіРѕР»РѕРІРѕРє";
-    api.replaceSelection(`<span class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#272932] dark:text-white text-left block">${text}</span>`);
+    api.replaceSelection(
+      `<span class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#272932] dark:text-white text-left block">${text}</span>`,
+    );
   },
 };
 
@@ -211,7 +302,9 @@ const metaText1AdaptiveCommand: ICommand = {
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
     const text = state.selectedText || "РўРµРєСЃС‚";
-    api.replaceSelection(`<span class="font-sans font-medium text-xl md:text-2xl text-[#272932] dark:text-white text-left block">${text}</span>`);
+    api.replaceSelection(
+      `<span class="font-sans font-medium text-xl md:text-2xl text-[#272932] dark:text-white text-left block">${text}</span>`,
+    );
   },
 };
 
@@ -224,30 +317,46 @@ const numberedListCommand: ICommand = {
   buttonProps: { "aria-label": "РќСѓРјРµСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє" },
   icon: <span style={{ fontSize: 12 }}>1.</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°").split("\n").filter(Boolean);
-    api.replaceSelection(`<ol class="list-decimal pl-5 space-y-1">${lines.map(createListItem).join("")}</ol>`);
+    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+      .split("\n")
+      .filter(Boolean);
+    api.replaceSelection(
+      `<ol class="list-decimal pl-5 space-y-1">${lines.map(createListItem).join("")}</ol>`,
+    );
   },
 };
 
 const discListCommand: ICommand = {
   name: "discList",
   keyCommand: "discList",
-  buttonProps: { "aria-label": "РњР°СЂРєРёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє (РєСЂСѓРіРё)" },
+  buttonProps: {
+    "aria-label": "РњР°СЂРєРёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє (РєСЂСѓРіРё)",
+  },
   icon: <span style={{ fontSize: 12 }}>вЂў</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°").split("\n").filter(Boolean);
-    api.replaceSelection(`<ul class="list-disc pl-5 space-y-1">${lines.map(createListItem).join("")}</ul>`);
+    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+      .split("\n")
+      .filter(Boolean);
+    api.replaceSelection(
+      `<ul class="list-disc pl-5 space-y-1">${lines.map(createListItem).join("")}</ul>`,
+    );
   },
 };
 
 const squareListCommand: ICommand = {
   name: "squareList",
   keyCommand: "squareList",
-  buttonProps: { "aria-label": "РњР°СЂРєРёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє (РєРІР°РґСЂР°С‚С‹)" },
+  buttonProps: {
+    "aria-label": "РњР°СЂРєРёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє (РєРІР°РґСЂР°С‚С‹)",
+  },
   icon: <span style={{ fontSize: 12 }}>в– </span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°").split("\n").filter(Boolean);
-    api.replaceSelection(`<ul class="list-square pl-5 space-y-1">${lines.map(createListItem).join("")}</ul>`);
+    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+      .split("\n")
+      .filter(Boolean);
+    api.replaceSelection(
+      `<ul class="list-square pl-5 space-y-1">${lines.map(createListItem).join("")}</ul>`,
+    );
   },
 };
 
@@ -257,9 +366,14 @@ const checkListCommand: ICommand = {
   buttonProps: { "aria-label": "РЎРїРёСЃРѕРє СЃ РіР°Р»РѕС‡РєР°РјРё" },
   icon: <span style={{ fontSize: 12 }}>вњ“</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°").split("\n").filter(Boolean);
+    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+      .split("\n")
+      .filter(Boolean);
     const items = lines
-      .map((line) => `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['вњ“'] before:absolute before:left-0">${line}</li>`)
+      .map(
+        (line) =>
+          `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['вњ“'] before:absolute before:left-0">${line}</li>`,
+      )
       .join("");
     api.replaceSelection(`<ul class="space-y-1">${items}</ul>`);
   },
@@ -268,7 +382,9 @@ const checkListCommand: ICommand = {
 const clearFormattingCommand: ICommand = {
   name: "clearFormatting",
   keyCommand: "clearFormatting",
-  buttonProps: { "aria-label": "РћС‡РёСЃС‚РёС‚СЊ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ" },
+  buttonProps: {
+    "aria-label": "РћС‡РёСЃС‚РёС‚СЊ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ",
+  },
   icon: <span style={{ fontSize: 12 }}>Tx</span>,
   execute: (state, api) => {
     api.replaceSelection((state.selectedText || "").replace(/<[^>]*>/g, ""));
@@ -436,13 +552,39 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
   // РЎС‚Р°Р»Рѕ: РїРѕР»РЅР°СЏ С‚СЂР°РЅСЃР»РёС‚РµСЂР°С†РёСЏ + РѕРіСЂР°РЅРёС‡РµРЅРёРµ РґР»РёРЅС‹ 80 СЃРёРјРІРѕР»РѕРІ
   const generateSlug = (title: string): string => {
     const translit: Record<string, string> = {
-      Р°: "a",  Р±: "b",  РІ: "v",  Рі: "g",  Рґ: "d",
-      Рµ: "e",  С‘: "e",  Р¶: "zh", Р·: "z",  Рё: "i",
-      Р№: "y",  Рє: "k",  Р»: "l",  Рј: "m",  РЅ: "n",
-      Рѕ: "o",  Рї: "p",  СЂ: "r",  СЃ: "s",  С‚: "t",
-      Сѓ: "u",  С„: "f",  С…: "kh", С†: "ts", С‡: "ch",
-      С€: "sh", С‰: "shch", СЉ: "", С‹: "y",  СЊ: "",
-      СЌ: "e",  СЋ: "yu", СЏ: "ya",
+      "\u0430": "a",
+      "\u0431": "b",
+      "\u0432": "v",
+      "\u0433": "g",
+      "\u0434": "d",
+      "\u0435": "e",
+      "\u0451": "e",
+      "\u0436": "zh",
+      "\u0437": "z",
+      "\u0438": "i",
+      "\u0439": "y",
+      "\u043a": "k",
+      "\u043b": "l",
+      "\u043c": "m",
+      "\u043d": "n",
+      "\u043e": "o",
+      "\u043f": "p",
+      "\u0440": "r",
+      "\u0441": "s",
+      "\u0442": "t",
+      "\u0443": "u",
+      "\u0444": "f",
+      "\u0445": "kh",
+      "\u0446": "ts",
+      "\u0447": "ch",
+      "\u0448": "sh",
+      "\u0449": "shch",
+      "\u044a": "",
+      "\u044b": "y",
+      "\u044c": "",
+      "\u044d": "e",
+      "\u044e": "yu",
+      "\u044f": "ya",
     };
 
     const transliterated = title
@@ -455,13 +597,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
-    // РћР±СЂРµР·Р°РµРј РґРѕ 80 СЃРёРјРІРѕР»РѕРІ РїРѕ РіСЂР°РЅРёС†Рµ СЃР»РѕРІР°
-    return slug
-      .split("-")
-      .reduce((acc, part) => {
-        const next = acc ? `${acc}-${part}` : part;
-        return next.length <= 80 ? next : acc;
-      }, "");
+    return slug.split("-").reduce((acc, part) => {
+      const next = acc ? `${acc}-${part}` : part;
+      return next.length <= 80 ? next : acc;
+    }, "");
   };
   // =========================================================================
 
@@ -483,7 +622,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     try {
       if (isCreating) {
         if (!title || !content) {
-          toast.error("Р—Р°РіРѕР»РѕРІРѕРє Рё СЃРѕРґРµСЂР¶РёРјРѕРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹");
+          toast.error(
+            "Р—Р°РіРѕР»РѕРІРѕРє Рё СЃРѕРґРµСЂР¶РёРјРѕРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹",
+          );
           return;
         }
         const newData = {
@@ -526,7 +667,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       }
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "РћС€РёР±РєР° РїСЂРё СЃРѕС…СЂР°РЅРµРЅРёРё",
+        error instanceof Error
+          ? error.message
+          : "РћС€РёР±РєР° РїСЂРё СЃРѕС…СЂР°РЅРµРЅРёРё",
       );
     } finally {
       setIsSaving(false);
@@ -541,7 +684,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       setSelectedSlug(null);
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "РћС€РёР±РєР° РїСЂРё СѓРґР°Р»РµРЅРёРё",
+        error instanceof Error
+          ? error.message
+          : "РћС€РёР±РєР° РїСЂРё СѓРґР°Р»РµРЅРёРё",
       );
     } finally {
       setIsDeleteDialogOpen(false);
@@ -606,7 +751,11 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
           {isLoadingContent && (
             <div className="flex items-center justify-center py-12">
-              <Icon name="Loader2" size={32} className="animate-spin text-primary" />
+              <Icon
+                name="Loader2"
+                size={32}
+                className="animate-spin text-primary"
+              />
             </div>
           )}
 
@@ -618,7 +767,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   <label className="text-sm font-semibold text-foreground mb-1 block">
                     Р—Р°РіРѕР»РѕРІРѕРє *
                   </label>
-                  <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+                  <div
+                    data-color-mode="light"
+                    className="border rounded-lg overflow-hidden"
+                  >
                     <MDEditor
                       value={title}
                       onChange={handleTitleChange}
@@ -635,7 +787,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   <label className="text-sm font-semibold text-foreground mb-1 block">
                     РљСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ (excerpt)
                   </label>
-                  <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+                  <div
+                    data-color-mode="light"
+                    className="border rounded-lg overflow-hidden"
+                  >
                     <MDEditor
                       value={excerpt}
                       onChange={(val) => setExcerpt(val || "")}
@@ -662,7 +817,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                       className="w-full"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Р“РµРЅРµСЂРёСЂСѓРµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёР· Р·Р°РіРѕР»РѕРІРєР°, РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ РІСЂСѓС‡РЅСѓСЋ
+                      Р“РµРЅРµСЂРёСЂСѓРµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёР·
+                      Р·Р°РіРѕР»РѕРІРєР°, РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ
+                      РІСЂСѓС‡РЅСѓСЋ
                     </p>
                   </div>
                 )}
@@ -672,7 +829,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                     <label className="text-sm font-semibold text-foreground mb-1 block">
                       РљР°С‚РµРіРѕСЂРёСЏ
                     </label>
-                    <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+                    <div
+                      data-color-mode="light"
+                      className="border rounded-lg overflow-hidden"
+                    >
                       <MDEditor
                         value={category}
                         onChange={(val) => setCategory(val || "")}
@@ -687,7 +847,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                     <label className="text-sm font-semibold text-foreground mb-1 block">
                       Р’СЂРµРјСЏ С‡С‚РµРЅРёСЏ
                     </label>
-                    <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+                    <div
+                      data-color-mode="light"
+                      className="border rounded-lg overflow-hidden"
+                    >
                       <MDEditor
                         value={readTime}
                         onChange={(val) => setReadTime(val || "")}
@@ -704,7 +867,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   <label className="text-sm font-semibold text-foreground mb-1 block">
                     РђРІС‚РѕСЂ
                   </label>
-                  <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+                  <div
+                    data-color-mode="light"
+                    className="border rounded-lg overflow-hidden"
+                  >
                     <MDEditor
                       value={author}
                       onChange={(val) => setAuthor(val || "")}
@@ -731,7 +897,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                     <label className="text-sm font-semibold text-foreground mb-1 block">
                       РќР°Р·РІР°РЅРёРµ РїСЂРѕРІР°Р№РґРµСЂР°
                     </label>
-                    <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+                    <div
+                      data-color-mode="light"
+                      className="border rounded-lg overflow-hidden"
+                    >
                       <MDEditor
                         value={providerName}
                         onChange={(val) => setProviderName(val || "")}
@@ -793,7 +962,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
               </div>
 
               {/* РћСЃРЅРѕРІРЅРѕР№ РєРѕРЅС‚РµРЅС‚ */}
-              <div data-color-mode="light" className="border rounded-lg overflow-hidden">
+              <div
+                data-color-mode="light"
+                className="border rounded-lg overflow-hidden"
+              >
                 <MDEditor
                   value={content}
                   onChange={(val) => setContent(val || "")}
@@ -827,12 +999,22 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
                 <Button
                   onClick={handleSave}
-                  disabled={isSaving || createMutation.isPending || updateMutation.isPending}
+                  disabled={
+                    isSaving ||
+                    createMutation.isPending ||
+                    updateMutation.isPending
+                  }
                   className="bg-primary text-background"
                 >
-                  {isSaving || createMutation.isPending || updateMutation.isPending ? (
+                  {isSaving ||
+                  createMutation.isPending ||
+                  updateMutation.isPending ? (
                     <>
-                      <Icon name="Loader2" size={16} className="animate-spin mr-2" />
+                      <Icon
+                        name="Loader2"
+                        size={16}
+                        className="animate-spin mr-2"
+                      />
                       РЎРѕС…СЂР°РЅРµРЅРёРµ...
                     </>
                   ) : (
@@ -848,12 +1030,16 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
         </CardContent>
       </Card>
 
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>РЈРґР°Р»РёС‚СЊ СЃС‚Р°С‚СЊСЋ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Р­С‚Рѕ РґРµР№СЃС‚РІРёРµ РЅРµР»СЊР·СЏ РѕС‚РјРµРЅРёС‚СЊ. РЎС‚Р°С‚СЊСЏ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅР° Р±РµР·РІРѕР·РІСЂР°С‚РЅРѕ.
+              Р­С‚Рѕ РґРµР№СЃС‚РІРёРµ РЅРµР»СЊР·СЏ РѕС‚РјРµРЅРёС‚СЊ.
+              РЎС‚Р°С‚СЊСЏ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅР° Р±РµР·РІРѕР·РІСЂР°С‚РЅРѕ.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
