@@ -59,13 +59,13 @@ def handler(event, context):
 
                     # ── Фильтр по дате ──────────────────────────────────────
                     if month:
-                        date_filter = "AND TO_CHAR(e.created_at, 'YYYY-MM') = %s"
+                        date_filter = "AND TO_CHAR(created_at, 'YYYY-MM') = %s"
                         date_param = month
                     elif period and period.isdigit():
-                        date_filter = "AND e.created_at >= CURRENT_DATE - %s"
+                        date_filter = "AND created_at >= CURRENT_DATE - %s"
                         date_param = int(period)
                     else:
-                        date_filter = "AND e.created_at >= CURRENT_DATE - 30"
+                        date_filter = "AND created_at >= CURRENT_DATE - 30"
                         date_param = None
 
                     # ── summary ─────────────────────────────────────────────
@@ -102,14 +102,14 @@ def handler(event, context):
                     elif view == 'timeline':
                         query = f"""
                             SELECT
-                                DATE(e.created_at) AS date,
+                                DATE(created_at) AS date,
                                 COUNT(*) FILTER (WHERE event_type = 'page_view')       AS page_views,
                                 COUNT(*) FILTER (WHERE event_type = 'section_visit')   AS section_visits,
                                 COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
                                 COUNT(*) FILTER (WHERE event_type = 'outbound_link')   AS outbound_clicks
-                            FROM {SCHEMA}.events e
+                            FROM {SCHEMA}.events
                             WHERE 1=1 {date_filter}
-                            GROUP BY DATE(e.created_at)
+                            GROUP BY DATE(created_at)
                             ORDER BY date
                         """
                         params_list = [date_param] if date_param is not None else []
@@ -117,23 +117,41 @@ def handler(event, context):
                         rows = cur.fetchall()
                         return cors_response(200, {'timeline': rows})
 
-                    # ── pages ───────────────────────────────────────────────
+                    # ── pages (исправлено: avg_duration отдельно из page_leave) ──
                     elif view == 'pages':
                         query = f"""
+                            WITH page_stats AS (
+                                SELECT
+                                    e.page_path,
+                                    COALESCE(vp.provider_name, e.page_path) AS provider_name,
+                                    COUNT(*) AS views,
+                                    COUNT(DISTINCT e.visitor_uuid) AS unique_visitors
+                                FROM {SCHEMA}.events e
+                                LEFT JOIN {SCHEMA}.vpn_posts vp
+                                    ON vp.slug = REGEXP_REPLACE(e.page_path, '^/vpn/', '')
+                                WHERE e.event_type = 'page_view'
+                                  AND 1=1 {date_filter}
+                                GROUP BY e.page_path, vp.provider_name
+                            ),
+                            page_durations AS (
+                                SELECT
+                                    page_path,
+                                    AVG(duration) AS avg_duration
+                                FROM {SCHEMA}.events
+                                WHERE event_type = 'page_leave'
+                                  AND duration IS NOT NULL
+                                  AND 1=1 {date_filter}
+                                GROUP BY page_path
+                            )
                             SELECT
-                                e.page_path,
-                                COALESCE(vp.provider_name, e.page_path) AS provider_name,
-                                COUNT(*)                        AS views,
-                                COUNT(DISTINCT e.visitor_uuid)  AS unique_visitors,
-                                AVG(e.duration) FILTER (
-                                    WHERE e.event_type = 'page_leave' AND e.duration IS NOT NULL
-                                ) AS avg_duration
-                            FROM {SCHEMA}.events e
-                            LEFT JOIN {SCHEMA}.vpn_posts vp
-                                ON vp.slug = REGEXP_REPLACE(e.page_path, '^/vpn/', '')
-                            WHERE e.event_type = 'page_view' {date_filter}
-                            GROUP BY e.page_path, vp.provider_name
-                            ORDER BY views DESC
+                                ps.page_path,
+                                ps.provider_name,
+                                ps.views,
+                                ps.unique_visitors,
+                                pd.avg_duration
+                            FROM page_stats ps
+                            LEFT JOIN page_durations pd ON ps.page_path = pd.page_path
+                            ORDER BY ps.views DESC
                             LIMIT 50
                         """
                         params_list = [date_param] if date_param is not None else []
@@ -141,27 +159,29 @@ def handler(event, context):
                         rows = cur.fetchall()
                         return cors_response(200, {'pages': [normalize_decimals(r) for r in rows]})
 
-                    # ── articles ────────────────────────────────────────────
+                    # ── articles (исправлено: связь по page_path) ─────────────────
                     elif view == 'articles':
                         query = f"""
                             WITH article_views AS (
                                 SELECT
-                                    target_id,
+                                    REGEXP_REPLACE(e.page_path, '^/vpn/', '') AS target_id,
                                     COUNT(*)                       AS views,
-                                    COUNT(DISTINCT visitor_uuid)   AS unique_visitors
+                                    COUNT(DISTINCT e.visitor_uuid)   AS unique_visitors
                                 FROM {SCHEMA}.events e
-                                WHERE event_type = 'page_view'
-                                  AND target_id IS NOT NULL
+                                WHERE e.event_type = 'page_view'
+                                  AND e.page_path LIKE '/vpn/%'
                                   {date_filter}
-                                GROUP BY target_id
+                                GROUP BY REGEXP_REPLACE(e.page_path, '^/vpn/', '')
                             ),
                             article_clicks AS (
-                                SELECT target_id, COUNT(*) AS clicks
+                                SELECT
+                                    REGEXP_REPLACE(e.page_path, '^/vpn/', '') AS target_id,
+                                    COUNT(*) AS clicks
                                 FROM {SCHEMA}.events e
-                                WHERE event_type = 'provider_click'
-                                  AND page_path LIKE '/vpn/%%'
+                                WHERE e.event_type = 'provider_click'
+                                  AND e.page_path LIKE '/vpn/%'
                                   {date_filter}
-                                GROUP BY target_id
+                                GROUP BY REGEXP_REPLACE(e.page_path, '^/vpn/', '')
                             )
                             SELECT
                                 av.target_id,
@@ -179,7 +199,7 @@ def handler(event, context):
                             ORDER BY av.views DESC
                             LIMIT 50
                         """
-                        params_list = [date_param, date_param] if date_param is not None else []
+                        params_list = [date_param] if date_param is not None else []
                         cur.execute(query, params_list)
                         rows = cur.fetchall()
                         return cors_response(200, {'articles': [normalize_decimals(r) for r in rows]})
@@ -197,7 +217,7 @@ def handler(event, context):
                                     COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
                                     ARRAY_AGG(DISTINCT page_path)                          AS page_paths,
                                     MAX(visitor_uuid)                                       AS visitor_uuid
-                                FROM {SCHEMA}.events e
+                                FROM {SCHEMA}.events
                                 WHERE 1=1 {date_filter}
                                 GROUP BY session_id
                             )
@@ -219,7 +239,7 @@ def handler(event, context):
                         rows = cur.fetchall()
                         return cors_response(200, {'sessions': rows})
 
-                    # ── sources (ИСПРАВЛЕНО) ─────────────────────────────────
+                    # ── sources (исправлено: группировка по полному CASE) ─────────
                     elif view == 'sources':
                         query = f"""
                             SELECT
@@ -249,7 +269,7 @@ def handler(event, context):
                                 COUNT(*) FILTER (
                                     WHERE event_type IN ('page_view', 'section_visit')
                                 ) AS page_views
-                            FROM {SCHEMA}.events e
+                            FROM {SCHEMA}.events
                             WHERE 1=1 {date_filter}
                             GROUP BY
                                 CASE
@@ -336,13 +356,11 @@ def handler(event, context):
             return error_response(405, 'Method not allowed')
 
         except Exception as e:
-            # Логирование ошибки (опционально: можно вывести в stderr)
             print(f"Database error: {str(e)}", flush=True)
             return error_response(500, f"Internal server error: {str(e)}")
         finally:
             conn.close()
 
     except Exception as e:
-        # Глобальная обработка любых неожиданных ошибок (например, проблемы с подключением)
         print(f"Unexpected error: {str(e)}", flush=True)
         return error_response(500, f"Unexpected error: {str(e)}")
