@@ -1,4 +1,4 @@
-export type Period = '1' | '7' | '30';
+export type Period = "1" | "7" | "30";
 
 export interface SummaryData {
   unique_visitors: number;
@@ -20,6 +20,7 @@ export interface TimelineItem {
 
 export interface PageStat {
   page_path: string;
+  provider_name: string | null;
   views: number;
   unique_visitors: number;
   avg_duration: number | null;
@@ -27,10 +28,11 @@ export interface PageStat {
 
 export interface ArticleStat {
   target_id: string;
+  provider_name: string | null;
   views: number;
   unique_visitors: number;
   clicks: number;
-  conversion_rate: number;
+  conversion_rate: number | null;
 }
 
 export interface SessionInfo {
@@ -42,4 +44,20 @@ export interface SessionInfo {
   page_views: number;
   provider_clicks: number;
   page_paths: string[];
+}
+
+export interface SourceStat {
+  source: string;
+  visitors: number;
+  sessions: number;
+  page_views: number;
+}
+
+export interface LinkClickStat {
+  page_path: string;
+  provider_name: string | null;
+  button_clicks_total: number;
+  button_clicks_unique: number;
+  text_clicks_total: number;
+  text_clicks_unique: number;
 }
