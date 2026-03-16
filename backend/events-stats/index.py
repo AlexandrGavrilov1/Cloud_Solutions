@@ -59,13 +59,13 @@ def handler(event, context):
 
                     # ── Фильтр по дате ──────────────────────────────────────
                     if month:
-                        date_filter = "AND TO_CHAR(created_at, 'YYYY-MM') = %s"
+                        date_filter = "AND TO_CHAR(e.created_at, 'YYYY-MM') = %s"
                         date_param = month
                     elif period and period.isdigit():
-                        date_filter = "AND created_at >= CURRENT_DATE - %s"
+                        date_filter = "AND e.created_at >= CURRENT_DATE - %s"
                         date_param = int(period)
                     else:
-                        date_filter = "AND created_at >= CURRENT_DATE - 30"
+                        date_filter = "AND e.created_at >= CURRENT_DATE - 30"
                         date_param = None
 
                     # ── summary ─────────────────────────────────────────────
@@ -102,14 +102,14 @@ def handler(event, context):
                     elif view == 'timeline':
                         query = f"""
                             SELECT
-                                DATE(created_at) AS date,
-                                COUNT(*) FILTER (WHERE event_type = 'page_view')       AS page_views,
-                                COUNT(*) FILTER (WHERE event_type = 'section_visit')   AS section_visits,
-                                COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
-                                COUNT(*) FILTER (WHERE event_type = 'outbound_link')   AS outbound_clicks
-                            FROM {SCHEMA}.events
+                                DATE(e.created_at) AS date,
+                                COUNT(*) FILTER (WHERE e.event_type = 'page_view')       AS page_views,
+                                COUNT(*) FILTER (WHERE e.event_type = 'section_visit')   AS section_visits,
+                                COUNT(*) FILTER (WHERE e.event_type = 'provider_click')  AS provider_clicks,
+                                COUNT(*) FILTER (WHERE e.event_type = 'outbound_link')   AS outbound_clicks
+                            FROM {SCHEMA}.events e
                             WHERE 1=1 {date_filter}
-                            GROUP BY DATE(created_at)
+                            GROUP BY DATE(e.created_at)
                             ORDER BY date
                         """
                         params_list = [date_param] if date_param is not None else []
@@ -135,13 +135,13 @@ def handler(event, context):
                             ),
                             page_durations AS (
                                 SELECT
-                                    page_path,
-                                    AVG(duration) AS avg_duration
-                                FROM {SCHEMA}.events
-                                WHERE event_type = 'page_leave'
-                                  AND duration IS NOT NULL
+                                    e.page_path,
+                                    AVG(e.duration) AS avg_duration
+                                FROM {SCHEMA}.events e
+                                WHERE e.event_type = 'page_leave'
+                                  AND e.duration IS NOT NULL
                                   AND 1=1 {date_filter}
-                                GROUP BY page_path
+                                GROUP BY e.page_path
                             )
                             SELECT
                                 ps.page_path,
@@ -154,7 +154,7 @@ def handler(event, context):
                             ORDER BY ps.views DESC
                             LIMIT 50
                         """
-                        params_list = [date_param] if date_param is not None else []
+                        params_list = [date_param, date_param] if date_param is not None else []
                         cur.execute(query, params_list)
                         rows = cur.fetchall()
                         return cors_response(200, {'pages': [normalize_decimals(r) for r in rows]})
@@ -169,7 +169,7 @@ def handler(event, context):
                                     COUNT(DISTINCT e.visitor_uuid)   AS unique_visitors
                                 FROM {SCHEMA}.events e
                                 WHERE e.event_type = 'page_view'
-                                  AND e.page_path LIKE '/vpn/%'
+                                  AND e.page_path LIKE '/vpn/%%'
                                   {date_filter}
                                 GROUP BY REGEXP_REPLACE(e.page_path, '^/vpn/', '')
                             ),
@@ -179,7 +179,7 @@ def handler(event, context):
                                     COUNT(*) AS clicks
                                 FROM {SCHEMA}.events e
                                 WHERE e.event_type = 'provider_click'
-                                  AND e.page_path LIKE '/vpn/%'
+                                  AND e.page_path LIKE '/vpn/%%'
                                   {date_filter}
                                 GROUP BY REGEXP_REPLACE(e.page_path, '^/vpn/', '')
                             )
@@ -199,7 +199,7 @@ def handler(event, context):
                             ORDER BY av.views DESC
                             LIMIT 50
                         """
-                        params_list = [date_param] if date_param is not None else []
+                        params_list = [date_param, date_param] if date_param is not None else []
                         cur.execute(query, params_list)
                         rows = cur.fetchall()
                         return cors_response(200, {'articles': [normalize_decimals(r) for r in rows]})
@@ -209,17 +209,17 @@ def handler(event, context):
                         query = f"""
                             WITH session_stats AS (
                                 SELECT
-                                    session_id,
-                                    MIN(created_at)                                         AS started_at,
-                                    MAX(created_at)                                         AS last_event_at,
+                                    e.session_id,
+                                    MIN(e.created_at)                                         AS started_at,
+                                    MAX(e.created_at)                                         AS last_event_at,
                                     COUNT(*)                                                AS events_count,
-                                    COUNT(*) FILTER (WHERE event_type = 'page_view')       AS page_views,
-                                    COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
-                                    ARRAY_AGG(DISTINCT page_path)                          AS page_paths,
-                                    MAX(visitor_uuid)                                       AS visitor_uuid
-                                FROM {SCHEMA}.events
+                                    COUNT(*) FILTER (WHERE e.event_type = 'page_view')       AS page_views,
+                                    COUNT(*) FILTER (WHERE e.event_type = 'provider_click')  AS provider_clicks,
+                                    ARRAY_AGG(DISTINCT e.page_path)                          AS page_paths,
+                                    MAX(e.visitor_uuid)                                       AS visitor_uuid
+                                FROM {SCHEMA}.events e
                                 WHERE 1=1 {date_filter}
-                                GROUP BY session_id
+                                GROUP BY e.session_id
                             )
                             SELECT
                                 session_id,
@@ -244,52 +244,52 @@ def handler(event, context):
                         query = f"""
                             SELECT
                                 CASE
-                                    WHEN utm_source = 'yandex' AND utm_medium = 'cpc'
+                                    WHEN e.utm_source = 'yandex' AND e.utm_medium = 'cpc'
                                         THEN 'Яндекс · реклама'
                                     WHEN (
-                                            referer LIKE 'https://yandex.ru%%'
-                                         OR referer LIKE 'https://www.yandex.ru%%'
+                                            e.referer LIKE 'https://yandex.ru%%'
+                                         OR e.referer LIKE 'https://www.yandex.ru%%'
                                         )
-                                        AND utm_source IS NULL
+                                        AND e.utm_source IS NULL
                                         THEN 'Яндекс · органика'
-                                    WHEN referer LIKE '%%topcloudhub.ru%%'
+                                    WHEN e.referer LIKE '%%topcloudhub.ru%%'
                                         THEN 'Внутренний'
-                                    WHEN referer IS NULL AND utm_source IS NULL
+                                    WHEN e.referer IS NULL AND e.utm_source IS NULL
                                         THEN 'Прямой'
-                                    WHEN utm_source IS NOT NULL
-                                        THEN utm_source
+                                    WHEN e.utm_source IS NOT NULL
+                                        THEN e.utm_source
                                     ELSE
                                         REGEXP_REPLACE(
-                                            REGEXP_REPLACE(referer, '^https?://(www\.)?', ''),
+                                            REGEXP_REPLACE(e.referer, '^https?://(www\.)?', ''),
                                             '/.*$', ''
                                         )
                                 END AS source,
-                                COUNT(DISTINCT visitor_uuid) AS visitors,
-                                COUNT(DISTINCT session_id)   AS sessions,
+                                COUNT(DISTINCT e.visitor_uuid) AS visitors,
+                                COUNT(DISTINCT e.session_id)   AS sessions,
                                 COUNT(*) FILTER (
-                                    WHERE event_type IN ('page_view', 'section_visit')
+                                    WHERE e.event_type IN ('page_view', 'section_visit')
                                 ) AS page_views
-                            FROM {SCHEMA}.events
+                            FROM {SCHEMA}.events e
                             WHERE 1=1 {date_filter}
                             GROUP BY
                                 CASE
-                                    WHEN utm_source = 'yandex' AND utm_medium = 'cpc'
+                                    WHEN e.utm_source = 'yandex' AND e.utm_medium = 'cpc'
                                         THEN 'Яндекс · реклама'
                                     WHEN (
-                                            referer LIKE 'https://yandex.ru%%'
-                                         OR referer LIKE 'https://www.yandex.ru%%'
+                                            e.referer LIKE 'https://yandex.ru%%'
+                                         OR e.referer LIKE 'https://www.yandex.ru%%'
                                         )
-                                        AND utm_source IS NULL
+                                        AND e.utm_source IS NULL
                                         THEN 'Яндекс · органика'
-                                    WHEN referer LIKE '%%topcloudhub.ru%%'
+                                    WHEN e.referer LIKE '%%topcloudhub.ru%%'
                                         THEN 'Внутренний'
-                                    WHEN referer IS NULL AND utm_source IS NULL
+                                    WHEN e.referer IS NULL AND e.utm_source IS NULL
                                         THEN 'Прямой'
-                                    WHEN utm_source IS NOT NULL
-                                        THEN utm_source
+                                    WHEN e.utm_source IS NOT NULL
+                                        THEN e.utm_source
                                     ELSE
                                         REGEXP_REPLACE(
-                                            REGEXP_REPLACE(referer, '^https?://(www\.)?', ''),
+                                            REGEXP_REPLACE(e.referer, '^https?://(www\.)?', ''),
                                             '/.*$', ''
                                         )
                                 END
