@@ -34,6 +34,620 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// All Russian strings as fromCharCode to avoid encoding issues
+const T = {
+  ANALYTICS: String.fromCharCode(
+    1040,
+    1085,
+    1072,
+    1083,
+    1080,
+    1090,
+    1080,
+    1082,
+    1072,
+    32,
+    1089,
+    1086,
+    1073,
+    1099,
+    1090,
+    1080,
+    1081,
+  ),
+  REFRESH_ALL: String.fromCharCode(
+    1054,
+    1073,
+    1085,
+    1086,
+    1074,
+    1080,
+    1090,
+    1100,
+    32,
+    1074,
+    1089,
+    1105,
+  ),
+  UNIQUE_VISITORS: String.fromCharCode(
+    1059,
+    1085,
+    1080,
+    1082,
+    1072,
+    1083,
+    1100,
+    1085,
+    1099,
+    1093,
+    32,
+    1087,
+    1086,
+    1089,
+    1077,
+    1090,
+    1080,
+    1090,
+    1077,
+    1083,
+    1077,
+    1081,
+  ),
+  SESSIONS: String.fromCharCode(1057, 1077, 1089, 1089, 1080, 1081),
+  PAGE_VIEWS: String.fromCharCode(
+    1055,
+    1088,
+    1086,
+    1089,
+    1084,
+    1086,
+    1090,
+    1088,
+    1086,
+    1074,
+    32,
+    1089,
+    1090,
+    1088,
+    1072,
+    1085,
+    1080,
+    1094,
+  ),
+  PROVIDER_CLICKS: String.fromCharCode(
+    1050,
+    1083,
+    1080,
+    1082,
+    1086,
+    1074,
+    32,
+    1087,
+    1086,
+    32,
+    1087,
+    1088,
+    1086,
+    1074,
+    1072,
+    1081,
+    1076,
+    1077,
+    1088,
+    1072,
+    1084,
+  ),
+  OUTBOUND_CLICKS: String.fromCharCode(
+    1042,
+    1085,
+    1077,
+    1096,
+    1085,
+    1080,
+    1093,
+    32,
+    1087,
+    1077,
+    1088,
+    1077,
+    1093,
+    1086,
+    1076,
+    1086,
+    1074,
+  ),
+  AVG_TIME: String.fromCharCode(
+    1057,
+    1088,
+    46,
+    32,
+    1074,
+    1088,
+    1077,
+    1084,
+    1103,
+    32,
+    1085,
+    1072,
+    32,
+    1089,
+    1090,
+    1088,
+    1072,
+    1085,
+    1080,
+    1094,
+    1077,
+  ),
+  BOUNCE_RATE: String.fromCharCode(
+    1055,
+    1088,
+    1086,
+    1094,
+    1077,
+    1085,
+    1090,
+    32,
+    1086,
+    1090,
+    1082,
+    1072,
+    1079,
+    1086,
+    1074,
+  ),
+  DYNAMICS: String.fromCharCode(1044, 1080, 1085, 1072, 1084, 1080, 1082, 1072),
+  SOURCES: String.fromCharCode(
+    1048,
+    1089,
+    1090,
+    1086,
+    1095,
+    1085,
+    1080,
+    1082,
+    1080,
+  ),
+  PAGES: String.fromCharCode(1057, 1090, 1088, 1072, 1085, 1080, 1094, 1099),
+  ARTICLES: String.fromCharCode(1057, 1090, 1072, 1090, 1100, 1080),
+  LINKS: String.fromCharCode(1055, 1077, 1088, 1077, 1093, 1086, 1076, 1099),
+  SESSIONS_TAB: String.fromCharCode(1057, 1077, 1089, 1089, 1080, 1080),
+  TIMELINE_TITLE: String.fromCharCode(
+    1044,
+    1080,
+    1085,
+    1072,
+    1084,
+    1080,
+    1082,
+    1072,
+    32,
+    1089,
+    1086,
+    1073,
+    1099,
+    1090,
+    1080,
+    1081,
+    32,
+    1087,
+    1086,
+    32,
+    1076,
+    1085,
+    1103,
+    1084,
+  ),
+  VIEWS: String.fromCharCode(
+    1055,
+    1088,
+    1086,
+    1089,
+    1084,
+    1086,
+    1090,
+    1088,
+    1099,
+  ),
+  SECTION_VISITS: String.fromCharCode(
+    1042,
+    1080,
+    1079,
+    1080,
+    1090,
+    1099,
+    32,
+    1088,
+    1072,
+    1079,
+    1076,
+    1077,
+    1083,
+    1086,
+    1074,
+  ),
+  CLICKS_PROVIDERS: String.fromCharCode(
+    1050,
+    1083,
+    1080,
+    1082,
+    1080,
+    32,
+    1087,
+    1088,
+    1086,
+    1074,
+    1072,
+    1081,
+    1076,
+    1077,
+    1088,
+    1086,
+    1074,
+  ),
+  OUTBOUND_LINKS: String.fromCharCode(
+    1042,
+    1085,
+    1077,
+    1096,
+    1085,
+    1080,
+    1077,
+    32,
+    1089,
+    1089,
+    1099,
+    1083,
+    1082,
+    1080,
+  ),
+  SOURCES_TITLE: String.fromCharCode(
+    1048,
+    1089,
+    1090,
+    1086,
+    1095,
+    1085,
+    1080,
+    1082,
+    1080,
+    32,
+    1090,
+    1088,
+    1072,
+    1092,
+    1080,
+    1082,
+    1072,
+  ),
+  VISITORS_BY_SOURCE: String.fromCharCode(
+    1055,
+    1086,
+    1089,
+    1077,
+    1090,
+    1080,
+    1090,
+    1077,
+    1083,
+    1080,
+    32,
+    1087,
+    1086,
+    32,
+    1080,
+    1089,
+    1090,
+    1086,
+    1095,
+    1085,
+    1080,
+    1082,
+    1091,
+  ),
+  VISITORS: String.fromCharCode(
+    1055,
+    1086,
+    1089,
+    1077,
+    1090,
+    1080,
+    1090,
+    1077,
+    1083,
+    1080,
+  ),
+  TOP_PAGES: String.fromCharCode(
+    1058,
+    1086,
+    1087,
+    32,
+    1089,
+    1090,
+    1088,
+    1072,
+    1085,
+    1080,
+    1094,
+  ),
+  PAGE_DETAILS: String.fromCharCode(
+    1044,
+    1077,
+    1090,
+    1072,
+    1083,
+    1080,
+    32,
+    1087,
+    1086,
+    32,
+    1089,
+    1090,
+    1088,
+    1072,
+    1085,
+    1080,
+    1094,
+    1072,
+    1084,
+  ),
+  PAGE_COL: String.fromCharCode(1057, 1090, 1088, 1072, 1085, 1080, 1094, 1072),
+  VIEWS_SHORT: String.fromCharCode(1055, 1088, 1086, 1089, 1084, 46),
+  UNIQUE_SHORT: String.fromCharCode(1059, 1085, 1080, 1082, 46),
+  AVG_TIME_SHORT: String.fromCharCode(
+    1057,
+    1088,
+    46,
+    32,
+    1074,
+    1088,
+    1077,
+    1084,
+    1103,
+  ),
+  ARTICLES_TITLE: String.fromCharCode(
+    1057,
+    1090,
+    1072,
+    1090,
+    1100,
+    1080,
+    32,
+    183,
+    32,
+    1087,
+    1088,
+    1086,
+    1089,
+    1084,
+    1086,
+    1090,
+    1088,
+    1099,
+    32,
+    1080,
+    32,
+    1082,
+    1086,
+    1085,
+    1074,
+    1077,
+    1088,
+    1089,
+    1080,
+    1103,
+  ),
+  ARTICLE_COL: String.fromCharCode(1057, 1090, 1072, 1090, 1100, 1103),
+  TOTAL: String.fromCharCode(1042, 1089, 1077, 1075, 1086),
+  CONV_SHORT: String.fromCharCode(1050, 1086, 1085, 1074, 46),
+  VIEWS_BY_ARTICLES: String.fromCharCode(
+    1055,
+    1088,
+    1086,
+    1089,
+    1084,
+    1086,
+    1090,
+    1088,
+    1099,
+    32,
+    1087,
+    1086,
+    32,
+    1089,
+    1090,
+    1072,
+    1090,
+    1100,
+    1103,
+    1084,
+  ),
+  UNIQUE: String.fromCharCode(
+    1059,
+    1085,
+    1080,
+    1082,
+    1072,
+    1083,
+    1100,
+    1085,
+    1099,
+    1077,
+  ),
+  LINKS_TITLE: String.fromCharCode(
+    1055,
+    1077,
+    1088,
+    1077,
+    1093,
+    1086,
+    1076,
+    1099,
+    32,
+    1087,
+    1086,
+    32,
+    1089,
+    1089,
+    1099,
+    1083,
+    1082,
+    1072,
+    1084,
+    32,
+    1080,
+    1079,
+    32,
+    1089,
+    1090,
+    1072,
+    1090,
+    1077,
+    1081,
+  ),
+  BUTTON: String.fromCharCode(1050, 1085, 1086, 1087, 1082, 1072),
+  BUTTON_TOTAL: String.fromCharCode(1074, 1089, 1077, 1075, 1086),
+  TEXT: String.fromCharCode(1058, 1077, 1082, 1089, 1090),
+  UNIQ_SHORT: String.fromCharCode(1091, 1085, 1080, 1082, 46),
+  BUTTON_PROVIDER: String.fromCharCode(
+    1082,
+    1085,
+    1086,
+    1087,
+    1082,
+    1072,
+    32,
+    1087,
+    1088,
+    1086,
+    1074,
+    1072,
+    1081,
+    1076,
+    1077,
+    1088,
+    1072,
+  ),
+  LINK_FROM_TEXT: String.fromCharCode(
+    1089,
+    1089,
+    1099,
+    1083,
+    1082,
+    1072,
+    32,
+    1080,
+    1079,
+    32,
+    1090,
+    1077,
+    1082,
+    1089,
+    1090,
+    1072,
+  ),
+  CLICKS_BY_ARTICLES: String.fromCharCode(
+    1050,
+    1083,
+    1080,
+    1082,
+    1080,
+    32,
+    1087,
+    1086,
+    32,
+    1089,
+    1090,
+    1072,
+    1090,
+    1100,
+    1103,
+    1084,
+  ),
+  NO_DATA: String.fromCharCode(
+    1053,
+    1077,
+    1090,
+    32,
+    1076,
+    1072,
+    1085,
+    1085,
+    1099,
+    1093,
+    32,
+    1079,
+    1072,
+    32,
+    1074,
+    1099,
+    1073,
+    1088,
+    1072,
+    1085,
+    1085,
+    1099,
+    1081,
+    32,
+    1087,
+    1077,
+    1088,
+    1080,
+    1086,
+    1076,
+  ),
+  YANDEX_AD: String.fromCharCode(
+    1071,
+    1085,
+    1076,
+    1077,
+    1082,
+    1089,
+    32,
+    183,
+    32,
+    1088,
+    1077,
+    1082,
+    1083,
+    1072,
+    1084,
+    1072,
+  ),
+  YANDEX_ORG: String.fromCharCode(
+    1071,
+    1085,
+    1076,
+    1077,
+    1082,
+    1089,
+    32,
+    183,
+    32,
+    1086,
+    1088,
+    1075,
+    1072,
+    1085,
+    1080,
+    1082,
+    1072,
+  ),
+  INTERNAL: String.fromCharCode(
+    1042,
+    1085,
+    1091,
+    1090,
+    1088,
+    1077,
+    1085,
+    1085,
+    1080,
+    1081,
+  ),
+  DIRECT: String.fromCharCode(1055, 1088, 1103, 1084, 1086, 1081),
+};
+
 const COLORS = [
   "#3b82f6",
   "#10b981",
@@ -45,12 +659,10 @@ const COLORS = [
 ];
 
 const SOURCE_COLORS: Record<string, string> = {
-  "\u042f\u043d\u0434\u0435\u043a\u0441 \u00b7 \u0440\u0435\u043a\u043b\u0430\u043c\u0430":
-    "#f59e0b",
-  "\u042f\u043d\u0434\u0435\u043a\u0441 \u00b7 \u043e\u0440\u0433\u0430\u043d\u0438\u043a\u0430":
-    "#10b981",
-  "\u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0439": "#06b6d4",
-  "\u041f\u0440\u044f\u043c\u043e\u0439": "#8b8fa8",
+  [T.YANDEX_AD]: "#f59e0b",
+  [T.YANDEX_ORG]: "#10b981",
+  [T.INTERNAL]: "#06b6d4",
+  [T.DIRECT]: "#8b8fa8",
 };
 function sourceColor(name: string, idx: number): string {
   return SOURCE_COLORS[name] ?? COLORS[idx % COLORS.length];
@@ -59,8 +671,8 @@ function sourceColor(name: string, idx: number): string {
 function dur(seconds: number | null | undefined): string {
   if (seconds == null) return "\u2014";
   const s = Math.round(Number(seconds));
-  if (s < 60) return `${s}\u0441`;
-  return `${Math.floor(s / 60)}\u043c ${s % 60}\u0441`;
+  if (s < 60) return `${s}${String.fromCharCode(1089)}`;
+  return `${Math.floor(s / 60)}${String.fromCharCode(1084)} ${s % 60}${String.fromCharCode(1089)}`;
 }
 
 function pct(n: number | null | undefined): string {
@@ -76,12 +688,8 @@ function Loader() {
   );
 }
 
-function Empty({ text }: { text?: string }) {
-  return (
-    <p className="text-center text-muted-foreground py-12">
-      {text ?? "No data for the selected period"}
-    </p>
-  );
+function Empty() {
+  return <p className="text-center text-muted-foreground py-12">{T.NO_DATA}</p>;
 }
 
 function TabCardHeader({
@@ -171,11 +779,7 @@ export const EventsStatsSection = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border px-4 py-4 flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-2xl font-bold">
-          {
-            "\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0430 \u0441\u043e\u0431\u044b\u0442\u0438\u0439"
-          }
-        </h2>
+        <h2 className="text-2xl font-bold">{T.ANALYTICS}</h2>
         <div className="flex items-center gap-3">
           <PeriodSelector value={period} onChange={setPeriod} />
           <Button
@@ -189,9 +793,7 @@ export const EventsStatsSection = () => {
               size={16}
               className={isAnyLoading ? "animate-spin" : ""}
             />
-            {
-              "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0432\u0441\u0451"
-            }
+            {T.REFRESH_ALL}
           </Button>
         </div>
       </div>
@@ -207,55 +809,43 @@ export const EventsStatsSection = () => {
       {/* Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          label={
-            "\u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u043f\u043e\u0441\u0435\u0442\u0438\u0442\u0435\u043b\u0435\u0439"
-          }
+          label={T.UNIQUE_VISITORS}
           value={summary.data?.unique_visitors ?? "\u2014"}
           icon={<Icon name="Users" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label={"\u0421\u0435\u0441\u0441\u0438\u0439"}
+          label={T.SESSIONS}
           value={summary.data?.sessions ?? "\u2014"}
           icon={<Icon name="Layers" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label={
-            "\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u043e\u0432 \u0441\u0442\u0440\u0430\u043d\u0438\u0446"
-          }
+          label={T.PAGE_VIEWS}
           value={summary.data?.page_views ?? "\u2014"}
           icon={<Icon name="Eye" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label={
-            "\u041a\u043b\u0438\u043a\u043e\u0432 \u043f\u043e \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u0430\u043c"
-          }
+          label={T.PROVIDER_CLICKS}
           value={summary.data?.provider_clicks ?? "\u2014"}
           icon={<Icon name="MousePointerClick" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label={
-            "\u0412\u043d\u0435\u0448\u043d\u0438\u0445 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432"
-          }
+          label={T.OUTBOUND_CLICKS}
           value={summary.data?.outbound_clicks ?? "\u2014"}
           icon={<Icon name="ExternalLink" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label={
-            "\u0421\u0440. \u0432\u0440\u0435\u043c\u044f \u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435"
-          }
+          label={T.AVG_TIME}
           value={dur(summary.data?.avg_duration)}
           icon={<Icon name="Clock" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label={
-            "\u041f\u0440\u043e\u0446\u0435\u043d\u0442 \u043e\u0442\u043a\u0430\u0437\u043e\u0432"
-          }
+          label={T.BOUNCE_RATE}
           value={pct(summary.data?.bounce_rate)}
           icon={<Icon name="TrendingDown" size={20} />}
           loading={summary.isFetching}
@@ -265,33 +855,19 @@ export const EventsStatsSection = () => {
       {/* Tabs */}
       <Tabs defaultValue="timeline" className="space-y-4">
         <TabsList className="flex-wrap h-auto">
-          <TabsTrigger value="timeline">
-            {"\u0414\u0438\u043d\u0430\u043c\u0438\u043a\u0430"}
-          </TabsTrigger>
-          <TabsTrigger value="sources">
-            {"\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438"}
-          </TabsTrigger>
-          <TabsTrigger value="pages">
-            {"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u044b"}
-          </TabsTrigger>
-          <TabsTrigger value="articles">
-            {"\u0421\u0442\u0430\u0442\u044c\u0438"}
-          </TabsTrigger>
-          <TabsTrigger value="links">
-            {"\u041f\u0435\u0440\u0435\u0445\u043e\u0434\u044b"}
-          </TabsTrigger>
-          <TabsTrigger value="sessions">
-            {"\u0421\u0435\u0441\u0441\u0438\u0438"}
-          </TabsTrigger>
+          <TabsTrigger value="timeline">{T.DYNAMICS}</TabsTrigger>
+          <TabsTrigger value="sources">{T.SOURCES}</TabsTrigger>
+          <TabsTrigger value="pages">{T.PAGES}</TabsTrigger>
+          <TabsTrigger value="articles">{T.ARTICLES}</TabsTrigger>
+          <TabsTrigger value="links">{T.LINKS}</TabsTrigger>
+          <TabsTrigger value="sessions">{T.SESSIONS_TAB}</TabsTrigger>
         </TabsList>
 
         {/* Timeline */}
         <TabsContent value="timeline">
           <Card>
             <TabCardHeader
-              title={
-                "\u0414\u0438\u043d\u0430\u043c\u0438\u043a\u0430 \u0441\u043e\u0431\u044b\u0442\u0438\u0439 \u043f\u043e \u0434\u043d\u044f\u043c"
-              }
+              title={T.TIMELINE_TITLE}
               onRefresh={() => timeline.refetch()}
               isRefreshing={timeline.isFetching}
               csvData={timeline.data?.timeline ?? []}
@@ -310,28 +886,20 @@ export const EventsStatsSection = () => {
                   selected={selectedEventTypes}
                   onChange={setSelectedEventTypes}
                   options={[
-                    {
-                      value: "page_views",
-                      label:
-                        "\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u044b",
-                      color: "#3b82f6",
-                    },
+                    { value: "page_views", label: T.VIEWS, color: "#3b82f6" },
                     {
                       value: "section_visits",
-                      label:
-                        "\u0412\u0438\u0437\u0438\u0442\u044b \u0440\u0430\u0437\u0434\u0435\u043b\u043e\u0432",
+                      label: T.SECTION_VISITS,
                       color: "#8b5cf6",
                     },
                     {
                       value: "provider_clicks",
-                      label:
-                        "\u041a\u043b\u0438\u043a\u0438 \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u043e\u0432",
+                      label: T.CLICKS_PROVIDERS,
                       color: "#10b981",
                     },
                     {
                       value: "outbound_clicks",
-                      label:
-                        "\u0412\u043d\u0435\u0448\u043d\u0438\u0435 \u0441\u0441\u044b\u043b\u043a\u0438",
+                      label: T.OUTBOUND_LINKS,
                       color: "#f59e0b",
                     },
                   ]}
@@ -353,7 +921,7 @@ export const EventsStatsSection = () => {
                         type="monotone"
                         dataKey="page_views"
                         stroke="#3b82f6"
-                        name="\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u044b"
+                        name={T.VIEWS}
                         dot={false}
                         strokeWidth={2}
                       />
@@ -363,7 +931,7 @@ export const EventsStatsSection = () => {
                         type="monotone"
                         dataKey="section_visits"
                         stroke="#8b5cf6"
-                        name="\u0412\u0438\u0437\u0438\u0442\u044b \u0440\u0430\u0437\u0434\u0435\u043b\u043e\u0432"
+                        name={T.SECTION_VISITS}
                         dot={false}
                         strokeWidth={2}
                       />
@@ -373,7 +941,7 @@ export const EventsStatsSection = () => {
                         type="monotone"
                         dataKey="provider_clicks"
                         stroke="#10b981"
-                        name="\u041a\u043b\u0438\u043a\u0438 \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u043e\u0432"
+                        name={T.CLICKS_PROVIDERS}
                         dot={false}
                         strokeWidth={2}
                       />
@@ -383,7 +951,7 @@ export const EventsStatsSection = () => {
                         type="monotone"
                         dataKey="outbound_clicks"
                         stroke="#f59e0b"
-                        name="\u0412\u043d\u0435\u0448\u043d\u0438\u0435 \u0441\u0441\u044b\u043b\u043a\u0438"
+                        name={T.OUTBOUND_LINKS}
                         dot={false}
                         strokeWidth={2}
                       />
@@ -400,9 +968,7 @@ export const EventsStatsSection = () => {
           <div className="grid gap-4 lg:grid-cols-2">
             <Card>
               <TabCardHeader
-                title={
-                  "\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0438 \u0442\u0440\u0430\u0444\u0438\u043a\u0430"
-                }
+                title={T.SOURCES_TITLE}
                 onRefresh={() => sources.refetch()}
                 isRefreshing={sources.isFetching}
                 csvData={sources.data?.sources ?? []}
@@ -434,7 +1000,7 @@ export const EventsStatsSection = () => {
                             <Cell key={i} fill={entry.color} />
                           ))}
                         </Pie>
-                        <Tooltip formatter={(v: any) => [`${v}`, ""]} />
+                        <Tooltip />
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="mt-2 space-y-1">
@@ -443,7 +1009,6 @@ export const EventsStatsSection = () => {
                           const total =
                             sourcesData.reduce((sum, d) => sum + d.value, 0) ||
                             1;
-                          const share = ((s.visitors / total) * 100).toFixed(1);
                           return (
                             <div
                               key={i}
@@ -459,7 +1024,9 @@ export const EventsStatsSection = () => {
                                 <span>{s.source}</span>
                               </div>
                               <div className="flex gap-4 text-muted-foreground">
-                                <span>{share}%</span>
+                                <span>
+                                  {((s.visitors / total) * 100).toFixed(1)}%
+                                </span>
                                 <span>{s.visitors}</span>
                                 <span>{s.page_views}</span>
                               </div>
@@ -472,14 +1039,9 @@ export const EventsStatsSection = () => {
                 )}
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader>
-                <CardTitle>
-                  {
-                    "\u041f\u043e\u0441\u0435\u0442\u0438\u0442\u0435\u043b\u0438 \u043f\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0443"
-                  }
-                </CardTitle>
+                <CardTitle>{T.VISITORS_BY_SOURCE}</CardTitle>
               </CardHeader>
               <CardContent>
                 {sources.isFetching && !sources.data && <Loader />}
@@ -497,7 +1059,7 @@ export const EventsStatsSection = () => {
                       <Tooltip />
                       <Bar
                         dataKey="visitors"
-                        name="\u041f\u043e\u0441\u0435\u0442\u0438\u0442\u0435\u043b\u0438"
+                        name={T.VISITORS}
                         radius={[0, 4, 4, 0]}
                       >
                         {((sources.data?.sources as SourceStat[]) ?? []).map(
@@ -519,9 +1081,7 @@ export const EventsStatsSection = () => {
           <div className="grid gap-4 lg:grid-cols-2">
             <Card>
               <TabCardHeader
-                title={
-                  "\u0422\u043e\u043f \u0441\u0442\u0440\u0430\u043d\u0438\u0446"
-                }
+                title={T.TOP_PAGES}
                 onRefresh={() => pages.refetch()}
                 isRefreshing={pages.isFetching}
                 csvData={pages.data?.pages ?? []}
@@ -560,13 +1120,13 @@ export const EventsStatsSection = () => {
                       <Legend />
                       <Bar
                         dataKey="views"
-                        name="\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u044b"
+                        name={T.VIEWS}
                         fill="#3b82f6"
                         radius={[0, 4, 4, 0]}
                       />
                       <Bar
                         dataKey="unique_visitors"
-                        name="\u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0435"
+                        name={T.UNIQUE}
                         fill="#10b981"
                         radius={[0, 4, 4, 0]}
                       />
@@ -575,14 +1135,9 @@ export const EventsStatsSection = () => {
                 )}
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader>
-                <CardTitle>
-                  {
-                    "\u0414\u0435\u0442\u0430\u043b\u0438 \u043f\u043e \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0430\u043c"
-                  }
-                </CardTitle>
+                <CardTitle>{T.PAGE_DETAILS}</CardTitle>
               </CardHeader>
               <CardContent>
                 {pages.isFetching && !pages.data && <Loader />}
@@ -593,16 +1148,16 @@ export const EventsStatsSection = () => {
                       <thead>
                         <tr className="border-b text-muted-foreground">
                           <th className="text-left py-2 font-medium">
-                            {"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430"}
+                            {T.PAGE_COL}
                           </th>
                           <th className="text-right py-2 font-medium">
-                            {"\u041f\u0440\u043e\u0441\u043c."}
+                            {T.VIEWS_SHORT}
                           </th>
                           <th className="text-right py-2 font-medium">
-                            {"\u0423\u043d\u0438\u043a."}
+                            {T.UNIQUE_SHORT}
                           </th>
                           <th className="text-right py-2 font-medium">
-                            {"\u0421\u0440. \u0432\u0440\u0435\u043c\u044f"}
+                            {T.AVG_TIME_SHORT}
                           </th>
                         </tr>
                       </thead>
@@ -640,9 +1195,7 @@ export const EventsStatsSection = () => {
           <div className="grid gap-4 lg:grid-cols-2">
             <Card>
               <TabCardHeader
-                title={
-                  "\u0421\u0442\u0430\u0442\u044c\u0438 \u00b7 \u043f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u044b \u0438 \u043a\u043e\u043d\u0432\u0435\u0440\u0441\u0438\u044f"
-                }
+                title={T.ARTICLES_TITLE}
                 onRefresh={() => articles.refetch()}
                 isRefreshing={articles.isFetching}
                 csvData={articles.data?.articles ?? []}
@@ -666,16 +1219,16 @@ export const EventsStatsSection = () => {
                       <thead>
                         <tr className="border-b text-muted-foreground">
                           <th className="text-left py-2 font-medium">
-                            {"\u0421\u0442\u0430\u0442\u044c\u044f"}
+                            {T.ARTICLE_COL}
                           </th>
                           <th className="text-right py-2 font-medium">
-                            {"\u0412\u0441\u0435\u0433\u043e"}
+                            {T.TOTAL}
                           </th>
                           <th className="text-right py-2 font-medium">
-                            {"\u0423\u043d\u0438\u043a."}
+                            {T.UNIQUE_SHORT}
                           </th>
                           <th className="text-right py-2 font-medium">
-                            {"\u041a\u043e\u043d\u0432."}
+                            {T.CONV_SHORT}
                           </th>
                         </tr>
                       </thead>
@@ -712,14 +1265,9 @@ export const EventsStatsSection = () => {
                 )}
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader>
-                <CardTitle>
-                  {
-                    "\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u044b \u043f\u043e \u0441\u0442\u0430\u0442\u044c\u044f\u043c"
-                  }
-                </CardTitle>
+                <CardTitle>{T.VIEWS_BY_ARTICLES}</CardTitle>
               </CardHeader>
               <CardContent>
                 {articles.isFetching && !articles.data && <Loader />}
@@ -751,13 +1299,13 @@ export const EventsStatsSection = () => {
                           <Legend />
                           <Bar
                             dataKey="views"
-                            name="\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u044b"
+                            name={T.VIEWS}
                             fill="#3b82f6"
                             radius={[0, 4, 4, 0]}
                           />
                           <Bar
                             dataKey="unique_visitors"
-                            name="\u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0435"
+                            name={T.UNIQUE}
                             fill="#10b981"
                             radius={[0, 4, 4, 0]}
                           />
@@ -775,9 +1323,7 @@ export const EventsStatsSection = () => {
           <div className="grid gap-4 lg:grid-cols-2">
             <Card>
               <TabCardHeader
-                title={
-                  "\u041f\u0435\u0440\u0435\u0445\u043e\u0434\u044b \u043f\u043e \u0441\u0441\u044b\u043b\u043a\u0430\u043c \u0438\u0437 \u0441\u0442\u0430\u0442\u0435\u0439"
-                }
+                title={T.LINKS_TITLE}
                 onRefresh={() => linkClicks.refetch()}
                 isRefreshing={linkClicks.isFetching}
                 csvData={linkClicks.data?.link_clicks ?? []}
@@ -800,23 +1346,23 @@ export const EventsStatsSection = () => {
                       <thead>
                         <tr className="border-b text-muted-foreground">
                           <th className="text-left py-2 font-medium">
-                            {"\u0421\u0442\u0430\u0442\u044c\u044f"}
+                            {T.ARTICLE_COL}
                           </th>
                           <th className="text-right py-2 font-medium text-blue-500">
-                            {"\u041a\u043d\u043e\u043f\u043a\u0430"}
+                            {T.BUTTON}
                             <br />
-                            {"\u0432\u0441\u0435\u0433\u043e"}
+                            {T.BUTTON_TOTAL}
                           </th>
                           <th className="text-right py-2 font-medium text-muted-foreground">
-                            {"\u0443\u043d\u0438\u043a."}
+                            {T.UNIQ_SHORT}
                           </th>
                           <th className="text-right py-2 font-medium text-green-500">
-                            {"\u0422\u0435\u043a\u0441\u0442"}
+                            {T.TEXT}
                             <br />
-                            {"\u0432\u0441\u0435\u0433\u043e"}
+                            {T.BUTTON_TOTAL}
                           </th>
                           <th className="text-right py-2 font-medium text-muted-foreground">
-                            {"\u0443\u043d\u0438\u043a."}
+                            {T.UNIQ_SHORT}
                           </th>
                         </tr>
                       </thead>
@@ -850,29 +1396,20 @@ export const EventsStatsSection = () => {
                     <div className="flex gap-4 mt-3 pt-3 border-t">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <div className="w-3 h-3 rounded-sm bg-blue-500" />
-                        {
-                          "\u043a\u043d\u043e\u043f\u043a\u0430 \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u0430"
-                        }
+                        {T.BUTTON_PROVIDER}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <div className="w-3 h-3 rounded-sm bg-green-500" />
-                        {
-                          "\u0441\u0441\u044b\u043b\u043a\u0430 \u0438\u0437 \u0442\u0435\u043a\u0441\u0442\u0430"
-                        }
+                        {T.LINK_FROM_TEXT}
                       </div>
                     </div>
                   </div>
                 )}
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader>
-                <CardTitle>
-                  {
-                    "\u041a\u043b\u0438\u043a\u0438 \u043f\u043e \u0441\u0442\u0430\u0442\u044c\u044f\u043c"
-                  }
-                </CardTitle>
+                <CardTitle>{T.CLICKS_BY_ARTICLES}</CardTitle>
               </CardHeader>
               <CardContent>
                 {linkClicks.isFetching && !linkClicks.data && <Loader />}
@@ -901,13 +1438,13 @@ export const EventsStatsSection = () => {
                           <Legend />
                           <Bar
                             dataKey="button_clicks_total"
-                            name="\u041a\u043d\u043e\u043f\u043a\u0430"
+                            name={T.BUTTON}
                             fill="#3b82f6"
                             radius={[0, 4, 4, 0]}
                           />
                           <Bar
                             dataKey="text_clicks_total"
-                            name="\u0422\u0435\u043a\u0441\u0442"
+                            name={T.TEXT}
                             fill="#10b981"
                             radius={[0, 4, 4, 0]}
                           />
