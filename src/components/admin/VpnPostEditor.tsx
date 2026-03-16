@@ -528,52 +528,65 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
   // ==================== ИСПРАВЛЕННАЯ generateSlug ====================
   const generateSlug = (title: string): string => {
+    // 1. Удаляем HTML-теги
+    const withoutHtml = title.replace(/<[^>]*>/g, "");
+    // 2. Удаляем markdown-ссылки [text](url) → оставляем только text
+    const withoutMarkdownLinks = withoutHtml.replace(
+      /\[([^\]]+)\]\([^\)]+\)/g,
+      "$1",
+    );
+    // 3. Оставляем только буквы, цифры, пробелы и дефисы (Unicode-буквы)
+    const cleaned = withoutMarkdownLinks
+      .replace(/[^\p{L}\p{N}\s-]/gu, "")
+      .trim();
+
+    // Транслитерация (можно расширить)
     const translit: Record<string, string> = {
-      "\u0430": "a",
-      "\u0431": "b",
-      "\u0432": "v",
-      "\u0433": "g",
-      "\u0434": "d",
-      "\u0435": "e",
-      "\u0451": "e",
-      "\u0436": "zh",
-      "\u0437": "z",
-      "\u0438": "i",
-      "\u0439": "y",
-      "\u043a": "k",
-      "\u043b": "l",
-      "\u043c": "m",
-      "\u043d": "n",
-      "\u043e": "o",
-      "\u043f": "p",
-      "\u0440": "r",
-      "\u0441": "s",
-      "\u0442": "t",
-      "\u0443": "u",
-      "\u0444": "f",
-      "\u0445": "kh",
-      "\u0446": "ts",
-      "\u0447": "ch",
-      "\u0448": "sh",
-      "\u0449": "shch",
-      "\u044a": "",
-      "\u044b": "y",
-      "\u044c": "",
-      "\u044d": "e",
-      "\u044e": "yu",
-      "\u044f": "ya",
+      а: "a",
+      б: "b",
+      в: "v",
+      г: "g",
+      д: "d",
+      е: "e",
+      ё: "e",
+      ж: "zh",
+      з: "z",
+      и: "i",
+      й: "y",
+      к: "k",
+      л: "l",
+      м: "m",
+      н: "n",
+      о: "o",
+      п: "p",
+      р: "r",
+      с: "s",
+      т: "t",
+      у: "u",
+      ф: "f",
+      х: "kh",
+      ц: "ts",
+      ч: "ch",
+      ш: "sh",
+      щ: "shch",
+      ъ: "",
+      ы: "y",
+      ь: "",
+      э: "e",
+      ю: "yu",
+      я: "ya",
     };
-    const slug = title
+
+    const slug = cleaned
       .toLowerCase()
       .split("")
       .map((c) => translit[c] ?? c)
       .join("")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    return slug.split("-").reduce((acc, part) => {
-      const next = acc ? `${acc}-${part}` : part;
-      return next.length <= 80 ? next : acc;
-    }, "");
+      .replace(/\s+/g, "-") // пробелы → дефисы
+      .replace(/[^a-z0-9-]+/g, "") // удаляем всё кроме букв, цифр и дефисов
+      .replace(/^-+|-+$/g, ""); // обрезаем лишние дефисы в начале/конце
+
+    return slug.slice(0, 80); // ограничиваем длину
   };
   // ==================================================================
 
