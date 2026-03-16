@@ -58,13 +58,13 @@ def handler(event, context):
 
             # ── Фильтр по дате ──────────────────────────────────────────────
             if month:
-                date_filter = "AND TO_CHAR(created_at, 'YYYY-MM') = %s"
+                date_filter = "AND TO_CHAR(e.created_at, 'YYYY-MM') = %s"
                 date_param  = month
             elif period and period.isdigit():
-                date_filter = "AND created_at >= CURRENT_DATE - %s"
+                date_filter = "AND e.created_at >= CURRENT_DATE - %s"
                 date_param  = int(period)
             else:
-                date_filter = "AND created_at >= CURRENT_DATE - 30"
+                date_filter = "AND e.created_at >= CURRENT_DATE - 30"
                 date_param  = None
 
             # ── summary ─────────────────────────────────────────────────────
@@ -83,13 +83,13 @@ def handler(event, context):
                             SELECT COUNT(*)
                             FROM (
                                 SELECT session_id
-                                FROM {SCHEMA}.events
+                                FROM {SCHEMA}.events e
                                 WHERE 1=1 {date_filter}
                                 GROUP BY session_id
                                 HAVING COUNT(*) = 1
                             ) AS bounces
                         ) * 1.0 / NULLIF(COUNT(DISTINCT session_id), 0) AS bounce_rate
-                    FROM {SCHEMA}.events
+                    FROM {SCHEMA}.events e
                     WHERE 1=1 {date_filter}
                 """
                 params_list = [date_param, date_param] if date_param is not None else []
@@ -101,14 +101,14 @@ def handler(event, context):
             elif view == 'timeline':
                 query = f"""
                     SELECT
-                        DATE(created_at) AS date,
+                        DATE(e.created_at) AS date,
                         COUNT(*) FILTER (WHERE event_type = 'page_view')       AS page_views,
                         COUNT(*) FILTER (WHERE event_type = 'section_visit')   AS section_visits,
                         COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
                         COUNT(*) FILTER (WHERE event_type = 'outbound_link')   AS outbound_clicks
-                    FROM {SCHEMA}.events
+                    FROM {SCHEMA}.events e
                     WHERE 1=1 {date_filter}
-                    GROUP BY DATE(created_at)
+                    GROUP BY DATE(e.created_at)
                     ORDER BY date
                 """
                 params_list = [date_param] if date_param is not None else []
@@ -148,7 +148,7 @@ def handler(event, context):
                             target_id,
                             COUNT(*)                       AS views,
                             COUNT(DISTINCT visitor_uuid)   AS unique_visitors
-                        FROM {SCHEMA}.events
+                        FROM {SCHEMA}.events e
                         WHERE event_type = 'page_view'
                           AND target_id IS NOT NULL
                           {date_filter}
@@ -156,7 +156,7 @@ def handler(event, context):
                     ),
                     article_clicks AS (
                         SELECT target_id, COUNT(*) AS clicks
-                        FROM {SCHEMA}.events
+                        FROM {SCHEMA}.events e
                         WHERE event_type = 'provider_click'
                           AND page_path LIKE '/vpn/%%'
                           {date_filter}
@@ -196,7 +196,7 @@ def handler(event, context):
                             COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
                             ARRAY_AGG(DISTINCT page_path)                          AS page_paths,
                             MAX(visitor_uuid)                                       AS visitor_uuid
-                        FROM {SCHEMA}.events
+                        FROM {SCHEMA}.events e
                         WHERE 1=1 {date_filter}
                         GROUP BY session_id
                     )
@@ -248,7 +248,7 @@ def handler(event, context):
                         COUNT(*) FILTER (
                             WHERE event_type IN ('page_view', 'section_visit')
                         ) AS page_views
-                    FROM {SCHEMA}.events
+                    FROM {SCHEMA}.events e
                     WHERE 1=1 {date_filter}
                     GROUP BY source
                     ORDER BY visitors DESC
