@@ -218,13 +218,13 @@ export const EventsStatsSection = () => {
           loading={summary.isFetching}
         />
         <MetricCard
-          label="Кликов по провайдерам"
+          label="Кликов кнопок" // ← изменено
           value={summary.data?.provider_clicks ?? "—"}
           icon={<Icon name="MousePointerClick" size={20} />}
           loading={summary.isFetching}
         />
         <MetricCard
-          label="Внешних переходов"
+          label="Кликов текста" // ← изменено
           value={summary.data?.outbound_clicks ?? "—"}
           icon={<Icon name="ExternalLink" size={20} />}
           loading={summary.isFetching}
@@ -267,8 +267,8 @@ export const EventsStatsSection = () => {
                 { key: "date", label: "Дата" },
                 { key: "page_views", label: "Просмотры" },
                 { key: "section_visits", label: "Визиты разделов" },
-                { key: "provider_clicks", label: "Клики провайдеров" },
-                { key: "outbound_clicks", label: "Внешние ссылки" },
+                { key: "provider_clicks", label: "Клики кнопок" }, // ← изменено
+                { key: "outbound_clicks", label: "Клики текста" }, // ← изменено
               ]}
             />
             <CardContent>
@@ -289,12 +289,12 @@ export const EventsStatsSection = () => {
                     },
                     {
                       value: "provider_clicks",
-                      label: "Клики провайдеров",
+                      label: "Клики кнопок", // ← изменено
                       color: "#10b981",
                     },
                     {
                       value: "outbound_clicks",
-                      label: "Внешние ссылки",
+                      label: "Клики текста", // ← изменено
                       color: "#f59e0b",
                     },
                   ]}
@@ -336,7 +336,7 @@ export const EventsStatsSection = () => {
                         type="monotone"
                         dataKey="provider_clicks"
                         stroke="#10b981"
-                        name="Клики провайдеров"
+                        name="Клики кнопок" // ← изменено
                         dot={false}
                         strokeWidth={2}
                       />
@@ -346,7 +346,7 @@ export const EventsStatsSection = () => {
                         type="monotone"
                         dataKey="outbound_clicks"
                         stroke="#f59e0b"
-                        name="Внешние ссылки"
+                        name="Клики текста" // ← изменено
                         dot={false}
                         strokeWidth={2}
                       />
