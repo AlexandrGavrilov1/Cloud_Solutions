@@ -32,14 +32,12 @@ import {
   useDeleteVpnPost,
 } from "@/hooks/useVpnPosts";
 
-// ==================== РљР°СЃС‚РѕРјРЅС‹Рµ РєРѕРјР°РЅРґС‹ СЂРµРґР°РєС‚РѕСЂР° ====================
+// ==================== Кастомные команды редактора ====================
 
 const alignLeftCommand: ICommand = {
   name: "alignLeft",
   keyCommand: "alignLeft",
-  buttonProps: {
-    "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ Р»РµРІРѕРјСѓ РєСЂР°СЋ",
-  },
+  buttonProps: { "aria-label": "Выровнять по левому краю" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
       <path
@@ -50,7 +48,7 @@ const alignLeftCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<p align="left">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+      `<p align="left">${state.selectedText || "текст"}</p>`,
     );
   },
 };
@@ -58,7 +56,7 @@ const alignLeftCommand: ICommand = {
 const alignCenterCommand: ICommand = {
   name: "alignCenter",
   keyCommand: "alignCenter",
-  buttonProps: { "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ С†РµРЅС‚СЂСѓ" },
+  buttonProps: { "aria-label": "Выровнять по центру" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
       <path
@@ -69,7 +67,7 @@ const alignCenterCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<p align="center">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+      `<p align="center">${state.selectedText || "текст"}</p>`,
     );
   },
 };
@@ -77,9 +75,7 @@ const alignCenterCommand: ICommand = {
 const alignRightCommand: ICommand = {
   name: "alignRight",
   keyCommand: "alignRight",
-  buttonProps: {
-    "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ РїСЂР°РІРѕРјСѓ РєСЂР°СЋ",
-  },
+  buttonProps: { "aria-label": "Выровнять по правому краю" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
       <path
@@ -90,7 +86,7 @@ const alignRightCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<p align="right">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+      `<p align="right">${state.selectedText || "текст"}</p>`,
     );
   },
 };
@@ -98,7 +94,7 @@ const alignRightCommand: ICommand = {
 const alignJustifyCommand: ICommand = {
   name: "alignJustify",
   keyCommand: "alignJustify",
-  buttonProps: { "aria-label": "Р’С‹СЂРѕРІРЅСЏС‚СЊ РїРѕ С€РёСЂРёРЅРµ" },
+  buttonProps: { "aria-label": "Выровнять по ширине" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
       <path
@@ -109,7 +105,7 @@ const alignJustifyCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<p style="text-align: justify;">${state.selectedText || "С‚РµРєСЃС‚"}</p>`,
+      `<p style="text-align: justify;">${state.selectedText || "текст"}</p>`,
     );
   },
 };
@@ -117,7 +113,7 @@ const alignJustifyCommand: ICommand = {
 const fontSizeIncreaseCommand: ICommand = {
   name: "fontSizeIncrease",
   keyCommand: "fontSizeIncrease",
-  buttonProps: { "aria-label": "РЈРІРµР»РёС‡РёС‚СЊ С€СЂРёС„С‚" },
+  buttonProps: { "aria-label": "Увеличить шрифт" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
       <text x="5" y="15" fontSize="14" fill="currentColor">
@@ -127,7 +123,7 @@ const fontSizeIncreaseCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<font size="5">${state.selectedText || "С‚РµРєСЃС‚"}</font>`,
+      `<font size="5">${state.selectedText || "текст"}</font>`,
     );
   },
 };
@@ -135,7 +131,7 @@ const fontSizeIncreaseCommand: ICommand = {
 const fontSizeDecreaseCommand: ICommand = {
   name: "fontSizeDecrease",
   keyCommand: "fontSizeDecrease",
-  buttonProps: { "aria-label": "РЈРјРµРЅСЊС€РёС‚СЊ С€СЂРёС„С‚" },
+  buttonProps: { "aria-label": "Уменьшить шрифт" },
   icon: (
     <svg width="14" height="14" viewBox="0 0 20 20">
       <text x="5" y="15" fontSize="14" fill="currentColor">
@@ -145,7 +141,7 @@ const fontSizeDecreaseCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<font size="2">${state.selectedText || "С‚РµРєСЃС‚"}</font>`,
+      `<font size="2">${state.selectedText || "текст"}</font>`,
     );
   },
 };
@@ -153,11 +149,11 @@ const fontSizeDecreaseCommand: ICommand = {
 const fontStemCommand: ICommand = {
   name: "fontStem",
   keyCommand: "fontStem",
-  buttonProps: { "aria-label": "РЁСЂРёС„С‚ Stem" },
+  buttonProps: { "aria-label": "Шрифт Stem" },
   icon: <span style={{ fontSize: 12 }}>Stem</span>,
   execute: (state, api) => {
     api.replaceSelection(
-      `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+      `<span style="font-family: 'Stem', sans-serif;">${state.selectedText || "текст"}</span>`,
     );
   },
 };
@@ -165,11 +161,11 @@ const fontStemCommand: ICommand = {
 const fontTTCommand: ICommand = {
   name: "fontTT",
   keyCommand: "fontTT",
-  buttonProps: { "aria-label": "РЁСЂРёС„С‚ TT Travels" },
+  buttonProps: { "aria-label": "Шрифт TT Travels" },
   icon: <span style={{ fontSize: 12 }}>TT</span>,
   execute: (state, api) => {
     api.replaceSelection(
-      `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+      `<span style="font-family: 'TT Travels Next Trial', sans-serif;">${state.selectedText || "текст"}</span>`,
     );
   },
 };
@@ -177,7 +173,7 @@ const fontTTCommand: ICommand = {
 const colorOrangeCommand: ICommand = {
   name: "colorOrange",
   keyCommand: "colorOrange",
-  buttonProps: { "aria-label": "РћСЂР°РЅР¶РµРІС‹Р№ (#FF931F)" },
+  buttonProps: { "aria-label": "Оранжевый (#FF931F)" },
   icon: (
     <div
       style={{
@@ -190,7 +186,7 @@ const colorOrangeCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<span class="text-[#FF931F] dark:text-[#FF931F]">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+      `<span class="text-[#FF931F] dark:text-[#FF931F]">${state.selectedText || "текст"}</span>`,
     );
   },
 };
@@ -198,7 +194,7 @@ const colorOrangeCommand: ICommand = {
 const colorDarkCommand: ICommand = {
   name: "colorDark",
   keyCommand: "colorDark",
-  buttonProps: { "aria-label": "РўС‘РјРЅС‹Р№ (#272932)" },
+  buttonProps: { "aria-label": "Тёмный (#272932)" },
   icon: (
     <div
       style={{
@@ -211,7 +207,7 @@ const colorDarkCommand: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<span class="text-[#272932] dark:text-white">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+      `<span class="text-[#272932] dark:text-white">${state.selectedText || "текст"}</span>`,
     );
   },
 };
@@ -219,7 +215,7 @@ const colorDarkCommand: ICommand = {
 const colorDark50Command: ICommand = {
   name: "colorDark50",
   keyCommand: "colorDark50",
-  buttonProps: { "aria-label": "РўС‘РјРЅС‹Р№ 50%" },
+  buttonProps: { "aria-label": "Тёмный 50%" },
   icon: (
     <div
       style={{
@@ -232,7 +228,7 @@ const colorDark50Command: ICommand = {
   ),
   execute: (state, api) => {
     api.replaceSelection(
-      `<span class="text-[#272932]/50 dark:text-white/50">${state.selectedText || "С‚РµРєСЃС‚"}</span>`,
+      `<span class="text-[#272932]/50 dark:text-white/50">${state.selectedText || "текст"}</span>`,
     );
   },
 };
@@ -240,14 +236,11 @@ const colorDark50Command: ICommand = {
 const heading1AdaptiveCommand: ICommand = {
   name: "heading1Adaptive",
   keyCommand: "heading1Adaptive",
-  buttonProps: {
-    "aria-label": "Р—Р°РіРѕР»РѕРІРѕРє СЂР°Р·РґРµР»Р° (Р°РґР°РїС‚РёРІРЅС‹Р№)",
-  },
+  buttonProps: { "aria-label": "Заголовок раздела (адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
-    const text = state.selectedText || "Р—Р°РіРѕР»РѕРІРѕРє СЂР°Р·РґРµР»Р°";
     api.replaceSelection(
-      `<span class="font-heading font-bold text-2xl md:text-3xl lg:text-4xl text-[#272932] dark:text-white text-left block">${text}</span>`,
+      `<span class="font-heading font-bold text-2xl md:text-3xl lg:text-4xl text-[#272932] dark:text-white text-left block">${state.selectedText || "Заголовок раздела"}</span>`,
     );
   },
 };
@@ -255,14 +248,11 @@ const heading1AdaptiveCommand: ICommand = {
 const body1AdaptiveCommand: ICommand = {
   name: "body1Adaptive",
   keyCommand: "body1Adaptive",
-  buttonProps: {
-    "aria-label": "РўРµРєСЃС‚ 1 (Stem Medium, Р°РґР°РїС‚РёРІРЅС‹Р№)",
-  },
+  buttonProps: { "aria-label": "Текст 1 (Stem Medium, адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
-    const text = state.selectedText || "РўРµРєСЃС‚ 1";
     api.replaceSelection(
-      `<span class="font-sans font-medium text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`,
+      `<span class="font-sans font-medium text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${state.selectedText || "Текст 1"}</span>`,
     );
   },
 };
@@ -270,14 +260,11 @@ const body1AdaptiveCommand: ICommand = {
 const body2AdaptiveCommand: ICommand = {
   name: "body2Adaptive",
   keyCommand: "body2Adaptive",
-  buttonProps: {
-    "aria-label": "РўРµРєСЃС‚ 2 (Stem Regular, Р°РґР°РїС‚РёРІРЅС‹Р№)",
-  },
+  buttonProps: { "aria-label": "Текст 2 (Stem Regular, адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>T2</span>,
   execute: (state, api) => {
-    const text = state.selectedText || "РўРµРєСЃС‚ 2";
     api.replaceSelection(
-      `<span class="font-sans font-normal text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${text}</span>`,
+      `<span class="font-sans font-normal text-base md:text-lg text-[#272932] dark:text-white text-justify block indent-8">${state.selectedText || "Текст 2"}</span>`,
     );
   },
 };
@@ -285,12 +272,11 @@ const body2AdaptiveCommand: ICommand = {
 const metaHeading1AdaptiveCommand: ICommand = {
   name: "metaHeading1Adaptive",
   keyCommand: "metaHeading1Adaptive",
-  buttonProps: { "aria-label": "Р—Р°РіРѕР»РѕРІРѕРє H1 (Р°РґР°РїС‚РёРІРЅС‹Р№)" },
+  buttonProps: { "aria-label": "Заголовок H1 (адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>H1</span>,
   execute: (state, api) => {
-    const text = state.selectedText || "Р—Р°РіРѕР»РѕРІРѕРє";
     api.replaceSelection(
-      `<span class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#272932] dark:text-white text-left block">${text}</span>`,
+      `<span class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-[#272932] dark:text-white text-left block">${state.selectedText || "Заголовок"}</span>`,
     );
   },
 };
@@ -298,12 +284,11 @@ const metaHeading1AdaptiveCommand: ICommand = {
 const metaText1AdaptiveCommand: ICommand = {
   name: "metaText1Adaptive",
   keyCommand: "metaText1Adaptive",
-  buttonProps: { "aria-label": "РўРµРєСЃС‚ T1 (Р°РґР°РїС‚РёРІРЅС‹Р№)" },
+  buttonProps: { "aria-label": "Текст T1 (адаптивный)" },
   icon: <span style={{ fontSize: 12 }}>T1</span>,
   execute: (state, api) => {
-    const text = state.selectedText || "РўРµРєСЃС‚";
     api.replaceSelection(
-      `<span class="font-sans font-medium text-xl md:text-2xl text-[#272932] dark:text-white text-left block">${text}</span>`,
+      `<span class="font-sans font-medium text-xl md:text-2xl text-[#272932] dark:text-white text-left block">${state.selectedText || "Текст"}</span>`,
     );
   },
 };
@@ -314,10 +299,10 @@ const createListItem = (content: string) =>
 const numberedListCommand: ICommand = {
   name: "numberedList",
   keyCommand: "numberedList",
-  buttonProps: { "aria-label": "РќСѓРјРµСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє" },
+  buttonProps: { "aria-label": "Нумерованный список" },
   icon: <span style={{ fontSize: 12 }}>1.</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+    const lines = (state.selectedText || "Элемент списка")
       .split("\n")
       .filter(Boolean);
     api.replaceSelection(
@@ -329,12 +314,10 @@ const numberedListCommand: ICommand = {
 const discListCommand: ICommand = {
   name: "discList",
   keyCommand: "discList",
-  buttonProps: {
-    "aria-label": "РњР°СЂРєРёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє (РєСЂСѓРіРё)",
-  },
-  icon: <span style={{ fontSize: 12 }}>вЂў</span>,
+  buttonProps: { "aria-label": "Маркированный список (круги)" },
+  icon: <span style={{ fontSize: 12 }}>•</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+    const lines = (state.selectedText || "Элемент списка")
       .split("\n")
       .filter(Boolean);
     api.replaceSelection(
@@ -346,12 +329,10 @@ const discListCommand: ICommand = {
 const squareListCommand: ICommand = {
   name: "squareList",
   keyCommand: "squareList",
-  buttonProps: {
-    "aria-label": "РњР°СЂРєРёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє (РєРІР°РґСЂР°С‚С‹)",
-  },
-  icon: <span style={{ fontSize: 12 }}>в– </span>,
+  buttonProps: { "aria-label": "Маркированный список (квадраты)" },
+  icon: <span style={{ fontSize: 12 }}>■</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+    const lines = (state.selectedText || "Элемент списка")
       .split("\n")
       .filter(Boolean);
     api.replaceSelection(
@@ -363,16 +344,16 @@ const squareListCommand: ICommand = {
 const checkListCommand: ICommand = {
   name: "checkList",
   keyCommand: "checkList",
-  buttonProps: { "aria-label": "РЎРїРёСЃРѕРє СЃ РіР°Р»РѕС‡РєР°РјРё" },
-  icon: <span style={{ fontSize: 12 }}>вњ“</span>,
+  buttonProps: { "aria-label": "Список с галочками" },
+  icon: <span style={{ fontSize: 12 }}>✓</span>,
   execute: (state, api) => {
-    const lines = (state.selectedText || "Р­Р»РµРјРµРЅС‚ СЃРїРёСЃРєР°")
+    const lines = (state.selectedText || "Элемент списка")
       .split("\n")
       .filter(Boolean);
     const items = lines
       .map(
         (line) =>
-          `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['вњ“'] before:absolute before:left-0">${line}</li>`,
+          `<li class="font-sans font-normal text-base md:text-lg leading-tight text-[#272932] dark:text-white text-justify list-none pl-5 relative before:content-['checkmark'] before:absolute before:left-0">${line}</li>`,
       )
       .join("");
     api.replaceSelection(`<ul class="space-y-1">${items}</ul>`);
@@ -382,16 +363,14 @@ const checkListCommand: ICommand = {
 const clearFormattingCommand: ICommand = {
   name: "clearFormatting",
   keyCommand: "clearFormatting",
-  buttonProps: {
-    "aria-label": "РћС‡РёСЃС‚РёС‚СЊ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ",
-  },
+  buttonProps: { "aria-label": "Очистить форматирование" },
   icon: <span style={{ fontSize: 12 }}>Tx</span>,
   execute: (state, api) => {
     api.replaceSelection((state.selectedText || "").replace(/<[^>]*>/g, ""));
   },
 };
 
-// ==================== РњР°СЃСЃРёРІС‹ РєРѕРјР°РЅРґ ====================
+// ==================== Массивы команд ====================
 
 const fullCommands = [
   commands.bold,
@@ -444,7 +423,7 @@ const metaCommands = [
   clearFormattingCommand,
 ];
 
-// ==================== РћСЃРЅРѕРІРЅРѕР№ РєРѕРјРїРѕРЅРµРЅС‚ ====================
+// ==================== Основной компонент ====================
 
 interface VpnPostEditorProps {
   onSave?: (updatedPost: VpnPost) => void;
@@ -484,9 +463,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     slug: "",
     category: "VPN",
     tags: [],
-    author: "РљРѕРјР°РЅРґР° TopCloudHub",
+    author: "Команда TopCloudHub",
     date: new Date().toLocaleDateString("ru-RU"),
-    readTime: "5 РјРёРЅ",
+    readTime: "5 мин",
     image: "",
     providerUrl: "",
     providerName: "",
@@ -526,8 +505,8 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     setTitle("");
     setExcerpt("");
     setCategory("VPN");
-    setReadTime("5 РјРёРЅ");
-    setAuthor("РљРѕРјР°РЅРґР° TopCloudHub");
+    setReadTime("5 мин");
+    setAuthor("Команда TopCloudHub");
     setImage("");
     setProviderUrl("");
     setProviderName("");
@@ -538,18 +517,16 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       slug: "",
       category: "VPN",
       tags: [],
-      author: "РљРѕРјР°РЅРґР° TopCloudHub",
+      author: "Команда TopCloudHub",
       date: new Date().toLocaleDateString("ru-RU"),
-      readTime: "5 РјРёРЅ",
+      readTime: "5 мин",
       image: "",
       providerUrl: "",
       providerName: "",
     });
   };
 
-  // ==================== РРЎРџР РђР’Р›Р•РќРќРђРЇ Р¤РЈРќРљР¦РРЇ generateSlug ====================
-  // Р‘С‹Р»Рѕ: РєРёСЂРёР»Р»РёС†Р° РѕСЃС‚Р°РІР°Р»Р°СЃСЊ РІ slug РєР°Рє РµСЃС‚СЊ в†’ СЃР»РѕРјР°РЅРЅС‹Рµ URL
-  // РЎС‚Р°Р»Рѕ: РїРѕР»РЅР°СЏ С‚СЂР°РЅСЃР»РёС‚РµСЂР°С†РёСЏ + РѕРіСЂР°РЅРёС‡РµРЅРёРµ РґР»РёРЅС‹ 80 СЃРёРјРІРѕР»РѕРІ
+  // ==================== ИСПРАВЛЕННАЯ generateSlug ====================
   const generateSlug = (title: string): string => {
     const translit: Record<string, string> = {
       "\u0430": "a",
@@ -586,30 +563,25 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       "\u044e": "yu",
       "\u044f": "ya",
     };
-
-    const transliterated = title
+    const slug = title
       .toLowerCase()
       .split("")
-      .map((char) => translit[char] ?? char)
-      .join("");
-
-    const slug = transliterated
+      .map((c) => translit[c] ?? c)
+      .join("")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
-
     return slug.split("-").reduce((acc, part) => {
       const next = acc ? `${acc}-${part}` : part;
       return next.length <= 80 ? next : acc;
     }, "");
   };
-  // =========================================================================
+  // ==================================================================
 
   const handleTitleChange = (val: string | undefined) => {
     const newTitle = val || "";
     setTitle(newTitle);
-    if (isCreating) {
+    if (isCreating)
       setNewPost({ ...newPost, title: newTitle, slug: generateSlug(newTitle) });
-    }
   };
 
   const handleCancel = () => {
@@ -622,12 +594,10 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     try {
       if (isCreating) {
         if (!title || !content) {
-          toast.error(
-            "Р—Р°РіРѕР»РѕРІРѕРє Рё СЃРѕРґРµСЂР¶РёРјРѕРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹",
-          );
+          toast.error("Заголовок и содержимое обязательны");
           return;
         }
-        const newData = {
+        const created = await createMutation.mutateAsync({
           title,
           content,
           excerpt,
@@ -639,15 +609,14 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
           provider_name: providerName,
           tags,
           slug: generateSlug(title),
-        };
-        const created = await createMutation.mutateAsync(newData);
-        toast.success("РЎС‚Р°С‚СЊСЏ СЃРѕР·РґР°РЅР°");
+        });
+        toast.success("Статья создана");
         setSelectedSlug(created.slug);
         setIsCreating(false);
         onSave?.(created);
       } else {
         if (!selectedPost) return;
-        const updatedData = {
+        const updated = await updateMutation.mutateAsync({
           slug: selectedPost.slug,
           content,
           title,
@@ -659,17 +628,14 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
           provider_url: providerUrl,
           provider_name: providerName,
           tags,
-        };
-        const updated = await updateMutation.mutateAsync(updatedData);
-        toast.success("РЎС‚Р°С‚СЊСЏ СЃРѕС…СЂР°РЅРµРЅР°");
+        });
+        toast.success("Статья сохранена");
         setSelectedSlug(updated.slug);
         onSave?.(updated);
       }
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "РћС€РёР±РєР° РїСЂРё СЃРѕС…СЂР°РЅРµРЅРёРё",
+        error instanceof Error ? error.message : "Ошибка при сохранении",
       );
     } finally {
       setIsSaving(false);
@@ -680,13 +646,11 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
     if (!selectedPost) return;
     try {
       await deleteMutation.mutateAsync(selectedPost.slug);
-      toast.success("РЎС‚Р°С‚СЊСЏ СѓРґР°Р»РµРЅР°");
+      toast.success("Статья удалена");
       setSelectedSlug(null);
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "РћС€РёР±РєР° РїСЂРё СѓРґР°Р»РµРЅРёРё",
+        error instanceof Error ? error.message : "Ошибка при удалении",
       );
     } finally {
       setIsDeleteDialogOpen(false);
@@ -701,15 +665,15 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
             <CardTitle className="flex items-center gap-2">
               <Icon name="PenLine" size={20} className="text-primary" />
               {isCreating
-                ? "РќРѕРІР°СЏ СЃС‚Р°С‚СЊСЏ"
+                ? "Новая статья"
                 : selectedPost
-                  ? "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЃС‚Р°С‚СЊРё"
-                  : "Р РµРґР°РєС‚РѕСЂ VPN-СЃС‚Р°С‚РµР№"}
+                  ? "Редактирование статьи"
+                  : "Редактор VPN-статей"}
             </CardTitle>
             {!isCreating && (
               <Button onClick={handleCreateNew} className="gap-2">
                 <Icon name="Plus" size={16} />
-                РќРѕРІР°СЏ СЃС‚Р°С‚СЊСЏ
+                Новая статья
               </Button>
             )}
           </div>
@@ -721,7 +685,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
               {isLoadingPosts ? (
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Icon name="Loader2" size={16} className="animate-spin" />
-                  Р—Р°РіСЂСѓР·РєР° СЃРїРёСЃРєР° СЃС‚Р°С‚РµР№...
+                  Загрузка списка статей...
                 </div>
               ) : (
                 <Select
@@ -729,7 +693,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   onValueChange={(slug) => setSelectedSlug(slug)}
                 >
                   <SelectTrigger className="w-full max-w-md">
-                    <SelectValue placeholder="Р’С‹Р±РµСЂРёС‚Рµ СЃС‚Р°С‚СЊСЋ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ" />
+                    <SelectValue placeholder="Выберите статью для редактирования" />
                   </SelectTrigger>
                   <SelectContent>
                     {posts?.map((post) => (
@@ -745,7 +709,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
           {error && (
             <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-lg">
-              <p>РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃС‚Р°С‚СЊРё: {error.message}</p>
+              <p>Ошибка загрузки статьи: {error.message}</p>
             </div>
           )}
 
@@ -762,10 +726,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
           {(selectedPost || isCreating) && !isLoadingContent && (
             <>
               <div className="mb-6 space-y-4 p-4 bg-muted/50 rounded-lg">
-                {/* Р—Р°РіРѕР»РѕРІРѕРє */}
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
-                    Р—Р°РіРѕР»РѕРІРѕРє *
+                    Заголовок *
                   </label>
                   <div
                     data-color-mode="light"
@@ -782,10 +745,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   </div>
                 </div>
 
-                {/* РљСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ */}
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
-                    РљСЂР°С‚РєРѕРµ РѕРїРёСЃР°РЅРёРµ (excerpt)
+                    Краткое описание (excerpt)
                   </label>
                   <div
                     data-color-mode="light"
@@ -802,7 +764,6 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   </div>
                 </div>
 
-                {/* Slug вЂ” РїРѕРєР°Р·С‹РІР°РµРј С‚РѕР»СЊРєРѕ РїСЂРё СЃРѕР·РґР°РЅРёРё */}
                 {isCreating && (
                   <div>
                     <label className="text-sm font-semibold text-foreground mb-1 block">
@@ -817,9 +778,8 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                       className="w-full"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Р“РµРЅРµСЂРёСЂСѓРµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёР·
-                      Р·Р°РіРѕР»РѕРІРєР°, РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ
-                      РІСЂСѓС‡РЅСѓСЋ
+                      Генерируется автоматически из заголовка, можно изменить
+                      вручную
                     </p>
                   </div>
                 )}
@@ -827,7 +787,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-semibold text-foreground mb-1 block">
-                      РљР°С‚РµРіРѕСЂРёСЏ
+                      Категория
                     </label>
                     <div
                       data-color-mode="light"
@@ -845,7 +805,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   </div>
                   <div>
                     <label className="text-sm font-semibold text-foreground mb-1 block">
-                      Р’СЂРµРјСЏ С‡С‚РµРЅРёСЏ
+                      Время чтения
                     </label>
                     <div
                       data-color-mode="light"
@@ -865,7 +825,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
-                    РђРІС‚РѕСЂ
+                    Автор
                   </label>
                   <div
                     data-color-mode="light"
@@ -885,7 +845,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-semibold text-foreground mb-1 block">
-                      URL РїСЂРѕРІР°Р№РґРµСЂР°
+                      URL провайдера
                     </label>
                     <Input
                       value={providerUrl}
@@ -895,7 +855,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   </div>
                   <div>
                     <label className="text-sm font-semibold text-foreground mb-1 block">
-                      РќР°Р·РІР°РЅРёРµ РїСЂРѕРІР°Р№РґРµСЂР°
+                      Название провайдера
                     </label>
                     <div
                       data-color-mode="light"
@@ -915,7 +875,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
 
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
-                    URL РёР·РѕР±СЂР°Р¶РµРЅРёСЏ (РїСЂРµРІСЊСЋ)
+                    URL изображения (превью)
                   </label>
                   <Input
                     value={image}
@@ -924,10 +884,9 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                   />
                 </div>
 
-                {/* РўРµРіРё */}
                 <div>
                   <label className="text-sm font-semibold text-foreground mb-1 block">
-                    РўРµРіРё
+                    Теги
                   </label>
                   <div className="flex gap-2 mb-2 flex-wrap">
                     {tags.map((tag) => (
@@ -946,7 +905,7 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                     <Input
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
-                      placeholder="РќРѕРІС‹Р№ С‚РµРі"
+                      placeholder="Новый тег"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -955,13 +914,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                       }}
                     />
                     <Button onClick={handleAddTag} variant="outline">
-                      Р”РѕР±Р°РІРёС‚СЊ
+                      Добавить
                     </Button>
                   </div>
                 </div>
               </div>
 
-              {/* РћСЃРЅРѕРІРЅРѕР№ РєРѕРЅС‚РµРЅС‚ */}
               <div
                 data-color-mode="light"
                 className="border rounded-lg overflow-hidden"
@@ -989,14 +947,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                     ) : (
                       <Icon name="Trash2" size={16} />
                     )}
-                    РЈРґР°Р»РёС‚СЊ
+                    Удалить
                   </Button>
                 )}
-
                 <Button variant="outline" onClick={handleCancel}>
-                  РћС‚РјРµРЅР°
+                  Отмена
                 </Button>
-
                 <Button
                   onClick={handleSave}
                   disabled={
@@ -1015,12 +971,12 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
                         size={16}
                         className="animate-spin mr-2"
                       />
-                      РЎРѕС…СЂР°РЅРµРЅРёРµ...
+                      Сохранение...
                     </>
                   ) : (
                     <>
                       <Icon name="Save" size={16} className="mr-2" />
-                      РЎРѕС…СЂР°РЅРёС‚СЊ
+                      Сохранить
                     </>
                   )}
                 </Button>
@@ -1036,19 +992,18 @@ export const VpnPostEditor: React.FC<VpnPostEditorProps> = ({ onSave }) => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>РЈРґР°Р»РёС‚СЊ СЃС‚Р°С‚СЊСЋ?</AlertDialogTitle>
+            <AlertDialogTitle>Удалить статью?</AlertDialogTitle>
             <AlertDialogDescription>
-              Р­С‚Рѕ РґРµР№СЃС‚РІРёРµ РЅРµР»СЊР·СЏ РѕС‚РјРµРЅРёС‚СЊ.
-              РЎС‚Р°С‚СЊСЏ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅР° Р±РµР·РІРѕР·РІСЂР°С‚РЅРѕ.
+              Это действие нельзя отменить. Статья будет удалена безвозвратно.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>РћС‚РјРµРЅР°</AlertDialogCancel>
+            <AlertDialogCancel>Отмена</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground"
             >
-              РЈРґР°Р»РёС‚СЊ
+              Удалить
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
