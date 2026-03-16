@@ -1,9 +1,11 @@
 import json
 import os
-from datetime import datetime, timedelta
 from decimal import Decimal
 import psycopg2
 from psycopg2.extras import RealDictCursor
+
+SCHEMA = 't_p4153566_vds_rating_portal'
+
 
 def cors_response(status_code, body):
     return {
@@ -18,8 +20,21 @@ def cors_response(status_code, body):
         'isBase64Encoded': False
     }
 
+
 def error_response(status_code, message):
     return cors_response(status_code, {'error': message})
+
+
+def normalize_decimals(row):
+    """Преобразует Decimal → float для JSON-сериализации."""
+    result = {}
+    for k, v in row.items():
+        if isinstance(v, Decimal):
+            result[k] = float(v)
+        else:
+            result[k] = v
+    return result
+
 
 def handler(event, context):
     method = event.get('httpMethod', 'GET')
@@ -35,68 +50,63 @@ def handler(event, context):
 
     if method == 'GET':
         params = event.get('queryStringParameters') or {}
-        view = params.get('view', 'summary')
-        period = params.get('period', '30')      # дни
-        month = params.get('month')               # YYYY-MM
+        view   = params.get('view', 'summary')
+        period = params.get('period', '30')   # число дней
+        month  = params.get('month')           # YYYY-MM
 
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            # Базовый фильтр по дате
-            date_filter = ""
+
+            # ── Фильтр по дате ──────────────────────────────────────────────
             if month:
                 date_filter = "AND TO_CHAR(created_at, 'YYYY-MM') = %s"
-                date_param = month
+                date_param  = month
             elif period and period.isdigit():
-                days = int(period)
                 date_filter = "AND created_at >= CURRENT_DATE - %s"
-                date_param = days
+                date_param  = int(period)
             else:
-                # по умолчанию последние 30 дней
                 date_filter = "AND created_at >= CURRENT_DATE - 30"
-                date_param = None
+                date_param  = None
 
+            # ── summary ─────────────────────────────────────────────────────
             if view == 'summary':
                 query = f"""
                     SELECT
                         COUNT(DISTINCT visitor_uuid) AS unique_visitors,
-                        COUNT(DISTINCT session_id) AS sessions,
+                        COUNT(DISTINCT session_id)   AS sessions,
                         COUNT(*) FILTER (WHERE event_type IN ('page_view', 'section_visit')) AS page_views,
-                        COUNT(*) FILTER (WHERE event_type = 'provider_click') AS provider_clicks,
-                        COUNT(*) FILTER (WHERE event_type = 'outbound_link') AS outbound_clicks,
-                        AVG(duration) FILTER (WHERE event_type = 'page_leave' AND duration IS NOT NULL) AS avg_duration,
+                        COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
+                        COUNT(*) FILTER (WHERE event_type = 'outbound_link')   AS outbound_clicks,
+                        AVG(duration) FILTER (
+                            WHERE event_type = 'page_leave' AND duration IS NOT NULL
+                        ) AS avg_duration,
                         (
                             SELECT COUNT(*)
                             FROM (
                                 SELECT session_id
-                                FROM events
+                                FROM {SCHEMA}.events
                                 WHERE 1=1 {date_filter}
                                 GROUP BY session_id
                                 HAVING COUNT(*) = 1
                             ) AS bounces
                         ) * 1.0 / NULLIF(COUNT(DISTINCT session_id), 0) AS bounce_rate
-                    FROM events
+                    FROM {SCHEMA}.events
                     WHERE 1=1 {date_filter}
                 """
                 params_list = [date_param, date_param] if date_param is not None else []
                 cur.execute(query, params_list)
                 row = cur.fetchone()
-                # Преобразуем Decimal в float
-                result = {}
-                for k, v in row.items():
-                    if isinstance(v, Decimal):
-                        result[k] = float(v)
-                    else:
-                        result[k] = v
-                return cors_response(200, result)
+                return cors_response(200, normalize_decimals(row))
 
+            # ── timeline ────────────────────────────────────────────────────
             elif view == 'timeline':
                 query = f"""
                     SELECT
                         DATE(created_at) AS date,
-                        COUNT(*) FILTER (WHERE event_type = 'page_view') AS page_views,
-                        COUNT(*) FILTER (WHERE event_type = 'section_visit') AS section_visits,
-                        COUNT(*) FILTER (WHERE event_type = 'provider_click') AS provider_clicks,
-                        COUNT(*) FILTER (WHERE event_type = 'outbound_link') AS outbound_clicks
-                    FROM events
+                        COUNT(*) FILTER (WHERE event_type = 'page_view')       AS page_views,
+                        COUNT(*) FILTER (WHERE event_type = 'section_visit')   AS section_visits,
+                        COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
+                        COUNT(*) FILTER (WHERE event_type = 'outbound_link')   AS outbound_clicks
+                    FROM {SCHEMA}.events
                     WHERE 1=1 {date_filter}
                     GROUP BY DATE(created_at)
                     ORDER BY date
@@ -106,69 +116,87 @@ def handler(event, context):
                 rows = cur.fetchall()
                 return cors_response(200, {'timeline': rows})
 
+            # ── pages ───────────────────────────────────────────────────────
             elif view == 'pages':
                 query = f"""
                     SELECT
-                        page_path,
-                        COUNT(*) AS views,
-                        COUNT(DISTINCT visitor_uuid) AS unique_visitors,
-                        AVG(duration) FILTER (WHERE event_type = 'page_leave' AND page_path = e.page_path) AS avg_duration
-                    FROM events e
-                    WHERE event_type = 'page_view' {date_filter}
-                    GROUP BY page_path
+                        e.page_path,
+                        COALESCE(vp.provider_name, e.page_path) AS provider_name,
+                        COUNT(*)                        AS views,
+                        COUNT(DISTINCT e.visitor_uuid)  AS unique_visitors,
+                        AVG(e.duration) FILTER (
+                            WHERE e.event_type = 'page_leave' AND e.duration IS NOT NULL
+                        ) AS avg_duration
+                    FROM {SCHEMA}.events e
+                    LEFT JOIN {SCHEMA}.vpn_posts vp
+                        ON vp.slug = REGEXP_REPLACE(e.page_path, '^/vpn/', '')
+                    WHERE e.event_type = 'page_view' {date_filter}
+                    GROUP BY e.page_path, vp.provider_name
                     ORDER BY views DESC
                     LIMIT 50
                 """
                 params_list = [date_param] if date_param is not None else []
                 cur.execute(query, params_list)
                 rows = cur.fetchall()
-                # avg_duration может быть None
-                return cors_response(200, {'pages': rows})
+                return cors_response(200, {'pages': [normalize_decimals(r) for r in rows]})
 
+            # ── articles ────────────────────────────────────────────────────
             elif view == 'articles':
                 query = f"""
                     WITH article_views AS (
-                        SELECT target_id, COUNT(*) AS views, COUNT(DISTINCT visitor_uuid) AS unique_visitors
-                        FROM events
-                        WHERE event_type = 'page_view' AND target_id IS NOT NULL {date_filter}
+                        SELECT
+                            target_id,
+                            COUNT(*)                       AS views,
+                            COUNT(DISTINCT visitor_uuid)   AS unique_visitors
+                        FROM {SCHEMA}.events
+                        WHERE event_type = 'page_view'
+                          AND target_id IS NOT NULL
+                          {date_filter}
                         GROUP BY target_id
                     ),
                     article_clicks AS (
-                        SELECT e.target_id, COUNT(*) AS clicks
-                        FROM events e
-                        WHERE e.event_type = 'provider_click' AND e.page_path LIKE '/vpn/%%' {date_filter}
-                        GROUP BY e.target_id
+                        SELECT target_id, COUNT(*) AS clicks
+                        FROM {SCHEMA}.events
+                        WHERE event_type = 'provider_click'
+                          AND page_path LIKE '/vpn/%%'
+                          {date_filter}
+                        GROUP BY target_id
                     )
                     SELECT
                         av.target_id,
+                        COALESCE(vp.provider_name, av.target_id) AS provider_name,
                         av.views,
                         av.unique_visitors,
                         COALESCE(ac.clicks, 0) AS clicks,
-                        ROUND(COALESCE(ac.clicks, 0)::numeric / NULLIF(av.views, 0) * 100, 2) AS conversion_rate
+                        ROUND(
+                            COALESCE(ac.clicks, 0)::numeric / NULLIF(av.views, 0) * 100,
+                            2
+                        ) AS conversion_rate
                     FROM article_views av
                     LEFT JOIN article_clicks ac ON av.target_id = ac.target_id
+                    LEFT JOIN {SCHEMA}.vpn_posts vp ON vp.slug = av.target_id
                     ORDER BY av.views DESC
                     LIMIT 50
                 """
                 params_list = [date_param, date_param] if date_param is not None else []
                 cur.execute(query, params_list)
                 rows = cur.fetchall()
-                return cors_response(200, {'articles': rows})
+                return cors_response(200, {'articles': [normalize_decimals(r) for r in rows]})
 
+            # ── sessions ────────────────────────────────────────────────────
             elif view == 'sessions':
-                # Возвращаем последние 100 сессий с агрегированной информацией
                 query = f"""
                     WITH session_stats AS (
                         SELECT
                             session_id,
-                            MIN(created_at) AS started_at,
-                            MAX(created_at) AS last_event_at,
-                            COUNT(*) AS events_count,
-                            COUNT(*) FILTER (WHERE event_type = 'page_view') AS page_views,
-                            COUNT(*) FILTER (WHERE event_type = 'provider_click') AS provider_clicks,
-                            ARRAY_AGG(DISTINCT page_path) AS page_paths,
-                            MAX(visitor_uuid) AS visitor_uuid
-                        FROM events
+                            MIN(created_at)                                         AS started_at,
+                            MAX(created_at)                                         AS last_event_at,
+                            COUNT(*)                                                AS events_count,
+                            COUNT(*) FILTER (WHERE event_type = 'page_view')       AS page_views,
+                            COUNT(*) FILTER (WHERE event_type = 'provider_click')  AS provider_clicks,
+                            ARRAY_AGG(DISTINCT page_path)                          AS page_paths,
+                            MAX(visitor_uuid)                                       AS visitor_uuid
+                        FROM {SCHEMA}.events
                         WHERE 1=1 {date_filter}
                         GROUP BY session_id
                     )
@@ -190,11 +218,97 @@ def handler(event, context):
                 rows = cur.fetchall()
                 return cors_response(200, {'sessions': rows})
 
+            # ── sources ─────────────────────────────────────────────────────
+            elif view == 'sources':
+                query = f"""
+                    SELECT
+                        CASE
+                            WHEN utm_source = 'yandex' AND utm_medium = 'cpc'
+                                THEN 'Яндекс · реклама'
+                            WHEN (
+                                    referer LIKE 'https://yandex.ru%%'
+                                 OR referer LIKE 'https://www.yandex.ru%%'
+                                )
+                                AND utm_source IS NULL
+                                THEN 'Яндекс · органика'
+                            WHEN referer LIKE '%%topcloudhub.ru%%'
+                                THEN 'Внутренний'
+                            WHEN referer IS NULL AND utm_source IS NULL
+                                THEN 'Прямой'
+                            WHEN utm_source IS NOT NULL
+                                THEN utm_source
+                            ELSE
+                                REGEXP_REPLACE(
+                                    REGEXP_REPLACE(referer, '^https?://(www\.)?', ''),
+                                    '/.*$', ''
+                                )
+                        END AS source,
+                        COUNT(DISTINCT visitor_uuid) AS visitors,
+                        COUNT(DISTINCT session_id)   AS sessions,
+                        COUNT(*) FILTER (
+                            WHERE event_type IN ('page_view', 'section_visit')
+                        ) AS page_views
+                    FROM {SCHEMA}.events
+                    WHERE 1=1 {date_filter}
+                    GROUP BY source
+                    ORDER BY visitors DESC
+                """
+                params_list = [date_param] if date_param is not None else []
+                cur.execute(query, params_list)
+                rows = cur.fetchall()
+                return cors_response(200, {'sources': rows})
+
+            # ── link_clicks ─────────────────────────────────────────────────
+            elif view == 'link_clicks':
+                query = f"""
+                    SELECT
+                        e.page_path,
+                        COALESCE(
+                            vp.provider_name,
+                            REGEXP_REPLACE(e.page_path, '^/vpn/', '')
+                        ) AS provider_name,
+                        COUNT(*) FILTER (
+                            WHERE e.event_type = 'provider_click'
+                              AND e.source = 'article_button'
+                        ) AS button_clicks_total,
+                        COUNT(DISTINCT e.visitor_uuid) FILTER (
+                            WHERE e.event_type = 'provider_click'
+                              AND e.source = 'article_button'
+                        ) AS button_clicks_unique,
+                        COUNT(*) FILTER (
+                            WHERE e.event_type = 'outbound_link'
+                              AND e.source = 'article_text'
+                        ) AS text_clicks_total,
+                        COUNT(DISTINCT e.visitor_uuid) FILTER (
+                            WHERE e.event_type = 'outbound_link'
+                              AND e.source = 'article_text'
+                        ) AS text_clicks_unique
+                    FROM {SCHEMA}.events e
+                    LEFT JOIN {SCHEMA}.vpn_posts vp
+                        ON vp.slug = REGEXP_REPLACE(e.page_path, '^/vpn/', '')
+                    WHERE e.event_type IN ('provider_click', 'outbound_link')
+                      AND e.page_path LIKE '/vpn/%%'
+                      AND 1=1 {date_filter}
+                    GROUP BY e.page_path, vp.provider_name
+                    ORDER BY (
+                        COUNT(*) FILTER (
+                            WHERE e.event_type = 'provider_click' AND e.source = 'article_button'
+                        ) +
+                        COUNT(*) FILTER (
+                            WHERE e.event_type = 'outbound_link' AND e.source = 'article_text'
+                        )
+                    ) DESC
+                    LIMIT 50
+                """
+                params_list = [date_param] if date_param is not None else []
+                cur.execute(query, params_list)
+                rows = cur.fetchall()
+                return cors_response(200, {'link_clicks': rows})
+
             else:
                 return error_response(400, f"Unknown view: {view}")
 
     elif method == 'POST':
-        # Здесь можно реализовать удаление данных, но пока оставим заглушку
         return error_response(405, 'POST not implemented')
 
     return error_response(405, 'Method not allowed')
