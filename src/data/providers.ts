@@ -5053,7 +5053,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     storagePrice: 10,
     features: ["NVMe диски", "GPU", "Низкая стоимость"],
     locations: ["Москва"],
-    trialDays: 0,
+    trialDays: 10,
     url: "http://vpsville.ru/?ref=62621",
     pros: ["Низкая цена", "NVMe диски"],
     cons: ["Низкая вариативность ЦОД"],
@@ -5094,7 +5094,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "FreeBSD"
         
       ],
-      controlPanel: "Собственная панель",
+      controlPanel: "VestaCP",
       apiAccess: false,
       ddosProtection: "Неограниченно",
       cpuModels: [],
@@ -5102,7 +5102,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         available: false,
         managed: false,
       },
-      gpuModels: ["L40S", "L4"],
+      gpuModels: ["RTX3080", "RTX4090"],
       // Добавляем поддержку 1Сccc
       supports1C: false,
     },
