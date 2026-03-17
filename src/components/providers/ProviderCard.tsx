@@ -1129,7 +1129,7 @@ export const ProviderCard = ({
                       const absoluteTop = window.scrollY + rect.top;
                       // Прокручиваем так, чтобы верх карточки оказался на 30px ниже верхнего края окна
                       window.scrollTo({
-                        top: absoluteTop - 60, // отрицательное смещение поднимает карточку выше
+                        top: absoluteTop - 100, // отрицательное смещение поднимает карточку выше
                         behavior: "smooth",
                       });
                     }
