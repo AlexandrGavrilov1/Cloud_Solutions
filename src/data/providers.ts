@@ -4148,7 +4148,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     pros: ["Почасовая оплата", "NVMe диски", "Тест 5 дней", "Доступные цены"],
     cons: ["Мало локаций", "Молодая компания", "Базовая поддержка"],
 
-    ffz152Compliant: true,
+    fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
     fstekCertifications: [],
