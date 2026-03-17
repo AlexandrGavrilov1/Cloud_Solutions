@@ -775,9 +775,9 @@ export const UptimeProviderCard: React.FC<UptimeProviderCardProps> = ({
                 className="opacity-0 group-hover/name:opacity-100 transition-opacity md:w-[14px] md:h-[14px]"
               />
             </button>
-            <div className="flex items-center gap-2 text-[10px] md:text-xs text-muted-foreground">
+            {/*  <div className="flex items-center gap-2 text-[10px] md:text-xs text-muted-foreground">
               <span>SLA: {provider.serviceGuarantees.uptimeSLA}</span>
-            </div>
+            </div>*/}
           </div>
         </div>
 
