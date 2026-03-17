@@ -1112,6 +1112,16 @@ export const ProviderCard = ({
                 reviewsToShow={reviewsToShow}
                 onLoadMoreReviews={onLoadMoreReviews}
               />
+
+              {/* Кнопка "Скрыть отзывы" — добавляем под отзывами */}
+              <Button
+                variant="outline"
+                className="w-full mt-4"
+                onClick={onToggleDetails}
+              >
+                <Icon name="EyeOff" size={18} className="mr-2" />
+                Скрыть отзывы
+              </Button>
             </div>
           </div>
         </CardContent>
