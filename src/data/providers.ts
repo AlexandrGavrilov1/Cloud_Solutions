@@ -5085,14 +5085,13 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "Windows Server 2016",
         "Windows Server 2012",
         "CentOS 7",
-        "OpenVPN"
+        "OpenVPN",
         "Debian 12",
         "Debian 11",
         "Debian 10",
         "Debian 9",
         "Oracle 8",
-        "FreeBSD"
-        
+        "FreeBSD",
       ],
       controlPanel: "VestaCP",
       apiAccess: false,
@@ -5131,7 +5130,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "Bitcoin",
         "PayPal",
         "Безналичный расчет",
-        "Бонус Код"
+        "Бонус Код",
       ],
       minPrice: 290,
     },
