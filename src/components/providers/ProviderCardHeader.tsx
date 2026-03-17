@@ -226,7 +226,7 @@ export const ProviderCardHeader = ({
                 className="text-[#FF931F] flex-shrink-0"
               />
               <span className="text-xs text-[#272932] dark:text-white truncate">
-                GPU {provider.technicalSpecs.gpuModels.length}, Агенты
+                GPU {provider.technicalSpecs.gpuModels.length},
               </span>
             </div>
           )}
