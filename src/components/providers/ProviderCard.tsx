@@ -1120,14 +1120,20 @@ export const ProviderCard = ({
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  onToggleDetails();
-                  // Плавно прокручиваем к верхней части карточки после скрытия отзывов
+                  onToggleDetails(); // переключаем состояние (скрываем отзывы)
+
+                  // Ждём окончания анимации схлопывания (~400 мс)
                   setTimeout(() => {
-                    cardRef.current?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                  }, 300); // 300 мс — примерное время анимации схлопывания
+                    if (cardRef.current) {
+                      const rect = cardRef.current.getBoundingClientRect();
+                      const absoluteTop = window.scrollY + rect.top;
+                      // Прокручиваем так, чтобы верх карточки оказался на 30px ниже верхнего края окна
+                      window.scrollTo({
+                        top: absoluteTop - 30, // отрицательное смещение поднимает карточку выше
+                        behavior: "smooth",
+                      });
+                    }
+                  }, 400); // увеличьте время, если анимация длиннее
                 }}
               >
                 <Icon name="EyeOff" size={18} className="mr-2" />
