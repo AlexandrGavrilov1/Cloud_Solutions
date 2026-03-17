@@ -1117,7 +1117,11 @@ export const ProviderCard = ({
               <Button
                 variant="outline"
                 className="w-full mt-4"
-                onClick={onToggleDetails}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault(); // предотвращаем возможное поведение по умолчанию
+                  onToggleDetails(); // вызываем переключатель
+                }}
               >
                 <Icon name="EyeOff" size={18} className="mr-2" />
                 Скрыть отзывы
