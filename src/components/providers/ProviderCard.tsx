@@ -1133,7 +1133,7 @@ export const ProviderCard = ({
                         behavior: "smooth",
                       });
                     }
-                  }, 400); // увеличьте время, если анимация длиннее
+                  }, 100); // увеличьте время, если анимация длиннее
                 }}
               >
                 <Icon name="EyeOff" size={18} className="mr-2" />
