@@ -1113,7 +1113,7 @@ export const ProviderCard = ({
                 onLoadMoreReviews={onLoadMoreReviews}
               />
 
-              {/* Кнопка "Скрыть отзывы" — добавляем под отзывами */}
+              {/* Кнопка "Скрыть отзывы" — добавляем под отрзывами */}
               <Button
                 variant="outline"
                 className="w-full mt-4"
