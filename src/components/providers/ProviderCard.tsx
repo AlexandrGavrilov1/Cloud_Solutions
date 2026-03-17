@@ -1119,8 +1119,15 @@ export const ProviderCard = ({
                 className="w-full mt-4"
                 type="button"
                 onClick={(e) => {
-                  e.preventDefault(); // предотвращаем возможное поведение по умолчанию
-                  onToggleDetails(); // вызываем переключатель
+                  e.preventDefault();
+                  onToggleDetails();
+                  // Плавно прокручиваем к верхней части карточки после скрытия отзывов
+                  setTimeout(() => {
+                    cardRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }, 300); // 300 мс — примерное время анимации схлопывания
                 }}
               >
                 <Icon name="EyeOff" size={18} className="mr-2" />
