@@ -1018,7 +1018,7 @@ export const ProviderCard = ({
             >
               <div className="flex items-center gap-2">
                 <Icon name={showDetails ? "EyeOff" : "Eye"} size={18} />
-                <span>{showDetails ? "Скрыть детали" : "Показать детали"}</span>
+                <span>{showDetails ? "Скрыть отзывы" : "Показать отзывы"}</span>
               </div>
               <Icon
                 name={showDetails ? "ChevronUp" : "ChevronDown"}
@@ -1033,269 +1033,80 @@ export const ProviderCard = ({
             }`}
           >
             <div className="pt-5 px-5 border-t border-border flex flex-col gap-3">
-              {/* Секция "О провайдере" (первая, на всю ширину) */}
-              {renderAboutSection()}
+              {/* ВСЕ ОСТАЛЬНЫЕ СЕКЦИИ ЗАКОММЕНТИРОВАНЫ */}
+              {/* {renderAboutSection()} */}
 
-              {/* Первый ряд: Соответствие 152-ФЗ и ФСТЭК */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {provider.fz152Compliant && (
-                  <div className="bg-card border border-border rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <Icon
-                          name="ShieldCheck"
-                          size={18}
-                          className="text-blue-500"
-                        />
-                      </div>
-                      <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                        {t("card.fz152")}
-                      </h4>
-                      {provider.fz152Level && (
-                        <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 ml-auto">
-                          {provider.fz152Level}
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-900 dark:text-white leading-relaxed">
-                      {t("card.fz152Description")}
-                    </p>
-                  </div>
-                )}
+              {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {provider.fz152Compliant && ( ... )}
+                {provider.fstekCertifications && provider.fstekCertifications.length > 0 && ( ... )}
+              </div> */}
 
-                {provider.fstekCertifications &&
-                  provider.fstekCertifications.length > 0 && (
-                    <div className="bg-card border border-border rounded-2xl p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                          <Icon
-                            name="ShieldAlert"
-                            size={18}
-                            className="text-blue-500"
-                          />
-                        </div>
-                        <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                          ФСТЭК
-                        </h4>
-                        {provider.fstekLevel && (
-                          <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 ml-auto">
-                            {provider.fstekLevel}
-                          </Badge>
-                        )}
-                      </div>
-
-                      {renderFstekCertifications()}
-                    </div>
-                  )}
-              </div>
-
-              {/* Второй ряд: Размещение КИИ и Дополнительные услуги */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {provider.kiiPlacement && (
-                  <div className="bg-card border border-border rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-9 h-9 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <Icon
-                          name="Building2"
-                          size={18}
-                          className="text-blue-500"
-                        />
-                      </div>
-                      <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                        Размещение КИИ
-                      </h4>
-                    </div>
-                    <p className="text-sm text-gray-900 dark:text-white leading-relaxed">
-                      Провайдер допускает размещение объектов КИИ на своей
-                      инфраструктуре. Объекты критической информационной
-                      инфраструктуры (КИИ) — это системы, сети и базы данных, от
-                      функционирования которых зависит безопасность государства,
-                      национальная экономика и благосостояние граждан. Защита
-                      КИИ — ключевой элемент информационной безопасности страны,
-                      поскольку любые нарушения в их работе могут привести к
-                      серьёзным последствиям для всего общества.
-                    </p>
-                  </div>
-                )}
-
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {provider.kiiPlacement && ( ... )}
                 {renderAdditionalServices()}
-              </div>
+              </div> */}
 
-              {/* Третий ряд: Заказ услуг и Данные для регистрации */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {renderOrderServicesSection()}
                 {renderRegistrationData()}
-              </div>
+              </div> */}
 
-              {/* Четвертый ряд: Поддерживаемые типы клиентов и Мобильное приложение */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {renderClientTypes()}
                 {renderMobileAppSection()}
-              </div>
+              </div> */}
 
-              {/* Пятый ряд: Поддержка GPU и Доступные ОС */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {renderGpuSection()}
                 {renderOsSection()}
-              </div>
+              </div> */}
 
-              {/* Шестой ряд: Технические характеристики и Поддержка 1С */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="bg-card border border-border rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-violet-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="Filter"
-                        size={18}
-                        className="text-violet-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                      Технические характеристики
-                    </h4>
-                  </div>
+                  ...
                   <TechnicalSpecsSection provider={provider} />
                 </div>
                 {render1CSection()}
-              </div>
+              </div> */}
 
-              {/* Седьмой ряд: Поддержка AI и Гарантии обслуживания */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {renderAISection()}
-
                 <div className="bg-card border border-border rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 bg-orange-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="Award"
-                        size={18}
-                        className="text-orange-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                      Гарантии обслуживания
-                    </h4>
-                  </div>
+                  ...
                   <ServiceGuaranteesSection provider={provider} />
                 </div>
-              </div>
+              </div> */}
 
-              {/* Остальные секции */}
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                    <Icon
-                      name="Package"
-                      size={18}
-                      className="text-emerald-500"
-                    />
-                  </div>
-                  <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                    Дополнительные услуги
-                  </h4>
-                </div>
+              {/* <div className="bg-card border border-border rounded-2xl p-4">
+                ...
                 <AdditionalServicesSection provider={provider} />
-              </div>
+              </div> */}
 
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-rose-500/20 rounded-xl flex items-center justify-center">
-                    <Icon
-                      name="CreditCard"
-                      size={18}
-                      className="text-rose-500"
-                    />
-                  </div>
-                  <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                    Способы оплаты
-                  </h4>
-                </div>
+              {/* <div className="bg-card border border-border rounded-2xl p-4">
+                ...
                 <PaymentMethodsSection provider={provider} />
-              </div>
+              </div> */}
 
-              <div className="bg-card border border-border rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 bg-sky-500/20 rounded-xl flex items-center justify-center">
-                    <Icon name="Briefcase" size={18} className="text-sky-500" />
-                  </div>
-                  <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                    Кейсы
-                  </h4>
-                </div>
+              {/* <div className="bg-card border border-border rounded-2xl p-4">
+                ...
                 <CaseStudiesSection provider={provider} />
-              </div>
+              </div> */}
 
-              {/* Восьмой ряд: Контакты и Реферальная программа (рядом) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {renderContactsSection()}
                 {renderReferralProgramSection()}
-              </div>
+              </div> */}
 
-              {/* Плюсы и минусы */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="Check"
-                        size={18}
-                        className="text-emerald-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                      {t("card.pros")}
-                    </h4>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {provider.pros.map((pro, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-emerald-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon
-                            name="Plus"
-                            size={12}
-                            className="text-emerald-500"
-                          />
-                        </div>
-                        <span className="text-sm text-gray-900 dark:text-white font-medium">
-                          {pro}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  ...
                 </div>
-
                 <div className="bg-rose-500/5 border border-rose-500/20 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-9 h-9 bg-rose-500/20 rounded-xl flex items-center justify-center">
-                      <Icon
-                        name="AlertCircle"
-                        size={18}
-                        className="text-rose-500"
-                      />
-                    </div>
-                    <h4 className="text-base font-bold text-gray-900 dark:text-white">
-                      {t("card.cons")}
-                    </h4>
-                  </div>
-                  <ul className="space-y-2.5">
-                    {provider.cons.map((con, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 bg-rose-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon
-                            name="Minus"
-                            size={12}
-                            className="text-rose-500"
-                          />
-                        </div>
-                        <span className="text-sm text-gray-900 dark:text-white font-medium">
-                          {con}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  ...
                 </div>
-              </div>
+              </div> */}
 
+              {/* Оставляем только блок с отзывами */}
               <ProviderReviews
                 provider={provider}
                 reviewsToShow={reviewsToShow}
