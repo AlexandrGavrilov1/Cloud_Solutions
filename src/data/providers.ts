@@ -5043,7 +5043,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
   },
 
   {
-    id: 54,
+    id: 55,
     name: "VPSVILLE",
     logo: "providers_logo/55_vpsville.jpg",
     rating: 8.8,
