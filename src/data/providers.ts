@@ -5152,8 +5152,16 @@ Timeweb Cloud позиционирует себя как провайдер дл
     locations: ["Москва"],
     trialDays: 10,
     url: "https://profitserver.ru/?partner_id=3414377",
-   "pros": ["Низкая цена", "Глобальная география ЦОД", "Поддержка Windows без доплат"],
-    "cons": ["Ограниченная скорость канала", "Платные бекапы на VPS", "Нет бесплатного тестового периода"],
+    pros: [
+      "Низкая цена",
+      "Глобальная география ЦОД",
+      "Поддержка Windows без доплат",
+    ],
+    cons: [
+      "Ограниченная скорость канала",
+      "Платные бекапы на VPS",
+      "Нет бесплатного тестового периода",
+    ],
 
     fz152Compliant: false,
     fz152Level: "",
@@ -5168,28 +5176,28 @@ Timeweb Cloud позиционирует себя как провайдер дл
     supportedClientTypes: ["Физлицо"],
 
     technicalSpecs: {
-      "diskType": "NVMe SSD",
-    "networkSpeed": "1 Гбит/с",
-    "virtualization": ["KVM"],
-    "guaranteedResources": true,
-    "ipv4": true,
-    "ipv6": true,
-    "availableOS": [
-      "Ubuntu",
-      "Debian",
-      "CentOS",
-      "FreeBSD",
-      "Windows Server (с доп. лицензией)"
-    ],
-    "controlPanel": ["VMManager", "ISPmanager"],
-    "apiAccess": false,
-    "ddosProtection": "L3-L4 защита (базовая)",
-    "cpuModels": [
-      "Intel Xeon E5-2620",
-      "Intel Xeon E5-2650",
-      "Intel Xeon Gold 6148",
-      "AMD EPYC 7402P"
-    ],
+      diskType: "NVMe SSD",
+      networkSpeed: "1 Гбит/с",
+      virtualization: ["KVM"],
+      guaranteedResources: true,
+      ipv4: true,
+      ipv6: true,
+      availableOS: [
+        "Ubuntu",
+        "Debian",
+        "CentOS",
+        "FreeBSD",
+        "Windows Server (с доп. лицензией)",
+      ],
+      controlPanel: ["VMManager", "ISPmanager"],
+      apiAccess: false,
+      ddosProtection: "L3-L4 защита (базовая)",
+      cpuModels: [
+        "Intel Xeon E5-2620",
+        "Intel Xeon E5-2650",
+        "Intel Xeon Gold 6148",
+        "AMD EPYC 7402P",
+      ],
       kubernetes: {
         available: false,
         managed: false,
@@ -5220,7 +5228,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "Банковский перевод",
         "ЮКасса",
         "Т-БАнк",
-        "SberPay,
+        "SberPay",
         "Stripe",
       ],
       minPrice: 190,
@@ -5229,5 +5237,5 @@ Timeweb Cloud позиционирует себя как провайдер дл
     promoText: "Вгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[56] || [],
-  }
+  },
 ];
