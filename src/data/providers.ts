@@ -5150,7 +5150,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     storagePrice: 7,
     features: ["NVMe диски", "GPU", "Низкая стоимость"],
     locations: ["Москва"],
-    trialDays: 10,
+    trialDays: 0,
     url: "https://profitserver.ru/?partner_id=3414377",
     pros: [
       "Низкая цена",
