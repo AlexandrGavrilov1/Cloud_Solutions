@@ -5223,7 +5223,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         available: false,
         managed: false,
       },
-      gpuModels: ["RTX3080", "RTX4090"],
+      gpuModels: [],
       // Добавляем поддержку 1Сccc
       supports1C: false,
     },
