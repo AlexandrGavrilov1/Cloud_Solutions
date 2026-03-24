@@ -5141,7 +5141,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
   },
   {
     id: 56,
-    name: "ProfirServer",
+    name: "ProfitServer",
     logo: "providers_logo/56_ProfitServer.jpg",
     rating: 8.8,
     basePrice: 190,
