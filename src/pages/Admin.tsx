@@ -7,9 +7,7 @@ import { ReviewModerationSection } from "@/components/admin/ReviewModerationSect
 import { ProviderStatsSection } from "@/components/admin/ProviderStatsSection";
 import { generateSitemap, downloadSitemap } from "@/utils/sitemap-generator";
 import { VpnPostEditor } from "@/components/admin/VpnPostEditor";
-// ===== НОВЫЙ ИМПОРТ =====
 import { EventsStatsSection } from "@/components/admin/EventsStatsSection/EventsStatsSection";
-// ========================
 
 interface Review {
   id: number;
@@ -34,7 +32,6 @@ interface DailyStats {
 }
 
 const Admin = () => {
-  // ✅ Сброс прокрутки в начало при монтировании
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -52,17 +49,21 @@ const Admin = () => {
   const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
   const [isLoadingDaily, setIsLoadingDaily] = useState(true);
   const [period, setPeriod] = useState<"1" | "7" | "30">("30");
-  // ===== ДОБАВЛЕН ТИП ВКЛАДКИ "events" =====
   const [activeTab, setActiveTab] = useState<
     "stats" | "providers" | "reviews" | "onedash" | "vpn-edit" | "events"
   >("stats");
-  // =========================================
+
+  // OneDash API state
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
   const [onedashError, setOnedashError] = useState("");
   const [onedashEndpoint, setOnedashEndpoint] = useState<
-    "balance" | "stats" | "registrations"
-  >("stats");
+    "balance" | "all-orders" | "tariffs" | "systems-list" | "test-request"
+  >("balance");
+
+  // Прокси URL (замените на ваш)
+  const PROXY_URL =
+    "https://functions.poehali.dev/5bdf179c-9b43-46eb-a042-c52b651f946c";
 
   const fetchPendingReviews = async () => {
     setIsLoading(true);
@@ -240,60 +241,44 @@ const Admin = () => {
     fetchDailyStats(newPeriod);
   };
 
+  // Функция запроса к прокси (без маппинга)
   const testOneDashAPI = async () => {
     setOnedashLoading(true);
     setOnedashError("");
     setOnedashApiData(null);
 
     try {
-      const response = await fetch(
-        `https://rdp-onedash.ru/web-api/${onedashEndpoint}`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            key: "79b2457a7346187f969c053b571eb45e71df1b02",
-          }),
+      const response = await fetch(`${PROXY_URL}?endpoint=${onedashEndpoint}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
         },
-      );
+      });
 
-      const contentType = response.headers.get("content-type");
-      const text = await response.text();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      }
 
-      if (contentType?.includes("application/json")) {
-        try {
-          const data = JSON.parse(text);
-          setOnedashApiData({
-            success: true,
-            endpoint: onedashEndpoint,
-            data,
-          });
-        } catch {
-          setOnedashApiData({
-            success: false,
-            endpoint: onedashEndpoint,
-            message: "Невалидный JSON",
-            raw: text.substring(0, 500),
-          });
-        }
-      } else {
+      const json = await response.json();
+
+      if (json.api_error) {
         setOnedashApiData({
           success: false,
-          endpoint: onedashEndpoint,
-          message:
-            "API вернул HTML вместо JSON. Защита от прямых запросов активна.",
-          hint: "Для получения данных используйте официальный веб-интерфейс OneDash или свяжитесь с поддержкой для получения документации API.",
-          response_type: contentType || "text/html",
-          raw_preview: text.substring(0, 300),
+          endpoint: json.endpoint,
+          message: json.detail || "Ошибка при запросе к OneDash API",
+          status: json.status,
+        });
+      } else {
+        setOnedashApiData({
+          success: true,
+          endpoint: json.endpoint,
+          data: json.data,
         });
       }
     } catch (error: any) {
       if (error.message.includes("Failed to fetch")) {
         setOnedashError(
-          "CORS: API OneDash блокирует прямые запросы из браузера. Нужен серверный прокси или использование официального интерфейса.",
+          "Не удалось связаться с прокси-сервером. Проверьте URL прокси.",
         );
       } else {
         setOnedashError(error.message || "Ошибка подключения");
@@ -418,7 +403,6 @@ const Admin = () => {
             <Icon name="Edit" size={18} />
             Редактор VPN
           </button>
-          {/* ===== НОВАЯ ВКЛАДКА ===== */}
           <button
             onClick={() => setActiveTab("events")}
             className={`pb-3 px-4 font-medium transition-colors border-b-2 -mb-px flex items-center gap-2 ${
@@ -430,7 +414,6 @@ const Admin = () => {
             <Icon name="BarChart3" size={18} />
             Полная аналитика
           </button>
-          {/* ========================= */}
         </div>
 
         {activeTab === "stats" && (
@@ -460,43 +443,63 @@ const Admin = () => {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-foreground mb-1">
-                  OneDash API Test
+                  OneDash API
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Тестирование интеграции с API OneDash
+                  Получение данных через прокси-сервер
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => setOnedashEndpoint("balance")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       onedashEndpoint === "balance"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    Balance
+                    Баланс
                   </button>
                   <button
-                    onClick={() => setOnedashEndpoint("stats")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      onedashEndpoint === "stats"
+                    onClick={() => setOnedashEndpoint("all-orders")}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === "all-orders"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    Stats
+                    Все заказы
                   </button>
                   <button
-                    onClick={() => setOnedashEndpoint("registrations")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      onedashEndpoint === "registrations"
+                    onClick={() => setOnedashEndpoint("tariffs")}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === "tariffs"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    Registrations
+                    Тарифы
+                  </button>
+                  <button
+                    onClick={() => setOnedashEndpoint("systems-list")}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === "systems-list"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    Список ОС
+                  </button>
+                  <button
+                    onClick={() => setOnedashEndpoint("test-request")}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      onedashEndpoint === "test-request"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    Тест
                   </button>
                 </div>
                 <Button
@@ -512,7 +515,7 @@ const Admin = () => {
                   ) : (
                     <>
                       <Icon name="RefreshCw" size={18} />
-                      Проверить API
+                      Запросить
                     </>
                   )}
                 </Button>
@@ -528,10 +531,10 @@ const Admin = () => {
                 />
                 <div className="text-sm">
                   <p className="font-medium text-foreground mb-1">
-                    Выбранный эндпоинт:
+                    Запрос к прокси:
                   </p>
-                  <code className="text-xs bg-background px-2 py-1 rounded border border-border">
-                    POST https://rdp-onedash.ru/web-api/{onedashEndpoint}
+                  <code className="text-xs bg-background px-2 py-1 rounded border border-border break-all">
+                    {`${PROXY_URL}?endpoint=${onedashEndpoint}`}
                   </code>
                 </div>
               </div>
@@ -563,16 +566,14 @@ const Admin = () => {
                   size={48}
                   className="mx-auto mb-4 opacity-50"
                 />
-                <p>Нажмите "Проверить API" для тестирования</p>
+                <p>Выберите эндпоинт и нажмите «Запросить»</p>
               </div>
             )}
           </div>
         )}
 
         {activeTab === "vpn-edit" && <VpnPostEditor />}
-        {/* ===== НОВЫЙ КОНТЕНТ ===== */}
         {activeTab === "events" && <EventsStatsSection />}
-        {/* ========================= */}
       </div>
     </div>
   );
