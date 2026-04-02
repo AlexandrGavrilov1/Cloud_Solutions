@@ -1,22 +1,31 @@
-// pages/redirect.tsx
+// pages/redirect.tsx (Next.js pages router)
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 export default function RedirectPage() {
   const router = useRouter();
-  const [countdown, setCountdown] = useState(2); // секунды
+  const [countdown, setCountdown] = useState(2);
 
   useEffect(() => {
     const { targetUrl, utm_source, utm_medium, utm_campaign, utm_content } = router.query;
 
-    // Проверка наличия targetUrl и реферера (опционально)
+    // Защита: если нет targetUrl
     if (!targetUrl || typeof targetUrl !== 'string') {
       router.replace('/');
       return;
     }
 
-    // Отправка события в метрику
+    // Защита по рефереру (опционально, но улучшает безопасность)
+    const referrer = document.referrer;
+    const allowedDomains = ['ваш-сайт.ru', 'www.ваш-сайт.ru']; // замените на свой домен
+    const isFromYourSite = allowedDomains.some(domain => referrer.includes(domain));
+    if (!isFromYourSite && process.env.NODE_ENV === 'production') {
+      router.replace('/');
+      return;
+    }
+
+    // Отправка события в Яндекс.Метрику
     if (typeof window !== 'undefined' && (window as any).ym) {
       (window as any).ym(105466349, 'reachGoal', 'redirect_start', {
         provider_id: utm_content || 'unknown',
@@ -24,7 +33,7 @@ export default function RedirectPage() {
       });
     }
 
-    // Таймер для редиректа
+    // Таймер редиректа
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
