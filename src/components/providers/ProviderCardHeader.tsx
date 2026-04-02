@@ -32,22 +32,10 @@ export const ProviderCardHeader = ({
 
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
     e.preventDefault();
-    onProviderClick(); // отправляет метрику и POST‑запрос (оставляем)
-
-    // Формируем URL редиректора с UTM-метками
-    const redirectBase = "/redirect"; // путь к вашей странице-редиректору
-    const params = new URLSearchParams({
-      targetUrl: provider.url,
-      utm_source: "cloud_aggregator",
-      utm_medium: "referral",
-      utm_campaign: "provider_click",
-      utm_content: String(provider.id),
-    });
-    const redirectUrl = `${redirectBase}?${params.toString()}`;
-    window.open(redirectUrl, "_blank", "noopener,noreferrer");
-
-    // Старый прямой переход (закомментирован)
-    // window.open(provider.url, "_blank", "noopener,noreferrer");
+    onProviderClick();
+    if (provider.url) {
+      window.open(provider.url, "_blank", "noopener,noreferrer");
+    }
   };
 
   const getDaysWord = (days: number) => {

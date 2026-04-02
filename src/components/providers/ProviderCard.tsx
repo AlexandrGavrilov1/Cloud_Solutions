@@ -135,8 +135,7 @@ export const ProviderCard = ({
         console.error("Error tracking click:", error);
       }
 
-      // Старый прямой переход (закомментирован)
-      // window.open(provider.url, "_blank", "noopener,noreferrer");
+      window.open(provider.url, "_blank", "noopener,noreferrer");
     }
   };
 
