@@ -57,7 +57,7 @@ export default function RedirectPage() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
         </div>
         <p className="text-lg">
-          Переводим вас на страницу хостинга, пожалуйста, подождите...
+          Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
         <p className="text-sm text-gray-500 mt-2">
           Перенаправление через {countdown} сек.
