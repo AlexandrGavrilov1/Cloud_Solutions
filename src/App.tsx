@@ -23,6 +23,7 @@ import AIData from "./pages/AIData";
 import Gaming from "./pages/Gaming";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
+import RedirectPage from "./pages/redirect";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ const App = () => (
                 <Route path="/ai-data" element={<AIData />} />
                 <Route path="/gaming" element={<Gaming />} />
                 <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route path="/redirect" element={<RedirectPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
