@@ -18,7 +18,7 @@ export default function RedirectPage() {
 
     // Защита по рефереру (опционально, но улучшает безопасность)
     const referrer = document.referrer;
-    const allowedDomains = ['ваш-сайт.ru', 'www.ваш-сайт.ru']; // замените на свой домен
+    const allowedDomains = ['topcloudhub.ru', 'www.topcloudhub.ru']; // замените на свой домен
     const isFromYourSite = allowedDomains.some(domain => referrer.includes(domain));
     if (!isFromYourSite && process.env.NODE_ENV === 'production') {
       router.replace('/');
