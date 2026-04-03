@@ -32,7 +32,7 @@ export const ProviderCardHeader = ({
 
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
     e.preventDefault();
-    onProviderClick(); // отправляет метрику и POST‑запрос (оставляем)
+    onProviderClick(); // отправляет метрику и POST‑запрос  (оставляем)
 
     // Формируем URL редиректора с UTM-метками
     const redirectBase = "/redirect"; // путь к вашей странице редиректору
