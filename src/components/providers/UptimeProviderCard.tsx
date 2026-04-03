@@ -14,7 +14,7 @@ interface UptimeProviderCardProps {
   place?: number;
 }
 
-// Данные за 2025 год
+// Данные за 2025 годf
 const get2025Data = (providerId: number) => {
   if (providerId === 1) {
     return [
