@@ -35,7 +35,7 @@ export const ProviderCardHeader = ({
     onProviderClick(); // отправляет метрику и POST‑запрос (оставляем)
 
     // Формируем URL редиректора с UTM-метками
-    const redirectBase = "/redirect"; // путь к вашей странице-редиректору
+    const redirectBase = "/redirect"; // путь к вашей странице редиректору
     const params = new URLSearchParams({
       targetUrl: provider.url,
       utm_source: "cloud_aggregator",
