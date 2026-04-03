@@ -10,13 +10,13 @@ export default function RedirectPage() {
     const targetUrl = searchParams.get("targetUrl");
     const utmContent = searchParams.get("utm_content");
 
-    // Если нет targetUrl — возвращаем на главную
+    // Защита: если нет targetUrl – на главную
     if (!targetUrl) {
       navigate("/");
       return;
     }
 
-    // Отправка события в Яндекс.Метрику (если она загружена)
+    // Отправка события в Яндекс.Метрику
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "redirect_start", {
         provider_id: utmContent || "unknown",
@@ -24,7 +24,7 @@ export default function RedirectPage() {
       });
     }
 
-    // Таймер обратного отсчёта
+    // Таймер редиректа
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -46,7 +46,7 @@ export default function RedirectPage() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
         </div>
         <p className="text-lg">
-          Переводим вас на страницу хостинга, пожалуйста, подождите...
+          Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
         <p className="text-sm text-gray-500 mt-2">
           Перенаправление через {countdown} сек.
