@@ -384,7 +384,7 @@ const get2026Data = (providerId: number) => {
     ],
     5: [
       { month: "Январь", uptime: 99.95, downtime: 21 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.98, downtime: 9 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -398,7 +398,7 @@ const get2026Data = (providerId: number) => {
     ],
     6: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.98, downtime: 6 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -412,7 +412,7 @@ const get2026Data = (providerId: number) => {
     ],
     7: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.9, downtime: 42 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -440,7 +440,7 @@ const get2026Data = (providerId: number) => {
     ],
     10: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.99, downtime: 6 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -454,7 +454,7 @@ const get2026Data = (providerId: number) => {
     ],
     11: [
       { month: "Январь", uptime: 99.99, downtime: 3 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.99, downtime: 3 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -468,7 +468,7 @@ const get2026Data = (providerId: number) => {
     ],
     12: [
       { month: "Январь", uptime: 99.97, downtime: 15 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.94, downtime: 9 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -482,7 +482,7 @@ const get2026Data = (providerId: number) => {
     ],
     13: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.99, downtime: 3 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -496,7 +496,7 @@ const get2026Data = (providerId: number) => {
     ],
     14: [
       { month: "Январь", uptime: 99.99, downtime: 6 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.99, downtime: 6 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -510,7 +510,7 @@ const get2026Data = (providerId: number) => {
     ],
     15: [
       { month: "Январь", uptime: 99.99, downtime: 6 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -524,7 +524,7 @@ const get2026Data = (providerId: number) => {
     ],
     18: [
       { month: "Январь", uptime: 99.99, downtime: 6 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -538,7 +538,7 @@ const get2026Data = (providerId: number) => {
     ],
     19: [
       { month: "Январь", uptime: 99.98, downtime: 9 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -552,7 +552,7 @@ const get2026Data = (providerId: number) => {
     ],
     20: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -566,7 +566,7 @@ const get2026Data = (providerId: number) => {
     ],
     21: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -580,7 +580,7 @@ const get2026Data = (providerId: number) => {
     ],
     22: [
       { month: "Январь", uptime: 99.96, downtime: 18 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.96, downtime: 18 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -594,7 +594,7 @@ const get2026Data = (providerId: number) => {
     ],
     23: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.99, downtime: 3 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -608,7 +608,7 @@ const get2026Data = (providerId: number) => {
     ],
     32: [
       { month: "Январь", uptime: 99.99, downtime: 6 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -622,7 +622,7 @@ const get2026Data = (providerId: number) => {
     ],
     49: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
