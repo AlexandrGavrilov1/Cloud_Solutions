@@ -41,7 +41,7 @@ export const ProviderCardHeader = ({
       utm_source: "cloud_aggregator",
       utm_medium: "referral",
       utm_campaign: "provider_click",
-      utm_content: String(provider.id),
+      utm_content: provider.name.toLowerCase().replace(/\s/g, "_"),
     });
     const redirectUrl = `${redirectBase}?${params.toString()}`;
     window.open(redirectUrl, "_blank", "noopener,noreferrer");
