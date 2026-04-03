@@ -342,7 +342,7 @@ const get2026Data = (providerId: number) => {
   } = {
     1: [
       { month: "Январь", uptime: 99.99, downtime: 3 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
