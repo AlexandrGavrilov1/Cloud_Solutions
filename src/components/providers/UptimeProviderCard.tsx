@@ -356,7 +356,7 @@ const get2026Data = (providerId: number) => {
     ],
     2: [
       { month: "Январь", uptime: 100, downtime: 0 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 100, downtime: 0 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
@@ -370,7 +370,7 @@ const get2026Data = (providerId: number) => {
     ],
     3: [
       { month: "Январь", uptime: 99.93, downtime: 30 },
-      { month: "Февраль", uptime: 0, downtime: 0 },
+      { month: "Февраль", uptime: 99.95, downtime: 21 },
       { month: "Март", uptime: 0, downtime: 0 },
       { month: "Апрель", uptime: 0, downtime: 0 },
       { month: "Май", uptime: 0, downtime: 0 },
