@@ -18,51 +18,11 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTrackEvent } from "@/hooks/useTrackEvent";
 import { usePageTimer } from "@/hooks/usePageTimer";
 
-// Компонент для рендеринга Markdown с поддержкой HTML
-const MarkdownContent = ({ children }: { children: string }) => (
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm]}
-    rehypePlugins={[rehypeRaw]}
-    components={{
-      p: ({ children }) => <span>{children}</span>,
-      h1: "span",
-      h2: "span",
-      h3: "span",
-      h4: "span",
-      h5: "span",
-      h6: "span",
-      ul: "span",
-      ol: "span",
-      li: "span",
-      blockquote: "span",
-      pre: "span",
-      code: ({ inline, className, children, ...props }) => {
-        if (inline)
-          return (
-            <code className={className} {...props}>
-              {children}
-            </code>
-          );
-        return <span>{children}</span>;
-      },
-      a: ({ href, children, ...props }) => (
-        <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
-          {children}
-        </a>
-      ),
-      img: () => null,
-    }}
-  >
-    {children}
-  </ReactMarkdown>
-);
-
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useVpnPost(slug);
   const { theme } = useTheme();
   const track = useTrackEvent();
-
   const [showScrollButtons, setShowScrollButtons] = useState(false);
 
   const relatedPosts = vpnPosts
@@ -70,7 +30,6 @@ const VpnPost = () => {
     .slice(0, 3);
   usePageTimer("page_view", slug || "unknown");
 
-  // ✅ Сброс прокрутки в начало при монтировании или смене slug
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
@@ -82,10 +41,7 @@ const VpnPost = () => {
 
   useEffect(() => {
     if (slug) {
-      console.log(
-        "🟢 VpnPost component mounted, calling page_view for slug:",
-        slug,
-      );
+      console.log("🟢 VpnPost calling page_view for slug:", slug);
       track("page_view", slug);
     }
   }, [slug, track]);
@@ -110,13 +66,6 @@ const VpnPost = () => {
       "🔵 provider_click from article_button, providerName:",
       post?.providerName,
     );
-    // Старые вызовы закомментированы
-    // track("provider_click", post?.providerName || "unknown", "article_button");
-    // if (typeof window !== "undefined" && (window as any).ym) {
-    //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
-    //     provider_name: post?.providerName,
-    //   });
-    // }
     if (post?.providerUrl) {
       const utmContent =
         post.providerName?.toLowerCase().replace(/\s/g, "_") || "unknown";
@@ -127,16 +76,68 @@ const VpnPost = () => {
   // Обработчик для внешних ссылок в тексте
   const handleTextLinkClick = (href: string) => {
     console.log("🔵 outbound_link from article_text, href:", href);
-    // Старый трекинг можно оставить или закомментировать
     track("outbound_link", href, "article_text");
-    // Для внешних ссылок используем редиректор с utm_content = "outbound_link"
     if (href.startsWith("http")) {
       openViaRedirect(href, "outbound_link");
     } else {
-      // Внутренние ссылки открываем напрямую
       window.open(href, "_blank", "noopener,noreferrer");
     }
   };
+
+  // Обновлённый компонент MarkdownContent для заголовка и описания
+  const MarkdownContent = ({ children }: { children: string }) => (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      rehypePlugins={[rehypeRaw]}
+      components={{
+        a: ({ href, children, ...props }) => {
+          const handleClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+            if (href && href.startsWith("http")) {
+              openViaRedirect(href, "outbound_link");
+            } else if (href) {
+              window.open(href, "_blank", "noopener,noreferrer");
+            }
+          };
+          return (
+            <a
+              href={href}
+              onClick={handleClick}
+              target="_blank"
+              rel="noopener noreferrer"
+              {...props}
+            >
+              {children}
+            </a>
+          );
+        },
+        p: ({ children }) => <span>{children}</span>,
+        h1: ({ children }) => <span>{children}</span>,
+        h2: ({ children }) => <span>{children}</span>,
+        h3: ({ children }) => <span>{children}</span>,
+        h4: ({ children }) => <span>{children}</span>,
+        h5: ({ children }) => <span>{children}</span>,
+        h6: ({ children }) => <span>{children}</span>,
+        ul: ({ children }) => <span>{children}</span>,
+        ol: ({ children }) => <span>{children}</span>,
+        li: ({ children }) => <span>{children}</span>,
+        blockquote: ({ children }) => <span>{children}</span>,
+        pre: ({ children }) => <span>{children}</span>,
+        code: ({ inline, className, children, ...props }) => {
+          if (inline)
+            return (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            );
+          return <span>{children}</span>;
+        },
+        img: () => null,
+      }}
+    >
+      {children}
+    </ReactMarkdown>
+  );
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -150,9 +151,7 @@ const VpnPost = () => {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollButtons(window.scrollY > 20);
-    };
+    const handleScroll = () => setShowScrollButtons(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -244,7 +243,7 @@ const VpnPost = () => {
               </span>
             </div>
 
-            {/* Изображение — уменьшенная высота, адаптив */}
+            {/* Изображение */}
             {post.image && (
               <div className="w-full mb-12">
                 <img
@@ -264,9 +263,7 @@ const VpnPost = () => {
                     a: ({ node, href, children, ...props }) => {
                       const handleClick = (e: React.MouseEvent) => {
                         e.preventDefault();
-                        if (href) {
-                          handleTextLinkClick(href);
-                        }
+                        if (href) handleTextLinkClick(href);
                       };
                       return (
                         <a
@@ -281,7 +278,6 @@ const VpnPost = () => {
                       );
                     },
                     img({ node, src, ...props }) {
-                      // Для изображений, которые являются ссылками, обрабатываем клик
                       const handleImgClick = (e: React.MouseEvent) => {
                         if (src) {
                           e.preventDefault();
@@ -411,7 +407,7 @@ const VpnPost = () => {
         )}
       </main>
 
-      {/* Кнопки перемотки — полупрозрачные с размытием */}
+      {/* Кнопки перемотки */}
       {showScrollButtons && (
         <>
           <button
