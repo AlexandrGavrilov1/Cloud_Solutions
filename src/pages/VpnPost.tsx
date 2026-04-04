@@ -95,15 +95,28 @@ const VpnPost = () => {
       "🔵 provider_click from article_button, providerName:",
       post?.providerName,
     );
-    track("provider_click", post?.providerName || "unknown", "article_button");
 
-    if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
-        provider_name: post?.providerName,
-      });
-    }
+    // СТАРЫЕ ВЫЗОВЫ (закомментированы)
+    // track("provider_click", post?.providerName || "unknown", "article_button");
+    // if (typeof window !== "undefined" && (window as any).ym) {
+    //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+    //     provider_name: post?.providerName,
+    //   });
+    // }
+
+    // НОВЫЙ РЕДИРЕКТ через промежуточную страницу
     if (post?.providerUrl) {
-      window.open(post.providerUrl, "_blank", "noopener,noreferrer");
+      const redirectBase = "/redirect";
+      const params = new URLSearchParams({
+        targetUrl: post.providerUrl,
+        utm_source: "cloud_aggregator",
+        utm_medium: "referral",
+        utm_campaign: "provider_click",
+        utm_content:
+          post.providerName?.toLowerCase().replace(/\s/g, "_") || "unknown",
+      });
+      const redirectUrl = `${redirectBase}?${params.toString()}`;
+      window.open(redirectUrl, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -201,7 +214,7 @@ const VpnPost = () => {
 
             <hr className="border-t border-border/50 my-6" />
 
-            {/* Метаданнные */}
+            {/* Метаданные */}
             <div className="flex items-center gap-6 text-sm text-foreground mb-8">
               <span className="text-primary font-medium">
                 <MarkdownContent>{post.category}</MarkdownContent>
@@ -237,6 +250,7 @@ const VpnPost = () => {
                           "🔵 outbound_link from article_text, href:",
                           href,
                         );
+                        // Оставляем старый трекинг (он не связан с переходом к провайдеру, можно оставить)
                         track("outbound_link", href, "article_text");
                         window.open(href, "_blank", "noopener,noreferrer");
                       };
