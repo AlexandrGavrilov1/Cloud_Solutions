@@ -43,36 +43,48 @@ export const ComparisonTable = ({
     );
   }
 
+  // Универсальная функция для открытия ссылок через редиректор
+  const openViaRedirect = (url: string, utmContent: string) => {
+    const redirectBase = "/redirect";
+    const params = new URLSearchParams({
+      targetUrl: url,
+      utm_source: "cloud_aggregator",
+      utm_medium: "referral",
+      utm_campaign: "provider_click",
+      utm_content: utmContent,
+    });
+    const redirectUrl = `${redirectBase}?${params.toString()}`;
+    window.open(redirectUrl, "_blank", "noopener,noreferrer");
+  };
+
   const handleProviderClick = async (provider: Provider) => {
-    // Простая проверка Яндекс.Метрики
-    if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
-        provider_id: provider.id,
-        provider_name: provider.name,
-      });
-    }
+    // Старая Яндекс.Метрика (закомментирована)
+    // if (typeof window !== "undefined" && (window as any).ym) {
+    //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+    //     provider_id: provider.id,
+    //     provider_name: provider.name,
+    //   });
+    // }
 
     if (provider.url) {
-      // Трекинг клика
-      try {
-        await fetch(
-          "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              provider_id: provider.id,
-            }),
-          },
-        );
-      } catch (error) {
-        console.error("Error tracking click:", error);
-      }
+      // Старый трекинг (закомментирован)
+      // try {
+      //   await fetch(
+      //     "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+      //     {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ provider_id: provider.id }),
+      //     },
+      //   );
+      // } catch (error) {
+      //   console.error("Error tracking click:", error);
+      // }
 
-      // ОТКРЫВАЕМ В НОВОМ ОКНЕ
-      window.open(provider.url, "_blank", "noopener,noreferrer");
+      // Новый редирект через промежуточную страницу
+      // Используем читаемое название провайдера в utm_content (например, "timeweb_cloud")
+      const utmContent = provider.name.toLowerCase().replace(/\s/g, "_");
+      openViaRedirect(provider.url, utmContent);
     }
   };
 
@@ -108,13 +120,11 @@ export const ComparisonTable = ({
       icon: "UserPlus",
     },
     { label: t("card.clientType"), key: "clientType", icon: "Users" },
-    // Добавляем новые строки
     { label: t("common.gpu"), key: "gpu", icon: "Cpu" },
     { label: t("common.supports1C"), key: "supports1C", icon: "Database" },
-    { label: "AI поддержка", key: "ai", icon: "Cpu" }, // Новая строка для AI
+    { label: "AI поддержка", key: "ai", icon: "Cpu" },
   ];
 
-  // Функция для получения текста цены
   const getPriceText = (provider: Provider) => {
     if (provider.basePrice === 0) {
       return t("common.priceOnRequest") || "Цена по запросу";
@@ -122,7 +132,6 @@ export const ComparisonTable = ({
     return `${provider.basePrice} ₽/${t("common.month")}`;
   };
 
-  // Функция для получения описания GPU
   const getGpuDescription = (model: string): string => {
     const descriptions: Record<string, string> = {
       "GTX 1080": "Игровая GPU, 8GB GDDR5X, 2560 ядер CUDA",
@@ -143,11 +152,9 @@ export const ComparisonTable = ({
       A100: "Серверная GPU NVIDIA, 40-80GB HBM2, для AI и HPC",
       H100: "Серверная GPU NVIDIA, 80GB HBM3, для AI и высокопроизводительных вычислений",
     };
-
     return descriptions[model] || "Графический процессор для вычислений";
   };
 
-  // Функция для получения описания AI
   const getAiDescription = (features: string[]): string => {
     return features.join(", ");
   };
@@ -753,7 +760,6 @@ export const ComparisonTable = ({
                           default:
                             content = null;
                         }
-
                         return (
                           <td
                             key={provider.id}
