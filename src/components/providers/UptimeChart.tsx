@@ -74,41 +74,45 @@ export const UptimeChart = ({
     return `${Math.round(downtimeMinutes / 60)} ч`;
   };
 
-  const trackClick = async (providerId: number) => {
-    try {
-      await fetch(
-        "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            provider_id: providerId,
-          }),
-        },
-      );
-    } catch (error) {
-      console.error("Error tracking click:", error);
-    }
-  };
+  // Старый трекинг (закомментирован, оставлен для истории)
+  // const trackClick = async (providerId: number) => {
+  //   try {
+  //     await fetch(
+  //       "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ provider_id: providerId }),
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.error("Error tracking click:", error);
+  //   }
+  // };
 
   const handleProviderClick = async (provider: Provider) => {
-    // Трекинг клика
-    await trackClick(provider.id);
+    // Старый трекинг (закомментирован)
+    // await trackClick(provider.id);
 
-    // Яндекс.Метрика
-    if (typeof window !== "undefined" && (window as any).ym) {
-      (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
-        provider_id: provider.id,
-        provider_name: provider.name,
-      });
-    }
+    // Старая Яндекс.Метрика (закомментирована)
+    // if (typeof window !== "undefined" && (window as any).ym) {
+    //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+    //     provider_id: provider.id,
+    //     provider_name: provider.name,
+    //   });
+    // }
 
-    // Открытие сайта провайдера
-    if (provider.url) {
-      window.open(provider.url, "_blank", "noopener,noreferrer");
-    }
+    // НОВЫЙ РЕДИРЕКТ через промежуточную страницу
+    const redirectBase = "/redirect";
+    const params = new URLSearchParams({
+      targetUrl: provider.url,
+      utm_source: "cloud_aggregator",
+      utm_medium: "referral",
+      utm_campaign: "provider_click",
+      utm_content: String(provider.id), // можно заменить на provider.name slug при желании
+    });
+    const redirectUrl = `${redirectBase}?${params.toString()}`;
+    window.open(redirectUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleToggleExpand = (providerId: number) => {
