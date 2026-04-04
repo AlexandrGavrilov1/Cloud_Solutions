@@ -90,33 +90,51 @@ const VpnPost = () => {
     }
   }, [slug, track]);
 
+  // Универсальная функция для открытия ссылок через редиректор
+  const openViaRedirect = (url: string, utmContent: string) => {
+    const redirectBase = "/redirect";
+    const params = new URLSearchParams({
+      targetUrl: url,
+      utm_source: "cloud_aggregator",
+      utm_medium: "referral",
+      utm_campaign: "provider_click",
+      utm_content: utmContent,
+    });
+    const redirectUrl = `${redirectBase}?${params.toString()}`;
+    window.open(redirectUrl, "_blank", "noopener,noreferrer");
+  };
+
+  // Обработчик для кнопки провайдера
   const handleProviderClick = () => {
     console.log(
       "🔵 provider_click from article_button, providerName:",
       post?.providerName,
     );
-
-    // СТАРЫЕ ВЫЗОВЫ (закомментированы)
+    // Старые вызовы закомментированы
     // track("provider_click", post?.providerName || "unknown", "article_button");
     // if (typeof window !== "undefined" && (window as any).ym) {
     //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
     //     provider_name: post?.providerName,
     //   });
     // }
-
-    // НОВЫЙ РЕДИРЕКТ через промежуточную страницу
     if (post?.providerUrl) {
-      const redirectBase = "/redirect";
-      const params = new URLSearchParams({
-        targetUrl: post.providerUrl,
-        utm_source: "cloud_aggregator",
-        utm_medium: "referral",
-        utm_campaign: "provider_click",
-        utm_content:
-          post.providerName?.toLowerCase().replace(/\s/g, "_") || "unknown",
-      });
-      const redirectUrl = `${redirectBase}?${params.toString()}`;
-      window.open(redirectUrl, "_blank", "noopener,noreferrer");
+      const utmContent =
+        post.providerName?.toLowerCase().replace(/\s/g, "_") || "unknown";
+      openViaRedirect(post.providerUrl, utmContent);
+    }
+  };
+
+  // Обработчик для внешних ссылок в тексте
+  const handleTextLinkClick = (href: string) => {
+    console.log("🔵 outbound_link from article_text, href:", href);
+    // Старый трекинг можно оставить или закомментировать
+    track("outbound_link", href, "article_text");
+    // Для внешних ссылок используем редиректор с utm_content = "outbound_link"
+    if (href.startsWith("http")) {
+      openViaRedirect(href, "outbound_link");
+    } else {
+      // Внутренние ссылки открываем напрямую
+      window.open(href, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -246,13 +264,9 @@ const VpnPost = () => {
                     a: ({ node, href, children, ...props }) => {
                       const handleClick = (e: React.MouseEvent) => {
                         e.preventDefault();
-                        console.log(
-                          "🔵 outbound_link from article_text, href:",
-                          href,
-                        );
-                        // Оставляем старый трекинг (он не связан с переходом к провайдеру, можно оставить)
-                        track("outbound_link", href, "article_text");
-                        window.open(href, "_blank", "noopener,noreferrer");
+                        if (href) {
+                          handleTextLinkClick(href);
+                        }
                       };
                       return (
                         <a
@@ -266,15 +280,24 @@ const VpnPost = () => {
                         </a>
                       );
                     },
-                    img({ node, ...props }) {
+                    img({ node, src, ...props }) {
+                      // Для изображений, которые являются ссылками, обрабатываем клик
+                      const handleImgClick = (e: React.MouseEvent) => {
+                        if (src) {
+                          e.preventDefault();
+                          handleTextLinkClick(src);
+                        }
+                      };
                       return (
                         <a
-                          href={props.src}
+                          href={src}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="block w-full"
+                          onClick={handleImgClick}
                         >
                           <img
+                            src={src}
                             {...props}
                             className="rounded-2xl max-w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] object-cover h-auto mx-auto"
                           />
