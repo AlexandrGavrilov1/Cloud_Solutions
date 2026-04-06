@@ -51,15 +51,16 @@ export default function RedirectPage() {
             src={loaderGif}
             alt="Загрузка..."
             className="mx-auto object-contain"
-            style={{ width: "200px", height: "200px" }}
+            style={{ width: "300px", height: "300px" }}
           />
         </div>
         <p className="text-lg -mt-10 mb-0">
           Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
-        <p className="text-sm text-muted-foreground -mt-10">
+        {/* Строка с обратным отсчётом закомментирована */}
+        {/* <p className="text-sm text-muted-foreground mt-0">
           Перенаправление через {countdown} сек.
-        </p>
+        </p> */}
       </div>
     </div>
   );
