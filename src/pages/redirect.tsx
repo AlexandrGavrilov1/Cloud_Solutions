@@ -54,10 +54,10 @@ export default function RedirectPage() {
             style={{ width: "200px", height: "200px" }}
           />
         </div>
-        <p className="text-lg -mt-8 mb-0">
+        <p className="text-lg -mt-10 mb-0">
           Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
-        <p className="text-sm text-muted-foreground -mt-1">
+        <p className="text-sm text-muted-foreground -mt-10">
           Перенаправление через {countdown} сек.
         </p>
       </div>
