@@ -5,7 +5,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [countdown, setCountdown] = useState(3);
+  const [countdown, setCountdown] = useState(2);
   const { theme } = useTheme();
 
   useEffect(() => {
