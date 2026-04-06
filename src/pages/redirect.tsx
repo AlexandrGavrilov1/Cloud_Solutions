@@ -54,7 +54,7 @@ export default function RedirectPage() {
             style={{ width: "300px", height: "300px" }}
           />
         </div>
-        <p className="text-lg -mt-20 mb-0">
+        <p className="text-lg -mt-40 mb-0">
           Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
         {/* Строка с обратным отсчётом закомментирована */}
