@@ -6,7 +6,7 @@ export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countdown, setCountdown] = useState(2);
-  const { theme } = useTheme(); // текущая тема: "light" или "dark"
+  const { theme } = useTheme(); // текущая тема: "light" или " dark"
 
   useEffect(() => {
     const targetUrl = searchParams.get("targetUrl");
