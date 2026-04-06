@@ -38,7 +38,7 @@ export default function RedirectPage() {
     return () => clearInterval(timer);
   }, [searchParams, navigate]);
 
-  // Выбираем гифку в зависимости от темы
+  // Выбираем гифку в зависимости от тем ы
   const loaderGif =
     theme === "dark"
       ? "/redirect_images/loader-dark.gif"
