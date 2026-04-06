@@ -6,7 +6,7 @@ export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countdown, setCountdown] = useState(2);
-  const { theme } = useTheme(); // текущая тема: "light" или "dark"
+  const { theme } = useTheme(); // текущая тема: "l ig ht" или "da rk"
 
   useEffect(() => {
     const targetUrl = searchParams.get("targetUrl");
@@ -47,7 +47,7 @@ export default function RedirectPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="text-center">
-        <div className="mb-4">
+        <div className="mb-0">
           <img
             src={loaderGif}
             alt="Загрузка..."
@@ -58,7 +58,7 @@ export default function RedirectPage() {
         <p className="text-lg">
           Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
-        <p className="text-sm text-muted-foreground mt-2">
+        <p className="text-sm text-muted-foreground">
           Перенаправление через {countdown} сек.
         </p>
       </div>
