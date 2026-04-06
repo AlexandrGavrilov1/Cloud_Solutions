@@ -6,7 +6,7 @@ export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countdown, setCountdown] = useState(2);
-  const { theme } = useTheme(); // текущая тема: "light" или " dark"
+  const { theme } = useTheme(); // текущая тема: "light" или "dark"
 
   useEffect(() => {
     const targetUrl = searchParams.get("targetUrl");
@@ -51,7 +51,8 @@ export default function RedirectPage() {
           <img
             src={loaderGif}
             alt="Загрузка..."
-            className="h-16 w-16 mx-auto object-contain"
+            className="mx-auto object-contain"
+            style={{ width: "150px", height: "150px" }}
           />
         </div>
         <p className="text-lg">
