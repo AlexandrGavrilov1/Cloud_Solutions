@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useTheme } from "@/contexts/ThemeContext"; // импорт хука темы
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countdown, setCountdown] = useState(2);
-  const { theme } = useTheme(); // текущая тема: "l ig ht" или "da rk"
+  const { theme } = useTheme();
 
   useEffect(() => {
     const targetUrl = searchParams.get("targetUrl");
@@ -38,7 +38,6 @@ export default function RedirectPage() {
     return () => clearInterval(timer);
   }, [searchParams, navigate]);
 
-  // Выбираем гифку в зависимости от тем ы
   const loaderGif =
     theme === "dark"
       ? "/redirect_images/loader-dark.gif"
@@ -54,14 +53,13 @@ export default function RedirectPage() {
             className="mx-auto object-contain"
             style={{ width: "200px", height: "200px" }}
           />
-
-          <p className="text-lg">
-            Переводим вас на страницу провайдера, пожалуйста, подождите...
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Перенаправление через {countdown} сек.
-          </p>
         </div>
+        <p className="text-lg mt-0 mb-0">
+          Переводим вас на страницу провайдера, пожалуйста, подождите...
+        </p>
+        <p className="text-sm text-muted-foreground mt-0">
+          Перенаправление через {countdown} сек.
+        </p>
       </div>
     </div>
   );
