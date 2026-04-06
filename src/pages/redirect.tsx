@@ -54,13 +54,14 @@ export default function RedirectPage() {
             className="mx-auto object-contain"
             style={{ width: "200px", height: "200px" }}
           />
+
+          <p className="text-lg">
+            Переводим вас на страницу провайдера, пожалуйста, подождите...
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Перенаправление через {countdown} сек.
+          </p>
         </div>
-        <p className="text-lg">
-          Переводим вас на страницу провайдера, пожалуйста, подождите...
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Перенаправление через {countdown} сек.
-        </p>
       </div>
     </div>
   );
