@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTheme } from "@/contexts/ThemeContext"; // импорт хука темы
 
 export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [countdown, setCountdown] = useState(2);
+  const { theme } = useTheme(); // текущая тема: "light" или "dark"
 
   useEffect(() => {
     const targetUrl = searchParams.get("targetUrl");
     const utmContent = searchParams.get("utm_content");
 
-    // Защита: если нет targetUrl – на главную
     if (!targetUrl) {
       navigate("/");
       return;
     }
 
-    // Отправка события в Яндекс.Метрику
     if (typeof window !== "undefined" && (window as any).ym) {
       (window as any).ym(105466349, "reachGoal", "redirect_start", {
         provider_id: utmContent || "unknown",
@@ -24,7 +24,6 @@ export default function RedirectPage() {
       });
     }
 
-    // Таймер редиректа
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -39,16 +38,26 @@ export default function RedirectPage() {
     return () => clearInterval(timer);
   }, [searchParams, navigate]);
 
+  // Выбираем гифку в зависимости от темы
+  const loaderGif =
+    theme === "dark"
+      ? "/redirect_images/loader-dark.gif"
+      : "/redirect_images/loader-light.gif";
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="text-center">
         <div className="mb-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+          <img
+            src={loaderGif}
+            alt="Загрузка..."
+            className="h-16 w-16 mx-auto object-contain"
+          />
         </div>
         <p className="text-lg">
           Переводим вас на страницу провайдера, пожалуйста, подождите...
         </p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-sm text-muted-foreground mt-2">
           Перенаправление через {countdown} сек.
         </p>
       </div>
