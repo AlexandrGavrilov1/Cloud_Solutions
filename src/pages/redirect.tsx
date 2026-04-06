@@ -52,7 +52,7 @@ export default function RedirectPage() {
             src={loaderGif}
             alt="Загрузка..."
             className="mx-auto object-contain"
-            style={{ width: "150px", height: "150px" }}
+            style={{ width: "200px", height: "200px" }}
           />
         </div>
         <p className="text-lg">
