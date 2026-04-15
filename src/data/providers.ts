@@ -79,9 +79,9 @@ export const providers: Provider[] = [
         "A6000",
         "Tesla T4",
       ],
-      // Добавляем поддержку 1С
+      // Добавляем поддер жку 1С
       supports1C: true,
-      // Добавляем поддержку AIа
+      // Добавляем подд ержку AIа
       supportsAI: true,
       aiFeatures: [
         "Готовые образы с Jupyter Notebook",
