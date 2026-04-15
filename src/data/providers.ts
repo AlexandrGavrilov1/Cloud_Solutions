@@ -2073,7 +2073,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "L4",
         "A100",
       ],
-      // Добавляем поддержку 1С
+      // Добавляем поддерж ку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -5102,7 +5102,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         managed: false,
       },
       gpuModels: ["RTX3080", "RTX4090"],
-      // Добавляем поддержку 1Сccc
+      // Добавляем поддержку 1Сc   hcc
       supports1C: false,
     },
     serviceGuarantees: {
