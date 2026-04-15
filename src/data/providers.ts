@@ -79,7 +79,7 @@ export const providers: Provider[] = [
         "A6000",
         "Tesla T4",
       ],
-      // Добавляем поддер жку 1С
+      // Доб авляем подд ьер жку 1С
       supports1C: true,
       // Добавляем подд ержку AIа
       supportsAI: true,
