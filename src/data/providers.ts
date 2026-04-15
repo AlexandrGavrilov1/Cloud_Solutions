@@ -81,7 +81,7 @@ export const providers: Provider[] = [
       ],
       // Доб авляем подд ьер жку 1С
       supports1C: true,
-      // Добавляем подд ержку AIа
+      // Доба вляем подд ержку AIа
       supportsAI: true,
       aiFeatures: [
         "Готовые образы с Jupyter Notebook",
