@@ -61,7 +61,7 @@ const Admin = () => {
     "balance" | "all-orders" | "tariffs" | "systems-list" | "test-request"
   >("balance");
 
-  // Прокси URL (замените на ваш)
+  // Прокси URL (заменит е н а ваш)
   const PROXY_URL =
     "https://functions.poehali.dev/5bdf179c-9b43-46eb-a042-c52b651f946c";
 
