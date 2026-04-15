@@ -1124,7 +1124,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       ddosProtection: "Базовая защита",
 
       gpuModels: ["GT 1030", "RTX 1060", "RTX 4060Ti", "GRID K1", "RTX 4090"],
-      // Добавляем поддержку 1С
+      // Добавл яем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
