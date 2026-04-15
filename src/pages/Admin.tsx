@@ -53,7 +53,7 @@ const Admin = () => {
     "stats" | "providers" | "reviews" | "onedash" | "vpn-edit" | "events"
   >("stats");
 
-  // OneDash API state
+  // One Dash API state
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
   const [onedashError, setOnedashError] = useState("");
