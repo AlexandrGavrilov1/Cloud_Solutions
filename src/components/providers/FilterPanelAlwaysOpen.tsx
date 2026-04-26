@@ -456,6 +456,15 @@ export const FilterPanelAlwaysOpen = ({
           onChange={setFilterBareMetal}
           label="Bare metal"
         />
+        <FilterCheckbox
+          id="filter-has-gpu"
+          checked={filterHasGPU}
+          onChange={(checked) => {
+            setFilterHasGPU(checked);
+            if (checked) setFilterGPU([]);
+          }}
+          label="GPU"
+        />
       </div>
     </div>
   );
@@ -832,43 +841,30 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
+  // --- Аккордеон "Модели GPU" (без чекбокса "Есть GPU") ---
   const GpuAccordion = () => {
     const isOpen = dropdownsOpen.gpu;
-    let valueText = "";
-    if (filterHasGPU) {
-      valueText = "Есть GPU";
-    } else if (filterGPU.length > 0) {
-      valueText =
-        filterGPU.length === 1 ? filterGPU[0] : `${filterGPU.length} выбрано`;
-    }
+    const valueText =
+      filterGPU.length === 0
+        ? ""
+        : filterGPU.length === 1
+          ? filterGPU[0]
+          : `${filterGPU.length} выбрано`;
     return (
       <AccordionSection
-        title="GPU"
+        title="Модели GPU"
         isOpen={isOpen}
         onToggle={(e) => handleDropdownClick("gpu", e)}
         valueText={valueText}
         dropdownKey="gpu"
       >
-        <div className="space-y-1">
-          <FilterCheckbox
-            id="filter-has-gpu"
-            checked={filterHasGPU}
-            onChange={(checked) => {
-              setFilterHasGPU(checked);
-              if (checked) setFilterGPU([]);
-            }}
-            label="Есть GPU"
+        {allGPUs.length > 0 && (
+          <OptionsGrid
+            options={allGPUs}
+            selectedValues={filterGPU}
+            onChange={handleGpuChange}
           />
-          {allGPUs.length > 0 && (
-            <div className="mt-1">
-              <OptionsGrid
-                options={allGPUs}
-                selectedValues={filterGPU}
-                onChange={handleGpuChange}
-              />
-            </div>
-          )}
-        </div>
+        )}
       </AccordionSection>
     );
   };
