@@ -52,7 +52,7 @@ interface FilterPanelAlwaysOpenProps {
   filterAI: boolean;
   setFilterAI: (value: boolean) => void;
 
-  // Типы услууг
+  // Типы услуг
   filterHosting: boolean;
   setFilterHosting: (value: boolean) => void;
   filterVPS: boolean;
@@ -189,7 +189,6 @@ export const FilterPanelAlwaysOpen = ({
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Закрытие дропдаунов при клике вне панели
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -461,7 +460,7 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // --- Сетка остальных чекбоксов (152-ФЗ, КИИ и т.д.) ---
+  // --- Сетка остальных чекбоксов (без типов услуг) ---
   const CheckboxGrid = () => (
     <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
@@ -592,27 +591,23 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеон "Количество ЦОД" (исправлен: нет NaN, начальные 0 и 15) ---
+  // --- Аккордеон "Количество ЦОД" (оригинальный, рабочий, без NaN) ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
     const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-    // Жёсткая инициализация строковыми "0" и "15"
-    const [minInput, setMinInput] = useState("0");
-    const [maxInput, setMaxInput] = useState("15");
+    const [minInput, setMinInput] = useState(minValue.toString());
+    const [maxInput, setMaxInput] = useState(maxValue.toString());
 
-    // Синхронизация с пропсами при их изменении
     useEffect(() => {
-      const newMin = filterMinDatacenters ?? 0;
-      setMinValue(newMin);
-      setMinInput(newMin.toString());
+      setMinValue(filterMinDatacenters ?? 0);
+      setMinInput((filterMinDatacenters ?? 0).toString());
     }, [filterMinDatacenters]);
 
     useEffect(() => {
-      const newMax = filterMaxDatacenters ?? 15;
-      setMaxValue(newMax);
-      setMaxInput(newMax.toString());
+      setMaxValue(filterMaxDatacenters ?? 15);
+      setMaxInput((filterMaxDatacenters ?? 15).toString());
     }, [filterMaxDatacenters]);
 
     const handleMinChange = useCallback(
@@ -684,7 +679,6 @@ export const FilterPanelAlwaysOpen = ({
 
     useEffect(() => {
       if (!isDragging) return;
-
       const handleMouseMove = (moveEvent: MouseEvent) => {
         moveEvent.preventDefault();
         const slider = document.querySelector(".datacenters-slider");
@@ -696,12 +690,10 @@ export const FilterPanelAlwaysOpen = ({
         if (isDragging === "min") handleMinChange(value);
         else if (isDragging === "max") handleMaxChange(value);
       };
-
       const handleMouseUp = () => {
         setIsDragging(null);
         applyValues();
       };
-
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
       return () => {
@@ -787,6 +779,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
+  // --- Остальные аккордеоны (без изменений) ---
   const FstekAccordion = () => {
     const isOpen = dropdownsOpen.fstek;
     const valueText =
