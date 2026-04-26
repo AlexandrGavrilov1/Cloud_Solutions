@@ -599,26 +599,44 @@ export const FilterPanelAlwaysOpen = ({
   // --- Аккордеоны ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
+    // Используем значения из пропсов, но для отображения в полях ввода используем отдельные состояния
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
     const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-    const [minInput, setMinInput] = useState(minValue.toString());
-    const [maxInput, setMaxInput] = useState(maxValue.toString());
+    // Для полей ввода: изначально пустые строки, если фильтр не активен
+    const [minInput, setMinInput] = useState(
+      filterMinDatacenters !== null ? filterMinDatacenters.toString() : "",
+    );
+    const [maxInput, setMaxInput] = useState(
+      filterMaxDatacenters !== null ? filterMaxDatacenters.toString() : "",
+    );
 
+    // Синхронизация при изменении пропсов
     useEffect(() => {
-      setMinValue(filterMinDatacenters ?? 0);
-      setMinInput((filterMinDatacenters ?? 0).toString());
+      if (filterMinDatacenters !== null) {
+        setMinValue(filterMinDatacenters);
+        setMinInput(filterMinDatacenters.toString());
+      } else {
+        setMinValue(0);
+        setMinInput("");
+      }
     }, [filterMinDatacenters]);
 
     useEffect(() => {
-      setMaxValue(filterMaxDatacenters ?? 15);
-      setMaxInput((filterMaxDatacenters ?? 15).toString());
+      if (filterMaxDatacenters !== null) {
+        setMaxValue(filterMaxDatacenters);
+        setMaxInput(filterMaxDatacenters.toString());
+      } else {
+        setMaxValue(15);
+        setMaxInput("");
+      }
     }, [filterMaxDatacenters]);
 
     const handleMinChange = useCallback(
       (value: number) => {
         const newValue = Math.max(0, Math.min(value, maxValue - 1, 15));
         setMinValue(newValue);
+        // Если значение не 0, показываем его, иначе пустую строку (но при ползунке лучше показывать число)
         setMinInput(newValue.toString());
       },
       [maxValue],
@@ -634,36 +652,74 @@ export const FilterPanelAlwaysOpen = ({
     );
 
     const applyValues = useCallback(() => {
+      // Применяем текущие значения minValue и maxValue
       setFilterMinDatacenters(minValue > 0 ? minValue : null);
       setFilterMaxDatacenters(maxValue < 15 ? maxValue : null);
     }, [minValue, maxValue, setFilterMinDatacenters, setFilterMaxDatacenters]);
 
     const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (value === "" || /^\d+$/.test(value)) setMinInput(value);
+      if (value === "" || /^\d+$/.test(value)) {
+        setMinInput(value);
+        if (value === "") {
+          // Если поле очищено, устанавливаем minValue в 0 и сбрасываем фильтр
+          setMinValue(0);
+          setFilterMinDatacenters(null);
+        } else {
+          const num = parseInt(value, 10);
+          if (!isNaN(num)) {
+            const newValue = Math.max(0, Math.min(num, maxValue - 1, 15));
+            setMinValue(newValue);
+            setFilterMinDatacenters(newValue > 0 ? newValue : null);
+          }
+        }
+      }
     };
 
     const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (value === "" || /^\d+$/.test(value)) setMaxInput(value);
+      if (value === "" || /^\d+$/.test(value)) {
+        setMaxInput(value);
+        if (value === "") {
+          setMaxValue(15);
+          setFilterMaxDatacenters(null);
+        } else {
+          const num = parseInt(value, 10);
+          if (!isNaN(num)) {
+            const newValue = Math.min(15, Math.max(num, minValue + 1, 0));
+            setMaxValue(newValue);
+            setFilterMaxDatacenters(newValue < 15 ? newValue : null);
+          }
+        }
+      }
     };
 
     const handleMinInputBlur = () => {
-      let value = parseInt(minInput);
-      if (isNaN(value)) value = 0;
-      value = Math.max(0, Math.min(value, maxValue - 1, 15));
-      setMinValue(value);
-      setMinInput(value.toString());
-      setFilterMinDatacenters(value > 0 ? value : null);
+      if (minInput === "") {
+        setMinValue(0);
+        setFilterMinDatacenters(null);
+      } else {
+        let value = parseInt(minInput);
+        if (isNaN(value)) value = 0;
+        value = Math.max(0, Math.min(value, maxValue - 1, 15));
+        setMinValue(value);
+        setMinInput(value.toString());
+        setFilterMinDatacenters(value > 0 ? value : null);
+      }
     };
 
     const handleMaxInputBlur = () => {
-      let value = parseInt(maxInput);
-      if (isNaN(value)) value = 15;
-      value = Math.min(15, Math.max(value, minValue + 1, 0));
-      setMaxValue(value);
-      setMaxInput(value.toString());
-      setFilterMaxDatacenters(value < 15 ? value : null);
+      if (maxInput === "") {
+        setMaxValue(15);
+        setFilterMaxDatacenters(null);
+      } else {
+        let value = parseInt(maxInput);
+        if (isNaN(value)) value = 15;
+        value = Math.min(15, Math.max(value, minValue + 1, 0));
+        setMaxValue(value);
+        setMaxInput(value.toString());
+        setFilterMaxDatacenters(value < 15 ? value : null);
+      }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -692,8 +748,11 @@ export const FilterPanelAlwaysOpen = ({
         const x = moveEvent.clientX - rect.left;
         const percent = Math.max(0, Math.min(1, x / rect.width));
         const value = Math.round(percent * 15);
-        if (isDragging === "min") handleMinChange(value);
-        else if (isDragging === "max") handleMaxChange(value);
+        if (isDragging === "min") {
+          handleMinChange(value);
+        } else if (isDragging === "max") {
+          handleMaxChange(value);
+        }
       };
       const handleMouseUp = () => {
         setIsDragging(null);
@@ -707,10 +766,9 @@ export const FilterPanelAlwaysOpen = ({
       };
     }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
 
-    // Исправленное формирование valueText: избегаем NaN-NaN
-    let valueText = "";
     const hasMin = filterMinDatacenters !== null && filterMinDatacenters > 0;
     const hasMax = filterMaxDatacenters !== null && filterMaxDatacenters < 15;
+    let valueText = "";
     if (hasMin || hasMax) {
       const minVal = filterMinDatacenters ?? 0;
       const maxVal = filterMaxDatacenters ?? 15;
