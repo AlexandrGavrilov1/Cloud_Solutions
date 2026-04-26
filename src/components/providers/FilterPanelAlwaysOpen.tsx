@@ -52,6 +52,18 @@ interface FilterPanelAlwaysOpenProps {
   filterAI: boolean;
   setFilterAI: (value: boolean) => void;
 
+  // Типы услуг
+  filterHosting: boolean;
+  setFilterHosting: (value: boolean) => void;
+  filterVPS: boolean;
+  setFilterVPS: (value: boolean) => void;
+  filterVDS: boolean;
+  setFilterVDS: (value: boolean) => void;
+  filterDedicatedServer: boolean;
+  setFilterDedicatedServer: (value: boolean) => void;
+  filterBareMetal: boolean;
+  setFilterBareMetal: (value: boolean) => void;
+
   allLocations: string[];
   allVirtualizations: string[];
   allDiskTypes: string[];
@@ -66,7 +78,7 @@ interface FilterPanelAlwaysOpenProps {
   clientTypeOptions: ClientType[];
 
   className?: string;
-  showHeader?: boolean; // новый проп для управления заголовком
+  showHeader?: boolean;
 }
 
 export const FilterPanelAlwaysOpen = ({
@@ -112,7 +124,16 @@ export const FilterPanelAlwaysOpen = ({
   setFilter1C,
   filterAI,
   setFilterAI,
-
+  filterHosting,
+  setFilterHosting,
+  filterVPS,
+  setFilterVPS,
+  filterVDS,
+  setFilterVDS,
+  filterDedicatedServer,
+  setFilterDedicatedServer,
+  filterBareMetal,
+  setFilterBareMetal,
   allLocations,
   allVirtualizations,
   allDiskTypes,
@@ -121,7 +142,6 @@ export const FilterPanelAlwaysOpen = ({
   allCPUs,
   allGPUs = [],
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-
   additionalServicesOptions = [
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
@@ -131,7 +151,6 @@ export const FilterPanelAlwaysOpen = ({
     "Аттестация по ФСТЭК",
     "Другие гос. лицензии",
   ],
-
   registrationDataOptions = [
     "ФИО",
     "Email",
@@ -147,10 +166,9 @@ export const FilterPanelAlwaysOpen = ({
     "Регистрация в сторонних сервисах",
     "Скан удостоверения личности",
   ],
-
   clientTypeOptions = ["Физлицо", "Юрлицо"],
   className = "",
-  showHeader = true, // по умолчанию заголовок показываем
+  showHeader = true,
 }: FilterPanelAlwaysOpenProps) => {
   const { t } = useLanguage();
   const [dropdownsOpen, setDropdownsOpen] = useState<Record<string, boolean>>({
@@ -175,9 +193,7 @@ export const FilterPanelAlwaysOpen = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (panelRef.current && panelRef.current.contains(target)) {
-        return;
-      }
+      if (panelRef.current && panelRef.current.contains(target)) return;
       setDropdownsOpen({
         fstek: false,
         location: false,
@@ -193,7 +209,6 @@ export const FilterPanelAlwaysOpen = ({
         clientType: false,
       });
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -219,7 +234,12 @@ export const FilterPanelAlwaysOpen = ({
     filterGPU.length > 0 ||
     filterHasGPU ||
     filter1C ||
-    filterAI;
+    filterAI ||
+    filterHosting ||
+    filterVPS ||
+    filterVDS ||
+    filterDedicatedServer ||
+    filterBareMetal;
 
   const activeFiltersCount = [
     filterFZ152,
@@ -243,6 +263,11 @@ export const FilterPanelAlwaysOpen = ({
     filterHasGPU,
     filter1C,
     filterAI,
+    filterHosting,
+    filterVPS,
+    filterVDS,
+    filterDedicatedServer,
+    filterBareMetal,
   ].filter(Boolean).length;
 
   const clearFilters = useCallback(() => {
@@ -267,6 +292,11 @@ export const FilterPanelAlwaysOpen = ({
     setFilterHasGPU(false);
     setFilter1C(false);
     setFilterAI(false);
+    setFilterHosting(false);
+    setFilterVPS(false);
+    setFilterVDS(false);
+    setFilterDedicatedServer(false);
+    setFilterBareMetal(false);
   }, [
     setFilterFZ152,
     setFilterFSTEK,
@@ -289,6 +319,11 @@ export const FilterPanelAlwaysOpen = ({
     setFilterHasGPU,
     setFilter1C,
     setFilterAI,
+    setFilterHosting,
+    setFilterVPS,
+    setFilterVDS,
+    setFilterDedicatedServer,
+    setFilterBareMetal,
   ]);
 
   const handleMultiSelectChange = (
@@ -296,13 +331,10 @@ export const FilterPanelAlwaysOpen = ({
     currentValues: string[],
     setter: (values: string[]) => void,
   ) => {
-    if (value === "all") {
-      setter([]);
-    } else if (currentValues.includes(value)) {
+    if (value === "all") setter([]);
+    else if (currentValues.includes(value))
       setter(currentValues.filter((v) => v !== value));
-    } else {
-      setter([...currentValues, value]);
-    }
+    else setter([...currentValues, value]);
   };
 
   const handleFstekChange = (option: string) => {
@@ -343,19 +375,15 @@ export const FilterPanelAlwaysOpen = ({
   const handleDropdownClick = (dropdown: string, e: React.MouseEvent) => {
     e.stopPropagation();
     const isCurrentlyOpen = dropdownsOpen[dropdown];
-
     const newState = { ...dropdownsOpen };
     Object.keys(newState).forEach((key) => {
-      if (key !== dropdown) {
-        newState[key] = false;
-      }
+      if (key !== dropdown) newState[key] = false;
     });
-
     newState[dropdown] = !isCurrentlyOpen;
     setDropdownsOpen(newState);
   };
 
-  // --- Компоненты ---
+  // --- Компонент чекбокса ---
   const FilterCheckbox = ({
     checked,
     onChange,
@@ -393,9 +421,49 @@ export const FilterPanelAlwaysOpen = ({
     </label>
   );
 
-  // Сетка чекбоксов (без заголовка)
+  // --- Блок типов услуг (без заголовка, две колонки) ---
+  const ServiceTypesBlock = () => (
+    <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="space-y-1">
+        <FilterCheckbox
+          id="filter-hosting"
+          checked={filterHosting}
+          onChange={setFilterHosting}
+          label="Хостинг"
+        />
+        <FilterCheckbox
+          id="filter-vps"
+          checked={filterVPS}
+          onChange={setFilterVPS}
+          label="VPS"
+        />
+        <FilterCheckbox
+          id="filter-vds"
+          checked={filterVDS}
+          onChange={setFilterVDS}
+          label="VDS"
+        />
+      </div>
+      <div className="space-y-1">
+        <FilterCheckbox
+          id="filter-dedicated"
+          checked={filterDedicatedServer}
+          onChange={setFilterDedicatedServer}
+          label="Dedicated Server"
+        />
+        <FilterCheckbox
+          id="filter-bare-metal"
+          checked={filterBareMetal}
+          onChange={setFilterBareMetal}
+          label="Bare metal"
+        />
+      </div>
+    </div>
+  );
+
+  // --- Сетка остальных чекбоксов (152-ФЗ, КИИ и т.д.) ---
   const CheckboxGrid = () => (
-    <div className="grid grid-cols-2 gap-1.5">
+    <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
         <FilterCheckbox
           id="filter-fz152"
@@ -445,7 +513,7 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // Аккордеон
+  // --- Аккордеон (общий компонент) ---
   const AccordionSection = ({
     title,
     isOpen,
@@ -500,7 +568,6 @@ export const FilterPanelAlwaysOpen = ({
     onChange: (option: string) => void;
   }) => {
     const hasManyOptions = options.length > 4;
-
     return (
       <div
         className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1 scrollbar-thin" : ""}`}
@@ -525,7 +592,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеоны ---
+  // --- Аккордеон "Количество ЦОД" (исправлен: нет NaN, начальные 0 и 15) ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
@@ -1055,7 +1122,6 @@ export const FilterPanelAlwaysOpen = ({
         }
       `}</style>
 
-      {/* Заголовок и кнопка сброса — только если showHeader === true */}
       {showHeader && (
         <div className="flex items-center justify-between mb-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-1.5">
@@ -1082,10 +1148,9 @@ export const FilterPanelAlwaysOpen = ({
         </div>
       )}
 
-      {/* Сетка чекбоксов всегда отображается */}
+      <ServiceTypesBlock />
       <CheckboxGrid />
 
-      {/* Аккордеоны */}
       <div className="space-y-0">
         <FstekAccordion />
         <LocationAccordion />
