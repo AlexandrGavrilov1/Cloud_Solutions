@@ -52,7 +52,7 @@ interface FilterPanelAlwaysOpenProps {
   filterAI: boolean;
   setFilterAI: (value: boolean) => void;
 
-  // Типы услуг
+  // Типы услууг
   filterHosting: boolean;
   setFilterHosting: (value: boolean) => void;
   filterVPS: boolean;
