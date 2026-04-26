@@ -177,11 +177,11 @@ Timeweb Cloud позиционирует себя как провайдер дл
     },
     reviews: reviewsData[1] || [],
     // Новые поля для типов услуг (пока вс е false)
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
+    hasHosting: true,
+    hasVPS: true,
+    hasVDS: true,
+    hasDedicatedServer: true,
+    hasBareMetal: true,
   },
   {
     id: 2,
