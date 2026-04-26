@@ -90,18 +90,27 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
       return saved ? JSON.parse(saved) : [];
     },
   );
+
+  // ИСПРАВЛЕНО: проверка на NaN для minDatacenters
   const [filterMinDatacenters, setFilterMinDatacenters] = useState<
     number | null
   >(() => {
     const saved = localStorage.getItem("filterMinDatacenters");
-    return saved ? parseInt(saved) : null;
+    if (saved === null) return null;
+    const parsed = parseInt(saved, 10);
+    return isNaN(parsed) ? null : parsed;
   });
+
+  // ИСПРАВЛЕНО: проверка на NaN для maxDatacenters
   const [filterMaxDatacenters, setFilterMaxDatacenters] = useState<
     number | null
   >(() => {
     const saved = localStorage.getItem("filterMaxDatacenters");
-    return saved ? parseInt(saved) : null;
+    if (saved === null) return null;
+    const parsed = parseInt(saved, 10);
+    return isNaN(parsed) ? null : parsed;
   });
+
   const [filterDiskType, setFilterDiskType] = useState<string[]>(() => {
     const saved = localStorage.getItem("filterDiskType");
     return saved ? JSON.parse(saved) : [];
@@ -210,7 +219,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     localStorage.setItem("filterBareMetal", JSON.stringify(filterBareMetal));
   }, [filterBareMetal]);
 
-  // Сохранение старых фильтров (добавьте, если ещё нет)
+  // Сохранение старых фильтров
   useEffect(() => {
     localStorage.setItem("filterFZ152", JSON.stringify(filterFZ152));
   }, [filterFZ152]);
@@ -381,7 +390,7 @@ export const ProvidersSection = ({ providers }: ProvidersSectionProps) => {
     [providers],
   );
 
-  // --- Фильтрация (добавлены новые условия) ---
+  // --- Фильтрация ---
   const filteredProviders = useMemo(() => {
     let filtered = providers.filter((p) => {
       if (filterFZ152 && !p.fz152Compliant) return false;
