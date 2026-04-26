@@ -598,17 +598,21 @@ export const FilterPanelAlwaysOpen = ({
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
     const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-    const [minInput, setMinInput] = useState(minValue.toString());
-    const [maxInput, setMaxInput] = useState(maxValue.toString());
+    // Жёсткая инициализация строковыми "0" и "15"
+    const [minInput, setMinInput] = useState("0");
+    const [maxInput, setMaxInput] = useState("15");
 
+    // Синхронизация с пропсами при их изменении
     useEffect(() => {
-      setMinValue(filterMinDatacenters ?? 0);
-      setMinInput((filterMinDatacenters ?? 0).toString());
+      const newMin = filterMinDatacenters ?? 0;
+      setMinValue(newMin);
+      setMinInput(newMin.toString());
     }, [filterMinDatacenters]);
 
     useEffect(() => {
-      setMaxValue(filterMaxDatacenters ?? 15);
-      setMaxInput((filterMaxDatacenters ?? 15).toString());
+      const newMax = filterMaxDatacenters ?? 15;
+      setMaxValue(newMax);
+      setMaxInput(newMax.toString());
     }, [filterMaxDatacenters]);
 
     const handleMinChange = useCallback(
