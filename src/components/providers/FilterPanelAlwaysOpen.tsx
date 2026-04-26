@@ -427,10 +427,7 @@ export const FilterPanelAlwaysOpen = ({
 
   // --- Новый блок типов услуг (вертикально, в указанном порядке) ---
   const ServiceTypesBlock = () => (
-    <div className="mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-      <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-        Типы услуг
-      </div>
+    <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
         <FilterCheckbox
           id="filter-hosting"
@@ -450,6 +447,8 @@ export const FilterPanelAlwaysOpen = ({
           onChange={setFilterVDS}
           label="VDS"
         />
+      </div>
+      <div className="space-y-1">
         <FilterCheckbox
           id="filter-dedicated"
           checked={filterDedicatedServer}
