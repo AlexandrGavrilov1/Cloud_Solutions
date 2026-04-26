@@ -591,7 +591,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеон "Количество ЦОД" (оригинальный, рабочий, без NaN) ---
+  // --- ОРИГИНАЛЬНЫЙ АККОРДЕОН "Количество ЦОД" (рабочий, без NaN) ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
@@ -779,7 +779,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Остальные аккордеоны (без изменений) ---
+  // --- Остальные аккордеоны (копия из вашего исходного кода) ---
   const FstekAccordion = () => {
     const isOpen = dropdownsOpen.fstek;
     const valueText =
