@@ -595,26 +595,20 @@ export const FilterPanelAlwaysOpen = ({
   // --- Аккордеон "Количество ЦОД" (исправлен: нет NaN, начальные 0 и 15) ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
-    const [minValue, setMinValue] = useState(() => filterMinDatacenters ?? 0);
-    const [maxValue, setMaxValue] = useState(() => filterMaxDatacenters ?? 15);
+    const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
+    const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-    const [minInput, setMinInput] = useState(() =>
-      (filterMinDatacenters ?? 0).toString(),
-    );
-    const [maxInput, setMaxInput] = useState(() =>
-      (filterMaxDatacenters ?? 15).toString(),
-    );
+    const [minInput, setMinInput] = useState(minValue.toString());
+    const [maxInput, setMaxInput] = useState(maxValue.toString());
 
     useEffect(() => {
-      const newMin = filterMinDatacenters ?? 0;
-      setMinValue(newMin);
-      setMinInput(newMin.toString());
+      setMinValue(filterMinDatacenters ?? 0);
+      setMinInput((filterMinDatacenters ?? 0).toString());
     }, [filterMinDatacenters]);
 
     useEffect(() => {
-      const newMax = filterMaxDatacenters ?? 15;
-      setMaxValue(newMax);
-      setMaxInput(newMax.toString());
+      setMaxValue(filterMaxDatacenters ?? 15);
+      setMaxInput((filterMaxDatacenters ?? 15).toString());
     }, [filterMaxDatacenters]);
 
     const handleMinChange = useCallback(
@@ -642,24 +636,12 @@ export const FilterPanelAlwaysOpen = ({
 
     const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (value === "") {
-        setMinInput("");
-        return;
-      }
-      if (/^\d+$/.test(value)) {
-        setMinInput(value);
-      }
+      if (value === "" || /^\d+$/.test(value)) setMinInput(value);
     };
 
     const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (value === "") {
-        setMaxInput("");
-        return;
-      }
-      if (/^\d+$/.test(value)) {
-        setMaxInput(value);
-      }
+      if (value === "" || /^\d+$/.test(value)) setMaxInput(value);
     };
 
     const handleMinInputBlur = () => {
@@ -698,6 +680,7 @@ export const FilterPanelAlwaysOpen = ({
 
     useEffect(() => {
       if (!isDragging) return;
+
       const handleMouseMove = (moveEvent: MouseEvent) => {
         moveEvent.preventDefault();
         const slider = document.querySelector(".datacenters-slider");
@@ -709,10 +692,12 @@ export const FilterPanelAlwaysOpen = ({
         if (isDragging === "min") handleMinChange(value);
         else if (isDragging === "max") handleMaxChange(value);
       };
+
       const handleMouseUp = () => {
         setIsDragging(null);
         applyValues();
       };
+
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
       return () => {
@@ -721,14 +706,12 @@ export const FilterPanelAlwaysOpen = ({
       };
     }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
 
-    const hasMin = filterMinDatacenters !== null && filterMinDatacenters > 0;
-    const hasMax = filterMaxDatacenters !== null && filterMaxDatacenters < 15;
-    let valueText = "";
-    if (hasMin || hasMax) {
-      const minVal = filterMinDatacenters ?? 0;
-      const maxVal = filterMaxDatacenters ?? 15;
-      valueText = `${minVal} – ${maxVal}`;
-    }
+    const isDefault =
+      (filterMinDatacenters === null || filterMinDatacenters === 0) &&
+      (filterMaxDatacenters === null || filterMaxDatacenters === 15);
+    const valueText = isDefault
+      ? ""
+      : `${filterMinDatacenters ?? 0} – ${filterMaxDatacenters ?? 15}`;
 
     return (
       <AccordionSection
