@@ -1,5 +1,4 @@
 // types.ts
-
 export interface Review {
   author: string;
   text: string;
@@ -154,11 +153,4 @@ export interface Provider {
   about?: string; // Описание провайдера
   contactInfo?: ContactInfo; // Контактная информация
   referralProgram?: ReferralProgram; // Реферальная программа
-
-  // НОВЫЕ ПОЛЯ ДЛЯ ФИЛЬТРАЦИИ ПО ТИПАМ УСЛУГ
-  hasHosting: boolean; // предоставляет ли услуги хостинга
-  hasVPS: boolean; // предоставляет ли VPS
-  hasVDS: boolean; // предоставляет ли VDS
-  hasDedicatedServer: boolean; // предоставляет ли выделенные серверы (Dedicated Server)
-  hasBareMetal: boolean; // предоставляет ли Bare metal серверы
 }

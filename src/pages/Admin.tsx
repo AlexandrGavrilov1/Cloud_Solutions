@@ -53,7 +53,7 @@ const Admin = () => {
     "stats" | "providers" | "reviews" | "onedash" | "vpn-edit" | "events"
   >("stats");
 
-  // One Dash API state
+  // OneDash API state
   const [onedashApiData, setOnedashApiData] = useState<any>(null);
   const [onedashLoading, setOnedashLoading] = useState(false);
   const [onedashError, setOnedashError] = useState("");
@@ -61,7 +61,7 @@ const Admin = () => {
     "balance" | "all-orders" | "tariffs" | "systems-list" | "test-request"
   >("balance");
 
-  // Прокси URL (заменит е н а ваш)
+  // Прокси URL (замените на ваш)
   const PROXY_URL =
     "https://functions.poehali.dev/5bdf179c-9b43-46eb-a042-c52b651f946c";
 

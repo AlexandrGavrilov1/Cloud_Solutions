@@ -28,6 +28,7 @@ export const providers: Provider[] = [
       "IPv4 адрес +150₽/мес дополнительно",
       "Сложная панель для новичков",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -39,6 +40,7 @@ export const providers: Provider[] = [
     additionalServicesList: ["Миграция в облако"],
     registrationData: ["Email", "Телефон", "ФИО"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -77,7 +79,9 @@ export const providers: Provider[] = [
         "A6000",
         "Tesla T4",
       ],
+      // Добавляем поддержку 1С
       supports1C: true,
+      // Добавляем поддержку AIа
       supportsAI: true,
       aiFeatures: [
         "Готовые образы с Jupyter Notebook",
@@ -125,6 +129,7 @@ export const providers: Provider[] = [
       "Финтех приложения",
       "Игровые серверы",
     ],
+    // Добавляем новое поле: О провайдере
     about: `Timeweb Cloud — это российский облачный провайдер, основанный в 2006 году. Компания специализируется на предоставлении высокопроизводительных облачных решений для бизнеса любого масштаба.
 
 Основные характеристики:
@@ -141,6 +146,8 @@ export const providers: Provider[] = [
 ✓ 2020 год — запуск собственной панели управления
 
 Timeweb Cloud позиционирует себя как провайдер для разработчиков и IT-компаний, предлагая гибкие тарифы, мощную поддержку и современные технологии.`,
+
+    // Добавляем контактную информацию
     contactInfo: {
       email: "info@timeweb.cloud",
       phone: "8 800 700-32-92",
@@ -154,6 +161,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
         habr: "https://habr.com/ru/company/timeweb",
       },
     },
+
+    // Добавляем реферальную программу
     referralProgram: {
       available: true,
       commissionRules: [
@@ -175,13 +184,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       minPayout: 1000,
       payoutMethods: ["Банковская карта", "ЮMoney", "Qiwi"],
     },
+
     reviews: reviewsData[1] || [],
-    // Новые поля для типов услуг (пока вс е false)
-    hasHosting: true,
-    hasVPS: true,
-    hasVDS: true,
-    hasDedicatedServer: true,
-    hasBareMetal: true,
   },
   {
     id: 2,
@@ -207,22 +211,30 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Бесплатные автобэкапы",
       "Более 100 готовых CMS",
     ],
+
     cons: [
       "Ограниченная производительность",
       "Медленная работа техподдержки",
       "Нет выделенных IP в базе",
     ],
+    // Начало вставки
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
     fstekCertifications: [],
     fstekLevel: "",
+
     kiiPlacement: false,
     mobileApp: true,
     orderBeforeRegistration: true,
     additionalServicesList: ["Миграция в облако"],
+
     registrationData: ["Email", "Телефон", "ФИО"],
+
+    // Упрощенные типы клиентов
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -271,11 +283,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Блоги и форумы",
     ],
     reviews: reviewsData[2] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 3,
@@ -301,22 +308,29 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Простая панель управления",
       "Большой тестовый период",
     ],
+
     cons: [
       "Средняя скорость поддержки",
       "Интерфейс устарел визуально",
       "Меньше дата-центров",
     ],
+    // Начало вставки
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
     fstekCertifications: [],
     fstekLevel: "",
+
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: ["Миграция в облако"],
+
     registrationData: ["Email"],
+
+    // Упрощенные типы клиентов
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -336,6 +350,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       apiAccess: true,
       ddosProtection: "До 100 Гбит/с",
       gpuModels: ["A100", "A4000", "A5000"],
+      // Добавляем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -374,12 +389,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Доменные порталы",
       "Бизнес-приложения",
     ],
+
     reviews: reviewsData[3] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 4,
@@ -396,17 +407,23 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://nubes.ru/",
     pros: ["Тест 14 дней", "NVMe диски", "Managed услуги", "ISPmanager"],
     cons: ["Мало локаций", "Средняя известность", "Нет IPv6"],
+    // Начало вставки
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
     fstekLevel: "",
+
     kiiPlacement: true,
     mobileApp: false,
     orderBeforeRegistration: true,
     additionalServicesList: ["Миграция в облако"],
+
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     registrationData: ["По заявке через менеджера"],
+
+    // Конец Вставки
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -458,12 +475,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "CMS-проекты",
       "1C на облаке",
     ],
+
     reviews: reviewsData[4] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 5,
@@ -494,17 +507,22 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Поддержка медленнее конкурентов",
       "Цены выше среднего",
     ],
+    // Начало вставки
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
     fstekCertifications: ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
     fstekLevel: "",
+
     kiiPlacement: true,
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: ["Миграция в облако", "Консультация по ИБ"],
+
     registrationData: ["Email"],
+
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -563,12 +581,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Telegram боты",
       "Базы данных",
     ],
+
     reviews: reviewsData[5] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 6,
@@ -594,17 +608,22 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Мало дата-центров за границей",
       "Нет криптовалютных платежей",
     ],
+    // Начало вставки
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
     fstekCertifications: [],
     fstekLevel: "",
+
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: ["Миграция в облако", "Консультация по ИБ"],
+
     registrationData: ["ФИО", "Email", "Телефон"],
+
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -628,6 +647,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         managed: false,
       },
       gpuModels: ["RTX 4090", "L4", "L40S"],
+      // Добавляем поддержку 1С
       supports1C: false,
     },
     serviceGuarantees: {
@@ -666,12 +686,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "API сервисы",
       "Базы данных",
     ],
+
     reviews: reviewsData[6] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 7,
@@ -702,17 +718,22 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Ограниченный выбор локаций",
       "Молодая компания",
     ],
+    // Начало вставки
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
     fstekCertifications: [],
     fstekLevel: "",
+
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: false,
     additionalServicesList: [],
+
     registrationData: ["Email"],
+
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -768,12 +789,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
       "Dev окружения",
     ],
+
     reviews: reviewsData[7] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 8,
@@ -800,17 +817,22 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Стабильная работа",
     ],
     cons: ["Средние цены", "Интерфейс сайта устарел"],
+    // Начало вставки
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
     fstekCertifications: [],
     fstekLevel: "",
+
     kiiPlacement: false,
     mobileApp: false,
     orderBeforeRegistration: true,
     additionalServicesList: [],
+
     registrationData: ["Email"],
+
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+    // Конец Вставки
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -867,12 +889,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Корпоративные порталы",
       "Разработка",
     ],
+
     reviews: reviewsData[8] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 9,
@@ -894,6 +912,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://my.rusonyx.ru/#/login/reg?partner=34042924",
     pros: ["Отличная техподдержка", "Стабильная работа", "Низкие цены"],
     cons: ["Интерфейс может показаться сложным"],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -905,6 +924,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -963,12 +983,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Резервные площадки",
       "Облачная инфраструктура",
     ],
+
     reviews: reviewsData[9] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 10,
@@ -1001,6 +1017,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "ИНН"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -1058,12 +1075,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "ML/AI проекты с GPU",
       "Highload системы",
     ],
+
     reviews: reviewsData[10] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 11,
@@ -1085,6 +1098,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://www.hostland.ru/?r=cf78346c",
     pros: ["Антивирус в комплекте", "Бесплатный домен .RU/.РФ"],
     cons: ["Базовая производительность", "Мало ЦОДов"],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -1096,6 +1110,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -1107,7 +1122,9 @@ Timeweb Cloud позиционирует себя как провайдер дл
       controlPanel: "ISPmanager",
       apiAccess: true,
       ddosProtection: "Базовая защита",
+
       gpuModels: ["GT 1030", "RTX 1060", "RTX 4060Ti", "GRID K1", "RTX 4090"],
+      // Добавляем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -1146,12 +1163,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Блоги",
       "Корпоративные порталы",
     ],
+
     reviews: reviewsData[11] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 12,
@@ -1173,6 +1186,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Хорошая поддержка",
     ],
     cons: ["Мало локаций", "Базовая панель управления"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -1184,6 +1198,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -1210,6 +1225,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "Tesla T4",
         "Tesla P100",
       ],
+      // Добавляем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -1248,13 +1264,10 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "E-commerce",
       "Dev окружения",
     ],
+
     reviews: reviewsData[12] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+
   {
     id: 13,
     name: "SmartApe",
@@ -1280,6 +1293,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Безлимитные сайты",
     ],
     cons: ["Базовая поддержка"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -1291,6 +1305,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -1334,12 +1349,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Малый бизнес",
       "Личные проекты",
     ],
+
     reviews: reviewsData[13] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 14,
@@ -1366,6 +1377,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "60 000+ клиентов",
     ],
     cons: ["Средняя цена"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -1377,6 +1389,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -1436,12 +1449,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Dev окружения",
       "Малый бизнес",
     ],
+
     reviews: reviewsData[14] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 15,
@@ -1479,6 +1488,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Нет тестового периода",
       "Сложный интерфейс для новичков",
     ],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -1490,6 +1500,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "300-400 Мбит/с",
@@ -1551,12 +1562,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Dev окружения",
       "Игровые серверы",
     ],
+
     reviews: reviewsData[15] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 16,
@@ -1586,6 +1593,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Отсутствие VDS",
       "Малое количество конфигураций и дополнительных сервисов",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -1597,6 +1605,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -1651,12 +1660,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
       "Малый бизнес",
     ],
+
     reviews: reviewsData[16] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 17,
@@ -1692,6 +1697,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Базовые цены выше среднего",
       "Нет NVMe дисков",
     ],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -1703,6 +1709,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "Телефон"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -1744,12 +1751,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Малые организации",
       "Международные проекты",
     ],
+
     reviews: reviewsData[17] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 18,
@@ -1771,6 +1774,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://cloud4box.com/?from=93432",
     pros: ["NVMe диски", "Доступные цены", "Быстрая техподдержка"],
     cons: ["Молодая компания", "Ограниченный выбор локаций", "Мало отзывов"],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -1782,6 +1786,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -1805,6 +1810,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       supportResponseTime: "< 5 мин",
       moneyBackGuarantee: 7,
     },
+
     uptime30days: 99.99,
     additionalServices: {
       autoBackups: true,
@@ -1830,11 +1836,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Dev окружения",
     ],
     reviews: reviewsData[18] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 19,
@@ -1861,6 +1862,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Быстрая техподдержка",
     ],
     cons: ["Нет тестового периода", "Мало локаций", "Нет NVMe дисков"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -1872,6 +1874,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -1920,11 +1923,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
     ],
     reviews: reviewsData[19] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 20,
@@ -1955,6 +1953,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Ограниченный выбор локаций",
       "Нет зарубежных ЦОДов",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -1966,6 +1965,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -2007,12 +2007,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
       "CMS проекты",
     ],
+
     reviews: reviewsData[20] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 21,
@@ -2034,6 +2030,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "http://handyhost.ru/?ref=189921",
     pros: ["Низкие цены", "ISPmanager в комплекте", "Быстрое развертывание"],
     cons: ["Нет NVMe дисков", "Ограниченный выбор локаций", "Молодая компания"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -2045,6 +2042,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -2075,6 +2073,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "L4",
         "A100",
       ],
+      // Добавляем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -2106,12 +2105,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Малый бизнес",
       "Веб-разработка",
     ],
+
     reviews: reviewsData[21] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 22,
@@ -2142,6 +2137,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Средние цены",
       "Ограниченный выбор локаций",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -2153,6 +2149,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "ИНН"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -2180,6 +2177,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "A4000",
         "A5000",
       ],
+      // Добавляем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -2211,12 +2209,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "OpenCart магазины",
       "Корпоративный сектор",
     ],
+
     reviews: reviewsData[22] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 23,
@@ -2242,6 +2236,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Ограниченный выбор локаций",
       "Средние характеристики",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -2253,6 +2248,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -2294,12 +2290,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
       "Малый бизнес",
     ],
+
     reviews: reviewsData[23] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 24,
@@ -2330,6 +2322,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Средняя скорость поддержки",
       "Сложная биллинговая система",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -2341,6 +2334,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -2376,6 +2370,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "A100",
         "RTX 4090",
       ],
+      // Добавляем поддержку 1С
       supports1C: true,
     },
     serviceGuarantees: {
@@ -2415,12 +2410,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Kubernetes кластеры",
       "CDN сервисы",
     ],
+
     reviews: reviewsData[24] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 25,
@@ -2446,6 +2437,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Мощное API и CLI",
     ],
     cons: [],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -2457,6 +2449,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -2507,11 +2500,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Финтех",
     ],
     reviews: reviewsData[25] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 26,
@@ -2545,6 +2533,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Быстрое масштабирование",
     ],
     cons: ["Молодая компания"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -2556,6 +2545,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -2616,12 +2606,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "CDN сервисы",
       "Gaming",
     ],
+
     reviews: reviewsData[26] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 27,
@@ -2647,6 +2633,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Средняя скорость техподдержки",
       "Сложная биллинговая система",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -2658,6 +2645,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -2717,12 +2705,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Kubernetes",
       "DBaaS",
     ],
+
     reviews: reviewsData[27] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 28,
@@ -2748,6 +2732,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Мало локаций за рубежом",
       "Привязка к экосистеме VK",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -2759,6 +2744,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -2812,12 +2798,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Big Data",
       "Стартапы",
     ],
+
     reviews: reviewsData[28] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 29,
@@ -2859,6 +2841,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Цены в долларах",
       "Техподдержка иногда медленная",
     ],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -2870,6 +2853,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -2932,12 +2916,90 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "VPN сервисы",
     ],
     reviews: reviewsData[29] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+  /* {
+    id: 30,
+    name: "Hetzner",
+    logo: "providers_logo/30_Hetzner.jpg",
+    rating: 9.7,
+    basePrice: 0,
+    cpuPrice: 190,
+    ramPrice: 100,
+    storagePrice: 9,
+    features: ["NVMe диски", "Dedicated vCPU", "Snapshots бесплатно", "IPv6"],
+    locations: ["Германия", "Финляндия", "США"],
+    trialDays: 0,
+    url: "https://www.hetzner.com/",
+    pros: [
+      "Лучшее соотношение цена/качество в Европе",
+      "Новые тарифы Cost-Optimized от €3.49",
+      "Прозрачное ценообразование",
+      "Экологичные ЦОД",
+    ],
+    cons: [
+      "Нет ЦОД в России",
+      "Техподдержка на английском",
+      "Требуется верификация документов",
+    ],
+    fz152Compliant: false,
+    fstekCompliant: false,
+    technicalSpecs: {
+      diskType: "NVMe",
+      networkSpeed: "20 Гбит/с",
+      virtualization: ["KVM"],
+      guaranteedResources: true,
+      ipv4: true,
+      ipv6: true,
+      availableOS: [
+        "Ubuntu",
+        "Debian",
+        "CentOS",
+        "Fedora",
+        "Rocky Linux",
+        "Alma Linux",
+        "Arch Linux",
+        "Windows Server",
+      ],
+      controlPanel: "Hetzner Cloud Console",
+      apiAccess: true,
+      ddosProtection: "Базовая защита",
+      kubernetes: {
+        available: true,
+        managed: true,
+      },
+    },
+    serviceGuarantees: {
+      uptimeSLA: "99.9",
+      supportResponseTime: "< 10 мин",
+      moneyBackGuarantee: 0,
+    },
+    uptime30days: 99.9,
+    additionalServices: {
+      autoBackups: true,
+      backupPrice: 20,
+      monitoring: true,
+      snapshots: true,
+      customOS: true,
+    },
+    pricingDetails: {
+      discounts: [],
+      paymentMethods: ["Банковская карта", "PayPal", "SEPA"],
+      minPrice: 190,
+    },
+    popularity: 500000,
+    promoText: "Новые тарифы октябрь 2025: Cost-Optimized от €3.49/мес",
+
+    caseStudies: [
+      "Международные проекты",
+      "Highload системы",
+      "DevOps инфраструктура",
+      "Kubernetes кластеры",
+      "CDN",
+    ],
+
+    reviews: reviewsData[30] || [],
+  },
+*/
   {
     id: 31,
     name: "Aeza",
@@ -2974,6 +3036,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Нет официального SLA",
       "Техподдержка не 24/7",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -2985,6 +3048,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -3047,12 +3111,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-разработка",
       "Стриминг",
     ],
+
     reviews: reviewsData[31] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 32,
@@ -3083,6 +3143,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Средние цены",
       "Нет зарубежных ЦОД кроме Амстердама",
     ],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -3094,6 +3155,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -3147,13 +3209,10 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Веб-приложения",
       "Малый и средний бизнес",
     ],
+
     reviews: reviewsData[32] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+
   {
     id: 33,
     name: "T1 Cloud",
@@ -3174,6 +3233,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Российская компания",
     ],
     cons: ["Только 2 локации"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3185,6 +3245,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["По заявке через менеджера"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -3232,12 +3293,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Банковский сектор",
       "Корпоративные приложения",
     ],
+
     reviews: reviewsData[33] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 34,
@@ -3254,6 +3311,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://mws.ru/",
     pros: ["Тестовая неделя", "Managed услуги", "Опыт с 2003 года", "152-ФЗ"],
     cons: ["Нет NVMe дисков", "Устаревший интерфейс", "Мало локаций"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3265,6 +3323,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Регистрация в сторонних сервисах"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -3298,12 +3357,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 8000,
     promoText: "7 дней тест для новых клиентов",
     caseStudies: ["Корпоративные сайты", "CMS-проекты", "Базы данных"],
+
     reviews: reviewsData[34] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 35,
@@ -3325,6 +3380,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Российская компания",
     ],
     cons: ["Нет NVMe", "Только российские ЦОД"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3342,6 +3398,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     ],
     registrationData: ["По заявке через менеджера"],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -3385,12 +3442,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Корпоративные сайты",
       "E-commerce",
     ],
+
     reviews: reviewsData[35] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 36,
@@ -3418,6 +3471,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: ["Косультация по ИБ"],
     registrationData: ["ФИО", "Email", "Наименование организации", "Телефон"],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -3458,12 +3512,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 12000,
     promoText: "14 дней тест + корпоративная техподдержка",
     caseStudies: ["Банки", "Корпоративные системы", "SAP", "1C на облаке"],
+
     reviews: reviewsData[36] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 37,
@@ -3489,6 +3539,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Нет тестового периода",
       "Сложная процедура подключения",
     ],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3505,6 +3556,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Телефон",
     ],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -3549,11 +3601,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Банковский сектор",
     ],
     reviews: reviewsData[37] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 38,
@@ -3570,6 +3617,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://iteco.cloud/",
     pros: ["Managed услуги", "Опыт с 2000 года", "152-ФЗ"],
     cons: ["Нет NVMe", "Устаревший интерфейс", "Мало локаций"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3592,6 +3640,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Телефон",
     ],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -3631,12 +3680,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 7000,
     promoText: "7 дней тест + managed услуги",
     caseStudies: ["Корпоративные проекты", "1C на облаке", "CMS-системы"],
+
     reviews: reviewsData[38] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 39,
@@ -3657,6 +3702,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Не очень известная компания",
       "Базовая поддержка",
     ],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3673,6 +3719,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Телефон",
     ],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -3709,12 +3756,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 5000,
     promoText: "Почасовая оплата + NVMe диски от 185₽/мес",
     caseStudies: ["Веб-разработка", "Discord боты", "Игровые серверы"],
+
     reviews: reviewsData[39] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 40,
@@ -3736,6 +3779,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Корпоративная поддержка",
     ],
     cons: ["Высокая цена", "Нет тестового периода", "Только 2 локации"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3747,6 +3791,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: [, "Email", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -3792,12 +3837,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "1C на облаке",
       "Microsoft инфраструктура",
     ],
+
     reviews: reviewsData[40] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 41,
@@ -3822,6 +3863,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Нет NVMe дисков",
       "Меньше локаций чем у конкурентов",
     ],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3833,6 +3875,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["ФИО", "Email", "Адрес организации"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "10 Гбит/с",
@@ -3886,11 +3929,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
     ],
     uptime30days: 99.76,
     reviews: reviewsData[41] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 42,
@@ -3907,6 +3945,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://lancloud.ru/",
     pros: ["ISPmanager", "Российская компания", "152-ФЗ"],
     cons: ["Нет NVMe", "Мало локаций", "Базовая поддержка"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3918,6 +3957,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: [],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -3952,11 +3992,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
     promoText: "5 дней тест + ISPmanager в подарок",
     caseStudies: ["Корпоративные сайты", "CMS-проекты", "E-commerce"],
     reviews: reviewsData[42] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 43,
@@ -3978,6 +4013,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "152-ФЗ",
     ],
     cons: ["Высокая цена"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -3989,6 +4025,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["По заявке через менеджера"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "10 Гбит/с",
@@ -4028,12 +4065,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 8500,
     promoText: "Облачная инфраструктура на базе ЦОД Билайн",
     caseStudies: ["Корпоративные проекты", "Телеком решения", "E-commerce"],
+
     reviews: reviewsData[43] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 44,
@@ -4050,6 +4083,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://dataru.ru/cloud",
     pros: ["Доступные цены", "ISPmanager", "DDoS защита"],
     cons: ["Нет NVMe", "Только 2 локации", "Короткий тестовый период"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -4061,6 +4095,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["По заявке через менеджера"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -4094,12 +4129,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 3500,
     promoText: "3 дня тест + DDoS защита в подарок",
     caseStudies: ["Игровые серверы", "Веб-проекты", "Discord боты"],
+
     reviews: reviewsData[44] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 45,
@@ -4116,6 +4147,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://mclouds.ru/",
     pros: ["Почасовая оплата", "NVMe диски", "Тест 5 дней", "Доступные цены"],
     cons: ["Мало локаций", "Молодая компания", "Базовая поддержка"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -4127,6 +4159,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "ФИО", "Телефон", "Страна"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -4167,12 +4200,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 6500,
     promoText: "Почасовая оплата + NVMe диски от 190₽/мес",
     caseStudies: ["Веб-разработка", "Игровые серверы", "Боты"],
+
     reviews: reviewsData[45] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 46,
@@ -4194,6 +4223,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Поддержка SAP и Oracle",
     ],
     cons: ["Высокие цены", "Фокус на enterprise сегмент", "Только 2 локации"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-1",
     fstekCompliant: true,
@@ -4205,6 +4235,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Корпоративный email"],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "10 Гбит/с",
@@ -4254,12 +4285,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Корпоративная инфраструктура",
       "Критичные системы",
     ],
+
     reviews: reviewsData[46] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 47,
@@ -4281,6 +4308,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Простая панель управления",
     ],
     cons: ["Нет NVMe дисков", "Базовая поддержка", "Устаревший интерфейс"],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -4292,6 +4320,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "1 Гбит/с",
@@ -4328,12 +4357,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 8500,
     promoText: "7 дней тест + почасовая оплата от 180₽/мес",
     caseStudies: ["Веб-разработка", "CMS сайты", "Небольшие проекты"],
+
     reviews: reviewsData[47] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 48,
@@ -4355,6 +4380,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Корпоративная поддержка",
     ],
     cons: ["Нет тестового периода", "Нет NVMe дисков", "Фокус на B2B"],
+
     fz152Compliant: true,
     fz152Level: "УЗ-2",
     fstekCompliant: true,
@@ -4366,6 +4392,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["По заявке через менеджера"],
     supportedClientTypes: ["Юрлицо"],
+
     technicalSpecs: {
       diskType: "SSD",
       networkSpeed: "10 Гбит/с",
@@ -4407,13 +4434,162 @@ Timeweb Cloud позиционирует себя как провайдер дл
     popularity: 9500,
     promoText: "Облачная инфраструктура от ТрансТелеКом",
     caseStudies: ["Корпоративные проекты", "Телеком решения", "Госсектор"],
+
     reviews: reviewsData[48] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+  /* {
+    id: 49,
+    name: "Skyhost",
+    logo: "providers_logo/49_Skyhost.JPG",
+    rating: 7.9,
+    basePrice: 0,
+    cpuPrice: 165,
+    ramPrice: 75,
+    storagePrice: 7,
+    features: ["SSD диски", "ISPmanager", "Доступные цены", "DDoS защита"],
+    locations: ["Москва", "Санкт-Петербург"],
+    trialDays: 3,
+    url: "https://cloudcore.ru/sign-up",
+    pros: [
+      "Низкие цены",
+      "Тест 3 дня",
+      "Простая панель ISPmanager",
+      "DDoS защита в базе",
+    ],
+    cons: ["Нет NVMe", "Только 2 локации", "Базовая поддержка"],
+    fz152Compliant: false,
+    fstekCompliant: false,
+    technicalSpecs: {
+      diskType: "SSD",
+      networkSpeed: "1 Гбит/с",
+      virtualization: ["KVM"],
+      guaranteedResources: true,
+      ipv4: true,
+      ipv6: false,
+      availableOS: ["Ubuntu", "Debian", "CentOS", "Windows Server"],
+      controlPanel: "ISPmanager",
+      apiAccess: false,
+      ddosProtection: "До 50 Гбит/с",
+    },
+    serviceGuarantees: {
+      uptimeSLA: "99.9%",
+      supportResponseTime: "<  4 часа",
+      moneyBackGuarantee: 3,
+    },
+    uptime30days: 99.53,
+
+    additionalServices: {
+      autoBackups: true,
+      backupPrice: 70,
+      monitoring: false,
+      snapshots: false,
+      customOS: true,
+    },
+    pricingDetails: {
+      discounts: [{ months: 12, percent: 12 }],
+      paymentMethods: ["Банковская карта", "ЮMoney", "СБП"],
+      minPrice: 165,
+    },
+    popularity: 5500,
+    promoText: "Недорогие VPS от 165₽/мес с DDoS защитой",
+    caseStudies: ["Личные проекты", "Тестовые среды", "Небольшие сайты"],
+
+    reviews: reviewsData[49] || [],
+  },
+  */
+  /*  {
+
+    name: "Gcore",
+    logo: "providers_logo/50_Gcore.JPG",
+    rating: 9.0,
+    basePrice: 0,
+    cpuPrice: 240,
+    ramPrice: 120,
+    storagePrice: 11,
+    features: ["NVMe диски", "CDN в подарок", "Global presence", "DDoS защита"],
+    locations: [
+      "Москва",
+      "Санкт-Петербург",
+      "Амстердам",
+      "Франкфурт",
+      "Люксембург",
+      "Варшава",
+      "Токио",
+    ],
+    trialDays: 0,
+    url: "https://gcore.com/",
+    pros: [
+      "Глобальная сеть CDN",
+      "NVMe диски",
+      "Множество локаций по миру",
+      "Интеграция с CDN",
+    ],
+    cons: [
+      "Нет тестового периода",
+      "Поддержка в основном на английском",
+      "Сложная для новичков",
+    ],
+    fz152Compliant: false,
+    fstekCompliant: false,
+    technicalSpecs: {
+      diskType: "NVMe",
+      networkSpeed: "10 Гбит/с",
+      virtualization: ["KVM"],
+      guaranteedResources: true,
+      ipv4: true,
+      ipv6: true,
+      availableOS: [
+        "Ubuntu",
+        "Debian",
+        "CentOS",
+        "Fedora",
+        "Windows Server",
+        "FreeBSD",
+      ],
+      controlPanel: "Gcore Control Panel",
+      apiAccess: true,
+      ddosProtection: "До 1 Тбит/с",
+      kubernetes: {
+        available: true,
+        managed: true,
+      },
+    },
+    serviceGuarantees: {
+      uptimeSLA: "99.95%",
+      supportResponseTime: "< 60 мин",
+      moneyBackGuarantee: 0,
+    },
+    uptime30days: 99.91,
+    additionalServices: {
+      autoBackups: true,
+      backupPrice: 130,
+      monitoring: true,
+      snapshots: true,
+      customOS: true,
+      privateNetwork: true,
+      firewall: true,
+      loadBalancer: true,
+    },
+    pricingDetails: {
+      discounts: [
+        { months: 12, percent: 10 },
+        { months: 3, percent: 5 },
+      ],
+      paymentMethods: ["Банковская карта", "PayPal", "Криптовалюта"],
+      minPrice: 240,
+    },
+    popularity: 22000,
+    promoText: "Cloud + CDN в одном решении с глобальным покрытием",
+    caseStudies: [
+      "Highload проекты",
+      "CDN + облако",
+      "Международные проекты",
+      "Gaming",
+      "Streaming",
+    ],
+    reviews: reviewsData[50] || [],
+  },
+  */
   {
     id: 51,
     name: "The Hosting",
@@ -4490,6 +4666,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Нет 152-ФЗ сертификации",
       "Поддержка только через тикеты",
     ],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -4501,6 +4678,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -4562,13 +4740,118 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Прокси и VPN",
       "Боты",
     ],
+
     reviews: reviewsData[51] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+  /* {
+    id: 52,
+    name: "OVH",
+    logo: "providers_logo/52_OVH.JPG",
+    rating: 8.8,
+    basePrice: 80,
+    cpuPrice: 210,
+    ramPrice: 105,
+    storagePrice: 8,
+    features: [
+      "NVMe диски",
+      "Anti-DDoS",
+      "Европейский провайдер",
+      "Собственные ЦОД",
+    ],
+    locations: [
+      "Австралия",
+      "Канада",
+      "Франция",
+      "Германия",
+      "Польша",
+      "Сингапур",
+      "Великобритания",
+      "США",
+    ],
+    trialDays: 0,
+    url: "https://www.ovhcloud.com/",
+    pros: [
+      "Крупнейший европейский хостер",
+      "Собственные дата-центры",
+      "Anti-DDoS защита в базе",
+      "NVMe диски",
+    ],
+    cons: [
+      "Интерфейс на английском",
+      "Нет российских локаций",
+      "Сложная панель управления",
+    ],
+
+    fz152Compliant: false,
+    fz152Level: "",
+    fstekCompliant: false,
+    fstekCertifications: [],
+    fstekLevel: "",
+    kiiPlacement: false,
+    mobileApp: false,
+    orderBeforeRegistration: false,
+    additionalServicesList: [],
+    registrationData: ["Email"],
+    supportedClientTypes: ["Физлицо"],
+
+    technicalSpecs: {
+      diskType: "NVMe",
+      networkSpeed: "10 Гбит/с",
+      virtualization: ["KVM", "OpenStack"],
+      guaranteedResources: true,
+      ipv4: true,
+      ipv6: true,
+      availableOS: [
+        "Ubuntu",
+        "Debian",
+        "CentOS",
+        "Fedora",
+        "Windows Server",
+        "Arch Linux",
+        "FreeBSD",
+      ],
+      controlPanel: "OVH Manager",
+      apiAccess: true,
+      ddosProtection: "Неограниченно",
+      cpuModels: ["Intel Xeon", "AMD EPYC"],
+      kubernetes: {
+        available: true,
+        managed: true,
+      },
+    },
+    serviceGuarantees: {
+      uptimeSLA: "99.99%",
+      supportResponseTime: "< 20 мин",
+      moneyBackGuarantee: 0,
+    },
+    uptime30days: 99.92,
+    additionalServices: {
+      autoBackups: true,
+      backupPrice: 110,
+      monitoring: true,
+      snapshots: true,
+      customOS: true,
+      privateNetwork: true,
+      firewall: true,
+      loadBalancer: true,
+    },
+    pricingDetails: {
+      discounts: [],
+      paymentMethods: ["Банковская карта", "PayPal", "SEPA"],
+      minPrice: 210,
+    },
+    popularity: 45000,
+    promoText: "Крупнейший европейский хостер с Anti-DDoS",
+    caseStudies: [
+      "Международные проекты",
+      "E-commerce",
+      "Highload системы",
+      "Gaming серверы",
+      "Корпоративные решения",
+    ],
+
+    reviews: reviewsData[52] || [],
+  },*/
   {
     id: 53,
     name: "One Dash",
@@ -4589,6 +4872,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://rdp-onedash.ru/r/e63eaa",
     pros: ["Низкая цена", "NVMe диски"],
     cons: ["Низкая вариативность серверов", "отсутвие виртуализации"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: false,
@@ -4600,6 +4884,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо", "Юрлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -4626,6 +4911,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         "RTX 4090",
         "RTX 5090",
       ],
+      // Добавляем поддержку 1С
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4653,12 +4939,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     promoText: "Самыое выгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[53] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+
   {
     id: 54,
     name: "VDSina",
@@ -4674,6 +4956,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "https://vdsina.ru/?partner=p1dj8tzwb6rw",
     pros: ["Низкая цена", "NVMe диски"],
     cons: ["Низкая вариативность серверов"],
+
     fz152Compliant: true,
     fz152Level: "",
     fstekCompliant: true,
@@ -4685,6 +4968,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email"],
     supportedClientTypes: ["Физлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -4721,6 +5005,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         managed: false,
       },
       gpuModels: ["L40S", "L4"],
+      // Добавляем поддержку 1Сccc
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4755,12 +5040,8 @@ Timeweb Cloud позиционирует себя как провайдер дл
     promoText: "Самыое выгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[54] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
+
   {
     id: 55,
     name: "VPSVILLE",
@@ -4776,6 +5057,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     url: "http://vpsville.ru/?ref=62621",
     pros: ["Низкая цена", "NVMe диски"],
     cons: ["Низкая вариативность ЦОД"],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -4787,6 +5069,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["Email", "Телефон"],
     supportedClientTypes: ["Физлицо"],
+
     technicalSpecs: {
       diskType: "NVMe",
       networkSpeed: "1 Гбит/с",
@@ -4819,6 +5102,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         managed: false,
       },
       gpuModels: ["RTX3080", "RTX4090"],
+      // Добавляем поддержку 1Сccc
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4854,11 +5138,6 @@ Timeweb Cloud позиционирует себя как провайдер дл
     promoText: "Вгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[55] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
   {
     id: 56,
@@ -4904,6 +5183,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
       "Платные бекапы на VPS",
       "Нет бесплатного тестового периода",
     ],
+
     fz152Compliant: false,
     fz152Level: "",
     fstekCompliant: false,
@@ -4915,6 +5195,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
     additionalServicesList: [],
     registrationData: ["ФИО", "Email", "Страна", "Телефон"],
     supportedClientTypes: ["Физлицо"],
+
     technicalSpecs: {
       diskType: "NVMe SSD",
       networkSpeed: "1 Гбит/с",
@@ -4943,6 +5224,7 @@ Timeweb Cloud позиционирует себя как провайдер дл
         managed: false,
       },
       gpuModels: [],
+      // Добавляем поддержку 1Сccc
       supports1C: false,
     },
     serviceGuarantees: {
@@ -4976,10 +5258,5 @@ Timeweb Cloud позиционирует себя как провайдер дл
     promoText: "Вгодное соотношение цены и качества",
     caseStudies: ["Малого бизнеса", "Сайтов", "Частных решений"],
     reviews: reviewsData[56] || [],
-    hasHosting: false,
-    hasVPS: false,
-    hasVDS: false,
-    hasDedicatedServer: false,
-    hasBareMetal: false,
   },
 ];

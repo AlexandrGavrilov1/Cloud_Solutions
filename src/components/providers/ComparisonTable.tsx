@@ -43,6 +43,7 @@ export const ComparisonTable = ({
     );
   }
 
+  // Универсальная функция для открытия ссылок через редиректор
   const openViaRedirect = (url: string, utmContent: string) => {
     const redirectBase = "/redirect";
     const params = new URLSearchParams({
@@ -57,7 +58,31 @@ export const ComparisonTable = ({
   };
 
   const handleProviderClick = async (provider: Provider) => {
+    // Старая Яндекс.Метрика (закомментирована)
+    // if (typeof window !== "undefined" && (window as any).ym) {
+    //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
+    //     provider_id: provider.id,
+    //     provider_name: provider.name,
+    //   });
+    // }
+
     if (provider.url) {
+      // Старый трекинг (закомментирован)
+      // try {
+      //   await fetch(
+      //     "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+      //     {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ provider_id: provider.id }),
+      //     },
+      //   );
+      // } catch (error) {
+      //   console.error("Error tracking click:", error);
+      // }
+
+      // Новый редирект через промежуточную страницу
+      // Используем читаемое название провайдера в utm_content (например, "timeweb_cloud")
       const utmContent = provider.name.toLowerCase().replace(/\s/g, "_");
       openViaRedirect(provider.url, utmContent);
     }
@@ -98,7 +123,6 @@ export const ComparisonTable = ({
     { label: t("common.gpu"), key: "gpu", icon: "Cpu" },
     { label: t("common.supports1C"), key: "supports1C", icon: "Database" },
     { label: "AI поддержка", key: "ai", icon: "Cpu" },
-    { label: "Типы услуг", key: "serviceTypes", icon: "Cpu" }, // используем существующую иконку
   ];
 
   const getPriceText = (provider: Provider) => {
@@ -131,11 +155,15 @@ export const ComparisonTable = ({
     return descriptions[model] || "Графический процессор для вычислений";
   };
 
+  const getAiDescription = (features: string[]): string => {
+    return features.join(", ");
+  };
+
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-[9999] overflow-y-auto">
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="max-w-7xl mx-auto">
-          {/* Заголовок */}
+          {/* Заголовок и кнопка закрытия */}
           <div className="flex flex-col gap-4 mb-4 sm:mb-6">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -158,7 +186,10 @@ export const ComparisonTable = ({
               <Button
                 size="sm"
                 variant="outline"
-                onClick={onClose}
+                onClick={() => {
+                  console.log("Close button clicked");
+                  onClose();
+                }}
                 className="h-9 sm:h-12 px-3 sm:px-6 rounded-xl border-2 flex-shrink-0"
               >
                 <Icon name="X" size={16} className="sm:mr-2" />
@@ -168,83 +199,69 @@ export const ComparisonTable = ({
 
             {/* Бейджи выбранных провайдеров */}
             <div className="flex flex-wrap gap-2 sm:gap-3">
-              {providers.map((provider) => (
-                <div
-                  key={provider.id}
-                  className="flex items-center gap-2 bg-accent/50 border border-border rounded-xl px-3 py-2"
-                >
-                  <div className="w-6 h-6 rounded-lg bg-card border border-primary/10 flex items-center justify-center">
-                    <img
-                      src={provider.logo}
-                      alt={provider.name}
-                      className="w-4 h-4 object-contain"
-                      onError={(e) =>
-                        (e.currentTarget.src = "/placeholder-logo.png")
-                      }
-                    />
+              {providers.map((provider) => {
+                const hasFZ152 = provider.fz152Compliant;
+                const hasFSTEK =
+                  provider.fstekCertifications &&
+                  provider.fstekCertifications.length > 0;
+
+                return (
+                  <div
+                    key={provider.id}
+                    className="flex items-center gap-2 bg-accent/50 border border-border rounded-xl px-3 py-2"
+                  >
+                    <div className="w-6 h-6 rounded-lg bg-card border border-primary/10 flex items-center justify-center">
+                      <img
+                        src={provider.logo}
+                        alt={provider.name}
+                        className="w-4 h-4 object-contain"
+                        onError={(e) => {
+                          console.error(
+                            `Failed to load logo for ${provider.name}`,
+                          );
+                          e.currentTarget.src = "/placeholder-logo.png";
+                        }}
+                      />
+                    </div>
+                    <span className="text-xs font-semibold text-foreground">
+                      {provider.name}
+                    </span>
+                    <div className="flex items-center gap-1 ml-1">
+                      {hasFZ152 && (
+                        <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
+                          {provider.fz152Level || "152-ФЗ"}
+                        </Badge>
+                      )}
+                      {hasFSTEK && (
+                        <Badge className="bg-secondary/20 text-secondary border-0 text-[10px] px-1.5 py-0.5">
+                          ФСТЭК
+                        </Badge>
+                      )}
+                      {provider.kiiPlacement && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          КИИ
+                        </Badge>
+                      )}
+                      {provider.technicalSpecs.supports1C && (
+                        <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
+                          1С
+                        </Badge>
+                      )}
+                      {provider.technicalSpecs.gpuModels &&
+                        provider.technicalSpecs.gpuModels.length > 0 && (
+                          <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
+                            GPU
+                          </Badge>
+                        )}
+                      {provider.technicalSpecs.supportsAI && (
+                        <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px] px-1.5 py-0.5">
+                          AI
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                  <span className="text-xs font-semibold text-foreground">
-                    {provider.name}
-                  </span>
-                  <div className="flex items-center gap-1 ml-1 flex-wrap">
-                    {provider.fz152Compliant && (
-                      <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
-                        {provider.fz152Level || "152-ФЗ"}
-                      </Badge>
-                    )}
-                    {provider.fstekCertifications?.length > 0 && (
-                      <Badge className="bg-secondary/20 text-secondary border-0 text-[10px] px-1.5 py-0.5">
-                        ФСТЭК
-                      </Badge>
-                    )}
-                    {provider.kiiPlacement && (
-                      <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
-                        КИИ
-                      </Badge>
-                    )}
-                    {provider.technicalSpecs.supports1C && (
-                      <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
-                        1С
-                      </Badge>
-                    )}
-                    {provider.technicalSpecs.gpuModels?.length > 0 && (
-                      <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
-                        GPU
-                      </Badge>
-                    )}
-                    {provider.technicalSpecs.supportsAI && (
-                      <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px] px-1.5 py-0.5">
-                        AI
-                      </Badge>
-                    )}
-                    {provider.hasHosting && (
-                      <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
-                        Хостинг
-                      </Badge>
-                    )}
-                    {provider.hasVPS && (
-                      <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
-                        VPS
-                      </Badge>
-                    )}
-                    {provider.hasVDS && (
-                      <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
-                        VDS
-                      </Badge>
-                    )}
-                    {provider.hasDedicatedServer && (
-                      <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
-                        Dedicated
-                      </Badge>
-                    )}
-                    {provider.hasBareMetal && (
-                      <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
-                        Bare metal
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -268,9 +285,9 @@ export const ComparisonTable = ({
                               src={provider.logo}
                               alt={provider.name}
                               className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain"
-                              onError={(e) =>
-                                (e.currentTarget.src = "/placeholder-logo.png")
-                              }
+                              onError={(e) => {
+                                e.currentTarget.src = "/placeholder-logo.png";
+                              }}
                             />
                           </div>
                           <div className="text-sm sm:text-base md:text-lg font-bold text-foreground text-center">
@@ -303,8 +320,8 @@ export const ComparisonTable = ({
                             (sum, r) => sum + r.rating,
                             0,
                           ) / provider.reviews.length;
-                        let content;
 
+                        let content;
                         switch (row.key) {
                           case "rating":
                             content = (
@@ -330,10 +347,11 @@ export const ComparisonTable = ({
                             );
                             break;
                           case "price":
+                            const priceText = getPriceText(provider);
                             content = (
                               <div className="text-center">
                                 <span className="text-2xl font-black text-primary">
-                                  {getPriceText(provider)}
+                                  {priceText}
                                 </span>
                               </div>
                             );
@@ -341,7 +359,13 @@ export const ComparisonTable = ({
                           case "trialDays":
                             content = provider.trialDays ? (
                               <Badge className="bg-secondary/20 text-secondary border border-secondary/30">
-                                {provider.trialDays} {t("common.free")}
+                                {provider.trialDays}{" "}
+                                {provider.trialDays === 1
+                                  ? t("common.day")
+                                  : provider.trialDays < 5
+                                    ? t("common.daysGenitive")
+                                    : t("common.days")}{" "}
+                                {t("common.free")}
                               </Badge>
                             ) : (
                               <span className="text-muted-foreground">
@@ -408,7 +432,8 @@ export const ComparisonTable = ({
                             break;
                           case "fstek":
                             content =
-                              provider.fstekCertifications?.length > 0 ? (
+                              provider.fstekCertifications &&
+                              provider.fstekCertifications.length > 0 ? (
                                 <div className="flex flex-col items-center gap-1">
                                   <Icon
                                     name="Check"
@@ -504,7 +529,8 @@ export const ComparisonTable = ({
                             break;
                           case "additionalServices":
                             content =
-                              provider.additionalServicesList?.length > 0 ? (
+                              provider.additionalServicesList &&
+                              provider.additionalServicesList.length > 0 ? (
                                 <div className="flex flex-col items-center gap-1">
                                   <Icon
                                     name="Check"
@@ -541,16 +567,19 @@ export const ComparisonTable = ({
                               );
                             break;
                           case "support":
+                            const supportTime =
+                              provider.serviceGuarantees?.supportResponseTime ||
+                              "24/7";
                             content = (
                               <Badge className="bg-accent border border-primary/20 text-foreground">
-                                {provider.serviceGuarantees
-                                  ?.supportResponseTime || "24/7"}
+                                {supportTime}
                               </Badge>
                             );
                             break;
                           case "registrationData":
                             content =
-                              provider.registrationData?.length > 0 ? (
+                              provider.registrationData &&
+                              provider.registrationData.length > 0 ? (
                                 <div className="space-y-1">
                                   <div className="text-xs font-semibold text-foreground">
                                     {t("card.requiredData")}:
@@ -581,14 +610,19 @@ export const ComparisonTable = ({
                             break;
                           case "clientType":
                             content =
-                              provider.supportedClientTypes?.length > 0 ? (
+                              provider.supportedClientTypes &&
+                              provider.supportedClientTypes.length > 0 ? (
                                 <div className="flex flex-wrap gap-1 justify-center">
                                   {provider.supportedClientTypes
                                     .slice(0, 3)
                                     .map((type, idx) => (
                                       <Badge
                                         key={idx}
-                                        className={`text-[10px] ${type === "Физлицо" ? "bg-blue-500/20 text-blue-500 border-0" : "bg-purple-500/20 text-purple-500 border-0"}`}
+                                        className={`text-[10px] ${
+                                          type === "Физлицо"
+                                            ? "bg-blue-500/20 text-blue-500 border-0"
+                                            : "bg-purple-500/20 text-purple-500 border-0"
+                                        }`}
                                       >
                                         {type}
                                       </Badge>
@@ -608,7 +642,8 @@ export const ComparisonTable = ({
                             break;
                           case "gpu":
                             content =
-                              provider.technicalSpecs.gpuModels?.length > 0 ? (
+                              provider.technicalSpecs.gpuModels &&
+                              provider.technicalSpecs.gpuModels.length > 0 ? (
                                 <div className="flex flex-col items-center gap-1">
                                   <Icon
                                     name="Check"
@@ -722,30 +757,6 @@ export const ComparisonTable = ({
                               </div>
                             );
                             break;
-                          case "serviceTypes":
-                            const types = [];
-                            if (provider.hasHosting) types.push("Хостинг");
-                            if (provider.hasVPS) types.push("VPS");
-                            if (provider.hasVDS) types.push("VDS");
-                            if (provider.hasDedicatedServer)
-                              types.push("Dedicated Server");
-                            if (provider.hasBareMetal) types.push("Bare metal");
-                            content =
-                              types.length > 0 ? (
-                                <div className="flex flex-wrap gap-1 justify-center">
-                                  {types.map((type, idx) => (
-                                    <Badge
-                                      key={idx}
-                                      className="bg-blue-500/20 text-blue-500 border-0 text-xs"
-                                    >
-                                      {type}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              ) : (
-                                <span className="text-muted-foreground">—</span>
-                              );
-                            break;
                           default:
                             content = null;
                         }
@@ -760,6 +771,8 @@ export const ComparisonTable = ({
                       })}
                     </tr>
                   ))}
+
+                  {/* Кнопка перехода */}
                   <tr className="bg-accent/30 border-t-2 border-border">
                     <td className="p-3 sm:p-4 md:p-6 font-bold text-foreground sticky left-0 bg-accent/30 z-10 text-xs sm:text-sm md:text-base">
                       Действия
