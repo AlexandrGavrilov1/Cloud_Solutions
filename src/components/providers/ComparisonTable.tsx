@@ -43,7 +43,7 @@ export const ComparisonTable = ({
     );
   }
 
-  // Универсальная функция для открытия ссылок через редиректор
+  // Универсальная фун кция для открытия ссыл ок через редиректор
   const openViaRedirect = (url: string, utmContent: string) => {
     const redirectBase = "/redirect";
     const params = new URLSearchParams({
@@ -123,6 +123,8 @@ export const ComparisonTable = ({
     { label: t("common.gpu"), key: "gpu", icon: "Cpu" },
     { label: t("common.supports1C"), key: "supports1C", icon: "Database" },
     { label: "AI поддержка", key: "ai", icon: "Cpu" },
+    // Новая строка для типов услуг
+    { label: "Типы услуг", key: "serviceTypes", icon: "Server" },
   ];
 
   const getPriceText = (provider: Provider) => {
@@ -197,7 +199,7 @@ export const ComparisonTable = ({
               </Button>
             </div>
 
-            {/* Бейджи выбранных провайдеров */}
+            {/* Бейджи выбранных провайдеров (с новыми типами услуг) */}
             <div className="flex flex-wrap gap-2 sm:gap-3">
               {providers.map((provider) => {
                 const hasFZ152 = provider.fz152Compliant;
@@ -226,7 +228,7 @@ export const ComparisonTable = ({
                     <span className="text-xs font-semibold text-foreground">
                       {provider.name}
                     </span>
-                    <div className="flex items-center gap-1 ml-1">
+                    <div className="flex items-center gap-1 ml-1 flex-wrap">
                       {hasFZ152 && (
                         <Badge className="bg-primary/20 text-primary border-0 text-[10px] px-1.5 py-0.5">
                           {provider.fz152Level || "152-ФЗ"}
@@ -256,6 +258,32 @@ export const ComparisonTable = ({
                       {provider.technicalSpecs.supportsAI && (
                         <Badge className="bg-purple-500/20 text-purple-500 border-0 text-[10px] px-1.5 py-0.5">
                           AI
+                        </Badge>
+                      )}
+                      {/* Новые бейджи типов услуг */}
+                      {provider.hasHosting && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          Хостинг
+                        </Badge>
+                      )}
+                      {provider.hasVPS && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          VPS
+                        </Badge>
+                      )}
+                      {provider.hasVDS && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          VDS
+                        </Badge>
+                      )}
+                      {provider.hasDedicatedServer && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          Dedicated
+                        </Badge>
+                      )}
+                      {provider.hasBareMetal && (
+                        <Badge className="bg-blue-500/20 text-blue-500 border-0 text-[10px] px-1.5 py-0.5">
+                          Bare metal
                         </Badge>
                       )}
                     </div>
@@ -296,7 +324,7 @@ export const ComparisonTable = ({
                         </div>
                       </th>
                     ))}
-                  </tr>
+                  </td>
                 </thead>
                 <tbody>
                   {rows.map((row, idx) => (
@@ -757,6 +785,30 @@ export const ComparisonTable = ({
                               </div>
                             );
                             break;
+                          // Новая строка для типов услуг
+                          case "serviceTypes":
+                            const types = [];
+                            if (provider.hasHosting) types.push("Хостинг");
+                            if (provider.hasVPS) types.push("VPS");
+                            if (provider.hasVDS) types.push("VDS");
+                            if (provider.hasDedicatedServer)
+                              types.push("Dedicated Server");
+                            if (provider.hasBareMetal) types.push("Bare metal");
+                            content = types.length > 0 ? (
+                              <div className="flex flex-wrap gap-1 justify-center">
+                                {types.map((type, idx) => (
+                                  <Badge
+                                    key={idx}
+                                    className="bg-blue-500/20 text-blue-500 border-0 text-xs"
+                                  >
+                                    {type}
+                                  </Badge>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="text-muted-foreground">—</span>
+                            );
+                            break;
                           default:
                             content = null;
                         }
@@ -766,10 +818,10 @@ export const ComparisonTable = ({
                             className="p-3 sm:p-4 md:p-6 text-center"
                           >
                             {content}
-                          </td>
+                          <tr>
                         );
                       })}
-                    </tr>
+                    </table>
                   ))}
 
                   {/* Кнопка перехода */}
