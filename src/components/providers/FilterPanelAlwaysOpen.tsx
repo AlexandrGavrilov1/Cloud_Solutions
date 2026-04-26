@@ -460,7 +460,7 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // --- Сетка остальных чекбоксов (с добавленным чекбоксом "GPU") ---
+  // --- Сетка остальных чекбоксов (без типов услуг) ---
   const CheckboxGrid = () => (
     <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
@@ -507,15 +507,6 @@ export const FilterPanelAlwaysOpen = ({
           checked={filterMobileApp}
           onChange={setFilterMobileApp}
           label="Моб. приложение"
-        />
-        <FilterCheckbox
-          id="filter-gpu"
-          checked={filterHasGPU}
-          onChange={(checked) => {
-            setFilterHasGPU(checked);
-            if (checked) setFilterGPU([]);
-          }}
-          label="GPU"
         />
       </div>
     </div>
@@ -600,7 +591,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеон "Количество ЦОД" (оригинальный, рабочий) ---
+  // --- ОРИГИНАЛЬНЫЙ АККОРДЕОН "Количество ЦОД" (рабочий, без NaN) ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
@@ -788,37 +779,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеон GPU (без чекбокса "Есть GPU") ---
-  const GpuAccordion = () => {
-    const isOpen = dropdownsOpen.gpu;
-    const valueText =
-      filterGPU.length === 0
-        ? ""
-        : filterGPU.length === 1
-          ? filterGPU[0]
-          : `${filterGPU.length} выбрано`;
-    return (
-      <AccordionSection
-        title="Модели GPU"
-        isOpen={isOpen}
-        onToggle={(e) => handleDropdownClick("gpu", e)}
-        valueText={valueText}
-        dropdownKey="gpu"
-      >
-        <div className="space-y-1">
-          {allGPUs.length > 0 && (
-            <OptionsGrid
-              options={allGPUs}
-              selectedValues={filterGPU}
-              onChange={handleGpuChange}
-            />
-          )}
-        </div>
-      </AccordionSection>
-    );
-  };
-
-  // --- Остальные аккордеоны (без изменений) ---
+  // --- Остальные аккордеоны (копия из вашего исходного кода) ---
   const FstekAccordion = () => {
     const isOpen = dropdownsOpen.fstek;
     const valueText =
@@ -867,6 +828,47 @@ export const FilterPanelAlwaysOpen = ({
             handleMultiSelectChange(option, filterLocation, setFilterLocation)
           }
         />
+      </AccordionSection>
+    );
+  };
+
+  const GpuAccordion = () => {
+    const isOpen = dropdownsOpen.gpu;
+    let valueText = "";
+    if (filterHasGPU) {
+      valueText = "Есть GPU";
+    } else if (filterGPU.length > 0) {
+      valueText =
+        filterGPU.length === 1 ? filterGPU[0] : `${filterGPU.length} выбрано`;
+    }
+    return (
+      <AccordionSection
+        title="GPU"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("gpu", e)}
+        valueText={valueText}
+        dropdownKey="gpu"
+      >
+        <div className="space-y-1">
+          <FilterCheckbox
+            id="filter-has-gpu"
+            checked={filterHasGPU}
+            onChange={(checked) => {
+              setFilterHasGPU(checked);
+              if (checked) setFilterGPU([]);
+            }}
+            label="Есть GPU"
+          />
+          {allGPUs.length > 0 && (
+            <div className="mt-1">
+              <OptionsGrid
+                options={allGPUs}
+                selectedValues={filterGPU}
+                onChange={handleGpuChange}
+              />
+            </div>
+          )}
+        </div>
       </AccordionSection>
     );
   };
