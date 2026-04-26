@@ -52,6 +52,7 @@ interface FilterPanelAlwaysOpenProps {
   filterAI: boolean;
   setFilterAI: (value: boolean) => void;
 
+  // Типы услуг
   filterHosting: boolean;
   setFilterHosting: (value: boolean) => void;
   filterVPS: boolean;
@@ -123,7 +124,6 @@ export const FilterPanelAlwaysOpen = ({
   setFilter1C,
   filterAI,
   setFilterAI,
-
   filterHosting,
   setFilterHosting,
   filterVPS,
@@ -134,7 +134,6 @@ export const FilterPanelAlwaysOpen = ({
   setFilterDedicatedServer,
   filterBareMetal,
   setFilterBareMetal,
-
   allLocations,
   allVirtualizations,
   allDiskTypes,
@@ -143,7 +142,6 @@ export const FilterPanelAlwaysOpen = ({
   allCPUs,
   allGPUs = [],
   fstekOptions = ["ФСТЭК-17", "ФСТЭК-21", "ФСТЭК-239"],
-
   additionalServicesOptions = [
     "Аудит инфраструктуры",
     "Проектирование инфраструктуры",
@@ -153,7 +151,6 @@ export const FilterPanelAlwaysOpen = ({
     "Аттестация по ФСТЭК",
     "Другие гос. лицензии",
   ],
-
   registrationDataOptions = [
     "ФИО",
     "Email",
@@ -169,7 +166,6 @@ export const FilterPanelAlwaysOpen = ({
     "Регистрация в сторонних сервисах",
     "Скан удостоверения личности",
   ],
-
   clientTypeOptions = ["Физлицо", "Юрлицо"],
   className = "",
   showHeader = true,
@@ -193,6 +189,7 @@ export const FilterPanelAlwaysOpen = ({
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // Закрытие дропдаунов при клике вне панели
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -216,18 +213,164 @@ export const FilterPanelAlwaysOpen = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const hasActiveFilters = () => { /* ... */ }; // для краткости не меняем, оставляем как было
+  const hasActiveFilters =
+    filterFZ152 ||
+    filterFSTEK.length > 0 ||
+    filterTrialPeriod ||
+    filterLocation.length > 0 ||
+    filterVirtualization.length > 0 ||
+    filterMinDatacenters !== null ||
+    filterMaxDatacenters !== null ||
+    filterDiskType.length > 0 ||
+    filterPaymentMethod.length > 0 ||
+    filterOS.length > 0 ||
+    filterCPU.length > 0 ||
+    filterKII ||
+    filterMobileApp ||
+    filterOrderBeforeRegistration ||
+    filterAdditionalServices.length > 0 ||
+    filterRegistrationData.length > 0 ||
+    filterClientType.length > 0 ||
+    filterGPU.length > 0 ||
+    filterHasGPU ||
+    filter1C ||
+    filterAI ||
+    filterHosting ||
+    filterVPS ||
+    filterVDS ||
+    filterDedicatedServer ||
+    filterBareMetal;
 
-  const activeFiltersCount = () => { /* ... */ };
+  const activeFiltersCount = [
+    filterFZ152,
+    filterFSTEK.length > 0,
+    filterTrialPeriod,
+    filterLocation.length > 0,
+    filterVirtualization.length > 0,
+    filterMinDatacenters !== null,
+    filterMaxDatacenters !== null,
+    filterDiskType.length > 0,
+    filterPaymentMethod.length > 0,
+    filterOS.length > 0,
+    filterCPU.length > 0,
+    filterKII,
+    filterMobileApp,
+    filterOrderBeforeRegistration,
+    filterAdditionalServices.length > 0,
+    filterRegistrationData.length > 0,
+    filterClientType.length > 0,
+    filterGPU.length > 0,
+    filterHasGPU,
+    filter1C,
+    filterAI,
+    filterHosting,
+    filterVPS,
+    filterVDS,
+    filterDedicatedServer,
+    filterBareMetal,
+  ].filter(Boolean).length;
 
-  const clearFilters = useCallback(() => { /* ... */ }, []);
+  const clearFilters = useCallback(() => {
+    setFilterFZ152(false);
+    setFilterFSTEK([]);
+    setFilterTrialPeriod(false);
+    setFilterLocation([]);
+    setFilterVirtualization([]);
+    setFilterMinDatacenters(null);
+    setFilterMaxDatacenters(null);
+    setFilterDiskType([]);
+    setFilterPaymentMethod([]);
+    setFilterOS([]);
+    setFilterCPU([]);
+    setFilterKII(false);
+    setFilterMobileApp(false);
+    setFilterOrderBeforeRegistration(false);
+    setFilterAdditionalServices([]);
+    setFilterRegistrationData([]);
+    setFilterClientType([]);
+    setFilterGPU([]);
+    setFilterHasGPU(false);
+    setFilter1C(false);
+    setFilterAI(false);
+    setFilterHosting(false);
+    setFilterVPS(false);
+    setFilterVDS(false);
+    setFilterDedicatedServer(false);
+    setFilterBareMetal(false);
+  }, [
+    setFilterFZ152,
+    setFilterFSTEK,
+    setFilterTrialPeriod,
+    setFilterLocation,
+    setFilterVirtualization,
+    setFilterMinDatacenters,
+    setFilterMaxDatacenters,
+    setFilterDiskType,
+    setFilterPaymentMethod,
+    setFilterOS,
+    setFilterCPU,
+    setFilterKII,
+    setFilterMobileApp,
+    setFilterOrderBeforeRegistration,
+    setFilterAdditionalServices,
+    setFilterRegistrationData,
+    setFilterClientType,
+    setFilterGPU,
+    setFilterHasGPU,
+    setFilter1C,
+    setFilterAI,
+    setFilterHosting,
+    setFilterVPS,
+    setFilterVDS,
+    setFilterDedicatedServer,
+    setFilterBareMetal,
+  ]);
 
-  const handleMultiSelectChange = () => { /* ... */ };
-  const handleFstekChange = () => { /* ... */ };
-  const handleAdditionalServicesChange = () => { /* ... */ };
-  const handleRegistrationDataChange = () => { /* ... */ };
-  const handleClientTypeChange = () => { /* ... */ };
-  const handleGpuChange = () => { /* ... */ };
+  const handleMultiSelectChange = (
+    value: string,
+    currentValues: string[],
+    setter: (values: string[]) => void,
+  ) => {
+    if (value === "all") setter([]);
+    else if (currentValues.includes(value))
+      setter(currentValues.filter((v) => v !== value));
+    else setter([...currentValues, value]);
+  };
+
+  const handleFstekChange = (option: string) => {
+    const newValue = filterFSTEK.includes(option)
+      ? filterFSTEK.filter((v) => v !== option)
+      : [...filterFSTEK, option];
+    setFilterFSTEK(newValue);
+  };
+
+  const handleAdditionalServicesChange = (option: string) => {
+    const newValue = filterAdditionalServices.includes(option)
+      ? filterAdditionalServices.filter((v) => v !== option)
+      : [...filterAdditionalServices, option];
+    setFilterAdditionalServices(newValue);
+  };
+
+  const handleRegistrationDataChange = (option: string) => {
+    const newValue = filterRegistrationData.includes(option)
+      ? filterRegistrationData.filter((v) => v !== option)
+      : [...filterRegistrationData, option];
+    setFilterRegistrationData(newValue);
+  };
+
+  const handleClientTypeChange = (option: string) => {
+    const newValue = filterClientType.includes(option)
+      ? filterClientType.filter((v) => v !== option)
+      : [...filterClientType, option];
+    setFilterClientType(newValue);
+  };
+
+  const handleGpuChange = (option: string) => {
+    const newValue = filterGPU.includes(option)
+      ? filterGPU.filter((v) => v !== option)
+      : [...filterGPU, option];
+    setFilterGPU(newValue);
+  };
 
   const handleDropdownClick = (dropdown: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -278,7 +421,7 @@ export const FilterPanelAlwaysOpen = ({
     </label>
   );
 
-  // --- Блок типов услуг (без заголовка, в две колонки) ---
+  // --- Блок типов услуг (без заголовка, две колонки) ---
   const ServiceTypesBlock = () => (
     <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
@@ -318,7 +461,7 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
-  // --- Остальные чекбоксы ---
+  // --- Сетка остальных чекбоксов (152-ФЗ, КИИ и т.д.) ---
   const CheckboxGrid = () => (
     <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
@@ -370,18 +513,98 @@ export const FilterPanelAlwaysOpen = ({
     </div>
   );
 
+  // --- Аккордеон (общий компонент) ---
+  const AccordionSection = ({
+    title,
+    isOpen,
+    onToggle,
+    children,
+    valueText,
+    dropdownKey,
+  }: {
+    title: string;
+    isOpen: boolean;
+    onToggle: (e: React.MouseEvent) => void;
+    children: React.ReactNode;
+    valueText: string;
+    dropdownKey: string;
+  }) => (
+    <div
+      className="border-b border-gray-200 dark:border-gray-700 py-1.5"
+      ref={(el) => (dropdownRefs.current[dropdownKey] = el)}
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between py-1 text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 transition-colors focus:outline-none focus:ring-1 focus:ring-orange-500"
+      >
+        <span className="text-sm font-medium text-gray-900 dark:text-white">
+          {title}
+        </span>
+        <div className="flex items-center gap-2">
+          {valueText && valueText.length > 0 && (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {valueText}
+            </span>
+          )}
+          <Icon
+            name={isOpen ? "ChevronUp" : "ChevronDown"}
+            size={12}
+            className="text-gray-400"
+          />
+        </div>
+      </button>
+      {isOpen && <div className="pt-1.5">{children}</div>}
+    </div>
+  );
+
+  const OptionsGrid = ({
+    options,
+    selectedValues,
+    onChange,
+  }: {
+    options: string[];
+    selectedValues: string[];
+    onChange: (option: string) => void;
+  }) => {
+    const hasManyOptions = options.length > 4;
+    return (
+      <div
+        className={`space-y-1 ${hasManyOptions ? "max-h-32 overflow-y-auto pr-1 scrollbar-thin" : ""}`}
+      >
+        <div className="flex flex-wrap gap-1">
+          {options.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => onChange(option)}
+              className={`inline-flex items-center px-2 py-1 text-xs rounded-full border transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 ${
+                selectedValues.includes(option)
+                  ? "border-orange-500 text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10"
+                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-500/50"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // --- Аккордеон "Количество ЦОД" (исправлен: нет NaN, начальные 0 и 15) ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
-    // Устанавливаем начальные значения: если null, то 0 и 15
-    const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
-    const [maxValue, setMaxValue] = useState(filterMaxDatacenters ?? 15);
+    const [minValue, setMinValue] = useState(() => filterMinDatacenters ?? 0);
+    const [maxValue, setMaxValue] = useState(() => filterMaxDatacenters ?? 15);
     const [isDragging, setIsDragging] = useState<"min" | "max" | null>(null);
-    // Инпуты привязываем к этим значениям, они никогда не будут NaN
-    const [minInput, setMinInput] = useState(minValue.toString());
-    const [maxInput, setMaxInput] = useState(maxValue.toString());
+    const [minInput, setMinInput] = useState(() =>
+      (filterMinDatacenters ?? 0).toString(),
+    );
+    const [maxInput, setMaxInput] = useState(() =>
+      (filterMaxDatacenters ?? 15).toString(),
+    );
 
-    // Синхронизация с пропсами, если они изменились снаружи
     useEffect(() => {
       const newMin = filterMinDatacenters ?? 0;
       setMinValue(newMin);
@@ -415,10 +638,10 @@ export const FilterPanelAlwaysOpen = ({
     const applyValues = useCallback(() => {
       setFilterMinDatacenters(minValue > 0 ? minValue : null);
       setFilterMaxDatacenters(maxValue < 15 ? maxValue : null);
-    }, [minValue, maxValue]);
+    }, [minValue, maxValue, setFilterMinDatacenters, setFilterMaxDatacenters]);
 
     const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value;
+      const value = e.target.value;
       if (value === "") {
         setMinInput("");
         return;
@@ -429,7 +652,7 @@ export const FilterPanelAlwaysOpen = ({
     };
 
     const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value;
+      const value = e.target.value;
       if (value === "") {
         setMaxInput("");
         return;
@@ -577,30 +800,356 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // Остальные аккордеоны (FstekAccordion, LocationAccordion, GpuAccordion, и т.д.) остаются без изменений.
-  // Они такие же, как в исходном коде, поэтому здесь не переписаны для краткости.
-  // В вашем проекте они уже есть, просто вставьте их сюда.
+  const FstekAccordion = () => {
+    const isOpen = dropdownsOpen.fstek;
+    const valueText =
+      filterFSTEK.length === 0
+        ? ""
+        : filterFSTEK.length === 1
+          ? filterFSTEK[0]
+          : `${filterFSTEK.length} выбрано`;
+    return (
+      <AccordionSection
+        title="ФСТЭК"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("fstek", e)}
+        valueText={valueText}
+        dropdownKey="fstek"
+      >
+        <OptionsGrid
+          options={fstekOptions}
+          selectedValues={filterFSTEK}
+          onChange={handleFstekChange}
+        />
+      </AccordionSection>
+    );
+  };
 
-  const AccordionSection = ({ title, isOpen, onToggle, children, valueText, dropdownKey }: any) => (
-    // реализация как была
-  );
-  const OptionsGrid = ({ options, selectedValues, onChange }: any) => (
-    // реализация
-  );
+  const LocationAccordion = () => {
+    const isOpen = dropdownsOpen.location;
+    const valueText =
+      filterLocation.length === 0
+        ? ""
+        : filterLocation.length === 1
+          ? filterLocation[0]
+          : `${filterLocation.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Локация ЦОД"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("location", e)}
+        valueText={valueText}
+        dropdownKey="location"
+      >
+        <OptionsGrid
+          options={allLocations}
+          selectedValues={filterLocation}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterLocation, setFilterLocation)
+          }
+        />
+      </AccordionSection>
+    );
+  };
 
-  // Остальные аккордеоны (FstekAccordion, LocationAccordion и т.п.) - оставляем как в вашем исходном коде.
+  const GpuAccordion = () => {
+    const isOpen = dropdownsOpen.gpu;
+    let valueText = "";
+    if (filterHasGPU) {
+      valueText = "Есть GPU";
+    } else if (filterGPU.length > 0) {
+      valueText =
+        filterGPU.length === 1 ? filterGPU[0] : `${filterGPU.length} выбрано`;
+    }
+    return (
+      <AccordionSection
+        title="GPU"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("gpu", e)}
+        valueText={valueText}
+        dropdownKey="gpu"
+      >
+        <div className="space-y-1">
+          <FilterCheckbox
+            id="filter-has-gpu"
+            checked={filterHasGPU}
+            onChange={(checked) => {
+              setFilterHasGPU(checked);
+              if (checked) setFilterGPU([]);
+            }}
+            label="Есть GPU"
+          />
+          {allGPUs.length > 0 && (
+            <div className="mt-1">
+              <OptionsGrid
+                options={allGPUs}
+                selectedValues={filterGPU}
+                onChange={handleGpuChange}
+              />
+            </div>
+          )}
+        </div>
+      </AccordionSection>
+    );
+  };
+
+  const VirtualizationAccordion = () => {
+    const isOpen = dropdownsOpen.virtualization;
+    const valueText =
+      filterVirtualization.length === 0
+        ? ""
+        : filterVirtualization.length === 1
+          ? filterVirtualization[0]
+          : `${filterVirtualization.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Виртуализация"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("virtualization", e)}
+        valueText={valueText}
+        dropdownKey="virtualization"
+      >
+        <OptionsGrid
+          options={allVirtualizations}
+          selectedValues={filterVirtualization}
+          onChange={(option) =>
+            handleMultiSelectChange(
+              option,
+              filterVirtualization,
+              setFilterVirtualization,
+            )
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  const DiskTypeAccordion = () => {
+    const isOpen = dropdownsOpen.diskType;
+    const valueText =
+      filterDiskType.length === 0
+        ? ""
+        : filterDiskType.length === 1
+          ? filterDiskType[0]
+          : `${filterDiskType.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Тип дисков"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("diskType", e)}
+        valueText={valueText}
+        dropdownKey="diskType"
+      >
+        <OptionsGrid
+          options={allDiskTypes}
+          selectedValues={filterDiskType}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterDiskType, setFilterDiskType)
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  const CpuAccordion = () => {
+    const isOpen = dropdownsOpen.cpu;
+    const valueText =
+      filterCPU.length === 0
+        ? ""
+        : filterCPU.length === 1
+          ? filterCPU[0]
+          : `${filterCPU.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Процессор"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("cpu", e)}
+        valueText={valueText}
+        dropdownKey="cpu"
+      >
+        <OptionsGrid
+          options={allCPUs}
+          selectedValues={filterCPU}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterCPU, setFilterCPU)
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  const OSAccordion = () => {
+    const isOpen = dropdownsOpen.os;
+    const valueText =
+      filterOS.length === 0
+        ? ""
+        : filterOS.length === 1
+          ? filterOS[0]
+          : `${filterOS.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Операционная система"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("os", e)}
+        valueText={valueText}
+        dropdownKey="os"
+      >
+        <OptionsGrid
+          options={allOS}
+          selectedValues={filterOS}
+          onChange={(option) =>
+            handleMultiSelectChange(option, filterOS, setFilterOS)
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  const AdditionalServicesAccordion = () => {
+    const isOpen = dropdownsOpen.additionalServices;
+    const valueText =
+      filterAdditionalServices.length === 0
+        ? ""
+        : filterAdditionalServices.length === 1
+          ? filterAdditionalServices[0]
+          : `${filterAdditionalServices.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Дополнительные услуги"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("additionalServices", e)}
+        valueText={valueText}
+        dropdownKey="additionalServices"
+      >
+        <OptionsGrid
+          options={additionalServicesOptions}
+          selectedValues={filterAdditionalServices}
+          onChange={handleAdditionalServicesChange}
+        />
+      </AccordionSection>
+    );
+  };
+
+  const PaymentMethodAccordion = () => {
+    const isOpen = dropdownsOpen.paymentMethod;
+    const valueText =
+      filterPaymentMethod.length === 0
+        ? ""
+        : filterPaymentMethod.length === 1
+          ? filterPaymentMethod[0]
+          : `${filterPaymentMethod.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Способы оплаты"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("paymentMethod", e)}
+        valueText={valueText}
+        dropdownKey="paymentMethod"
+      >
+        <OptionsGrid
+          options={allPaymentMethods}
+          selectedValues={filterPaymentMethod}
+          onChange={(option) =>
+            handleMultiSelectChange(
+              option,
+              filterPaymentMethod,
+              setFilterPaymentMethod,
+            )
+          }
+        />
+      </AccordionSection>
+    );
+  };
+
+  const RegistrationDataAccordion = () => {
+    const isOpen = dropdownsOpen.registrationData;
+    const valueText =
+      filterRegistrationData.length === 0
+        ? ""
+        : filterRegistrationData.length === 1
+          ? filterRegistrationData[0]
+          : `${filterRegistrationData.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Данные для регистрации"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("registrationData", e)}
+        valueText={valueText}
+        dropdownKey="registrationData"
+      >
+        <OptionsGrid
+          options={registrationDataOptions}
+          selectedValues={filterRegistrationData}
+          onChange={handleRegistrationDataChange}
+        />
+      </AccordionSection>
+    );
+  };
+
+  const ClientTypeAccordion = () => {
+    const isOpen = dropdownsOpen.clientType;
+    const valueText =
+      filterClientType.length === 0
+        ? ""
+        : filterClientType.length === 1
+          ? filterClientType[0]
+          : `${filterClientType.length} выбрано`;
+    return (
+      <AccordionSection
+        title="Тип клиента"
+        isOpen={isOpen}
+        onToggle={(e) => handleDropdownClick("clientType", e)}
+        valueText={valueText}
+        dropdownKey="clientType"
+      >
+        <OptionsGrid
+          options={clientTypeOptions}
+          selectedValues={filterClientType}
+          onChange={handleClientTypeChange}
+        />
+      </AccordionSection>
+    );
+  };
 
   return (
-    <div ref={panelRef} className={`flex-shrink-0 bg-transparent p-3 ${className}`}>
-      <style jsx global>{/* ... стили ... */}</style>
+    <div
+      ref={panelRef}
+      className={`flex-shrink-0 bg-transparent p-3 ${className}`}
+    >
+      <style jsx global>{`
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 4px;
+          height: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: #d1d5db;
+          border-radius: 2px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: #9ca3af;
+        }
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: #4b5563;
+        }
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: #6b7280;
+        }
+      `}</style>
 
       {showHeader && (
         <div className="flex items-center justify-between mb-1.5 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-1.5">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">Фильтры</h3>
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+              Фильтры
+            </h3>
             {activeFiltersCount > 0 && (
               <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
-                <span className="text-xs text-white font-bold">{activeFiltersCount}</span>
+                <span className="text-xs text-white font-bold">
+                  {activeFiltersCount}
+                </span>
               </div>
             )}
           </div>
