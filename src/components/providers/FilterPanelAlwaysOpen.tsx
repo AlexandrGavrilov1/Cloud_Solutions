@@ -52,7 +52,7 @@ interface FilterPanelAlwaysOpenProps {
   filterAI: boolean;
   setFilterAI: (value: boolean) => void;
 
-  // НОВЫЕ ПРОПСЫ ДЛЯ ТИПОВ УСЛУГ
+  // Типы услуг
   filterHosting: boolean;
   setFilterHosting: (value: boolean) => void;
   filterVPS: boolean;
@@ -387,7 +387,7 @@ export const FilterPanelAlwaysOpen = ({
     setDropdownsOpen(newState);
   };
 
-  // --- Компоненты ---
+  // --- Компонент чекбокса ---
   const FilterCheckbox = ({
     checked,
     onChange,
@@ -425,9 +425,50 @@ export const FilterPanelAlwaysOpen = ({
     </label>
   );
 
-  // Сетка чекбоксов (включая новые)
+  // --- Новый блок типов услуг (вертикально, в указанном порядке) ---
+  const ServiceTypesBlock = () => (
+    <div className="mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        Типы услуг
+      </div>
+      <div className="space-y-1">
+        <FilterCheckbox
+          id="filter-hosting"
+          checked={filterHosting}
+          onChange={setFilterHosting}
+          label="Хостинг"
+        />
+        <FilterCheckbox
+          id="filter-vps"
+          checked={filterVPS}
+          onChange={setFilterVPS}
+          label="VPS"
+        />
+        <FilterCheckbox
+          id="filter-vds"
+          checked={filterVDS}
+          onChange={setFilterVDS}
+          label="VDS"
+        />
+        <FilterCheckbox
+          id="filter-dedicated"
+          checked={filterDedicatedServer}
+          onChange={setFilterDedicatedServer}
+          label="Dedicated Server"
+        />
+        <FilterCheckbox
+          id="filter-bare-metal"
+          checked={filterBareMetal}
+          onChange={setFilterBareMetal}
+          label="Bare metal"
+        />
+      </div>
+    </div>
+  );
+
+  // --- Остальная сетка чекбоксов (без типов услуг) ---
   const CheckboxGrid = () => (
-    <div className="grid grid-cols-2 gap-1.5">
+    <div className="grid grid-cols-2 gap-1.5 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
         <FilterCheckbox
           id="filter-fz152"
@@ -453,18 +494,6 @@ export const FilterPanelAlwaysOpen = ({
           onChange={setFilterOrderBeforeRegistration}
           label="Заказ до регистрации"
         />
-        <FilterCheckbox
-          id="filter-hosting"
-          checked={filterHosting}
-          onChange={setFilterHosting}
-          label="Хостинг"
-        />
-        <FilterCheckbox
-          id="filter-vps"
-          checked={filterVPS}
-          onChange={setFilterVPS}
-          label="VPS"
-        />
       </div>
       <div className="space-y-1">
         <FilterCheckbox
@@ -485,29 +514,11 @@ export const FilterPanelAlwaysOpen = ({
           onChange={setFilterMobileApp}
           label="Моб. приложение"
         />
-        <FilterCheckbox
-          id="filter-vds"
-          checked={filterVDS}
-          onChange={setFilterVDS}
-          label="VDS"
-        />
-        <FilterCheckbox
-          id="filter-dedicated"
-          checked={filterDedicatedServer}
-          onChange={setFilterDedicatedServer}
-          label="Dedicated Server"
-        />
-        <FilterCheckbox
-          id="filter-bare-metal"
-          checked={filterBareMetal}
-          onChange={setFilterBareMetal}
-          label="Bare metal"
-        />
       </div>
     </div>
   );
 
-  // Аккордеон
+  // --- Аккордеон (общий компонент) ---
   const AccordionSection = ({
     title,
     isOpen,
@@ -586,7 +597,7 @@ export const FilterPanelAlwaysOpen = ({
     );
   };
 
-  // --- Аккордеоны (полные реализации) ---
+  // --- Аккордеоны ---
   const DatacentersAccordion = () => {
     const isOpen = dropdownsOpen.datacenters;
     const [minValue, setMinValue] = useState(filterMinDatacenters ?? 0);
@@ -697,12 +708,15 @@ export const FilterPanelAlwaysOpen = ({
       };
     }, [isDragging, handleMinChange, handleMaxChange, applyValues]);
 
-    const isDefault =
-      (filterMinDatacenters === null || filterMinDatacenters === 0) &&
-      (filterMaxDatacenters === null || filterMaxDatacenters === 15);
-    const valueText = isDefault
-      ? ""
-      : `${filterMinDatacenters ?? 0} – ${filterMaxDatacenters ?? 15}`;
+    // Исправленное формирование valueText: избегаем NaN-NaN
+    let valueText = "";
+    const hasMin = filterMinDatacenters !== null && filterMinDatacenters > 0;
+    const hasMax = filterMaxDatacenters !== null && filterMaxDatacenters < 15;
+    if (hasMin || hasMax) {
+      const minVal = filterMinDatacenters ?? 0;
+      const maxVal = filterMaxDatacenters ?? 15;
+      valueText = `${minVal} – ${maxVal}`;
+    }
 
     return (
       <AccordionSection
@@ -1139,8 +1153,13 @@ export const FilterPanelAlwaysOpen = ({
         </div>
       )}
 
+      {/* Блок типов услуг - в самом верху */}
+      <ServiceTypesBlock />
+
+      {/* Остальные чекбоксы (152-ФЗ, КИИ, и т.д.) */}
       <CheckboxGrid />
 
+      {/* Аккордеоны */}
       <div className="space-y-0">
         <FstekAccordion />
         <LocationAccordion />
