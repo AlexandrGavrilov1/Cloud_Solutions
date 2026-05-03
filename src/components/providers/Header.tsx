@@ -49,7 +49,7 @@ export const Header = () => {
           >
             <img
               src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
-              alt="TopCloudHub Logo"
+              alt="top-vds Logo"
               className="h-[60px] w-auto transition-opacity duration-300"
             />
           </Link>
