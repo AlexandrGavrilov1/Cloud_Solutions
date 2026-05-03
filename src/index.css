@@ -349,6 +349,84 @@
       box-shadow 280ms ease !important;
     transition-delay: 0 !important;
   }
+
+  /* === Theme toggle micro-animations === */
+  @keyframes sun-rays {
+    0% {
+      transform: rotate(-90deg) scale(0.4);
+      opacity: 0;
+    }
+    60% {
+      transform: rotate(20deg) scale(1.15);
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(0deg) scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes moon-rise {
+    0% {
+      transform: translateY(8px) rotate(40deg) scale(0.4);
+      opacity: 0;
+    }
+    60% {
+      transform: translateY(-2px) rotate(-12deg) scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0) rotate(0deg) scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes monitor-pop {
+    0% {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes pill-pop {
+    0% {
+      transform: scale(0.85);
+      opacity: 0.6;
+    }
+    60% {
+      transform: scale(1.06);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .anim-sun {
+    animation: sun-rays 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .anim-moon {
+    animation: moon-rise 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .anim-monitor {
+    animation: monitor-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .anim-pill {
+    animation: pill-pop 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .anim-sun,
+    .anim-moon,
+    .anim-monitor,
+    .anim-pill {
+      animation: none;
+    }
+  }
   ::selection {
     background: hsl(var(--foreground) / 0.95);
     color: hsl(var(--background));
