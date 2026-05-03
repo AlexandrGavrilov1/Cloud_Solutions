@@ -22,11 +22,11 @@ export default {
         "3xl": "1600px",
       },
       fontFamily: {
-        sans: ["Stem", "sans-serif"], // основной текст – Stem
-        heading: ["TT Travels Next Trial", "sans-serif"], // заголовки – TT Travels
-
-        outline: ["TT Travels Next Trial Outline", "sans-serif"], // При необходимости можно добавить дополнительные семейства, например, для Outline:
-        // outline: ['TT Travels Next Trial Outline', 'sans-serif'],
+        sans: ["JetBrains Mono", "Space Mono", "ui-monospace", "monospace"],
+        mono: ["JetBrains Mono", "Space Mono", "ui-monospace", "monospace"],
+        heading: ["JetBrains Mono", "Space Mono", "ui-monospace", "monospace"],
+        outline: ["VT323", "Space Mono", "monospace"],
+        vt323: ["VT323", "Space Mono", "monospace"],
       },
       fontSize: {
         xxs: "10px",
@@ -105,9 +105,9 @@ export default {
         },
       },
       borderRadius: {
-        lg: "8px",
-        md: "6px",
-        sm: "4px",
+        lg: "0px",
+        md: "0px",
+        sm: "0px",
       },
       keyframes: {
         "accordion-down": {

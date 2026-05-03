@@ -970,15 +970,13 @@ export const ProviderCard = ({
       }`}
     >
       <Card
-        className={`glass-effect rounded-2xl overflow-visible relative flex flex-col hover-lift h-full
+        className={`glass-effect overflow-visible relative flex flex-col hover-lift h-full
     ${
       isSelected
-        ? "border-[#FF931F]/50 shadow-lg shadow-[#FF931F]/30"
-        : "border-[#FF931F]/20"
+        ? "border-primary shadow-neon"
+        : "border-primary/30"
     }
-    hover:border-[#FF931F]/50 hover:shadow-md hover:shadow-[#FF931F]/20
-    hover:bg-gradient-to-br hover:from-[#FFF5EB] hover:via-[#FFF9F2] hover:to-[#FFFDF9]
-    dark:hover:from-[#332211] dark:hover:via-[#221A14] dark:hover:to-[#1A1512]
+    hover:border-primary hover:shadow-neon
     transition-all duration-300 ease-in-out
   `}
       >
@@ -992,7 +990,7 @@ export const ProviderCard = ({
             style={{
               top: "-100px",
               background:
-                "radial-gradient(circle at center 70%, #FF931F 0%, #FFB366 25%, #FFD9B3 50%, rgba(255,245,235,0.4) 75%, transparent 90%)",
+                "radial-gradient(circle at center 70%, hsl(var(--term-green)) 0%, hsl(var(--term-cyan)) 30%, transparent 70%)",
               filter: "blur(35px)",
             }}
           />

@@ -12,19 +12,20 @@ export const Footer = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
             {/* Блок с логотипом и описанием — занимает две колонки на всеех экранах */}
             <div className="col-span-2 md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-4 font-mono">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-primary rounded-2xl blur-lg opacity-50"></div>
-                  <div className="relative w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
-                    <Icon name="Zap" className="text-background" size={22} />
+                  <div className="absolute inset-0 bg-primary blur-lg opacity-50"></div>
+                  <div className="relative w-12 h-12 bg-primary border border-primary flex items-center justify-center shadow-neon">
+                    <Icon name="Terminal" className="text-background" size={22} />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-primary">
-                    top-vds
+                  <h3 className="text-xl font-bold uppercase tracking-widest">
+                    top<span className="text-foreground/40">::</span>
+                    <span className="text-primary text-glow">vds</span>
                   </h3>
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Топ хостингов
+                  <p className="text-xs text-muted-foreground font-mono">
+                    <span className="text-secondary">$</span> топ_хостингов
                   </p>
                 </div>
               </div>

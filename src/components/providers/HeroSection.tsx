@@ -1,77 +1,96 @@
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
-import { MatrixWord } from "./MatrixWord";
-import { MatrixSuffix } from "./MatrixSuffix";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export const HeroSection = () => {
-  const { t, language } = useLanguage();
-
   return (
     <section
-      className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-10 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
-      }}
+      className="relative pt-12 pb-10 sm:pt-16 sm:pb-14 md:pt-20 md:pb-12 overflow-hidden border-b border-primary/30"
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* ====== ПЯТНО НАД СЛОВОМ «НАЙДИ» ===== */}
-      <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
+      {/* glow blobs */}
+      <div className="absolute top-0 left-0 w-full pointer-events-none z-0 h-full opacity-50">
         <div
-          className="absolute left-[5%] top-0 
-               w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px]
-               h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]
-               rounded-full
-               blur-[40px] sm:blur-[50px] md:blur-[60px] lg:blur-[70px] xl:blur-[80px] 2xl:blur-[90px]
-               opacity-65"
+          className="absolute left-[5%] top-0 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[80px]"
           style={{
             background:
-              "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
-            transform: "translate(-10%, -35%)",
+              "radial-gradient(circle, hsl(var(--term-green)) 0%, hsl(var(--term-cyan)) 40%, transparent 70%)",
+            transform: "translate(-30%, -50%)",
+            opacity: 0.35,
+          }}
+        />
+        <div
+          className="absolute right-0 top-1/2 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[80px]"
+          style={{
+            background:
+              "radial-gradient(circle, hsl(var(--term-pink)) 0%, hsl(var(--term-amber)) 40%, transparent 70%)",
+            transform: "translate(30%, -50%)",
+            opacity: 0.25,
           }}
         />
       </div>
 
-      {/* ===== ПЯТНО У ПРАВОЙ ГРАНИЦЫ ==== */}
-      <div
-        className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
-             right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
-             w-[350px] sm:w-[450px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px]
-             h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]"
-      >
-        <div
-          className="absolute right-0 top-1/2 -translate-y-1/2 
-                     w-full h-full
-                     rounded-full
-                     blur-[60px] sm:blur-[70px] md:blur-[80px] lg:blur-[90px] xl:blur-[100px] 2xl:blur-[110px]
-                     opacity-70"
-          style={{
-            background:
-              "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
-            transform: "translate(20%, -50%)",
-          }}
-        />
-      </div>
-
-      {/* Контент — поверх пятен */}
       <div className="w-full px-4 3xl:px-[185px] relative z-10">
-        <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
-          <span className="block text-[#2B3038]">НАЙДИ</span>
-          <span className="block text-[#FF7A00]">ИДЕАЛЬНОЕ ОБЛАКО</span>
-          <span className="block text-[#2B3038]">ДЛЯ СВОЕГО ПРОЕКТА</span>
+        {/* terminal header bar */}
+        <div className="flex items-center gap-2 mb-6 max-w-3xl">
+          <div className="flex gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-destructive/80" />
+            <span className="w-3 h-3 rounded-full bg-secondary/80" />
+            <span className="w-3 h-3 rounded-full bg-primary/80" />
+          </div>
+          <span className="text-xs text-muted-foreground font-mono ml-2">
+            ~/topvds — bash — 80×24
+          </span>
+        </div>
+
+        {/* prompt line */}
+        <div className="text-xs sm:text-sm text-muted-foreground font-mono mb-4">
+          <span className="text-secondary">guest@topvds</span>
+          <span className="text-foreground/60">:</span>
+          <span className="text-accent">~</span>
+          <span className="text-foreground/60">$ </span>
+          <span className="text-foreground">./find_cloud --best</span>
+        </div>
+
+        <h1 className="font-mono text-[28px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight font-bold max-w-6xl uppercase">
+          <span className="block text-foreground/80">
+            <span className="text-primary text-glow">&gt;</span> найди
+          </span>
+          <span className="block text-primary text-glow">идеальное_облако</span>
+          <span className="block text-foreground/80">для.твоего_проекта</span>
+          <span className="inline-block term-cursor text-primary text-glow" />
         </h1>
 
-        <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
-          Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
-          минут
-        </p>
+        <div className="mt-6 max-w-3xl text-base sm:text-lg text-muted-foreground font-mono leading-relaxed border-l-2 border-primary/40 pl-4">
+          <span className="text-secondary">{">"} </span>
+          сравни характеристики, цены и отзывы.
+          <br />
+          <span className="text-secondary">{">"} </span>
+          выбери лучшее решение за пару минут.
+          <span className="typing-dots text-primary" />
+        </div>
 
-        {/* Кнопка с увеличенным верхним отступом */}
-        <div className="pt-10">
+        {/* stats */}
+        <div className="mt-6 flex flex-wrap gap-4 text-xs font-mono">
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-primary/30 bg-primary/5">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-muted-foreground">status:</span>
+            <span className="text-primary text-glow">ONLINE</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-secondary/30 bg-secondary/5">
+            <span className="text-muted-foreground">providers:</span>
+            <span className="text-secondary">42</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/5">
+            <span className="text-muted-foreground">latency:</span>
+            <span className="text-glow-pink">12ms</span>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="pt-8 flex flex-wrap gap-3">
           <Button
-            className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
+            className="font-mono uppercase tracking-widest h-12 px-8 text-sm bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-neon transition-all rounded-none border border-primary"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
@@ -82,7 +101,21 @@ export const HeroSection = () => {
               }
             }}
           >
-            ВЫБРАТЬ
+            <Icon name="ChevronRight" size={16} className="mr-1" />
+            execute
+          </Button>
+          <Button
+            variant="outline"
+            className="font-mono uppercase tracking-widest h-12 px-6 text-sm border-primary/40 text-foreground hover:bg-primary/10 hover:border-primary rounded-none"
+            onClick={() => {
+              const aiSection = document.getElementById("ai-builder");
+              if (aiSection) {
+                aiSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            <Icon name="Sparkles" size={14} className="mr-2" />
+            ai_match
           </Button>
         </div>
       </div>

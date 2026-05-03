@@ -26,7 +26,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#272932] border-b border-[#272932]">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/90 border-b border-primary/40 shadow-[0_1px_0_0_hsl(var(--term-green)/0.2)]">
       <div
         className={`
           w-full px-4 
@@ -45,10 +45,12 @@ export const Header = () => {
           {/* Логотип – теперь Link без перезагрузки */}
           <Link
             to="/"
-            className="flex items-center hover:opacity-90 transition-opacity"
+            className="flex items-center hover:opacity-90 transition-opacity gap-2"
           >
-            <span className="text-[15px] text-white tracking-widest font-normal">
-              top-<span className="text-[#FF931F]">vds</span>
+            <span className="text-primary text-glow font-bold">▊</span>
+            <span className="text-[15px] text-foreground tracking-widest font-bold uppercase">
+              top<span className="text-muted-foreground">::</span>
+              <span className="text-primary text-glow">vds</span>
             </span>
           </Link>
 
@@ -56,9 +58,9 @@ export const Header = () => {
           <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
             <Link
               to="/vpn"
-              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
+              className="text-[13px] uppercase text-foreground/70 hover:text-primary hover:text-glow transition-all"
             >
-              VPN
+              ./vpn
             </Link>
             {/* <Link
               to="/blog"
@@ -68,15 +70,15 @@ export const Header = () => {
             </Link> */}
             <Link
               to="/uptime"
-              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
+              className="text-[13px] uppercase text-foreground/70 hover:text-primary hover:text-glow transition-all"
             >
-              {t("header.uptime")}
+              ./uptime
             </Link>
             <Link
               to="/promo"
-              className="text-[15px] text-white hover:text-[#FF931F] transition-colors"
+              className="text-[13px] uppercase text-foreground/70 hover:text-primary hover:text-glow transition-all"
             >
-              Акции
+              ./promo
             </Link>
           </div>
 
@@ -89,8 +91,8 @@ export const Header = () => {
             >
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
-                size={20}
-                className="text-white"
+                size={18}
+                className="text-foreground/70 hover:text-primary"
               />
             </button>
           </div>
@@ -99,24 +101,24 @@ export const Header = () => {
           <div className="md:hidden flex items-center gap-2 ml-auto">
             <button
               onClick={toggleTheme}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="p-2 hover:bg-primary/10 transition-colors"
               aria-label="Toggle theme"
             >
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
-                size={20}
-                className="text-white"
+                size={18}
+                className="text-foreground/70"
               />
             </button>
             <button
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="p-2 hover:bg-primary/10 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
               <Icon
                 name={mobileMenuOpen ? "X" : "Menu"}
-                size={24}
-                className="text-white"
+                size={20}
+                className="text-foreground/70"
               />
             </button>
           </div>
@@ -124,15 +126,15 @@ export const Header = () => {
 
         {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-white/10">
+          <div className="md:hidden py-4 border-t border-primary/30">
             <div className="flex flex-col gap-4">
               <Link
                 to="/vpn"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Shield" size={16} />
-                VPN
+                ./vpn
               </Link>
               {/* <Link
                 to="/blog"
@@ -144,22 +146,22 @@ export const Header = () => {
               </Link> */}
               <Link
                 to="/uptime"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Activity" size={16} />
-                {t("header.uptime")}
+                ./uptime
               </Link>
               <Link
                 to="/promo"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Tag" size={16} />
-                Акции
+                ./promo
               </Link>
               <button
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-white hover:text-[#FF931F] hover:bg-white/10 rounded-lg transition-all text-left"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all text-left"
                 onClick={toggleTheme}
               >
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
