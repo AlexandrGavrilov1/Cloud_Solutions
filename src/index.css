@@ -235,37 +235,37 @@
 
 @layer base {
   :root {
-    /* Vercel/Linear premium minimalism — pure black */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 4%;
-    --secondary: 0 0% 9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 9%;
-    --muted-foreground: 0 0% 56%;
+    /* Vercel/Linear premium — LIGHT */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
     --accent: 220 90% 56%;
-    --accent-foreground: 0 0% 98%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14%;
-    --input: 0 0% 8%;
-    --ring: 0 0% 98%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 91%;
+    --input: 0 0% 98%;
+    --ring: 0 0% 9%;
     --radius: 8px;
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 9%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-primary: 0 0% 9%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 91%;
+    --sidebar-ring: 0 0% 9%;
 
-    /* Linear/Vercel palette */
+    /* Linear/Vercel brand palette */
     --gray-50: 0 0% 98%;
     --gray-100: 0 0% 92%;
     --gray-300: 0 0% 56%;
@@ -278,6 +278,7 @@
   }
 
   .dark {
+    /* Vercel/Linear premium — DARK */
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
     --card: 0 0% 4%;
@@ -285,7 +286,7 @@
     --popover: 0 0% 4%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 4%;
+    --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 9%;
@@ -297,14 +298,14 @@
     --border: 0 0% 14%;
     --input: 0 0% 8%;
     --ring: 0 0% 98%;
-    --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 130 100% 65%;
-    --sidebar-primary: 130 100% 50%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 130 100% 65%;
-    --sidebar-border: 130 60% 22%;
-    --sidebar-ring: 130 100% 50%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 9%;
+    --sidebar-accent: 0 0% 9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 0 0% 98%;
   }
 }
 
@@ -313,10 +314,13 @@
     @apply border-border;
   }
   html {
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+  html.dark {
+    color-scheme: dark;
   }
   body {
     @apply bg-background text-foreground;

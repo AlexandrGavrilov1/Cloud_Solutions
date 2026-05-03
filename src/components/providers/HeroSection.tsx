@@ -10,14 +10,14 @@ export const HeroSection = () => {
     >
       {/* subtle radial gradient */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none opacity-70 dark:opacity-100"
         style={{
           background:
-            "radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--brand-purple) / 0.18), transparent)",
+            "radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--brand-purple) / 0.15), transparent)",
         }}
       />
       {/* grid background */}
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
+      <div className="absolute inset-0 grid-bg opacity-50 dark:opacity-30 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
 
       <div className="w-full px-4 3xl:px-[185px] relative z-10 max-w-6xl mx-auto">
         {/* announcement pill */}
