@@ -1,11 +1,17 @@
 {
-  "events-stats": "https://functions.poehali.dev/391eed3e-289f-40c5-8de5-36b9c802d32f",
-  "events": "https://functions.poehali.dev/540fd4ac-812f-4cac-b72b-9ae038b22774",
-  "vpn-posts": "https://functions.poehali.dev/4fe9c586-cbff-4bb5-ac28-bcba699ab4f9",
-  "onedash-proxy": "https://functions.poehali.dev/5bdf179c-9b43-46eb-a042-c52b651f946c",
-  "auth-social": "https://functions.poehali.dev/b41c80f0-ea03-4690-aeed-e4161955b6f9",
-  "visitors": "https://functions.poehali.dev/94b30990-d971-403f-a237-849453d2ec73",
-  "clicks": "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
-  "auth": "https://functions.poehali.dev/ccab6b74-68f9-4520-ad0e-701c27393f9d",
-  "reviews": "https://functions.poehali.dev/15bd2bf9-a831-4ef9-9ce3-fd6c7823ddc8"
+  "auth-oauth": "https://functions.poehali.dev/d45c966f-ed52-466b-ab78-afe1ef657388",
+  "onedash-proxy": "https://functions.poehali.dev/041d4507-466d-4222-ad31-7b668e5ff6a0",
+  "events": "https://functions.poehali.dev/ea80369d-75e3-498d-a11a-63642c6cac67",
+  "clicks": "https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280",
+  "uptime-monitor": "https://functions.poehali.dev/b1bbc606-4f25-43a9-832c-9aba832f9588",
+  "auth": "https://functions.poehali.dev/30f1e570-e457-4520-b695-4fc28822775d",
+  "vpn-posts": "https://functions.poehali.dev/ef794dae-47cc-4629-bc93-50cd0e19281f",
+  "ai-parse": "https://functions.poehali.dev/e65cf5fa-56d8-49fe-8ad1-afc3b3fe2899",
+  "reviews": "https://functions.poehali.dev/fabb88c3-ff5e-4f0b-97b5-616f0ec3d5a2",
+  "events-stats": "https://functions.poehali.dev/bcbb37e2-e9c5-4343-b080-b99acbe027db",
+  "visitors": "https://functions.poehali.dev/4542c7db-c60d-4337-a851-76a358f34e9b",
+  "auth-social": "https://functions.poehali.dev/72874483-b645-4142-b5da-c4fba45adf44",
+  "redirect": "https://functions.poehali.dev/85c33093-e30d-4b04-a0d3-71b1d4632367",
+  "uptime-checker": "https://functions.poehali.dev/bbc719ae-a613-4207-86ab-a5d669007074",
+  "feedback": "https://functions.poehali.dev/3a4ff679-9fb0-4e8b-9510-d2a6e97f5a0c"
 }

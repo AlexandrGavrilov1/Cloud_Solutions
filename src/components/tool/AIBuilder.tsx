@@ -24,7 +24,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 export default function AIBuilder() {
   const [input, setInput] = useState("");
-  const { result, loading, generate, reset } = useAI();
+  const { result, loading, error, generate, reset } = useAI();
 
   const onGenerate = () => generate(input);
 
@@ -118,13 +118,36 @@ export default function AIBuilder() {
             className="mx-auto text-primary mb-3 animate-spin"
           />
           <div className="text-sm text-muted-foreground">
-            Анализирую запрос, строю архитектуру...
+            GPT анализирует запрос, строю архитектуру...
           </div>
         </div>
       )}
 
       {result && !loading && (
         <div className="p-5 space-y-5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span
+              className={`text-[10px] px-2 py-0.5 rounded uppercase tracking-wider ${
+                result.source === "llm"
+                  ? "bg-primary/10 text-primary"
+                  : "bg-secondary text-muted-foreground"
+              }`}
+            >
+              {result.source === "llm" ? "✨ GPT-4o-mini" : "rule-based"}
+            </span>
+            {error && (
+              <span className="text-[10px] text-yellow-600 dark:text-yellow-400">
+                {error}
+              </span>
+            )}
+          </div>
+
+          {result.summary && (
+            <div className="p-3 rounded border border-primary/20 bg-primary/5 text-sm text-foreground/80 italic">
+              "{result.summary}"
+            </div>
+          )}
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="p-3 rounded border border-border bg-background">
               <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
