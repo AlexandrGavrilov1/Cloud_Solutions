@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { providers as rawProviders } from "@/data/providers";
 import {
   mapProvider,
-  scoreProvider,
+  fullScore,
   ScoredProvider,
   UseCase,
 } from "@/utils/scoring";
@@ -45,7 +45,8 @@ export function useProviders() {
     () =>
       rawProviders.map((p) => {
         const mapped = mapProvider(p);
-        return { ...mapped, score: scoreProvider(mapped, filters.useCase) };
+        const { score, utility } = fullScore(mapped, filters.useCase);
+        return { ...mapped, score, utility };
       }),
     [filters.useCase],
   );

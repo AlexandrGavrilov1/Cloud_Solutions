@@ -11,11 +11,13 @@ interface Props {
 
 const FEATURES = ["docker", "k8s", "api", "ipv6", "backups", "ddos", "ai", "fz152"];
 const REGIONS = ["ALL", "RU", "EU", "US", "OTHER"];
-const USE_CASES: { id: F["useCase"]; label: string }[] = [
-  { id: "all", label: "Все" },
-  { id: "saas", label: "SaaS" },
-  { id: "pet", label: "Pet" },
-  { id: "highload", label: "Highload" },
+const USE_CASES: { id: F["useCase"]; label: string; hint: string }[] = [
+  { id: "all", label: "Все", hint: "Сбалансированный профиль" },
+  { id: "mvp", label: "MVP", hint: "Цена + простота + быстрый старт" },
+  { id: "saas", label: "SaaS", hint: "Баланс perf и reliability" },
+  { id: "pet", label: "Pet", hint: "Минимальный бюджет" },
+  { id: "highload", label: "Highload", hint: "Perf и низкий latency" },
+  { id: "enterprise", label: "Enterprise", hint: "Reliability + поддержка" },
 ];
 
 export default function Filters({
@@ -98,11 +100,12 @@ export default function Filters({
           {USE_CASES.map((u) => (
             <button
               key={u.id}
+              title={u.hint}
               onClick={() => setFilter("useCase", u.id)}
               className={`px-2 py-1.5 text-xs rounded border transition-colors ${
                 filters.useCase === u.id
                   ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background border-border hover:border-primary"
+                  : "bg-background border-border hover:border-foreground/20"
               }`}
             >
               {u.label}
