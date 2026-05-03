@@ -1,210 +1,94 @@
-import { useState, useEffect, useMemo } from "react";
-import { Header } from "@/components/providers/Header";
-import { Footer } from "@/components/providers/Footer";
-import { OpenGraph } from "@/components/SEO/OpenGraph";
-import { StructuredData } from "@/components/SEO/StructuredData";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import Layout from "@/components/tool/Layout";
+import { vpnPosts } from "@/data/vpn-posts";
 import Icon from "@/components/ui/icon";
-import { useVpnPosts } from "@/hooks/useVpnPosts";
-import { VpnCard } from "@/components/vpnpost/VpnCard";
-import { useTrackEvent } from "@/hooks/useTrackEvent";
-import { usePageTimer } from "@/hooks/usePageTimer";
+import { Link } from "react-router-dom";
 
 const Vpn = () => {
-  const { data: posts = [], isLoading, error } = useVpnPosts();
-  const track = useTrackEvent();
-  usePageTimer("section_visit", "vpn-list");
+  const [search, setSearch] = useState("");
 
-  // Меняем местами карточки Aeza и Timeweb
-  const sortedPosts = useMemo(() => {
-    const postsCopy = [...posts];
-    const aezaIndex = postsCopy.findIndex((p) => p.slug === "aeza-vpn");
-    const timewebIndex = postsCopy.findIndex((p) => p.slug === "timeweb-vpn");
-    if (aezaIndex !== -1 && timewebIndex !== -1) {
-      [postsCopy[aezaIndex], postsCopy[timewebIndex]] = [
-        postsCopy[timewebIndex],
-        postsCopy[aezaIndex],
-      ];
-    }
-    return postsCopy;
-  }, [posts]);
-
-  // Сброс прокрутки в начало при монтировании
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    console.log("🔵 MOUNT Vpn");
-    return () => console.log("🔴 UNMOUNT Vpn");
-  }, []);
-
-  useEffect(() => {
-    console.log("🟢 Vpn component mounted, calling track section_visit");
-    track("section_visit", "vpn-list");
-  }, [track]);
-
-  const scrollToArticles = () => {
-    const articlesSection = document.getElementById("vpn-articles");
-    if (articlesSection) {
-      articlesSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Icon name="Loader2" size={48} className="animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Icon
-            name="AlertCircle"
-            size={48}
-            className="text-destructive mx-auto mb-4"
-          />
-          <p className="text-xl text-muted-foreground">
-            Ошибка загрузки статей
-          </p>
-          <Button
-            variant="outline"
-            className="mt-4"
-            onClick={() => window.location.reload()}
-          >
-            Повторить
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const filtered = vpnPosts.filter(
+    (p) =>
+      search === "" ||
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.excerpt.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
-    <div className="min-h-screen bg-background">
-      <OpenGraph
-        title="VPN инструкции — Как развернуть свой VPN на VPS"
-        description="Пошаговые руководства по настройке VPN серверов на облачных провайдерах: XRay, WireGuard, OpenVPN и другие."
-        url="https://top-vds.ru/vpn"
-      />
-      <StructuredData
-        type="breadcrumb"
-        breadcrumbs={[
-          { name: "Главная", url: "https://top-vds.ru" },
-          { name: "VPN инструкции", url: "https://top-vds.ru/vpn" },
-        ]}
-      />
-      <Header />
+    <Layout>
+      <section className="mb-10 max-w-3xl">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          <Icon name="Shield" size={12} />
+          <span>vpn гайды</span>
+        </div>
+        <h1 className="text-4xl font-light tracking-tight mb-3">
+          VPN на своём сервере
+        </h1>
+        <p className="text-muted-foreground text-sm">
+          Подборка инструкций: запусти свой VPN за 10 минут на любом провайдере.
+        </p>
+      </section>
 
-      <main>
-        {/* Hero-секция — кнопка опущена, общая высота сохранена */}
-        <section
-          className="relative pt-16 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-10 overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(90deg, #FFD9B3 0%, #FFE4CC 25%, #FFF0E6 50%, #FFF9F2 75%, #FFFDF9 100%)",
-          }}
-        >
-          {/* Пятно над словом */}
-          <div className="absolute top-0 left-0 w-full pointer-events-none z-1 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px]">
-            <div
-              className="absolute left-[5%] top-0 
-                   w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px]
-                   h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]
-                   rounded-full
-                   blur-[40px] sm:blur-[50px] md:blur-[60px] lg:blur-[70px] xl:blur-[80px] 2xl:blur-[90px]
-                   opacity-65"
-              style={{
-                background:
-                  "radial-gradient(circle at 30% 20%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.4) 70%, transparent 90%)",
-                transform: "translate(-10%, -35%)",
-              }}
-            />
-          </div>
+      <div className="relative max-w-md mb-8">
+        <Icon
+          name="Search"
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+        />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Поиск гайдов"
+          className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded text-sm focus:outline-none focus:border-primary"
+        />
+      </div>
 
-          {/* Пятно у правой границы */}
-          <div
-            className="absolute top-1/2 -translate-y-1/2 pointer-events-none z-1
-                 right-0 sm:right-[1%] md:right-[2%] lg:right-[3%] xl:right-[4%] 2xl:right-[5%]
-                 w-[350px] sm:w-[450px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px]
-                 h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[800px]"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {filtered.map((post) => (
+          <Link
+            key={post.id}
+            to={`/vpn/${post.slug}`}
+            className="group bg-card border border-border rounded-lg p-5 hover:border-primary transition-colors"
           >
-            <div
-              className="absolute right-0 top-1/2 -translate-y-1/2 
-                         w-full h-full
-                         rounded-full
-                         blur-[60px] sm:blur-[70px] md:blur-[80px] lg:blur-[90px] xl:blur-[100px] 2xl:blur-[110px]
-                         opacity-70"
-              style={{
-                background:
-                  "radial-gradient(circle at 70% 50%, #FF931F 0%, #FF8000 25%, #FFB366 45%, rgba(255, 147, 31, 0.35) 70%, transparent 90%)",
-                transform: "translate(20%, -50%)",
-              }}
-            />
-          </div>
-
-          {/* Контент */}
-          <div className="w-full px-4 3xl:px-[185px] relative z-10">
-            <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight font-bold max-w-6xl">
-              <span className="block text-[#2B3038]">
-                Собственный <span className="text-[#FF7A00]">VPN</span>
-              </span>
-              <span className="block text-[#2B3038]">
-                на <span className="text-[#FF7A00]">VPS</span>
-              </span>
-            </h1>
-
-            <p className="font-light text-[24px] text-[#272932] max-w-3xl leading-tight mt-4">
-              Пошаговые руководства по развертыванию безопасных VPN серверов
-            </p>
-
-            {/* Увеличен верхний отступ кнопки */}
-            <div className="pt-10">
-              <Button
-                className="font-light tracking-widest h-[1.7cm] w-[6.5cm] text-[17px] bg-[#FF931F] hover:bg-[#FF8000] text-white shadow-xl rounded-full transition-all"
-                onClick={scrollToArticles}
-              >
-                К СТАТЬЯМ
-              </Button>
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground mb-3">
+              <span className="text-primary">{post.category}</span>
+              <span>·</span>
+              <span>{post.readTime}</span>
             </div>
-          </div>
-        </section>
-
-        {/* Сетка статей — уменьшены вертикальные отступы и расстояние между карточками */}
-        <section id="vpn-articles" className="py-10">
-          <div className="w-full px-4 3xl:px-[185px]">
-            {sortedPosts.length === 0 ? (
-              <div className="text-center py-16">
-                <Icon
-                  name="FileQuestion"
-                  size={64}
-                  className="mx-auto text-muted-foreground mb-4"
-                />
-                <p className="text-xl text-muted-foreground">
-                  Инструкции не найдены
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-wrap justify-center gap-2">
-                {sortedPosts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="w-full min-[950px]:w-[calc((100%-8px)/2)] 3xl:w-[calc((100%-16px)/3)]"
+            <h3 className="font-medium mb-2">{post.title}</h3>
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+              {post.excerpt}
+            </p>
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex flex-wrap gap-1">
+                {post.tags.slice(0, 3).map((t) => (
+                  <span
+                    key={t}
+                    className="px-1.5 py-0.5 rounded bg-secondary text-[10px]"
                   >
-                    <VpnCard post={post} />
-                  </div>
+                    {t}
+                  </span>
                 ))}
               </div>
-            )}
+              <span className="flex items-center gap-1 text-primary">
+                Открыть
+                <Icon name="ArrowRight" size={12} />
+              </span>
+            </div>
+          </Link>
+        ))}
+        {filtered.length === 0 && (
+          <div className="col-span-full text-center py-12 text-muted-foreground text-sm">
+            Ничего не найдено
           </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+        )}
+      </div>
+    </Layout>
   );
 };
 

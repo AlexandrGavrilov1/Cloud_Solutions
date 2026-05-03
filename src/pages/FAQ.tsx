@@ -1,88 +1,96 @@
-import { useEffect } from "react";
-import { Header } from "@/components/providers/Header";
-import { FAQSection } from "@/components/providers/FAQSection";
-import { Footer } from "@/components/providers/Footer";
-import { StructuredData } from "@/components/SEO/StructuredData";
-import { OpenGraph } from "@/components/SEO/OpenGraph";
+import { useEffect, useState } from "react";
+import Layout from "@/components/tool/Layout";
+import Icon from "@/components/ui/icon";
 
 const faqItems = [
   {
-    question: "Что такое VDS и чем отличается от обычного хостинга?",
-    answer:
-      "VDS (Virtual Dedicated Server) — это виртуальный выделенный сервер с гарантированными ресурсами. В отличие от обычного хостинга, вы получаете полный контроль над сервером, root-доступ и изолированные ресурсы (CPU, RAM, диск), которые не делятся с другими пользователями.",
+    q: "Что такое VDS и чем отличается от хостинга?",
+    a: "VDS — виртуальный выделенный сервер с гарантированными ресурсами. В отличие от обычного хостинга, ты получаешь root-доступ и изолированные CPU, RAM, диск.",
   },
   {
-    question: "Какую конфигурацию VDS выбрать для моего проекта?",
-    answer:
-      "Для небольших сайтов достаточно 1-2 vCPU, 1-2 GB RAM и 10-20 GB диска. Для интернет-магазинов рекомендуется 2-4 vCPU, 4-8 GB RAM и 50+ GB диска. Для highload проектов выбирайте 4+ vCPU, 8+ GB RAM с NVMe дисками.",
+    q: "Какую конфигурацию выбрать?",
+    a: "Маленькие сайты: 1-2 vCPU, 1-2 GB RAM. Магазины: 2-4 vCPU, 4-8 GB. Highload: 4+ vCPU, 8+ GB, NVMe.",
   },
   {
-    question: "Что означает 152-ФЗ и зачем это нужно?",
-    answer:
-      '152-ФЗ — это федеральный закон "О персональных данных". Провайдеры с соответствием 152-ФЗ имеют сертифицированные дата-центры, где можно законно хранить персональные данные российских граждан. Это обязательно для бизнеса, работающего с конфиденциальной информацией клиентов.',
+    q: "Что такое 152-ФЗ?",
+    a: "Закон о персональных данных. Провайдеры с соответствием 152-ФЗ могут законно хранить данные граждан РФ.",
   },
   {
-    question: "В чём разница между SSD и NVMe дисками?",
-    answer:
-      "NVMe диски в 5-10 раз быстрее обычных SSD благодаря прямому подключению к PCI Express. Для баз данных и highload проектов NVMe критически важен. Для небольших сайтов и блогов достаточно обычного SSD.",
+    q: "SSD vs NVMe — что выбрать?",
+    a: "NVMe в 5-10 раз быстрее SSD. Для БД и highload — обязателен. Для блогов хватит SSD.",
   },
   {
-    question: "Можно ли перенести сайт с другого хостинга?",
-    answer:
-      "Да, все провайдеры поддерживают миграцию. Многие предлагают бесплатную помощь техподдержки в переносе сайтов, баз данных и почты. Процесс обычно занимает от нескольких часов до одного дня.",
+    q: "Можно перенести сайт с другого хостинга?",
+    a: "Да. Большинство провайдеров делают миграцию бесплатно. Занимает от пары часов до одного дня.",
   },
   {
-    question: "Что такое виртуализация KVM, OpenVZ и VMware?",
-    answer:
-      "KVM — полная виртуализация с изолированным ядром, подходит для любых задач. OpenVZ — контейнерная виртуализация, дешевле, но с ограничениями. VMware — корпоративное решение с максимальной стабильностью. Для большинства проектов рекомендуется KVM.",
+    q: "KVM vs OpenVZ vs VMware?",
+    a: "KVM — полная виртуализация, универсален. OpenVZ — дешевле, с ограничениями. VMware — для корпораций.",
   },
   {
-    question: "Нужна ли мне DDoS защита?",
-    answer:
-      "Для интернет-магазинов, новостных порталов и популярных сайтов DDoS защита обязательна. Она защищает от атак, которые могут привести к недоступности сайта. Многие провайдеры включают базовую защиту в тариф.",
+    q: "Нужна ли DDoS защита?",
+    a: "Для магазинов и популярных сайтов — обязательна. Многие провайдеры включают базовую в тариф.",
   },
   {
-    question: "Как работают автоматические бэкапы?",
-    answer:
-      "Провайдер ежедневно создаёт копии вашего сервера (файлы и базы данных) и хранит их несколько дней. В случае сбоя или случайного удаления данных, вы можете восстановить всё за несколько минут через панель управления.",
+    q: "Как работают автобэкапы?",
+    a: "Провайдер ежедневно копирует сервер и хранит несколько дней. Восстановление — пара минут через панель.",
   },
   {
-    question: "Что такое тестовый период и как им воспользоваться?",
-    answer:
-      "Тестовый период — это бесплатное время (от 3 до 30 дней), когда вы можете протестировать сервер без оплаты. Обычно требуется только регистрация. Это позволяет оценить производительность и интерфейс перед покупкой.",
+    q: "Что такое тестовый период?",
+    a: "Бесплатное время (3-30 дней) для теста сервера без оплаты. Нужна только регистрация.",
   },
   {
-    question: "Можно ли увеличить ресурсы сервера?",
-    answer:
-      "Да, все провайдеры поддерживают вертикальное масштабирование — вы можете в любой момент добавить CPU, RAM или диск через панель управления. Обычно это занимает 5-10 минут и требует перезагрузки сервера.",
+    q: "Можно увеличить ресурсы?",
+    a: "Да, все провайдеры поддерживают вертикальное масштабирование. Занимает 5-10 минут с перезагрузкой.",
   },
 ];
 
 const FAQ = () => {
-  // ✅ Сброс прокрутки в начало при монтировании
+  const [open, setOpen] = useState<number | null>(0);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <OpenGraph
-        title="FAQ по VPS хостингу — Ответы на популярные вопросы"
-        description="Ответы на часто задаваемые вопросы о VPS хостинге: выбор конфигурации, миграция, DDoS защита, бэкапы и масштабирование."
-        url="https://top-vds.ru/faq"
-      />
-      <StructuredData type="faq" faqItems={faqItems} />
-      <StructuredData
-        type="breadcrumb"
-        breadcrumbs={[
-          { name: "Главная", url: "https://top-vds.ru" },
-          { name: "FAQ", url: "https://top-vds.ru/faq" },
-        ]}
-      />
-      <Header />
-      <FAQSection />
-      <Footer />
-    </div>
+    <Layout>
+      <section className="mb-10 max-w-3xl">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          <Icon name="HelpCircle" size={12} />
+          <span>10 вопросов</span>
+        </div>
+        <h1 className="text-4xl font-light tracking-tight mb-3">FAQ</h1>
+        <p className="text-muted-foreground text-sm">
+          Коротко о главном — без воды.
+        </p>
+      </section>
+
+      <div className="max-w-3xl flex flex-col gap-2">
+        {faqItems.map((item, i) => (
+          <div
+            key={i}
+            className="border border-border rounded-lg bg-card overflow-hidden"
+          >
+            <button
+              onClick={() => setOpen(open === i ? null : i)}
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-background transition-colors"
+            >
+              <span className="font-medium text-sm">{item.q}</span>
+              <Icon
+                name={open === i ? "Minus" : "Plus"}
+                size={14}
+                className="text-muted-foreground flex-shrink-0 ml-4"
+              />
+            </button>
+            {open === i && (
+              <div className="px-4 pb-4 text-sm text-muted-foreground">
+                {item.a}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </Layout>
   );
 };
 

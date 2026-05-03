@@ -1,175 +1,119 @@
-import { useState } from 'react';
-import { Header } from '@/components/providers/Header';
-import { Footer } from '@/components/providers/Footer';
-import { OpenGraph } from '@/components/SEO/OpenGraph';
-import { StructuredData } from '@/components/SEO/StructuredData';
-import { blogPosts, blogCategories } from '@/data/blog-posts';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import Icon from '@/components/ui/icon';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import Layout from "@/components/tool/Layout";
+import { blogPosts } from "@/data/blog-posts";
+import Icon from "@/components/ui/icon";
+import { Link } from "react-router-dom";
 
 const Blog = () => {
-  const [selectedCategory, setSelectedCategory] = useState('Все');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("Все");
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesCategory = selectedCategory === 'Все' || post.category === selectedCategory;
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const categories = [
+    "Все",
+    ...Array.from(new Set(blogPosts.map((p) => p.category))),
+  ];
+
+  const filtered = blogPosts.filter((p) => {
+    const okCat = category === "Все" || p.category === category;
+    const okSearch =
+      search === "" ||
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.excerpt.toLowerCase().includes(search.toLowerCase());
+    return okCat && okSearch;
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <OpenGraph 
-        title="Блог о VPS хостинге — Гайды, сравнения и советы"
-        description="Полезные статьи о VPS хостинге: как выбрать провайдера, настроить сервер, оптимизировать производительность и защитить от DDoS атак."
-        url="https://top-vds.ru/blog"
-      />
-      <StructuredData 
-        type="breadcrumb" 
-        breadcrumbs={[
-          { name: 'Главная', url: 'https://top-vds.ru' },
-          { name: 'Блог', url: 'https://top-vds.ru/blog' }
-        ]} 
-      />
-      <Header />
-      
-      <main>
-        <section className="pt-32 pb-16 relative overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]"></div>
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/20 rounded-full blur-[120px]"></div>
-          
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <div className="inline-flex items-center gap-2 bg-accent border border-primary/30 rounded-full px-5 py-2.5">
-                <Icon name="BookOpen" size={16} className="text-primary" />
-                <span className="text-sm font-bold text-primary">Блог о VPS хостинге</span>
+    <Layout>
+      <section className="mb-10 max-w-3xl">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          <Icon name="BookOpen" size={12} />
+          <span>{blogPosts.length} статей</span>
+        </div>
+        <h1 className="text-4xl font-light tracking-tight mb-3">Блог</h1>
+        <p className="text-muted-foreground text-sm">
+          Гайды, сравнения и инсайты о хостинге.
+        </p>
+      </section>
+
+      <div className="flex flex-col md:flex-row gap-3 mb-8">
+        <div className="relative flex-1">
+          <Icon
+            name="Search"
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Поиск статей"
+            className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded text-sm focus:outline-none focus:border-primary"
+          />
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {categories.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={`px-3 py-2 text-xs rounded border transition-colors ${
+                category === c
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card border-border hover:border-primary"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filtered.map((post) => (
+          <Link
+            key={post.id}
+            to={`/blog/${post.slug}`}
+            className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary transition-colors flex flex-col"
+          >
+            <div className="aspect-video bg-background overflow-hidden">
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+            </div>
+            <div className="p-4 flex flex-col flex-1">
+              <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                <span className="text-primary">{post.category}</span>
+                <span>·</span>
+                <span>{post.readTime}</span>
               </div>
-              
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground leading-tight">
-                База знаний по VPS
-              </h1>
-              
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-                Руководства, сравнения и советы по выбору и настройке VPS хостинга
+              <h3 className="font-medium text-sm mb-2 line-clamp-2">
+                {post.title}
+              </h3>
+              <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
+                {post.excerpt}
               </p>
-
-              <div className="relative max-w-xl mx-auto">
-                <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Поиск по статьям..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-14 pl-12 pr-4 bg-card border-2 border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
-                />
+              <div className="flex items-center gap-1 mt-3 text-xs text-primary">
+                Читать
+                <Icon name="ArrowRight" size={12} />
               </div>
             </div>
+          </Link>
+        ))}
+        {filtered.length === 0 && (
+          <div className="col-span-full text-center py-12 text-muted-foreground text-sm">
+            Ничего не найдено
           </div>
-        </section>
-
-        <section className="py-8">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex flex-wrap gap-2 justify-center">
-              {blogCategories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? 'default' : 'outline'}
-                  onClick={() => setSelectedCategory(category)}
-                  className="rounded-full"
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-12 pb-24">
-          <div className="container mx-auto px-4 lg:px-8">
-            {filteredPosts.length === 0 ? (
-              <div className="text-center py-16">
-                <Icon name="FileQuestion" size={64} className="mx-auto text-muted-foreground mb-4" />
-                <p className="text-xl text-muted-foreground">Статьи не найдены</p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => {
-                    setSearchQuery('');
-                    setSelectedCategory('Все');
-                  }}
-                >
-                  Сбросить фильтры
-                </Button>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                {filteredPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    to={`/blog/${post.slug}`}
-                    className="group"
-                  >
-                    <article className="bg-card border-2 border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
-                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Icon name="FileText" size={64} className="text-primary/30" />
-                        </div>
-                      </div>
-                      
-                      <div className="p-6 flex-1 flex flex-col">
-                        <div className="flex items-center gap-2 mb-3 flex-wrap">
-                          <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
-                            {post.category}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">{post.readTime}</span>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Icon name="Eye" size={12} />
-                            <span>{post.views.toLocaleString()}</span>
-                          </div>
-                        </div>
-                        
-                        <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                          {post.title}
-                        </h2>
-                        
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
-                          {post.excerpt}
-                        </p>
-                        
-                        <div className="flex items-center justify-between pt-4 border-t border-border">
-                          <div className="flex flex-wrap gap-1">
-                            {post.tags.slice(0, 2).map((tag, idx) => (
-                              <Badge key={idx} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                          
-                          <div className="flex items-center gap-1 text-primary font-semibold text-sm">
-                            Читать
-                            <Icon name="ArrowRight" size={16} className="group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
-                        
-                        <div className="mt-3 text-xs text-muted-foreground">
-                          {post.date}
-                        </div>
-                      </div>
-                    </article>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+        )}
+      </div>
+    </Layout>
   );
 };
 
