@@ -8,6 +8,8 @@ const SUGGESTIONS = [
   "AI inference, GPU нужен",
   "Интернет-магазин в РФ, 8000 заказов/мес",
   "Highload API на миллион запросов",
+  "Видео-курсы на 20 тыс студентов",
+  "1С + битрикс для офиса",
   "Лендинг + аналитика",
 ];
 
@@ -18,13 +20,15 @@ const TYPE_LABEL: Record<string, string> = {
   ecommerce: "E-commerce",
   gaming: "Gaming",
   highload: "Highload",
+  media: "Media",
+  corporate: "Corporate",
   static: "Static",
   default: "Базовое",
 };
 
 export default function AIBuilder() {
   const [input, setInput] = useState("");
-  const { result, loading, error, generate, reset } = useAI();
+  const { result, loading, generate, reset } = useAI();
 
   const onGenerate = () => generate(input);
 
@@ -32,6 +36,12 @@ export default function AIBuilder() {
     setInput(s);
     generate(s);
   };
+
+  const cheapestCost = result?.providers[0]?.monthlyCost;
+  const overBudget =
+    result?.intent.budget && cheapestCost
+      ? cheapestCost > result.intent.budget
+      : false;
 
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden">
@@ -45,7 +55,7 @@ export default function AIBuilder() {
             AI Infra Builder
           </h3>
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary uppercase tracking-wider">
-            beta
+            offline
           </span>
         </div>
 
@@ -73,7 +83,7 @@ export default function AIBuilder() {
             {loading ? (
               <>
                 <Icon name="Loader2" size={14} className="animate-spin" />
-                Думаю...
+                Анализ...
               </>
             ) : (
               <>
@@ -105,7 +115,10 @@ export default function AIBuilder() {
             className="mx-auto text-muted-foreground/40 mb-3"
           />
           <div className="text-sm text-muted-foreground">
-            Опиши проект — AI построит архитектуру и подберёт провайдера
+            Опиши проект — построю архитектуру и подберу провайдера
+          </div>
+          <div className="text-[11px] text-muted-foreground/60 mt-1">
+            Работает локально, без подключения к интернету
           </div>
         </div>
       )}
@@ -118,33 +131,47 @@ export default function AIBuilder() {
             className="mx-auto text-primary mb-3 animate-spin"
           />
           <div className="text-sm text-muted-foreground">
-            GPT анализирует запрос, строю архитектуру...
+            Анализирую запрос, строю архитектуру...
           </div>
         </div>
       )}
 
       {result && !loading && (
         <div className="p-5 space-y-5">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span
-              className={`text-[10px] px-2 py-0.5 rounded uppercase tracking-wider ${
-                result.source === "llm"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-secondary text-muted-foreground"
-              }`}
-            >
-              {result.source === "llm" ? "✨ GPT-4o-mini" : "rule-based"}
-            </span>
-            {error && (
-              <span className="text-[10px] text-yellow-600 dark:text-yellow-400">
-                {error}
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary uppercase tracking-wider">
+                локальный движок
               </span>
+              <span className="text-[10px] text-muted-foreground">
+                Уверенность:{" "}
+                <span className="font-mono text-foreground">
+                  {Math.round(result.intent.confidence * 100)}%
+                </span>
+              </span>
+            </div>
+            {result.intent.matched.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {result.intent.matched.slice(0, 5).map((m, i) => (
+                  <span
+                    key={i}
+                    className="text-[10px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground font-mono"
+                  >
+                    {m}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
 
-          {result.summary && (
-            <div className="p-3 rounded border border-primary/20 bg-primary/5 text-sm text-foreground/80 italic">
-              "{result.summary}"
+          {result.intent.summary && (
+            <div className="p-3 rounded border border-primary/20 bg-primary/5 text-sm text-foreground/80">
+              <Icon
+                name="Quote"
+                size={12}
+                className="inline mr-1.5 text-primary"
+              />
+              {result.intent.summary}
             </div>
           )}
 
@@ -180,6 +207,27 @@ export default function AIBuilder() {
               <div className="text-sm font-medium">{result.intent.region}</div>
             </div>
           </div>
+
+          {result.intent.budget && (
+            <div
+              className={`flex items-center gap-2 p-3 rounded border text-sm ${
+                overBudget
+                  ? "border-yellow-500/40 bg-yellow-500/5 text-yellow-700 dark:text-yellow-400"
+                  : "border-green-500/40 bg-green-500/5 text-green-700 dark:text-green-400"
+              }`}
+            >
+              <Icon
+                name={overBudget ? "AlertTriangle" : "CheckCircle2"}
+                size={14}
+              />
+              <span>
+                Бюджет: {result.intent.budget.toLocaleString()} ₽
+                {overBudget
+                  ? ` — топ-вариант стоит ${cheapestCost?.toLocaleString()} ₽, превышение`
+                  : " — укладываемся"}
+              </span>
+            </div>
+          )}
 
           <div>
             <div className="flex items-center gap-2 mb-3">

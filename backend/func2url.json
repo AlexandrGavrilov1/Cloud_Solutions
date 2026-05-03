@@ -6,7 +6,6 @@
   "uptime-monitor": "https://functions.poehali.dev/b1bbc606-4f25-43a9-832c-9aba832f9588",
   "auth": "https://functions.poehali.dev/30f1e570-e457-4520-b695-4fc28822775d",
   "vpn-posts": "https://functions.poehali.dev/ef794dae-47cc-4629-bc93-50cd0e19281f",
-  "ai-parse": "https://functions.poehali.dev/e65cf5fa-56d8-49fe-8ad1-afc3b3fe2899",
   "reviews": "https://functions.poehali.dev/fabb88c3-ff5e-4f0b-97b5-616f0ec3d5a2",
   "events-stats": "https://functions.poehali.dev/bcbb37e2-e9c5-4343-b080-b99acbe027db",
   "visitors": "https://functions.poehali.dev/4542c7db-c60d-4337-a851-76a358f34e9b",

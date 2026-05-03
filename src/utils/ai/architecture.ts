@@ -158,6 +158,56 @@ export function buildArchitecture(intent: Intent): ArchComponent[] {
       storage: 20,
       icon: "Zap",
     });
+  } else if (intent.type === "media") {
+    base.push({
+      name: "Streaming Server",
+      role: "Видео / стриминг",
+      cpu: 4,
+      ram: 8,
+      storage: 200,
+      icon: "Video",
+    });
+    base.push({
+      name: "CDN Origin",
+      role: "Раздача контента",
+      cpu: 2,
+      ram: 4,
+      storage: 500,
+      icon: "Globe",
+    });
+    base.push({
+      name: "Transcoder",
+      role: "Кодирование видео",
+      cpu: 8,
+      ram: 16,
+      storage: 100,
+      icon: "Film",
+    });
+  } else if (intent.type === "corporate") {
+    base.push({
+      name: "App Server (1C/Bitrix)",
+      role: "Корпоративные сервисы",
+      cpu: 4,
+      ram: 8,
+      storage: 100,
+      icon: "Building2",
+    });
+    base.push({
+      name: "MS SQL / Postgres",
+      role: "БД для 1С",
+      cpu: 4,
+      ram: 16,
+      storage: 200,
+      icon: "Database",
+    });
+    base.push({
+      name: "File Storage",
+      role: "Документооборот",
+      cpu: 1,
+      ram: 2,
+      storage: 200,
+      icon: "Files",
+    });
   } else if (intent.type === "static") {
     base.push({
       name: "Web Server",
