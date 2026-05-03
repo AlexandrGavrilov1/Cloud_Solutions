@@ -1,6 +1,7 @@
 import { ScoredProvider } from "@/utils/scoring";
 import Icon from "@/components/ui/icon";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface Props {
   provider: ScoredProvider;
@@ -59,9 +60,14 @@ export default function ProviderCard({ provider: p }: Props) {
           <div className="text-2xl font-semibold text-foreground tabular-nums">
             {p.score}
           </div>
-          <div className="text-[10px] uppercase text-muted-foreground tracking-wider">
+          <Link
+            to="/methodology"
+            title="Как считается score?"
+            className="text-[10px] uppercase text-muted-foreground tracking-wider hover:text-foreground transition-colors flex items-center gap-1 justify-end"
+          >
             score
-          </div>
+            <Icon name="HelpCircle" size={9} />
+          </Link>
         </div>
       </div>
 

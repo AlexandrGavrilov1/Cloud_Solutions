@@ -6,7 +6,7 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 const NAV = [
   { to: "/", label: "Tool" },
   { to: "/vpn", label: "VPN" },
-  { to: "/blog", label: "Blog" },
+  { to: "/methodology", label: "Methodology" },
   { to: "/faq", label: "FAQ" },
   { to: "/about", label: "About" },
 ];

@@ -11,6 +11,7 @@ import { notifyPageUpdate, notifySitemapUpdate } from "@/utils/indexnow";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import FAQ from "./pages/FAQ";
+import Methodology from "./pages/Methodology";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Uptime from "./pages/Uptime";
@@ -73,6 +74,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="/methodology" element={<Methodology />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/uptime" element={<Uptime />} />
