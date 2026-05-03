@@ -335,6 +335,20 @@
       "cv11" on;
     letter-spacing: -0.011em;
   }
+  /* Плавный crossfade при смене темы — активируется только во время переключения */
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition:
+      background-color 280ms ease,
+      border-color 280ms ease,
+      color 280ms ease,
+      fill 280ms ease,
+      stroke 280ms ease,
+      box-shadow 280ms ease !important;
+    transition-delay: 0 !important;
+  }
   ::selection {
     background: hsl(var(--foreground) / 0.95);
     color: hsl(var(--background));

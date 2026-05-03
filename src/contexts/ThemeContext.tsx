@@ -40,9 +40,34 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const applyTheme = useCallback((next: ResolvedTheme) => {
     const root = document.documentElement;
+    const current: ResolvedTheme = root.classList.contains("dark")
+      ? "dark"
+      : "light";
+
+    if (current === next) {
+      setResolvedTheme(next);
+      return;
+    }
+
+    // Респектим prefers-reduced-motion
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduceMotion) {
+      root.classList.add("theme-transition");
+    }
+
     if (next === "dark") root.classList.add("dark");
     else root.classList.remove("dark");
+
     setResolvedTheme(next);
+
+    if (!reduceMotion) {
+      window.setTimeout(() => {
+        root.classList.remove("theme-transition");
+      }, 320);
+    }
   }, []);
 
   useEffect(() => {
