@@ -29,8 +29,8 @@ export const Footer = () => {
                 </div>
               </div>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Независимая платформа для сравнения облачных провайдеров.
-                Помогаем найти идеальное решение для вашего проекта.
+                Сравните 50+ VPS провайдеров за 2 минуты.
+                Реальные отзывы, актуальные цены и честный рейтинг.
               </p>
               <div className="flex gap-3">
                 <ContactForm />
