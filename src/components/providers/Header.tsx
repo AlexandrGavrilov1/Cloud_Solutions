@@ -47,11 +47,9 @@ export const Header = () => {
             to="/"
             className="flex items-center hover:opacity-90 transition-opacity"
           >
-            <img
-              src="https://cdn.poehali.dev/projects/ade68d3a-52a3-4e90-8d89-6c9e68c0d348/files/d719d005-d0d6-4301-9237-94e60c7ff500.jpg"
-              alt="top-vds Logo"
-              className="h-[60px] w-auto transition-opacity duration-300"
-            />
+            <span className="text-[15px] text-white tracking-widest font-normal">
+              top-<span className="text-[#FF931F]">vds</span>
+            </span>
           </Link>
 
           {/* Десктопное меню – заменяем a на Link */}
