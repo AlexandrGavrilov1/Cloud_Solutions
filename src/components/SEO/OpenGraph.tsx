@@ -20,10 +20,10 @@ interface OpenGraphProps {
 export const OpenGraph = ({
   title = 'Рейтинг VPS хостинга 2025 — Сравнение 30+ провайдеров',
   description = 'Независимый рейтинг VPS провайдеров. Актуальные цены, реальные отзывы, калькулятор стоимости, uptime статистика.',
-  url = 'https://topcloudhub.ru',
+  url = 'https://top-vds.ru',
   image = 'https://cdn.poehali.dev/files/8f328ff2-4310-4457-a129-5e42f69ef566.png',
   type = 'website',
-  siteName = 'TopCloudHub',
+  siteName = 'top-vds',
   locale = 'ru_RU',
   article
 }: OpenGraphProps) => {
@@ -65,7 +65,7 @@ export const OpenGraph = ({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content={title} />
-      <meta name="twitter:site" content="@topcloudhub" />
+      <meta name="twitter:site" content="@top_vds" />
 
       <meta property="vk:image" content={image} />
       

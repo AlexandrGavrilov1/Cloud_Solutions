@@ -69,14 +69,14 @@ const FAQ = () => {
       <OpenGraph
         title="FAQ по VPS хостингу — Ответы на популярные вопросы"
         description="Ответы на часто задаваемые вопросы о VPS хостинге: выбор конфигурации, миграция, DDoS защита, бэкапы и масштабирование."
-        url="https://topcloudhub.ru/faq"
+        url="https://top-vds.ru/faq"
       />
       <StructuredData type="faq" faqItems={faqItems} />
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Главная", url: "https://topcloudhub.ru" },
-          { name: "FAQ", url: "https://topcloudhub.ru/faq" },
+          { name: "Главная", url: "https://top-vds.ru" },
+          { name: "FAQ", url: "https://top-vds.ru/faq" },
         ]}
       />
       <Header />

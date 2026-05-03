@@ -88,13 +88,13 @@ const Vpn = () => {
       <OpenGraph
         title="VPN инструкции — Как развернуть свой VPN на VPS"
         description="Пошаговые руководства по настройке VPN серверов на облачных провайдерах: XRay, WireGuard, OpenVPN и другие."
-        url="https://topcloudhub.ru/vpn"
+        url="https://top-vds.ru/vpn"
       />
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Главная", url: "https://topcloudhub.ru" },
-          { name: "VPN инструкции", url: "https://topcloudhub.ru/vpn" },
+          { name: "Главная", url: "https://top-vds.ru" },
+          { name: "VPN инструкции", url: "https://top-vds.ru/vpn" },
         ]}
       />
       <Header />

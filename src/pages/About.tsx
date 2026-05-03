@@ -14,15 +14,15 @@ const About = () => {
   return (
     <div className="min-h-screen bg-background">
       <OpenGraph
-        title="О проекте TopCloudHub — Независимый рейтинг VPS провайдеров"
+        title="О проекте top-vds — Независимый рейтинг VPS провайдеров"
         description="Независимая платформа для сравнения VPS хостинг провайдеров. Актуальные цены, реальные отзывы, uptime статистика и помощь в выборе."
-        url="https://topcloudhub.ru/about"
+        url="https://top-vds.ru/about"
       />
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Главная", url: "https://topcloudhub.ru" },
-          { name: "О проекте", url: "https://topcloudhub.ru/about" },
+          { name: "Главная", url: "https://top-vds.ru" },
+          { name: "О проекте", url: "https://top-vds.ru/about" },
         ]}
       />
       <Header />

@@ -26,13 +26,13 @@ const Blog = () => {
       <OpenGraph 
         title="Блог о VPS хостинге — Гайды, сравнения и советы"
         description="Полезные статьи о VPS хостинге: как выбрать провайдера, настроить сервер, оптимизировать производительность и защитить от DDoS атак."
-        url="https://topcloudhub.ru/blog"
+        url="https://top-vds.ru/blog"
       />
       <StructuredData 
         type="breadcrumb" 
         breadcrumbs={[
-          { name: 'Главная', url: 'https://topcloudhub.ru' },
-          { name: 'Блог', url: 'https://topcloudhub.ru/blog' }
+          { name: 'Главная', url: 'https://top-vds.ru' },
+          { name: 'Блог', url: 'https://top-vds.ru/blog' }
         ]} 
       />
       <Header />

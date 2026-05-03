@@ -11,16 +11,16 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
   const getWebsiteSchema = () => ({
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "TopCloudHub",
+    "name": "top-vds",
     "alternateName": "VPS Rating",
-    "url": "https://topcloudhub.ru",
+    "url": "https://top-vds.ru",
     "description": "Независимый рейтинг VPS хостинга с актуальными ценами. Сравните 30+ провайдеров с реальными отзывами",
     "inLanguage": "ru",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://topcloudhub.ru/?q={search_term_string}"
+        "urlTemplate": "https://top-vds.ru/?q={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }
@@ -29,9 +29,9 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
   const getOrganizationSchema = () => ({
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "TopCloudHub",
+    "name": "top-vds",
     "alternateName": "VPS Rating",
-    "url": "https://topcloudhub.ru",
+    "url": "https://top-vds.ru",
     "logo": {
       "@type": "ImageObject",
       "url": "https://cdn.poehali.dev/files/c1628b77-0a28-40ba-80b6-1ef1218418b6.png",
@@ -170,7 +170,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     },
     "publisher": {
       "@type": "Organization",
-      "name": "TopCloudHub",
+      "name": "top-vds",
       "logo": {
         "@type": "ImageObject",
         "url": "https://cdn.poehali.dev/files/c1628b77-0a28-40ba-80b6-1ef1218418b6.png"
@@ -178,7 +178,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://topcloudhub.ru/blog/${post.slug}`
+      "@id": `https://top-vds.ru/blog/${post.slug}`
     },
     "keywords": post.tags.join(', '),
     "articleSection": post.category,
@@ -213,9 +213,9 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
       getOrganizationSchema(),
       getBlogPostingSchema(data),
       getBreadcrumbSchema([
-        { name: 'Главная', url: 'https://topcloudhub.ru' },
-        { name: 'Блог', url: 'https://topcloudhub.ru/blog' },
-        { name: data.title, url: `https://topcloudhub.ru/blog/${data.slug}` }
+        { name: 'Главная', url: 'https://top-vds.ru' },
+        { name: 'Блог', url: 'https://top-vds.ru/blog' },
+        { name: data.title, url: `https://top-vds.ru/blog/${data.slug}` }
       ])
     );
   }

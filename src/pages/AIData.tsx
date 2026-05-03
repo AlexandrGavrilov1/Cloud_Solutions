@@ -5,10 +5,10 @@ import { blogPosts } from "@/data/blog-posts";
 const AIData = () => {
   const data = {
     meta: {
-      site_name: "TopCloudHub",
+      site_name: "top-vds",
       description:
         "Независимая платформа для сравнения VPS/VDS провайдеров в России",
-      url: "https://topcloudhub.ru",
+      url: "https://top-vds.ru",
       last_updated: new Date().toISOString(),
       language: "ru",
       purpose:
@@ -69,7 +69,7 @@ const AIData = () => {
       tags: post.tags,
       date: post.date,
       read_time: post.readTime,
-      url: `https://topcloudhub.ru/blog/${post.slug}`,
+      url: `https://top-vds.ru/blog/${post.slug}`,
     })),
 
     faq: [
@@ -129,7 +129,7 @@ const AIData = () => {
   }, []);
 
   useEffect(() => {
-    document.title = "AI Data - TopCloudHub";
+    document.title = "AI Data - top-vds";
   }, []);
 
   return (

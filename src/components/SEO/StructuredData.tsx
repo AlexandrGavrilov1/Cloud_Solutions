@@ -51,9 +51,9 @@ export const StructuredData = ({ type = 'organization', organization, website, a
         return {
           '@context': 'https://schema.org',
           '@type': 'Organization',
-          name: organization?.name || 'TopCloudHub',
-          url: organization?.url || 'https://topcloudhub.ru',
-          logo: organization?.logo || 'https://topcloudhub.ru/logo.png',
+          name: organization?.name || 'top-vds',
+          url: organization?.url || 'https://top-vds.ru',
+          logo: organization?.logo || 'https://top-vds.ru/logo.png',
           description: organization?.description || 'Рейтинг лучших облачных VPS провайдеров России 2025',
           sameAs: organization?.sameAs || []
         };
@@ -62,12 +62,12 @@ export const StructuredData = ({ type = 'organization', organization, website, a
         return {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: website?.name || 'TopCloudHub',
-          url: website?.url || 'https://topcloudhub.ru',
+          name: website?.name || 'top-vds',
+          url: website?.url || 'https://top-vds.ru',
           description: website?.description || 'Рейтинг облачных VPS провайдеров',
           potentialAction: website?.potentialAction || {
             '@type': 'SearchAction',
-            target: 'https://topcloudhub.ru/?q={search_term_string}',
+            target: 'https://top-vds.ru/?q={search_term_string}',
             'query-input': 'required name=search_term_string'
           }
         };
@@ -89,10 +89,10 @@ export const StructuredData = ({ type = 'organization', organization, website, a
           url: article.url,
           publisher: {
             '@type': 'Organization',
-            name: 'TopCloudHub',
+            name: 'top-vds',
             logo: {
               '@type': 'ImageObject',
-              url: 'https://topcloudhub.ru/logo.png'
+              url: 'https://top-vds.ru/logo.png'
             }
           }
         };

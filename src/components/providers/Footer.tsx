@@ -21,7 +21,7 @@ export const Footer = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-primary">
-                    TopCloudHub
+                    top-vds
                   </h3>
                   <p className="text-xs text-muted-foreground font-medium">
                     Топ хостингов
@@ -42,7 +42,7 @@ export const Footer = () => {
                   asChild
                 >
                   <a
-                    href="https://t.me/topcloudhub"
+                    href="https://t.me/top_vds_com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -123,7 +123,7 @@ export const Footer = () => {
           {/* Нижняя часть с копирайтом и политикой конфиденциальности */}
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground font-medium">
-              © TopCloudHub. Все права защищены.
+              © top-vds. Все права защищены.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground font-medium">
               <Link
