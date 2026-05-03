@@ -970,28 +970,25 @@ export const ProviderCard = ({
       }`}
     >
       <Card
-        className={`glass-effect overflow-visible relative flex flex-col hover-lift h-full
+        className={`overflow-visible relative flex flex-col h-full bg-card
     ${
       isSelected
-        ? "border-primary shadow-neon"
-        : "border-primary/30"
+        ? "border-foreground/40"
+        : "border-border"
     }
-    hover:border-primary hover:shadow-neon
-    transition-all duration-300 ease-in-out
+    hover:border-foreground/20
+    transition-all duration-200 ease-out
   `}
       >
-        {/* Мягкое оранжевое пятно */}
+        {/* subtle gradient on hover */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 w-[500px] h-[250px] opacity-0 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none overflow-hidden"
-          style={{ top: 0 }}
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl overflow-hidden"
         >
           <div
-            className="absolute left-1/2 -translate-x-1/2 w-[200px] h-[200px] rounded-full"
+            className="absolute inset-0"
             style={{
-              top: "-100px",
               background:
-                "radial-gradient(circle at center 70%, hsl(var(--term-green)) 0%, hsl(var(--term-cyan)) 30%, transparent 70%)",
-              filter: "blur(35px)",
+                "radial-gradient(ellipse 60% 50% at 50% 0%, hsl(var(--brand-purple) / 0.08), transparent)",
             }}
           />
         </div>

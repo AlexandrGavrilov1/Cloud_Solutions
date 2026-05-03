@@ -7,66 +7,60 @@ interface Props {
 
 export default function ProviderCard({ provider: p }: Props) {
   return (
-    <div className="glass-effect p-5 hover:border-primary transition-all group hover-lift relative overflow-hidden">
-      {/* glow corner */}
-      <div className="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-primary/20 blur-2xl group-hover:bg-primary/40 transition-all" />
-
-      {/* terminal header strip */}
-      <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground mb-3 border-b border-primary/20 pb-2">
-        <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          provider.exe
-        </span>
-        <span>0x{p.id?.toString(16).padStart(4, "0").toUpperCase()}</span>
-      </div>
-
-      <div className="flex items-start justify-between mb-3 relative z-10">
+    <div className="group relative rounded-xl border border-border bg-card p-5 hover:border-foreground/20 transition-all duration-200 hover-lift">
+      <div className="flex items-start justify-between mb-4">
         <div>
-          <div className="font-mono font-bold text-base text-foreground uppercase tracking-wider">
+          <div className="font-semibold text-base text-foreground tracking-tight">
             {p.name}
           </div>
-          <div className="text-xs text-muted-foreground mt-0.5 font-mono">
-            <span className="text-secondary">{p.region}</span>
-            <span className="mx-1.5 text-foreground/40">::</span>
+          <div className="text-xs text-muted-foreground mt-1 flex items-center gap-2">
+            <span>{p.region}</span>
+            <span className="w-1 h-1 rounded-full bg-border" />
             <span>{p.latency}ms</span>
           </div>
         </div>
         <div className="text-right">
-          <div className="font-mono text-2xl text-primary text-glow font-bold">
+          <div className="text-2xl font-semibold text-foreground tabular-nums">
             {p.score}
           </div>
-          <div className="text-[10px] uppercase text-muted-foreground tracking-wider font-mono">
-            [score]
+          <div className="text-[10px] uppercase text-muted-foreground tracking-wider">
+            score
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 my-4 text-xs font-mono">
-        <div className="border border-primary/20 p-2 bg-background/40">
-          <div className="text-muted-foreground text-[10px] uppercase">
-            $price
+      <div className="grid grid-cols-3 gap-3 my-4">
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Цена
           </div>
-          <div className="text-secondary font-bold">{p.price}₽</div>
+          <div className="text-sm font-medium text-foreground tabular-nums mt-0.5">
+            {p.price} ₽
+          </div>
         </div>
-        <div className="border border-primary/20 p-2 bg-background/40">
-          <div className="text-muted-foreground text-[10px] uppercase">
-            $rating
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Rating
           </div>
-          <div className="text-foreground font-bold">{p.rating}</div>
+          <div className="text-sm font-medium text-foreground tabular-nums mt-0.5">
+            {p.rating}
+          </div>
         </div>
-        <div className="border border-primary/20 p-2 bg-background/40">
-          <div className="text-muted-foreground text-[10px] uppercase">
-            $uptime
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Uptime
           </div>
-          <div className="text-primary font-bold">{p.uptime}%</div>
+          <div className="text-sm font-medium text-foreground tabular-nums mt-0.5">
+            {p.uptime}%
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1 mb-4 min-h-[24px]">
+      <div className="flex flex-wrap gap-1.5 mb-4 min-h-[24px]">
         {p.features.slice(0, 5).map((f) => (
           <span
             key={f}
-            className="px-1.5 py-0.5 text-[10px] font-mono border border-primary/30 bg-primary/5 text-primary"
+            className="px-2 py-0.5 text-[11px] rounded-full bg-secondary text-secondary-foreground border border-border"
           >
             {f}
           </span>
@@ -77,10 +71,9 @@ export default function ProviderCard({ provider: p }: Props) {
         href={p.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-1 w-full py-2.5 text-xs font-mono uppercase tracking-widest border border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-neon transition-all"
+        className="flex items-center justify-center gap-1.5 w-full py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all"
       >
-        <Icon name="Terminal" size={12} />
-        ./deploy
+        Перейти
         <Icon name="ArrowUpRight" size={12} />
       </a>
     </div>

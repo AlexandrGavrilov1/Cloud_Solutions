@@ -4,93 +4,44 @@ import Icon from "@/components/ui/icon";
 export const HeroSection = () => {
   return (
     <section
-      className="relative pt-12 pb-10 sm:pt-16 sm:pb-14 md:pt-20 md:pb-12 overflow-hidden border-b border-primary/30"
+      className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 md:pt-32 md:pb-24 overflow-hidden"
       itemScope
       itemType="https://schema.org/WebPageElement"
     >
-      {/* glow blobs */}
-      <div className="absolute top-0 left-0 w-full pointer-events-none z-0 h-full opacity-50">
-        <div
-          className="absolute left-[5%] top-0 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[80px]"
-          style={{
-            background:
-              "radial-gradient(circle, hsl(var(--term-green)) 0%, hsl(var(--term-cyan)) 40%, transparent 70%)",
-            transform: "translate(-30%, -50%)",
-            opacity: 0.35,
-          }}
-        />
-        <div
-          className="absolute right-0 top-1/2 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[80px]"
-          style={{
-            background:
-              "radial-gradient(circle, hsl(var(--term-pink)) 0%, hsl(var(--term-amber)) 40%, transparent 70%)",
-            transform: "translate(30%, -50%)",
-            opacity: 0.25,
-          }}
-        />
-      </div>
+      {/* subtle radial gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--brand-purple) / 0.18), transparent)",
+        }}
+      />
+      {/* grid background */}
+      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
 
-      <div className="w-full px-4 3xl:px-[185px] relative z-10">
-        {/* terminal header bar */}
-        <div className="flex items-center gap-2 mb-6 max-w-3xl">
-          <div className="flex gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-destructive/80" />
-            <span className="w-3 h-3 rounded-full bg-secondary/80" />
-            <span className="w-3 h-3 rounded-full bg-primary/80" />
-          </div>
-          <span className="text-xs text-muted-foreground font-mono ml-2">
-            ~/topvds — bash — 80×24
-          </span>
+      <div className="w-full px-4 3xl:px-[185px] relative z-10 max-w-6xl mx-auto">
+        {/* announcement pill */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-card/50 backdrop-blur-sm text-xs text-muted-foreground mb-8 hover:border-foreground/20 transition-colors cursor-pointer">
+          <span className="text-foreground font-medium">New</span>
+          <span className="w-px h-3 bg-border" />
+          <span>AI-подбор облака · бета</span>
+          <Icon name="ArrowRight" size={12} />
         </div>
 
-        {/* prompt line */}
-        <div className="text-xs sm:text-sm text-muted-foreground font-mono mb-4">
-          <span className="text-secondary">guest@topvds</span>
-          <span className="text-foreground/60">:</span>
-          <span className="text-accent">~</span>
-          <span className="text-foreground/60">$ </span>
-          <span className="text-foreground">./find_cloud --best</span>
-        </div>
-
-        <h1 className="font-mono text-[28px] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight font-bold max-w-6xl uppercase">
-          <span className="block text-foreground/80">
-            <span className="text-primary text-glow">&gt;</span> найди
-          </span>
-          <span className="block text-primary text-glow">идеальное_облако</span>
-          <span className="block text-foreground/80">для.твоего_проекта</span>
-          <span className="inline-block term-cursor text-primary text-glow" />
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.05] max-w-4xl">
+          <span className="block text-foreground">Найди идеальное облако</span>
+          <span className="block gradient-text">для своего проекта.</span>
         </h1>
 
-        <div className="mt-6 max-w-3xl text-base sm:text-lg text-muted-foreground font-mono leading-relaxed border-l-2 border-primary/40 pl-4">
-          <span className="text-secondary">{">"} </span>
-          сравни характеристики, цены и отзывы.
-          <br />
-          <span className="text-secondary">{">"} </span>
-          выбери лучшее решение за пару минут.
-          <span className="typing-dots text-primary" />
-        </div>
+        <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+          Сравни характеристики, цены и отзывы. Выбери лучшее решение за пару
+          минут — без таблиц и звонков менеджерам.
+        </p>
 
-        {/* stats */}
-        <div className="mt-6 flex flex-wrap gap-4 text-xs font-mono">
-          <div className="flex items-center gap-2 px-3 py-1.5 border border-primary/30 bg-primary/5">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-muted-foreground">status:</span>
-            <span className="text-primary text-glow">ONLINE</span>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 border border-secondary/30 bg-secondary/5">
-            <span className="text-muted-foreground">providers:</span>
-            <span className="text-secondary">42</span>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/5">
-            <span className="text-muted-foreground">latency:</span>
-            <span className="text-glow-pink">12ms</span>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="pt-8 flex flex-wrap gap-3">
+        <div className="mt-10 flex flex-wrap gap-3">
           <Button
-            className="font-mono uppercase tracking-widest h-12 px-8 text-sm bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-neon transition-all rounded-none border border-primary"
+            size="lg"
+            className="h-11 px-6 text-sm font-medium rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-all"
             onClick={() => {
               const providersSection = document.getElementById("providers");
               if (providersSection) {
@@ -101,12 +52,13 @@ export const HeroSection = () => {
               }
             }}
           >
-            <Icon name="ChevronRight" size={16} className="mr-1" />
-            execute
+            Подобрать провайдера
+            <Icon name="ArrowRight" size={14} className="ml-1" />
           </Button>
           <Button
+            size="lg"
             variant="outline"
-            className="font-mono uppercase tracking-widest h-12 px-6 text-sm border-primary/40 text-foreground hover:bg-primary/10 hover:border-primary rounded-none"
+            className="h-11 px-6 text-sm font-medium rounded-lg border-border text-foreground hover:bg-secondary"
             onClick={() => {
               const aiSection = document.getElementById("ai-builder");
               if (aiSection) {
@@ -114,9 +66,29 @@ export const HeroSection = () => {
               }
             }}
           >
-            <Icon name="Sparkles" size={14} className="mr-2" />
-            ai_match
+            <Icon name="Sparkles" size={14} className="mr-1" />
+            Попробовать AI
           </Button>
+        </div>
+
+        {/* trust strip */}
+        <div className="mt-16 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span>42 провайдера</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Icon name="Star" size={12} className="text-foreground/60" />
+            <span>1.2k+ отзывов</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Icon name="Zap" size={12} className="text-foreground/60" />
+            <span>Обновляется ежедневно</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Icon name="Shield" size={12} className="text-foreground/60" />
+            <span>Без скрытых комиссий</span>
+          </div>
         </div>
       </div>
     </section>

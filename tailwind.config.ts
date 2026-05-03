@@ -22,11 +22,11 @@ export default {
         "3xl": "1600px",
       },
       fontFamily: {
-        sans: ["JetBrains Mono", "Space Mono", "ui-monospace", "monospace"],
-        mono: ["JetBrains Mono", "Space Mono", "ui-monospace", "monospace"],
-        heading: ["JetBrains Mono", "Space Mono", "ui-monospace", "monospace"],
-        outline: ["VT323", "Space Mono", "monospace"],
-        vt323: ["VT323", "Space Mono", "monospace"],
+        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+        heading: ["Inter", "-apple-system", "sans-serif"],
+        outline: ["Inter", "sans-serif"],
+        vt323: ["Inter", "sans-serif"],
       },
       fontSize: {
         xxs: "10px",
@@ -105,9 +105,9 @@ export default {
         },
       },
       borderRadius: {
-        lg: "0px",
-        md: "0px",
-        sm: "0px",
+        lg: "12px",
+        md: "8px",
+        sm: "6px",
       },
       keyframes: {
         "accordion-down": {

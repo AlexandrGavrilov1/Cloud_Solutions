@@ -26,7 +26,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/90 border-b border-primary/40 shadow-[0_1px_0_0_hsl(var(--term-green)/0.2)]">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border">
       <div
         className={`
           w-full px-4 
@@ -45,22 +45,23 @@ export const Header = () => {
           {/* Логотип – теперь Link без перезагрузки */}
           <Link
             to="/"
-            className="flex items-center hover:opacity-90 transition-opacity gap-2"
+            className="flex items-center hover:opacity-80 transition-opacity gap-2"
           >
-            <span className="text-primary text-glow font-bold">▊</span>
-            <span className="text-[15px] text-foreground tracking-widest font-bold uppercase">
-              top<span className="text-muted-foreground">::</span>
-              <span className="text-primary text-glow">vds</span>
+            <div className="w-7 h-7 rounded-md bg-foreground flex items-center justify-center">
+              <Icon name="Triangle" size={14} className="text-background fill-background" />
+            </div>
+            <span className="text-[15px] text-foreground font-semibold tracking-tight">
+              topvds
             </span>
           </Link>
 
           {/* Десктопное меню – заменяем a на Link */}
-          <div className="hidden md:flex items-center gap-8 ml-12 tracking-widest">
+          <div className="hidden md:flex items-center gap-7 ml-10">
             <Link
               to="/vpn"
-              className="text-[13px] uppercase text-foreground/70 hover:text-primary hover:text-glow transition-all"
+              className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
             >
-              ./vpn
+              VPN
             </Link>
             {/* <Link
               to="/blog"
@@ -70,15 +71,15 @@ export const Header = () => {
             </Link> */}
             <Link
               to="/uptime"
-              className="text-[13px] uppercase text-foreground/70 hover:text-primary hover:text-glow transition-all"
+              className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
             >
-              ./uptime
+              Uptime
             </Link>
             <Link
               to="/promo"
-              className="text-[13px] uppercase text-foreground/70 hover:text-primary hover:text-glow transition-all"
+              className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
             >
-              ./promo
+              Promo
             </Link>
           </div>
 
@@ -86,39 +87,39 @@ export const Header = () => {
           <div className="hidden md:flex items-center ml-auto">
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-all"
+              className="flex items-center gap-2 p-2 rounded-md hover:bg-secondary transition-all"
               aria-label="Toggle theme"
             >
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
-                size={18}
-                className="text-foreground/70 hover:text-primary"
+                size={16}
+                className="text-muted-foreground"
               />
             </button>
           </div>
 
           {/* Мобильные иконки */}
-          <div className="md:hidden flex items-center gap-2 ml-auto">
+          <div className="md:hidden flex items-center gap-1 ml-auto">
             <button
               onClick={toggleTheme}
-              className="p-2 hover:bg-primary/10 transition-colors"
+              className="p-2 hover:bg-secondary rounded-md transition-colors"
               aria-label="Toggle theme"
             >
               <Icon
                 name={theme === "light" ? "Moon" : "Sun"}
-                size={18}
-                className="text-foreground/70"
+                size={16}
+                className="text-muted-foreground"
               />
             </button>
             <button
-              className="p-2 hover:bg-primary/10 transition-colors"
+              className="p-2 hover:bg-secondary rounded-md transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
               <Icon
                 name={mobileMenuOpen ? "X" : "Menu"}
-                size={20}
-                className="text-foreground/70"
+                size={18}
+                className="text-muted-foreground"
               />
             </button>
           </div>
@@ -126,15 +127,15 @@ export const Header = () => {
 
         {/* Мобильное выпадающее меню */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-primary/30">
+          <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               <Link
                 to="/vpn"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Shield" size={16} />
-                ./vpn
+                VPN
               </Link>
               {/* <Link
                 to="/blog"
@@ -146,22 +147,22 @@ export const Header = () => {
               </Link> */}
               <Link
                 to="/uptime"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Activity" size={16} />
-                ./uptime
+                Uptime
               </Link>
               <Link
                 to="/promo"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Icon name="Tag" size={16} />
-                ./promo
+                Promo
               </Link>
               <button
-                className="flex items-center gap-2 px-4 py-2 text-sm font-normal text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all text-left"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-all text-left"
                 onClick={toggleTheme}
               >
                 <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
