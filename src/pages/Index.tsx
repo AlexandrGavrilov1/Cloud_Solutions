@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Layout from "@/components/tool/Layout";
 import Filters from "@/components/tool/Filters";
 import Table from "@/components/tool/Table";
-import Calculator from "@/components/tool/Calculator";
+import AIBuilder from "@/components/tool/AIBuilder";
 import ProviderCard from "@/components/tool/ProviderCard";
 import { useProviders } from "@/hooks/useProviders";
 import Icon from "@/components/ui/icon";
@@ -23,16 +23,19 @@ const Index = () => {
       <section className="mb-10">
         <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground mb-3">
           <Icon name="Sparkles" size={12} />
-          <span>scoring · ranking · calculator</span>
+          <span>AI · architecture · provider matching</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-3">
-          Найди облако
-          <span className="text-primary"> по своим правилам</span>
+          AI подбирает облако
+          <span className="text-primary"> под твой проект</span>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-sm">
-          Инструмент сравнения провайдеров: фильтры, scoring под use-case,
-          latency, калькулятор стоимости.
+          Опиши идею — система построит архитектуру, посчитает ресурсы и подберёт провайдера с ценой.
         </p>
+      </section>
+
+      <section className="mb-8">
+        <AIBuilder />
       </section>
 
       {top && (
@@ -71,8 +74,6 @@ const Index = () => {
         </aside>
 
         <div className="flex flex-col gap-6">
-          <Calculator providers={filtered} />
-
           <div className="flex items-center justify-between">
             <h2 className="text-sm uppercase tracking-widest text-muted-foreground">
               Провайдеры ({filtered.length})
