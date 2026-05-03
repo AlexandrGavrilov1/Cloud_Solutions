@@ -48,7 +48,7 @@ export const Header = () => {
             className="flex items-center hover:opacity-90 transition-opacity"
           >
             <img
-              src="https://cdn.poehali.dev/projects/59a78fde-be4d-41d0-a25a-c34adf675973/bucket/57ba635f-beec-4b15-924b-80a821db5fed.png"
+              src="https://cdn.poehali.dev/projects/ade68d3a-52a3-4e90-8d89-6c9e68c0d348/files/d719d005-d0d6-4301-9237-94e60c7ff500.jpg"
               alt="top-vds Logo"
               className="h-[60px] w-auto transition-opacity duration-300"
             />
