@@ -1,14 +1,13 @@
 // src/components/providers/Header.tsx
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"; // ✅ импортируем Link и useNavigate
 
 export const Header = () => {
   const { language, setLanguage, t } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate(); // для программной навигации
@@ -85,32 +84,12 @@ export const Header = () => {
 
           {/* Переключатель темы на десктопе */}
           <div className="hidden md:flex items-center ml-auto">
-            <button
-              onClick={toggleTheme}
-              className="flex items-center gap-2 p-2 rounded-md hover:bg-secondary transition-all"
-              aria-label="Toggle theme"
-            >
-              <Icon
-                name={theme === "light" ? "Moon" : "Sun"}
-                size={16}
-                className="text-muted-foreground"
-              />
-            </button>
+            <ThemeToggle />
           </div>
 
           {/* Мобильные иконки */}
-          <div className="md:hidden flex items-center gap-1 ml-auto">
-            <button
-              onClick={toggleTheme}
-              className="p-2 hover:bg-secondary rounded-md transition-colors"
-              aria-label="Toggle theme"
-            >
-              <Icon
-                name={theme === "light" ? "Moon" : "Sun"}
-                size={16}
-                className="text-muted-foreground"
-              />
-            </button>
+          <div className="md:hidden flex items-center gap-2 ml-auto">
+            <ThemeToggle size="sm" />
             <button
               className="p-2 hover:bg-secondary rounded-md transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -161,13 +140,10 @@ export const Header = () => {
                 <Icon name="Tag" size={16} />
                 Promo
               </Link>
-              <button
-                className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-all text-left"
-                onClick={toggleTheme}
-              >
-                <Icon name={theme === "light" ? "Moon" : "Sun"} size={16} />
-                {theme === "light" ? "Тёмная тема" : "Светлая тема"}
-              </button>
+              <div className="flex items-center justify-between gap-2 px-4 py-2">
+                <span className="text-sm text-muted-foreground">Тема</span>
+                <ThemeToggle size="sm" />
+              </div>
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);

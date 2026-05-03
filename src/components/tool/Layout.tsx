@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { ReactNode } from "react";
 import Icon from "@/components/ui/icon";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const NAV = [
   { to: "/", label: "Tool" },
@@ -30,25 +31,29 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
             <span>cloudpicker</span>
           </Link>
-          <nav className="flex items-center gap-1">
-            {NAV.map((n) => {
-              const active =
-                n.to === "/" ? pathname === "/" : pathname.startsWith(n.to);
-              return (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    active
-                      ? "text-foreground bg-secondary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-                  }`}
-                >
-                  {n.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="flex items-center gap-3">
+            <nav className="flex items-center gap-1">
+              {NAV.map((n) => {
+                const active =
+                  n.to === "/" ? pathname === "/" : pathname.startsWith(n.to);
+                return (
+                  <Link
+                    key={n.to}
+                    to={n.to}
+                    className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      active
+                        ? "text-foreground bg-secondary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+                    }`}
+                  >
+                    {n.label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="w-px h-5 bg-border" />
+            <ThemeToggle size="sm" />
+          </div>
         </div>
       </header>
 
