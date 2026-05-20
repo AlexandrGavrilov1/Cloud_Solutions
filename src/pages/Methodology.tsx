@@ -128,7 +128,7 @@ const PRESETS = [
 const Methodology = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Методология скоринга | cloudpicker";
+    document.title = "Методология скоринга | top-vds";
   }, []);
 
   return (

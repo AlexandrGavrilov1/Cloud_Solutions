@@ -29,7 +29,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 className="text-background fill-background"
               />
             </div>
-            <span>cloudpicker</span>
+            <span>top-vds</span>
           </Link>
           <div className="flex items-center gap-3">
             <nav className="flex items-center gap-1">
@@ -69,7 +69,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 className="text-background fill-background"
               />
             </div>
-            <span>© {new Date().getFullYear()} cloudpicker</span>
+            <span>© {new Date().getFullYear()} top-vds</span>
           </div>
           <div className="flex flex-wrap gap-6 text-sm">
             <Link

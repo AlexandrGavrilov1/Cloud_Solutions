@@ -38,7 +38,7 @@ const About = () => {
           <span>о проекте</span>
         </div>
         <h1 className="text-4xl font-light tracking-tight mb-4">
-          cloudpicker — это <span className="text-primary">инструмент</span>, а не каталог
+          top-vds — это <span className="text-primary">инструмент</span>, а не каталог
         </h1>
         <p className="text-muted-foreground text-sm leading-relaxed">
           Большинство сайтов о хостинге — статичные списки. Мы делаем по-другому:
