@@ -1,3 +1,5 @@
+import { PROVIDERS_TOTAL, PROVIDERS_LABEL } from "./providersCount";
+
 const MONTHS_RU = [
   "январь",
   "февраль",
@@ -24,6 +26,7 @@ interface MetaPayload {
   schema_description: string;
   date_phrase: string;
   year: number;
+  providers_label?: string;
 }
 
 function localFallback(): MetaPayload {
@@ -31,15 +34,17 @@ function localFallback(): MetaPayload {
   const month = MONTHS_RU[now.getMonth()];
   const year = now.getFullYear();
   const date_phrase = `${month} ${year}`;
+  const plabel = PROVIDERS_LABEL;
 
   return {
-    title: `Рейтинг хостингов ${year} — Сравнение 50+ провайдеров | Реальные отзывы и цены`,
-    description: `Независимый рейтинг VPS хостинга с актуальными ценами на ${date_phrase}. Сравните 50+ провайдеров: Hetzner, Timeweb, REG.RU, DigitalOcean. Калькулятор стоимости, отзывы клиентов, 152-ФЗ, uptime статистика.`,
+    title: `Рейтинг хостингов ${year} — Сравнение ${plabel} провайдеров | Реальные отзывы и цены`,
+    description: `Независимый рейтинг VPS хостинга с актуальными ценами на ${date_phrase}. Сравните ${plabel} провайдеров: Hetzner, Timeweb, REG.RU, DigitalOcean. Калькулятор стоимости, отзывы клиентов, 152-ФЗ, uptime статистика.`,
     og_image_alt: `Рейтинг VPS хостинга ${year} — Сравнение провайдеров`,
-    twitter_title: `Рейтинг VPS хостинга ${year} — Сравнение 50+ провайдеров`,
-    schema_description: `Независимый рейтинг VPS хостинга с актуальными ценами на ${date_phrase}. Сравните 50+ провайдеров`,
+    twitter_title: `Рейтинг VPS хостинга ${year} — Сравнение ${plabel} провайдеров`,
+    schema_description: `Независимый рейтинг VPS хостинга с актуальными ценами на ${date_phrase}. Сравните ${plabel} провайдеров`,
     date_phrase,
     year,
+    providers_label: plabel,
   };
 }
 
@@ -91,7 +96,8 @@ export async function updateMetaDate() {
   applyMeta(localFallback());
 
   try {
-    const res = await fetch(META_SSR_URL, { method: "GET" });
+    const url = `${META_SSR_URL}?providers=${PROVIDERS_TOTAL}`;
+    const res = await fetch(url, { method: "GET" });
     if (!res.ok) return;
     const data: MetaPayload = await res.json();
     applyMeta(data);

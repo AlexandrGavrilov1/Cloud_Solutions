@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { providers } from '@/data/providers';
 import { blogPosts } from '@/data/blog-posts';
+import { PROVIDERS_LABEL } from '@/utils/providersCount';
 
 interface StructuredDataProps {
   type?: 'website' | 'article' | 'product';
@@ -14,7 +15,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     "name": "top-vds",
     "alternateName": "VPS Rating",
     "url": "https://top-vds.ru",
-    "description": "Независимый рейтинг VPS хостинга с актуальными ценами. Сравните 30+ провайдеров с реальными отзывами",
+    "description": `Независимый рейтинг VPS хостинга с актуальными ценами. Сравните ${PROVIDERS_LABEL} провайдеров с реальными отзывами`,
     "inLanguage": "ru",
     "potentialAction": {
       "@type": "SearchAction",
@@ -55,7 +56,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     return {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "name": "Рейтинг VPS провайдеров 2025",
+      "name": `Рейтинг VPS провайдеров ${new Date().getFullYear()}`,
       "description": "Топ-10 VPS хостинг провайдеров с реальными отзывами и актуальными ценами",
       "numberOfItems": topProviders.length,
       "itemListElement": topProviders.map((provider, index) => {

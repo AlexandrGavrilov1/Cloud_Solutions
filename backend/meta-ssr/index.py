@@ -18,22 +18,31 @@ def get_current_date_phrase():
     return f"{MONTHS_RU[now.month - 1]} {now.year}", now.year
 
 
-def build_meta_html(date_phrase: str, year: int) -> dict:
+def providers_label(total: int) -> str:
+    """Округляет вниз до десятки, минимум 10+."""
+    if total < 10:
+        return "10+"
+    return f"{(total // 10) * 10}+"
+
+
+def build_meta_html(date_phrase: str, year: int, plabel: str) -> dict:
     title = (
-        f"Рейтинг хостингов {year} — Сравнение 50+ провайдеров | "
+        f"Рейтинг хостингов {year} — Сравнение {plabel} провайдеров | "
         "Реальные отзывы и цены"
     )
     description = (
         f"Независимый рейтинг VPS хостинга с актуальными ценами на "
-        f"{date_phrase}. Сравните 50+ провайдеров: Hetzner, Timeweb, "
+        f"{date_phrase}. Сравните {plabel} провайдеров: Hetzner, Timeweb, "
         "REG.RU, DigitalOcean. Калькулятор стоимости, отзывы клиентов, "
         "152-ФЗ, uptime статистика."
     )
     og_image_alt = f"Рейтинг VPS хостинга {year} — Сравнение провайдеров"
-    twitter_title = f"Рейтинг VPS хостинга {year} — Сравнение 50+ провайдеров"
+    twitter_title = (
+        f"Рейтинг VPS хостинга {year} — Сравнение {plabel} провайдеров"
+    )
     schema_desc = (
         f"Независимый рейтинг VPS хостинга с актуальными ценами на "
-        f"{date_phrase}. Сравните 50+ провайдеров"
+        f"{date_phrase}. Сравните {plabel} провайдеров"
     )
 
     return {
@@ -44,6 +53,7 @@ def build_meta_html(date_phrase: str, year: int) -> dict:
         "schema_description": schema_desc,
         "date_phrase": date_phrase,
         "year": year,
+        "providers_label": plabel,
     }
 
 
@@ -64,7 +74,17 @@ def handler(event: dict, context) -> dict:
         }
 
     date_phrase, year = get_current_date_phrase()
-    meta = build_meta_html(date_phrase, year)
+
+    # Счётчик провайдеров приходит из фронта (single source of truth).
+    # Без параметра — безопасный дефолт 50+.
+    qs = event.get("queryStringParameters") or {}
+    try:
+        total = int(qs.get("providers", "50"))
+    except (TypeError, ValueError):
+        total = 50
+    plabel = providers_label(total)
+
+    meta = build_meta_html(date_phrase, year, plabel)
 
     return {
         "statusCode": 200,

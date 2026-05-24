@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { PROVIDERS_LABEL } from '@/utils/providersCount';
 
 interface OpenGraphProps {
   title?: string;
@@ -18,7 +19,7 @@ interface OpenGraphProps {
 }
 
 export const OpenGraph = ({
-  title = 'Рейтинг VPS хостинга 2025 — Сравнение 30+ провайдеров',
+  title = `Рейтинг VPS хостинга ${new Date().getFullYear()} — Сравнение ${PROVIDERS_LABEL} провайдеров`,
   description = 'Независимый рейтинг VPS провайдеров. Актуальные цены, реальные отзывы, калькулятор стоимости, uptime статистика.',
   url = 'https://top-vds.ru',
   image = 'https://cdn.poehali.dev/files/8f328ff2-4310-4457-a129-5e42f69ef566.png',
