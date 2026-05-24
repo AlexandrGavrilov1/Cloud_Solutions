@@ -1,9 +1,9 @@
 const INDEXNOW_KEY = '7f8a9b2c3d4e5f6a1b2c3d4e5f6a7b8c';
-const SITE_URL = 'https://top-vds.ru';
+const SITE_URL = 'https://top-vds.com';
 
 const isProduction = () => {
   if (typeof window === 'undefined') return false;
-  return window.location.hostname === 'top-vds.ru';
+  return window.location.hostname === 'top-vds.com';
 };
 
 export const submitToIndexNow = async (urls: string[]) => {

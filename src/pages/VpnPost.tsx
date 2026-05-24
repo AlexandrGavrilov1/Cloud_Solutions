@@ -174,8 +174,8 @@ const VpnPost = () => {
       <OpenGraph
         title={post.title}
         description={post.excerpt}
-        url={`https://top-vds.ru/vpn/${post.slug}`}
-        image={post.image || "https://top-vds.ru/og-image.png"}
+        url={`https://top-vds.com/vpn/${post.slug}`}
+        image={post.image || "https://top-vds.com/og-image.png"}
         type="article"
         article={{
           publishedTime: post.datePublished || post.date,
@@ -193,16 +193,16 @@ const VpnPost = () => {
           author: post.author,
           datePublished: post.datePublished || post.date,
           dateModified: post.dateModified || post.date,
-          image: post.image || "https://top-vds.ru/og-image.png",
-          url: `https://top-vds.ru/vpn/${post.slug}`,
+          image: post.image || "https://top-vds.com/og-image.png",
+          url: `https://top-vds.com/vpn/${post.slug}`,
         }}
       />
       <SEOStructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Главная", url: "https://top-vds.ru" },
-          { name: "VPN", url: "https://top-vds.ru/vpn" },
-          { name: post.title, url: `https://top-vds.ru/vpn/${post.slug}` },
+          { name: "Главная", url: "https://top-vds.com" },
+          { name: "VPN", url: "https://top-vds.com/vpn" },
+          { name: post.title, url: `https://top-vds.com/vpn/${post.slug}` },
         ]}
       />
       <StructuredData type="article" data={post} />

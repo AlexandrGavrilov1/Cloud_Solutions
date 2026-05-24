@@ -42,7 +42,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         except Exception:
             path = '/'
     
-    new_url = f'https://top-vds.ru{path}{query_string}'
+    new_url = f'https://top-vds.com{path}{query_string}'
     
     return {
         'statusCode': 301,

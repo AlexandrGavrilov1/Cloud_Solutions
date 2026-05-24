@@ -100,8 +100,8 @@ Allow: /
 Disallow: /admin
 Crawl-delay: 1
 
-Sitemap: https://top-vds.ru/sitemap.xml
+Sitemap: https://top-vds.com/sitemap.xml
 IndexNow-Key: 7f8a9b2c3d4e5f6a1b2c3d4e5f6a7b8c
-IndexNow-Key-Location: https://top-vds.ru/indexnow-key.txt
+IndexNow-Key-Location: https://top-vds.com/indexnow-key.txt
 
-Host: https://top-vds.ru
+Host: https://top-vds.com

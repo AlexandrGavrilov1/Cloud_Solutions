@@ -21,7 +21,7 @@ interface OpenGraphProps {
 export const OpenGraph = ({
   title = `Рейтинг VPS хостинга ${new Date().getFullYear()} — Сравнение ${PROVIDERS_LABEL} провайдеров`,
   description = 'Независимый рейтинг VPS провайдеров. Актуальные цены, реальные отзывы, калькулятор стоимости, uptime статистика.',
-  url = 'https://top-vds.ru',
+  url = 'https://top-vds.com',
   image = 'https://cdn.poehali.dev/files/8f328ff2-4310-4457-a129-5e42f69ef566.png',
   type = 'website',
   siteName = 'top-vds',

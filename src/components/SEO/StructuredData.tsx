@@ -52,8 +52,8 @@ export const StructuredData = ({ type = 'organization', organization, website, a
           '@context': 'https://schema.org',
           '@type': 'Organization',
           name: organization?.name || 'top-vds',
-          url: organization?.url || 'https://top-vds.ru',
-          logo: organization?.logo || 'https://top-vds.ru/logo.png',
+          url: organization?.url || 'https://top-vds.com',
+          logo: organization?.logo || 'https://top-vds.com/logo.png',
           description: organization?.description || 'Рейтинг лучших облачных VPS провайдеров России 2025',
           sameAs: organization?.sameAs || []
         };
@@ -63,11 +63,11 @@ export const StructuredData = ({ type = 'organization', organization, website, a
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: website?.name || 'top-vds',
-          url: website?.url || 'https://top-vds.ru',
+          url: website?.url || 'https://top-vds.com',
           description: website?.description || 'Рейтинг облачных VPS провайдеров',
           potentialAction: website?.potentialAction || {
             '@type': 'SearchAction',
-            target: 'https://top-vds.ru/?q={search_term_string}',
+            target: 'https://top-vds.com/?q={search_term_string}',
             'query-input': 'required name=search_term_string'
           }
         };
@@ -92,7 +92,7 @@ export const StructuredData = ({ type = 'organization', organization, website, a
             name: 'top-vds',
             logo: {
               '@type': 'ImageObject',
-              url: 'https://top-vds.ru/logo.png'
+              url: 'https://top-vds.com/logo.png'
             }
           }
         };

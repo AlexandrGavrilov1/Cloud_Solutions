@@ -32,7 +32,7 @@ const BlogPost = () => {
       <OpenGraph
         title={post.title}
         description={post.excerpt}
-        url={`https://top-vds.ru/blog/${post.slug}`}
+        url={`https://top-vds.com/blog/${post.slug}`}
         image={post.image}
         type="article"
         article={{
@@ -51,16 +51,16 @@ const BlogPost = () => {
           author: post.author,
           datePublished: post.datePublished || post.date,
           dateModified: post.dateModified || post.date,
-          image: post.image || "https://top-vds.ru/og-image.png",
-          url: `https://top-vds.ru/blog/${post.slug}`,
+          image: post.image || "https://top-vds.com/og-image.png",
+          url: `https://top-vds.com/blog/${post.slug}`,
         }}
       />
       <SEOStructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Главная", url: "https://top-vds.ru" },
-          { name: "Блог", url: "https://top-vds.ru/blog" },
-          { name: post.title, url: `https://top-vds.ru/blog/${post.slug}` },
+          { name: "Главная", url: "https://top-vds.com" },
+          { name: "Блог", url: "https://top-vds.com/blog" },
+          { name: post.title, url: `https://top-vds.com/blog/${post.slug}` },
         ]}
       />
       <StructuredData type="article" data={post} />

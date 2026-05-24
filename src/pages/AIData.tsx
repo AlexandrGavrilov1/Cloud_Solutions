@@ -8,7 +8,7 @@ const AIData = () => {
       site_name: "top-vds",
       description:
         "Независимая платформа для сравнения VPS/VDS провайдеров в России",
-      url: "https://top-vds.ru",
+      url: "https://top-vds.com",
       last_updated: new Date().toISOString(),
       language: "ru",
       purpose:
@@ -69,7 +69,7 @@ const AIData = () => {
       tags: post.tags,
       date: post.date,
       read_time: post.readTime,
-      url: `https://top-vds.ru/blog/${post.slug}`,
+      url: `https://top-vds.com/blog/${post.slug}`,
     })),
 
     faq: [

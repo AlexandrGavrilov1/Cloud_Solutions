@@ -20,7 +20,7 @@ const parseDate = (dateStr: string): Date => {
 };
 
 export const generateSitemap = (): string => {
-  const baseUrl = 'https://top-vds.ru';
+  const baseUrl = 'https://top-vds.com';
   const today = formatDate(new Date());
 
   const staticPages: SitemapUrl[] = [

@@ -14,14 +14,14 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     "@type": "WebSite",
     "name": "top-vds",
     "alternateName": "VPS Rating",
-    "url": "https://top-vds.ru",
+    "url": "https://top-vds.com",
     "description": `Независимый рейтинг VPS хостинга с актуальными ценами. Сравните ${PROVIDERS_LABEL} провайдеров с реальными отзывами`,
     "inLanguage": "ru",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://top-vds.ru/?q={search_term_string}"
+        "urlTemplate": "https://top-vds.com/?q={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }
@@ -32,7 +32,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     "@type": "Organization",
     "name": "top-vds",
     "alternateName": "VPS Rating",
-    "url": "https://top-vds.ru",
+    "url": "https://top-vds.com",
     "logo": {
       "@type": "ImageObject",
       "url": "https://cdn.poehali.dev/files/c1628b77-0a28-40ba-80b6-1ef1218418b6.png",
@@ -179,7 +179,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://top-vds.ru/blog/${post.slug}`
+      "@id": `https://top-vds.com/blog/${post.slug}`
     },
     "keywords": post.tags.join(', '),
     "articleSection": post.category,
@@ -214,9 +214,9 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
       getOrganizationSchema(),
       getBlogPostingSchema(data),
       getBreadcrumbSchema([
-        { name: 'Главная', url: 'https://top-vds.ru' },
-        { name: 'Блог', url: 'https://top-vds.ru/blog' },
-        { name: data.title, url: `https://top-vds.ru/blog/${data.slug}` }
+        { name: 'Главная', url: 'https://top-vds.com' },
+        { name: 'Блог', url: 'https://top-vds.com/blog' },
+        { name: data.title, url: `https://top-vds.com/blog/${data.slug}` }
       ])
     );
   }
