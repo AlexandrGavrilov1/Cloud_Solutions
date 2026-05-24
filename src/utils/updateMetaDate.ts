@@ -13,72 +13,89 @@ const MONTHS_RU = [
   "декабрь",
 ];
 
-/**
- * Динамически обновляет мета-описание и Schema.org актуальной датой
- * (месяц + год). Запускается один раз при загрузке приложения.
- */
-export function updateMetaDate() {
+const META_SSR_URL =
+  "https://functions.poehali.dev/fe7bf645-6db4-481c-a6a3-b2a7104c3d01";
+
+interface MetaPayload {
+  title: string;
+  description: string;
+  og_image_alt: string;
+  twitter_title: string;
+  schema_description: string;
+  date_phrase: string;
+  year: number;
+}
+
+function localFallback(): MetaPayload {
   const now = new Date();
   const month = MONTHS_RU[now.getMonth()];
   const year = now.getFullYear();
-  const datePhrase = `${month} ${year}`;
+  const date_phrase = `${month} ${year}`;
 
-  // Регэксп ловит "<месяц> <год>" — например "май 2026", "ноябрь 2025"
-  const dateRegex = new RegExp(
-    `(${MONTHS_RU.join("|")})\\s+\\d{4}`,
-    "gi",
-  );
+  return {
+    title: `Рейтинг хостингов ${year} — Сравнение 50+ провайдеров | Реальные отзывы и цены`,
+    description: `Независимый рейтинг VPS хостинга с актуальными ценами на ${date_phrase}. Сравните 50+ провайдеров: Hetzner, Timeweb, REG.RU, DigitalOcean. Калькулятор стоимости, отзывы клиентов, 152-ФЗ, uptime статистика.`,
+    og_image_alt: `Рейтинг VPS хостинга ${year} — Сравнение провайдеров`,
+    twitter_title: `Рейтинг VPS хостинга ${year} — Сравнение 50+ провайдеров`,
+    schema_description: `Независимый рейтинг VPS хостинга с актуальными ценами на ${date_phrase}. Сравните 50+ провайдеров`,
+    date_phrase,
+    year,
+  };
+}
 
-  // 1) <meta name="description">
+function applyMeta(meta: MetaPayload) {
+  const titleEl = document.querySelector("title");
+  if (titleEl) titleEl.textContent = meta.title;
+
   const descMetas = document.querySelectorAll<HTMLMetaElement>(
     'meta[name="description"], meta[property="og:description"]',
   );
-  descMetas.forEach((m) => {
-    const current = m.getAttribute("content") || "";
-    if (dateRegex.test(current)) {
-      m.setAttribute("content", current.replace(dateRegex, datePhrase));
-    }
-  });
+  descMetas.forEach((m) => m.setAttribute("content", meta.description));
 
-  // 2) Schema.org JSON-LD блоки
+  const ogTitle = document.querySelector<HTMLMetaElement>(
+    'meta[property="og:title"]',
+  );
+  if (ogTitle) ogTitle.setAttribute("content", meta.title);
+
+  const ogImageAlt = document.querySelector<HTMLMetaElement>(
+    'meta[property="og:image:alt"]',
+  );
+  if (ogImageAlt) ogImageAlt.setAttribute("content", meta.og_image_alt);
+
+  const twTitle = document.querySelector<HTMLMetaElement>(
+    'meta[name="twitter:title"]',
+  );
+  if (twTitle) twTitle.setAttribute("content", meta.twitter_title);
+
   const ldScripts = document.querySelectorAll<HTMLScriptElement>(
     'script[type="application/ld+json"]',
   );
   ldScripts.forEach((s) => {
     try {
-      const text = s.textContent || "";
-      if (!dateRegex.test(text)) return;
-      s.textContent = text.replace(dateRegex, datePhrase);
+      const data = JSON.parse(s.textContent || "{}");
+      if (data["@type"] === "WebSite" && data.description) {
+        data.description = meta.schema_description;
+        s.textContent = JSON.stringify(data);
+      }
     } catch {
-      // тихо игнорим — мета-данные не критичны для UI
+      // ignore
     }
   });
+}
 
-  // 3) Год в <title> (если стоит явный год) и в og:title
-  const yearRegex = /\b20\d{2}\b/g;
-  const titleEl = document.querySelector("title");
-  if (titleEl && yearRegex.test(titleEl.textContent || "")) {
-    titleEl.textContent = (titleEl.textContent || "").replace(
-      yearRegex,
-      String(year),
-    );
-  }
-  const ogTitle = document.querySelector<HTMLMetaElement>(
-    'meta[property="og:title"]',
-  );
-  if (ogTitle) {
-    const v = ogTitle.getAttribute("content") || "";
-    if (yearRegex.test(v)) {
-      ogTitle.setAttribute("content", v.replace(yearRegex, String(year)));
-    }
-  }
-  const twTitle = document.querySelector<HTMLMetaElement>(
-    'meta[name="twitter:title"]',
-  );
-  if (twTitle) {
-    const v = twTitle.getAttribute("content") || "";
-    if (yearRegex.test(v)) {
-      twTitle.setAttribute("content", v.replace(yearRegex, String(year)));
-    }
+/**
+ * Подтягивает актуальные мета-теги из SSR cloud-функции.
+ * Сначала применяет локальный fallback (мгновенно), затем — серверный ответ.
+ */
+export async function updateMetaDate() {
+  applyMeta(localFallback());
+
+  try {
+    const res = await fetch(META_SSR_URL, { method: "GET" });
+    if (!res.ok) return;
+    const data: MetaPayload = await res.json();
+    applyMeta(data);
+  } catch {
+    // network offline — остаётся локальный fallback
   }
 }

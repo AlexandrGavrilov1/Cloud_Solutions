@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Возвращает 200 с мета-данными",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

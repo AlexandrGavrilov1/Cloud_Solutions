@@ -1,4 +1,5 @@
 {
+  "meta-ssr": "https://functions.poehali.dev/fe7bf645-6db4-481c-a6a3-b2a7104c3d01",
   "auth-oauth": "https://functions.poehali.dev/d45c966f-ed52-466b-ab78-afe1ef657388",
   "onedash-proxy": "https://functions.poehali.dev/041d4507-466d-4222-ad31-7b668e5ff6a0",
   "events": "https://functions.poehali.dev/ea80369d-75e3-498d-a11a-63642c6cac67",
