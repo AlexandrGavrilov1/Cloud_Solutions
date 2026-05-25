@@ -82,7 +82,8 @@ export default function Filters({
             <button
               key={r}
               onClick={() => setFilter("region", r)}
-              className={`px-2 py-1.5 text-xs rounded border transition-colors ${
+              title={r}
+              className={`min-w-0 px-1 py-1.5 text-[10px] leading-tight rounded border transition-colors truncate text-center ${
                 filters.region === r
                   ? "bg-primary text-primary-foreground border-primary"
                   : "bg-background border-border hover:border-primary"
