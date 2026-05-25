@@ -35,7 +35,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
     "url": "https://top-vds.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://cdn.poehali.dev/files/c1628b77-0a28-40ba-80b6-1ef1218418b6.png",
+      "url": "https://cdn.poehali.dev/projects/ade68d3a-52a3-4e90-8d89-6c9e68c0d348/files/9b8781ea-87ee-461f-9491-85117ffd461e.jpg",
       "width": 512,
       "height": 512
     },
@@ -174,7 +174,7 @@ export const StructuredData = ({ type = 'website', data }: StructuredDataProps) 
       "name": "top-vds",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://cdn.poehali.dev/files/c1628b77-0a28-40ba-80b6-1ef1218418b6.png"
+        "url": "https://cdn.poehali.dev/projects/ade68d3a-52a3-4e90-8d89-6c9e68c0d348/files/9b8781ea-87ee-461f-9491-85117ffd461e.jpg"
       }
     },
     "mainEntityOfPage": {
