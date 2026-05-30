@@ -86,7 +86,7 @@ const Admin = () => {
     setIsLoadingStats(true);
     try {
       const response = await fetch(
-        "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+        "https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280",
       );
       if (response.ok) {
         const data = await response.json();
@@ -103,7 +103,7 @@ const Admin = () => {
     setIsLoadingDaily(true);
     try {
       const response = await fetch(
-        `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?view=daily&period=${days}`,
+        `https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280?view=daily&period=${days}`,
       );
       if (response.ok) {
         const data = await response.json();

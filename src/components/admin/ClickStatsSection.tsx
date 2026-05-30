@@ -73,7 +73,7 @@ export const ClickStatsSection = ({
         const dayBeforeStr = dayBefore.toISOString().split('T')[0];
 
         const res = await fetch(
-          `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?view=daily&period=3`
+          `https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280?view=daily&period=3`
         );
         if (res.ok) {
           const data = await res.json();
@@ -136,7 +136,7 @@ export const ClickStatsSection = ({
     
     try {
       const response = await fetch(
-        `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?period=${period}`
+        `https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280?period=${period}`
       );
       
       if (response.ok) {
@@ -165,7 +165,7 @@ export const ClickStatsSection = ({
     setIsLoadingMonth(true);
     try {
       const response = await fetch(
-        `https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4?month=${month}`
+        `https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280?month=${month}`
       );
       if (response.ok) {
         const data = await response.json();

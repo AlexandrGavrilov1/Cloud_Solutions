@@ -120,7 +120,7 @@ export const ProviderCard = ({
     if (provider.url) {
       try {
         await fetch(
-          "https://functions.poehali.dev/d0b8e2ce-45c2-4ab9-8d08-baf03c0268f4",
+          "https://functions.poehali.dev/440e3efe-1ac8-4195-9d5f-741354dcf280",
           {
             method: "POST",
             headers: {

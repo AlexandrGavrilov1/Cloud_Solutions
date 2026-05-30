@@ -10,7 +10,7 @@ import {
 } from "@/components/admin/EventsStatsSection/types";
 
 const API_BASE =
-  "https://functions.poehali.dev/391eed3e-289f-40c5-8de5-36b9c802d32f";
+  "https://functions.poehali.dev/bcbb37e2-e9c5-4343-b080-b99acbe027db";
 
 // ── Fetcher ──────────────────────────────────────────────────────────────────
 
