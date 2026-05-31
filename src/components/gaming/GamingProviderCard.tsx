@@ -2,6 +2,7 @@ import { GamingProvider } from './types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import { trackProviderClick } from '@/utils/metrika';
 
 interface GamingProviderCardProps {
   provider: GamingProvider;
@@ -104,7 +105,10 @@ export const GamingProviderCard = ({ provider }: GamingProviderCardProps) => {
 
       <Button
         className="w-full shadow-glow"
-        onClick={() => window.open(provider.url, '_blank')}
+        onClick={() => {
+          trackProviderClick();
+          window.open(provider.url, '_blank');
+        }}
       >
         Перейти на сайт
         <Icon name="ArrowRight" size={16} className="ml-2" />

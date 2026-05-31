@@ -4,6 +4,7 @@ import Icon from "@/components/ui/icon";
 import { Provider } from "./types";
 import { useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { trackProviderClick } from "@/utils/metrika";
 
 interface ComparisonTableProps {
   providers: Provider[];
@@ -44,6 +45,7 @@ export const ComparisonTable = ({
   }
 
   const openViaRedirect = (url: string, utmContent: string) => {
+    trackProviderClick();
     const redirectBase = "/redirect";
     const params = new URLSearchParams({
       targetUrl: url,

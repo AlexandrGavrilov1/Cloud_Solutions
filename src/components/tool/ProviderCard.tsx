@@ -2,6 +2,7 @@ import { ScoredProvider } from "@/utils/scoring";
 import Icon from "@/components/ui/icon";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { trackProviderClick } from "@/utils/metrika";
 
 interface Props {
   provider: ScoredProvider;
@@ -171,6 +172,7 @@ export default function ProviderCard({ provider: p }: Props) {
         href={p.url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackProviderClick()}
         className="flex items-center justify-center gap-1.5 w-full py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all"
       >
         Перейти

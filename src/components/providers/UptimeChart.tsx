@@ -5,6 +5,7 @@ import {
   UptimeProviderCard,
   calculateTotalDowntime,
 } from "./UptimeProviderCard";
+import { trackProviderClick } from "@/utils/metrika";
 
 interface MonthlyDowntime {
   provider_id: number;
@@ -91,6 +92,7 @@ export const UptimeChart = ({
   // };
 
   const handleProviderClick = async (provider: Provider) => {
+    trackProviderClick();
     // Старый трекинг (закомментирован)
     // await trackClick(provider.id);
 

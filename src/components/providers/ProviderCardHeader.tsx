@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { Provider } from "./types";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { trackProviderClick } from "@/utils/metrika";
 
 interface ProviderCardHeaderProps {
   provider: Provider;
@@ -32,6 +33,7 @@ export const ProviderCardHeader = ({
 
   const handleProviderClickWithTracking = (e: React.MouseEvent) => {
     e.preventDefault();
+    trackProviderClick();
     onProviderClick(); // отправляет метрику и POST‑запрос  (оставляем)
 
     // Формируем URL редиректора с UTM-метками

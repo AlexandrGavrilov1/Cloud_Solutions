@@ -17,6 +17,7 @@ import { useVpnPost } from "@/hooks/useVpnPosts";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTrackEvent } from "@/hooks/useTrackEvent";
 import { usePageTimer } from "@/hooks/usePageTimer";
+import { trackProviderClick } from "@/utils/metrika";
 
 const VpnPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -67,6 +68,7 @@ const VpnPost = () => {
       post?.providerName,
     );
     if (post?.providerUrl) {
+      trackProviderClick();
       const utmContent =
         post.providerName?.toLowerCase().replace(/\s/g, "_") || "unknown";
       openViaRedirect(post.providerUrl, utmContent);

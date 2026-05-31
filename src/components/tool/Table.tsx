@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ScoredProvider } from "@/utils/scoring";
 import Icon from "@/components/ui/icon";
+import { trackProviderClick } from "@/utils/metrika";
 
 type SortKey = "score" | "price" | "latency" | "rating" | "name";
 
@@ -103,6 +104,7 @@ export default function Table({ data }: Props) {
                     href={p.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackProviderClick()}
                     className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors"
                   >
                     Deploy

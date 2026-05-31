@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import { Provider, Review } from "@/components/providers/types";
+import { trackProviderClick } from "@/utils/metrika";
 
 const Promo = () => {
   const [providersWithReviews, setProvidersWithReviews] =
@@ -75,6 +76,7 @@ const Promo = () => {
 
   const handleProviderClick = async (provider: (typeof providers)[0]) => {
     if (provider.url) {
+      trackProviderClick();
       // Старая Яндекс.Метрика (закомментирована)
       // if (typeof window !== "undefined" && (window as any).ym) {
       //   (window as any).ym(105466349, "reachGoal", "handleProviderClick", {
