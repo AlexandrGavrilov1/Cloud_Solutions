@@ -16,7 +16,7 @@ export const providers: Provider[] = [
     features: ["DDoS защита", "NVMe диски", "99.98% SLA", "Поддержка 24/7"],
     locations: ["Москва", "Санкт-Петербург", "Амстердам", "Казахстан"],
     trialDays: 3,
-    url: "https://timeweb.com/ru/?i=123689",
+    url: "https://timeweb.com/ru/?i=142632",
     pros: [
       "Самая быстрая техподдержка на рынке",
       "NVMe диски в базе",
