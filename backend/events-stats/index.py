@@ -4,7 +4,7 @@ from decimal import Decimal
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-SCHEMA = 't_p4153566_vds_rating_portal'
+SCHEMA = 't_p17567802_yura_website_replica'
 
 
 def cors_response(status_code, body):
